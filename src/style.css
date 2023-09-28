@@ -1,5 +1,3 @@
-
-
 html {
   --section-background-color: linear-gradient(
     to bottom left,
@@ -13,7 +11,7 @@ html {
     rgba(12, 10, 22, 0.863)
   );
   --imp-text-color: #5178c2;
-  --imp-text-color-secondary: rgba(240,207,96,100)
+  --imp-text-color-secondary: rgba(240, 207, 96, 100);
 }
 
 .purple {
@@ -750,9 +748,9 @@ button:focus {
 }
 
 .min-vh-95 {
-	min-height: 95vh;
+  min-height: 95vh;
 }
 
 [data-amplify-authenticator] [data-amplify-router] {
-	border-radius: 0 0 15px 15px;
+  border-radius: 0 0 15px 15px;
 }
