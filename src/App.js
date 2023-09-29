@@ -6,9 +6,9 @@ import { Header } from "./login/Header";
 import { SignInFooter } from "./login/SignInFooter";
 import { Footer } from "./login/Footer";
 import Home from "./Home";
+import "./style.css";
 
 Amplify.configure(awsExports);
-
 function App() {
   const theme = {
     name: "my-theme",
