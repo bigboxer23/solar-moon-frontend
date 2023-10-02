@@ -754,10 +754,11 @@ button:focus {
   border-radius: 0 0 15px 15px;
 }
 
-.amplify-input{
-	color:#000;
+.amplify-input {
+  color: #000;
 }
 
-[data-amplify-authenticator], .root-page {
-	padding-top: 75px;
+[data-amplify-authenticator],
+.root-page {
+  padding-top: 75px;
 }
