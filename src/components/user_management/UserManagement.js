@@ -1,5 +1,19 @@
 import { Text } from "@aws-amplify/ui-react";
+import { useEffect } from "react";
+import { getCustomerInfo } from "../../services/services";
 const UserManagement = () => {
+  useEffect(() => {
+    getCustomerInfo()
+      .then(({ data }) => {
+        console.log("data: " + JSON.stringify(data));
+        //setCustomerId(data);
+        //updateLoad(false);
+      })
+      .catch((e) => {
+        console.log("e " + e);
+      });
+  }, []);
+
   return (
     <div className={"root-page container"}>
       <Text
