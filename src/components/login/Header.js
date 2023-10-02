@@ -1,5 +1,5 @@
 import { Flex, Image, useTheme } from "@aws-amplify/ui-react";
-import logo from "../assets/logo.svg";
+import logo from "../../assets/logo.svg";
 
 export function Header() {
   const { tokens } = useTheme();

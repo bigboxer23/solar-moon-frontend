@@ -1,11 +1,13 @@
 import { Text, useAuthenticator } from "@aws-amplify/ui-react";
 import { useEffect, useState } from "react";
 import { Auth } from "aws-amplify";
+import Preloader from "./components/Preloader";
 
 const Home = () => {
-  const { user, signOut } = useAuthenticator((context) => [context.user]);
+  const { user } = useAuthenticator((context) => [context.user]);
   const { route } = useAuthenticator((context) => [context.route]);
   const [customerId, setCustomerId] = useState("Loading...");
+  const [load, updateLoad] = useState(true);
 
   useEffect(() => {
     //console.log("use effect " + user.attributes.email);
@@ -22,7 +24,7 @@ const Home = () => {
   }
 
   const fetchAPI = (jwt) => {
-    console.log("fetchingAPI " + jwt);
+    //console.log("jwt: " + jwt);
     const headers = {
       Authorization: `Bearer ${jwt}`,
     };
@@ -32,11 +34,15 @@ const Home = () => {
       headers,
     })
       .then((response) => response.text())
-      .then((data) => setCustomerId(data));
+      .then((data) => {
+        setCustomerId(data);
+        updateLoad(false);
+      });
   };
 
   return route === "authenticated" ? (
-    <div>
+    <div className={"root-page container"}>
+      <Preloader load={load} />
       <Text
         variation="primary"
         as="div"
@@ -51,7 +57,6 @@ const Home = () => {
         <br />
         <div>Your customer id is {customerId}</div>
       </Text>
-      <button onClick={signOut}>Sign out</button>
     </div>
   ) : (
     <div>Not logged in</div>

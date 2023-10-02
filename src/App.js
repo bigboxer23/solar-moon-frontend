@@ -2,11 +2,24 @@ import { Amplify } from "aws-amplify";
 import awsExports from "./aws-exports";
 import { ThemeProvider, Authenticator } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
-import { Header } from "./login/Header";
-import { SignInFooter } from "./login/SignInFooter";
-import { Footer } from "./login/Footer";
+import { Header } from "./components/login/Header";
+import { SignInFooter } from "./components/login/SignInFooter";
+import { Footer } from "./components/login/Footer";
 import Home from "./Home";
 import "./style.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Navbar from "./components/Navbar";
+import {
+  Navigate,
+  Route,
+  BrowserRouter as Router,
+  Routes,
+} from "react-router-dom";
+import Dashboard from "./components/dashboards/Dashboard";
+import Reports from "./components/reports/Reports";
+import SiteManagement from "./components/sites/SiteManagement";
+import Alarms from "./components/alarms/Alarms";
+import UserManagement from "./components/user_management/UserManagement";
 
 Amplify.configure(awsExports);
 function App() {
@@ -53,7 +66,21 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Authenticator components={components}>
-        <Home />
+        <Router>
+          <div className="App" id={"scroll"}>
+            <Navbar />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/reports" element={<Reports />} />
+              <Route path="/sites" element={<SiteManagement />} />
+              <Route path="/alarms" element={<Alarms />} />
+              <Route path="/userManagement" element={<UserManagement />} />
+              <Route path="*" element={<Navigate to="/" />} />
+            </Routes>
+            <Footer />
+          </div>
+        </Router>
       </Authenticator>
     </ThemeProvider>
   );
