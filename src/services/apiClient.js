@@ -10,7 +10,6 @@ export const api = axios.create({
 api.interceptors.request.use(
   async (config) => {
     let jwt = (await Auth.currentSession()).getAccessToken().getJwtToken();
-    console.log(jwt);
     if (jwt !== null) {
       config.headers = {
         ...config.headers,
