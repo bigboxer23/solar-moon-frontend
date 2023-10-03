@@ -12,6 +12,8 @@ import {
 } from "react-icons/md";
 import { BsAlarm, BsDatabase } from "react-icons/bs";
 import { useAuthenticator } from "@aws-amplify/ui-react";
+import { NavDropdown } from "react-bootstrap";
+import { CgProfile } from "react-icons/cg";
 
 function NavBar() {
   const [expand, updateExpanded] = useState(false);
@@ -51,7 +53,7 @@ function NavBar() {
           <span></span>
         </Navbar.Toggle>
         <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="ms-auto" defaultActiveKey="#home">
+          <Nav defaultActiveKey="/" className={"w-100"}>
             <Nav.Item>
               <Nav.Link
                 as={Link}
@@ -64,6 +66,7 @@ function NavBar() {
             </Nav.Item>
             <Nav.Item>
               <Nav.Link
+                className={"text-nowrap"}
                 as={Link}
                 to="reports"
                 onClick={() => updateExpanded(false)}
@@ -89,29 +92,26 @@ function NavBar() {
                 <MdSolarPower style={{ marginBottom: "2px" }} /> Sites
               </Nav.Link>
             </Nav.Item>
-            <Nav.Item>
-              <Nav.Link
-                as={Link}
-                to="userManagement"
-                onClick={() => updateExpanded(false)}
-              >
-                <MdOutlineManageAccounts style={{ marginBottom: "2px" }} /> User
-              </Nav.Link>
-            </Nav.Item>
-            <Nav.Item
-              className={"amplify-text--primary"}
-              onClick={() => signOut()}
+            <div className={"flex-grow-1"}></div>
+            <NavDropdown
+              title={<CgProfile size={30} className={"profile"} />}
+              className={"userProfile gap-3"}
             >
-              <Nav.Link as={Link} to="/" onClick={() => signOut()}>
-                <AiOutlineLogin style={{ marginBottom: "2px" }} /> Sign Out
-              </Nav.Link>
-            </Nav.Item>
+              <NavDropdown.Item as={Link} to="userManagement">
+                <MdOutlineManageAccounts className={"sub-menu-icon"} />
+                User Management
+              </NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item as={Link} to="/" onClick={() => signOut()}>
+                <AiOutlineLogin className={"sub-menu-icon"} /> Sign Out
+              </NavDropdown.Item>
+            </NavDropdown>
           </Nav>
         </Navbar.Collapse>
       </Container>
     </Navbar>
   ) : (
-    <div>Poop</div>
+    <div />
   );
 }
 

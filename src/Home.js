@@ -1,6 +1,5 @@
 import { Text, useAuthenticator } from "@aws-amplify/ui-react";
 import { useEffect, useState } from "react";
-import { Auth } from "aws-amplify";
 import Preloader from "./components/Preloader";
 
 const Home = () => {
@@ -10,35 +9,12 @@ const Home = () => {
   const [load, updateLoad] = useState(true);
 
   useEffect(() => {
-    //console.log("use effect " + user.attributes.email);
-    fetchRemote();
+    updateLoad(false);
+    /*getCustomerInfo().then(({ data }) => {
+      setCustomerId(data);
+      updateLoad(false);
+    });*/
   }, []);
-
-  async function fetchRemote() {
-    getJwt()
-      .then((jwt) => fetchAPI(jwt))
-      .catch(() => console.log("not logged in"));
-  }
-  async function getJwt() {
-    return (await Auth.currentSession()).getAccessToken().getJwtToken();
-  }
-
-  const fetchAPI = (jwt) => {
-    //console.log("jwt: " + jwt);
-    const headers = {
-      Authorization: `Bearer ${jwt}`,
-    };
-
-    return fetch("/simple", {
-      method: "GET",
-      headers,
-    })
-      .then((response) => response.text())
-      .then((data) => {
-        setCustomerId(data);
-        updateLoad(false);
-      });
-  };
 
   return route === "authenticated" ? (
     <div className={"root-page container"}>

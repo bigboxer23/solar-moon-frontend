@@ -67,7 +67,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <Authenticator components={components}>
         <Router>
-          <div className="App" id={"scroll"}>
+          <div className="App" id={"scroll"} data-bs-theme="dark">
             <Navbar />
             <Routes>
               <Route path="/" element={<Home />} />
