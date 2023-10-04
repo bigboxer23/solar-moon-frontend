@@ -1,7 +1,11 @@
 import { api } from "./apiClient";
 
-export function getCustomerInfo() {
+export function getCustomer() {
   return api.get("customer");
+}
+
+export function updateCustomer(customerData) {
+  return api.post("customer", customerData);
 }
 
 //TODO: just here for reference in passing content in
