@@ -785,6 +785,17 @@ button:focus {
   right: 0;
   left: initial !important;
 }
+
+.copy-button * {
+  transition: opacity 0.2s ease-out 0.1s !important;
+}
+
+.copy-button:hover,
+.copy-button:active,
+.copy-button:focus-visible {
+  --bs-btn-hover-bg: transparent;
+  --bs-btn-active-bg: transparent;
+}
 /*
 [data-bs-theme="dark"] {
   --bs-body-bg: rgb(27 20 41) !*rgb(20 15 35)*! !important;
