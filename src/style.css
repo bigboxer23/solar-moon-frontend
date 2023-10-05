@@ -786,10 +786,6 @@ button:focus {
   left: initial !important;
 }
 
-.copy-button * {
-  transition: opacity 0.2s ease-out 0.1s !important;
-}
-
 .copy-button:hover,
 .copy-button:active,
 .copy-button:focus-visible {

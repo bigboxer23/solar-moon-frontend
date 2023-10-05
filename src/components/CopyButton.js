@@ -1,6 +1,6 @@
 import { BiCopy } from "react-icons/bi";
 import { BsCheckLg } from "react-icons/bs";
-import { Button } from "react-bootstrap";
+import { Button, Fade } from "react-bootstrap";
 import React, { useState } from "react";
 import { useCopyToClipboard } from "usehooks-ts";
 
@@ -24,20 +24,20 @@ const CopyButton = (props) => {
         setCopyState();
       }}
     >
-      <BiCopy
-        className={copied ? "opacity-0" : ""}
-        style={{ marginBottom: "2px" }}
-      />
-      <BsCheckLg
-        color={"green"}
-        className={copied ? "" : "opacity-0"}
-        style={{
-          marginBottom: "2px",
-          left: 12,
-          top: 12,
-          position: "absolute",
-        }}
-      />
+      <Fade in={!copied}>
+        <BiCopy style={{ marginBottom: "2px" }} />
+      </Fade>
+      <Fade in={copied}>
+        <BsCheckLg
+          color={"green"}
+          style={{
+            marginBottom: "2px",
+            left: 12,
+            top: 12,
+            position: "absolute",
+          }}
+        />
+      </Fade>
     </Button>
   );
 };
