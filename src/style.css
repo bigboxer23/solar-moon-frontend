@@ -756,12 +756,9 @@ button:focus {
 
 [data-amplify-authenticator] .amplify-input,
 [data-amplify-authenticator] .amplify-heading,
-[data-amplify-authenticator] .amplify-text {
-  color: #000;
-}
-
+[data-amplify-authenticator] .amplify-text,
 [data-amplify-authenticator] .amplify-icon {
-  color: #000; /*var(--imp-text-color);*/
+  color: #000;
 }
 
 [data-amplify-authenticator] .amplify-button {
