@@ -2,7 +2,7 @@ import axios from "axios";
 import { Auth } from "aws-amplify";
 
 export const api = axios.create({
-  baseURL: "/",
+  baseURL: "/v1/",
   headers: {
     "Content-Type": "application/json",
   },

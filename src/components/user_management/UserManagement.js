@@ -26,10 +26,8 @@ const UserManagement = () => {
   const updateCustomer = (target, dataToUpdate) => {
     target.classList.add("disabled");
     updateRemoteCustomer(dataToUpdate != null ? dataToUpdate : customerData)
-      .then(() => {
-        if (dataToUpdate != null) {
-          getCustomer();
-        }
+      .then(({ data }) => {
+        setCustomerData(data);
         target.classList.remove("disabled");
       })
       .catch((e) => console.log("e: " + e));
@@ -183,7 +181,15 @@ const UserManagement = () => {
               type={"button"}
               onClick={() => setAccessKeyWarning(true)}
               variant={"danger"}
+              id={"revokeAccessKey"}
             >
+              <Spinner
+                as="span"
+                animation="border"
+                size="sm"
+                role="status"
+                className={"me-2 d-none"}
+              />
               <MdOutlineDelete
                 style={{ marginBottom: "2px", marginRight: "6px" }}
               />
@@ -204,9 +210,9 @@ const UserManagement = () => {
                   Cancel
                 </Button>
                 <Button
-                  onClick={(e) => {
+                  onClick={() => {
                     setAccessKeyWarning(false);
-                    updateCustomer(e.target, {
+                    updateCustomer(document.getElementById("revokeAccessKey"), {
                       ...customerData,
                       accessKey: "",
                     });
