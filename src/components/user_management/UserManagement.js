@@ -7,6 +7,7 @@ import { Alert, Button, Card, Col, Form, Row, Spinner } from "react-bootstrap";
 import { MdOutlineDelete } from "react-icons/md";
 import { TbUserCancel } from "react-icons/tb";
 import CopyButton from "../CopyButton";
+import ChangePassword from "./ChangePassword";
 
 const UserManagement = () => {
   const [customerData, setCustomerData] = useState({});
@@ -227,15 +228,7 @@ const UserManagement = () => {
           </Form>
         </Card.Body>
       </Card>
-      <Card className={"m-5"}>
-        <Card.Header className={"fw-bold"}>Reset Password</Card.Header>
-        <Card.Body>
-          <Card.Text>
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
-          </Card.Text>
-        </Card.Body>
-      </Card>
+      <ChangePassword />
       <Card className={"m-5"}>
         <Card.Header className={"fw-bold"}>Delete Account</Card.Header>
         <Card.Body>
