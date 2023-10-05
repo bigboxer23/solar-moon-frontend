@@ -1,22 +1,39 @@
 import React, { useEffect, useState } from "react";
-import { getCustomer, updateCustomer } from "../../services/services";
-import { Button, Card, Col, Form, Row } from "react-bootstrap";
-import { BiCopy } from "react-icons/bi";
-import { useCopyToClipboard } from "usehooks-ts";
+import {
+  getCustomer as fetchCustomer,
+  updateCustomer as updateRemoteCustomer,
+} from "../../services/services";
+import { Alert, Button, Card, Col, Form, Row, Spinner } from "react-bootstrap";
 import { MdOutlineDelete } from "react-icons/md";
+import { TbUserCancel } from "react-icons/tb";
+import CopyButton from "../CopyButton";
 
 const UserManagement = () => {
   const [customerData, setCustomerData] = useState({});
-  const [value, copy] = useCopyToClipboard();
+  const [accessKeyWarning, setAccessKeyWarning] = useState(false);
+  const [deleteAcctWarning, setDeleteAcctWarning] = useState(false);
   useEffect(() => {
-    getCustomer()
+    getCustomer();
+  }, []);
+
+  const getCustomer = () => {
+    fetchCustomer()
       .then(({ data }) => {
         setCustomerData(data);
       })
-      .catch((e) => {
-        console.log("e " + e);
-      });
-  }, []);
+      .catch((e) => console.log("e " + e));
+  };
+  const updateCustomer = (target, dataToUpdate) => {
+    target.classList.add("disabled");
+    updateRemoteCustomer(dataToUpdate != null ? dataToUpdate : customerData)
+      .then(() => {
+        if (dataToUpdate != null) {
+          getCustomer();
+        }
+        target.classList.remove("disabled");
+      })
+      .catch((e) => console.log("e: " + e));
+  };
 
   return (
     <div className={"root-page container"}>
@@ -115,8 +132,15 @@ const UserManagement = () => {
             <Button
               variant="primary"
               type="button"
-              onClick={() => updateCustomer(customerData)}
+              onClick={(e) => updateCustomer(e.target)}
             >
+              <Spinner
+                as="span"
+                animation="border"
+                size="sm"
+                role="status"
+                className={"me-2 d-none"}
+              />
               Update
             </Button>
           </Form>
@@ -149,18 +173,15 @@ const UserManagement = () => {
                   className={"flex-grow-1 w-auto"}
                   value={customerData?.accessKey || ""}
                 />
-                <Button
-                  type={"button"}
-                  className={"ms-2 w-auto"}
-                  onClick={() => copy(customerData?.accessKey)}
-                >
-                  <BiCopy style={{ marginBottom: "2px" }} />
-                </Button>
+                <CopyButton
+                  title={"Copy Access Key"}
+                  dataSrc={() => customerData?.accessKey}
+                />
               </Row>
             </Form.Group>
             <Button
               type={"button"}
-              onClick={() => console.log("todo")}
+              onClick={() => setAccessKeyWarning(true)}
               variant={"danger"}
             >
               <MdOutlineDelete
@@ -168,16 +189,84 @@ const UserManagement = () => {
               />
               Revoke/Regenerate Access Key
             </Button>
+            <Alert show={accessKeyWarning} variant="danger">
+              <Alert.Heading>Revoke/Regenerate Access Key</Alert.Heading>
+              <p>
+                Are you sure you want to revoke this key? Doing so is
+                non-reversible.
+              </p>
+              <hr />
+              <div className="d-flex justify-content-end">
+                <Button
+                  onClick={() => setAccessKeyWarning(false)}
+                  variant="outline-secondary"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={(e) => {
+                    setAccessKeyWarning(false);
+                    updateCustomer(e.target, {
+                      ...customerData,
+                      accessKey: "",
+                    });
+                  }}
+                  variant="outline-danger"
+                  className={"ms-2"}
+                >
+                  Revoke Key
+                </Button>
+              </div>
+            </Alert>
           </Form>
         </Card.Body>
       </Card>
       <Card className={"m-5"}>
-        <Card.Header className={"fw-bold"}>Password Reset</Card.Header>
+        <Card.Header className={"fw-bold"}>Reset Password</Card.Header>
         <Card.Body>
           <Card.Text>
             Some quick example text to build on the card title and make up the
             bulk of the card's content.
           </Card.Text>
+        </Card.Body>
+      </Card>
+      <Card className={"m-5"}>
+        <Card.Header className={"fw-bold"}>Delete Account</Card.Header>
+        <Card.Body>
+          <Button
+            type={"button"}
+            onClick={() => setDeleteAcctWarning(true)}
+            variant={"danger"}
+          >
+            <TbUserCancel style={{ marginBottom: "2px", marginRight: "6px" }} />
+            Delete Account
+          </Button>
+          <Alert show={deleteAcctWarning} variant="danger">
+            <Alert.Heading>Delete Account</Alert.Heading>
+            <p>
+              Are you sure you want to delete your account? Doing so is
+              non-reversible.
+            </p>
+            <hr />
+            <div className="d-flex justify-content-end">
+              <Button
+                onClick={() => setDeleteAcctWarning(false)}
+                variant="outline-secondary"
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={() => {
+                  setDeleteAcctWarning(false);
+                  updateCustomer({ ...customerData, active: false });
+                }}
+                variant="outline-danger"
+                className={"ms-2"}
+              >
+                Delete Account
+              </Button>
+            </div>
+          </Alert>
         </Card.Body>
       </Card>
     </div>

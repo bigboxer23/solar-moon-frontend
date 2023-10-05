@@ -786,6 +786,10 @@ button:focus {
   left: initial !important;
 }
 
+.disabled .d-none.spinner-border {
+  display: inline-block !important;
+}
+
 .copy-button:hover,
 .copy-button:active,
 .copy-button:focus-visible {
