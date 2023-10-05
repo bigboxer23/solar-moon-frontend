@@ -30,7 +30,6 @@ function App() {
         font: {
           primary: "#ffffff",
         },
-
         brand: {
           primary: {
             10: { value: "rgba(81,120,194,.1)" },
