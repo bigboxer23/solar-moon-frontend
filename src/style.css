@@ -754,8 +754,19 @@ button:focus {
   border-radius: 0 0 15px 15px;
 }
 
-.amplify-input {
+[data-amplify-authenticator] .amplify-input,
+[data-amplify-authenticator] .amplify-heading,
+[data-amplify-authenticator] .amplify-text,
+[data-amplify-authenticator] .amplify-icon {
   color: #000;
+}
+
+[data-amplify-authenticator] .amplify-button {
+  color: var(--imp-text-color);
+}
+
+[data-amplify-authenticator] .amplify-button--primary {
+  color: #ffffff;
 }
 
 [data-amplify-authenticator],
