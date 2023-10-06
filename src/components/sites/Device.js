@@ -59,6 +59,11 @@ const Device = ({ data, setDevices }) => {
               onChange={(e) =>
                 setDevice({ ...device, deviceName: e.target.value })
               }
+              onKeyUp={(event) => {
+                if (event.key === "Enter") {
+                  update();
+                }
+              }}
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formDisplayName">
@@ -67,6 +72,11 @@ const Device = ({ data, setDevices }) => {
               placeholder="Device Display Name"
               value={device.name || ""}
               onChange={(e) => setDevice({ ...device, name: e.target.value })}
+              onKeyUp={(event) => {
+                if (event.key === "Enter") {
+                  update();
+                }
+              }}
             />
           </Form.Group>
           <div className={"fw-bold d-flex align-items-center"}>
