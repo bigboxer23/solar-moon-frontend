@@ -8,7 +8,18 @@ export function updateCustomer(customerData) {
   return api.post("customer", customerData);
 }
 
-//TODO: just here for reference in passing content in
-export function login({ email, password }) {
-  return api.post("auth/login", { email, password }, { authorization: false });
+export function getDevices() {
+  return api.get("devices");
+}
+
+export function getDevice(deviceId) {
+  return api.get("devices/" + deviceId);
+}
+
+export function deleteDevice(deviceId) {
+  return api.delete("devices/" + deviceId);
+}
+
+export function updateDevice(device) {
+  return api.post("devices", device);
 }
