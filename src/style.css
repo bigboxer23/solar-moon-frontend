@@ -807,7 +807,12 @@ button:focus {
   --bs-btn-hover-bg: transparent;
   --bs-btn-active-bg: transparent;
 }
-/*
-[data-bs-theme="dark"] {
-  --bs-body-bg: rgb(27 20 41) !*rgb(20 15 35)*! !important;
-}*/
+
+.device .btn {
+  opacity: 0;
+  transition: opacity 0.2s ease-out 0s !important;
+}
+
+.device:hover .btn {
+  opacity: 1;
+}
