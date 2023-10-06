@@ -19,7 +19,6 @@ const Device = ({ data, setDevices }) => {
         console.log(e);
         applyLoadingState(false);
       });
-    // setHasChange(false);
   };
 
   const applyLoadingState = (state) => {
