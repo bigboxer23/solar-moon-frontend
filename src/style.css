@@ -816,3 +816,26 @@ button:focus {
 .device:hover .btn {
   opacity: 1;
 }
+
+.header {
+  background: #444950;
+  color: var(--bs-body-color);
+  letter-spacing: 0.06rem;
+  padding: 0.75rem;
+}
+
+.modal {
+  --bs-modal-color: ;
+  --bs-modal-bg: #212529 !important;
+  --bs-modal-border-color: rgba(255, 255, 255, 0.15) !important;
+  --bs-modal-header-border-color: #495057 !important;
+  --bs-modal-footer-border-color: #495057 !important;
+}
+
+.modal-content {
+  color: var(--bs-body-color) !important;
+}
+
+.modal-header {
+  color: var(--bs-body-color);
+}

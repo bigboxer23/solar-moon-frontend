@@ -47,12 +47,12 @@ const Device = ({ data, setDevices }) => {
   };
 
   return (
-    <Card className={"m-5 device"}>
+    <Card className={"mb-3 device"}>
       <Card.Header className={"fw-bold"}>{device.name}</Card.Header>
       <Card.Body>
         <Form>
           <Form.Group className="mb-3" controlId="formTechnicalName">
-            <Form.Label>Device Technical Name</Form.Label>
+            <Form.Label>Device Name</Form.Label>
             <Form.Control
               placeholder="Device Technical Name"
               value={device.deviceName || ""}
@@ -67,7 +67,7 @@ const Device = ({ data, setDevices }) => {
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formDisplayName">
-            <Form.Label>Device Display Name</Form.Label>
+            <Form.Label>Display Name</Form.Label>
             <Form.Control
               placeholder="Device Display Name"
               value={device.name || ""}
