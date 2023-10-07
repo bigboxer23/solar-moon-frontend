@@ -23,3 +23,7 @@ export function deleteDevice(deviceId) {
 export function updateDevice(device) {
   return api.post("devices", device);
 }
+
+export function addDevice(device) {
+  return api.put("devices", device);
+}

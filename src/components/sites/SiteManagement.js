@@ -1,32 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { getDevices } from "../../services/services";
 import { Card, Dropdown } from "react-bootstrap";
-import Device from "./Device";
 import Site from "./Site";
 import { MdOutlineAdd } from "react-icons/md";
+import NewSiteDialog from "./newSiteDialog";
 const SiteManagement = () => {
   const [devices, setDevices] = useState([]);
-  const [sites, setSites] = useState([]);
   const [activeSite, setActiveSite] = useState("");
   const [noDevices, setNoDevices] = useState("");
+  const [showNewSite, setShowNewSite] = useState(false);
+
   useEffect(() => {
     getDevices()
       .then(({ data }) => {
         setDevices(data);
-        let s = data.filter((device) => device.virtual);
-        s[s.length] = { id: "none", name: "No Site" }; //Add placeholder site
-        setSites(s);
-        setActiveSite(s.length > 0 ? s[0].name : "");
+        if (activeSite === "") {
+          setActiveSite(data.find((device) => device.virtual)?.name);
+        }
       })
       .catch((e) => {
         console.log(e);
         setNoDevices(e.response.data);
       });
   }, []);
-
-  const deviceUI = devices.map((device) => {
-    return <Device key={device.id} data={device} setDevices={setDevices} />;
-  });
 
   return (
     <div className={"root-page container d-flex flex-column"}>
@@ -37,19 +33,33 @@ const SiteManagement = () => {
             Choose Site
           </Dropdown.Toggle>
           <Dropdown.Menu>
-            {sites.map((site) => {
-              return (
-                <Dropdown.Item
-                  as="button"
-                  key={site.id}
-                  onClick={() => setActiveSite(site.name)}
-                >
-                  {site.name}
-                </Dropdown.Item>
-              );
-            })}
+            {devices
+              .filter((device) => device.virtual)
+              .map((site) => {
+                return (
+                  <Dropdown.Item
+                    as="button"
+                    key={site.id}
+                    onClick={() => setActiveSite(site.name)}
+                  >
+                    {site.name}
+                  </Dropdown.Item>
+                );
+              })}
+            <Dropdown.Item
+              as="button"
+              key={"none"}
+              onClick={() => setActiveSite("No Site")}
+            >
+              No Site
+            </Dropdown.Item>
             <Dropdown.Divider />
-            <Dropdown.Item as="button" eventKey="new" className={"Success"}>
+            <Dropdown.Item
+              as="button"
+              eventKey="new"
+              className={"Success"}
+              onClick={() => setShowNewSite(true)}
+            >
               <MdOutlineAdd
                 style={{
                   marginBottom: "2px",
@@ -61,7 +71,8 @@ const SiteManagement = () => {
           </Dropdown.Menu>
         </Dropdown>
       </h4>
-      {sites
+      {devices
+        .filter((device) => device.virtual)
         .filter((site) => site.name === activeSite)
         .map((site) => {
           return (
@@ -76,6 +87,11 @@ const SiteManagement = () => {
       <Card className={"m-5 " + (noDevices.length > 0 ? "" : "d-none")}>
         <Card.Body>{noDevices}</Card.Body>
       </Card>
+      <NewSiteDialog
+        show={showNewSite}
+        setShow={setShowNewSite}
+        setDevices={setDevices}
+      />
     </div>
   );
 };
