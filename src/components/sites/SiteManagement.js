@@ -14,13 +14,15 @@ const SiteManagement = () => {
     getDevices()
       .then(({ data }) => {
         setDevices(data);
+        setNoDevices(data.length > 0 ? "" : "No devices available");
         if (activeSite === "") {
-          setActiveSite(data.find((device) => device.virtual)?.name);
+          setActiveSite(
+            data.find((device) => device.virtual)?.name || "No Site",
+          );
         }
       })
       .catch((e) => {
         console.log(e);
-        setNoDevices(e.response.data);
       });
   }, []);
 
@@ -81,6 +83,7 @@ const SiteManagement = () => {
               data={site}
               devices={devices}
               setDevices={setDevices}
+              setActiveSite={setActiveSite}
             />
           );
         })}
@@ -91,6 +94,7 @@ const SiteManagement = () => {
         show={showNewSite}
         setShow={setShowNewSite}
         setDevices={setDevices}
+        setActiveSite={setActiveSite}
       />
     </div>
   );

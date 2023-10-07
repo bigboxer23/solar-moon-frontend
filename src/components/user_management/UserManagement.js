@@ -31,7 +31,10 @@ const UserManagement = () => {
         setCustomerData(data);
         target.classList.remove("disabled");
       })
-      .catch((e) => console.log("e: " + e));
+      .catch((e) => {
+        console.log("e: " + e);
+        target.classList.remove("disabled");
+      });
   };
 
   return (
@@ -236,6 +239,7 @@ const UserManagement = () => {
             type={"button"}
             onClick={() => setDeleteAcctWarning(true)}
             variant={"danger"}
+            id={"deleteAccountButton"}
           >
             <TbUserCancel style={{ marginBottom: "2px", marginRight: "6px" }} />
             Delete Account
@@ -257,7 +261,10 @@ const UserManagement = () => {
               <Button
                 onClick={() => {
                   setDeleteAcctWarning(false);
-                  updateCustomer({ ...customerData, active: false });
+                  updateCustomer(
+                    document.getElementById("deleteAccountButton"),
+                    { ...customerData, active: false },
+                  );
                 }}
                 variant="outline-danger"
                 className={"ms-2"}

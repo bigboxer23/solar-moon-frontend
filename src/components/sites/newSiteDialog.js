@@ -2,15 +2,16 @@ import { Button, Form, Modal, Spinner } from "react-bootstrap";
 import React, { useState } from "react";
 import { addDevice } from "../../services/services";
 
-const NewSiteDialog = ({ show, setShow, setDevices }) => {
+const NewSiteDialog = ({ show, setShow, setDevices, setActiveSite }) => {
   const [site, setSite] = useState({ virtual: true, name: "" });
-  const createNewSite = (button) => {
+  const createNewSite = () => {
     if (site.name !== "") {
+      let button = document.getElementById("createSite");
       button.classList.add("disabled");
       addDevice(site)
         .then(({ data }) => {
           setDevices((devices) => [...devices, data]);
-          setSite("");
+          setActiveSite(data.name);
           setShow(false);
         })
         .catch((e) => {
@@ -32,13 +33,31 @@ const NewSiteDialog = ({ show, setShow, setDevices }) => {
             <Form.Control
               value={site.name}
               onChange={(e) => setSite({ ...site, name: e.target.value })}
+              onKeyPress={(event) => {
+                if (event.key === "Enter") {
+                  //Don't submit the form
+                  event.preventDefault();
+                  event.stopPropagation();
+                }
+              }}
+              onKeyUp={(event) => {
+                if (event.key === "Enter") {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  createNewSite();
+                }
+              }}
               autoFocus
             />
           </Form.Group>
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="primary" onClick={(e) => createNewSite(e.target)}>
+        <Button
+          id="createSite"
+          variant="primary"
+          onClick={() => createNewSite()}
+        >
           <Spinner
             as="span"
             animation="border"
