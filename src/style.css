@@ -816,3 +816,10 @@ button:focus {
 .device:hover .btn {
   opacity: 1;
 }
+
+.header {
+  background: #444950;
+  color: var(--bs-body-color);
+  letter-spacing: 0.06rem;
+  padding: 0.75rem;
+}
