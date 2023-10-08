@@ -3,23 +3,19 @@ import React, { useState } from "react";
 import Device from "./Device";
 import { AiOutlineDelete } from "react-icons/ai";
 import { deleteDevice } from "../../services/services";
+import { noSite } from "./SiteManagement";
+import SiteAttributes from "./SiteAttributes";
 
 const Site = ({ data, devices, setDevices, setActiveSite }) => {
   const [site] = useState(data);
   const [deleteSiteWarning, setDeleteSiteWarning] = useState(false);
-  const deviceUI = devices
-    .filter((device) => device.site === site.name)
-    .map((device) => {
-      return <Device key={device.id} data={device} setDevices={setDevices} />;
-    });
-
   const removeSite = () => {
     let button = document.getElementById("delete" + site.id);
     button.classList.add("disabled");
     deleteDevice(site.id)
       .then((data) => {
         setDevices((d) => d.filter((device) => device.id !== site.id));
-        setActiveSite("No Site");
+        setActiveSite(noSite);
         button.classList.remove("disabled");
       })
       .catch((e) => {
@@ -29,7 +25,28 @@ const Site = ({ data, devices, setDevices, setActiveSite }) => {
   };
   return (
     <div>
-      {deviceUI}
+      {devices
+        .filter((device) => device.virtual)
+        .filter((device) => device.site === site.name)
+        .map((device) => {
+          return (
+            <SiteAttributes
+              key={device.id}
+              data={device}
+              setDevices={setDevices}
+              setActiveSite={setActiveSite}
+              all={devices}
+            />
+          );
+        })}
+      {devices
+        .filter((device) => device.site === site.name)
+        .filter((device) => !device.virtual)
+        .map((device) => {
+          return (
+            <Device key={device.id} data={device} setDevices={setDevices} />
+          );
+        })}
       <Button
         onClick={() => setDeleteSiteWarning(true)}
         variant="danger"

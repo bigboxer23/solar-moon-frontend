@@ -26,6 +26,16 @@ function App() {
   const theme = {
     name: "my-theme",
     tokens: {
+      fonts: {
+        default: {
+          static: {
+            value: '"Raleway", serif',
+          },
+          variable: {
+            value: '"Raleway", serif',
+          },
+        },
+      },
       colors: {
         font: {
           primary: "#ffffff",

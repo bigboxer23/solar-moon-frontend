@@ -4,6 +4,8 @@ import { Card, Dropdown } from "react-bootstrap";
 import Site from "./Site";
 import { MdOutlineAdd } from "react-icons/md";
 import NewSiteDialog from "./newSiteDialog";
+
+export const noSite = "No Site";
 const SiteManagement = () => {
   const [devices, setDevices] = useState([]);
   const [activeSite, setActiveSite] = useState("");
@@ -16,9 +18,7 @@ const SiteManagement = () => {
         setDevices(data);
         setNoDevices(data.length > 0 ? "" : "No devices available");
         if (activeSite === "") {
-          setActiveSite(
-            data.find((device) => device.virtual)?.name || "No Site",
-          );
+          setActiveSite(data.find((device) => device.virtual)?.name || noSite);
         }
       })
       .catch((e) => {
@@ -28,7 +28,7 @@ const SiteManagement = () => {
 
   return (
     <div className={"root-page container d-flex flex-column"}>
-      <h4 className={"d-flex fw-bold header mb-3 align-items-center"}>
+      <h4 className={"d-flex fw-bold header mb-0 align-items-center"}>
         <div className={"flex-grow-1"}>Site: {activeSite}</div>
         <Dropdown className={"align-self-end"}>
           <Dropdown.Toggle variant="primary" id="dropdown-basic">
@@ -41,7 +41,7 @@ const SiteManagement = () => {
                 return (
                   <Dropdown.Item
                     as="button"
-                    key={site.id}
+                    key={site.name}
                     onClick={() => setActiveSite(site.name)}
                   >
                     {site.name}
@@ -51,9 +51,9 @@ const SiteManagement = () => {
             <Dropdown.Item
               as="button"
               key={"none"}
-              onClick={() => setActiveSite("No Site")}
+              onClick={() => setActiveSite(noSite)}
             >
-              No Site
+              {noSite}
             </Dropdown.Item>
             <Dropdown.Divider />
             <Dropdown.Item
