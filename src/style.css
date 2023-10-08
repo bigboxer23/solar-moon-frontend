@@ -839,3 +839,7 @@ button:focus {
 .modal-header {
   color: var(--bs-body-color);
 }
+
+.site-attributes {
+  border-radius: 0 0 var(--bs-border-radius) var(--bs-border-radius) !important;
+}
