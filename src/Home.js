@@ -1,10 +1,7 @@
-import { Text, useAuthenticator } from "@aws-amplify/ui-react";
+import { useAuthenticator } from "@aws-amplify/ui-react";
 import { useEffect, useState } from "react";
 import Preloader from "./components/Preloader";
-import {
-  Card,
-  CardHeader,
-} from "react-bootstrap";
+import { Card, CardHeader } from "react-bootstrap";
 
 const Home = () => {
   const { user } = useAuthenticator((context) => [context.user]);
