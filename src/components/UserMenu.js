@@ -1,19 +1,31 @@
 import { NavDropdown } from "react-bootstrap";
 import { AiOutlineLogin, AiOutlineUser } from "react-icons/ai";
-import { CgProfile } from "react-icons/cg";
 import { Link } from "react-router-dom";
 import { useAuthenticator } from "@aws-amplify/ui-react";
+import Avatar from "react-avatar";
 
 const UserMenu = () => {
   const { user } = useAuthenticator((context) => [context.user]);
 
   return (
     <NavDropdown
-      title={<CgProfile size={30} className={"profile"} />}
+      title={
+        <Avatar
+          name={user.attributes.name}
+          size={40}
+          textSizeRatio={2}
+          round={true}
+        />
+      }
       className={"userProfile gap-3"}
     >
       <div className={"d-flex ps-2 pe-2 pb-1"}>
-        <CgProfile size={30} className={"profile"} />
+        <Avatar
+          name={user.attributes.name}
+          size={40}
+          textSizeRatio={2}
+          round={true}
+        />
         <div className={"ms-3"}>
           <div className={"fw-bolder smaller-text"}>
             {user.attributes.email}
