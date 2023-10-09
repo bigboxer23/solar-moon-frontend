@@ -4,16 +4,10 @@ import Nav from "react-bootstrap/Nav";
 import Container from "react-bootstrap/Container";
 import logo from "../assets/logo.svg";
 import { Link } from "react-router-dom";
-import { AiOutlineLogin } from "react-icons/ai";
-import {
-  MdOutlineDashboard,
-  MdOutlineManageAccounts,
-  MdSolarPower,
-} from "react-icons/md";
+import { MdOutlineDashboard, MdSolarPower } from "react-icons/md";
 import { BsAlarm, BsDatabase } from "react-icons/bs";
 import { useAuthenticator } from "@aws-amplify/ui-react";
-import { NavDropdown } from "react-bootstrap";
-import { CgProfile } from "react-icons/cg";
+import UserMenu from "./UserMenu";
 
 function NavBar() {
   const [expand, updateExpanded] = useState(false);
@@ -93,19 +87,7 @@ function NavBar() {
               </Nav.Link>
             </Nav.Item>
             <div className={"flex-grow-1"}></div>
-            <NavDropdown
-              title={<CgProfile size={30} className={"profile"} />}
-              className={"userProfile gap-3"}
-            >
-              <NavDropdown.Item as={Link} to="userManagement">
-                <MdOutlineManageAccounts className={"sub-menu-icon"} />
-                User Management
-              </NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item as={Link} to="/" onClick={() => signOut()}>
-                <AiOutlineLogin className={"sub-menu-icon"} /> Sign Out
-              </NavDropdown.Item>
-            </NavDropdown>
+            <UserMenu />
           </Nav>
         </Navbar.Collapse>
       </Container>
