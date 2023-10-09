@@ -843,3 +843,7 @@ button:focus {
 .site-attributes {
   border-radius: 0 0 var(--bs-border-radius) var(--bs-border-radius) !important;
 }
+
+.smaller-text {
+  font-size: 0.875rem;
+}
