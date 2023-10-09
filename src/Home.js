@@ -1,11 +1,14 @@
 import { Text, useAuthenticator } from "@aws-amplify/ui-react";
 import { useEffect, useState } from "react";
 import Preloader from "./components/Preloader";
+import {
+  Card,
+  CardHeader,
+} from "react-bootstrap";
 
 const Home = () => {
   const { user } = useAuthenticator((context) => [context.user]);
   const { route } = useAuthenticator((context) => [context.route]);
-  const [customerId, setCustomerId] = useState("Loading...");
   const [load, updateLoad] = useState(true);
 
   useEffect(() => {
@@ -18,21 +21,13 @@ const Home = () => {
 
   return route === "authenticated" ? (
     <div className={"root-page container"}>
+      <Card>
+        <CardHeader>
+          Welcome {user.attributes.email}!
+          <br />
+        </CardHeader>
+      </Card>
       <Preloader load={load} />
-      <Text
-        variation="primary"
-        as="div"
-        lineHeight="1.5em"
-        fontWeight={400}
-        fontSize="1em"
-        fontStyle="normal"
-        textDecoration="none"
-        width="30vw"
-      >
-        Welcome {user.attributes.email}
-        <br />
-        <div>Your customer id is {customerId}</div>
-      </Text>
     </div>
   ) : (
     <div>Not logged in</div>
