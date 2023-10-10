@@ -13,7 +13,6 @@ const Device = ({ data, devices, setDevices }) => {
     updateDevice(device)
       .then(({ data }) => {
         setDevice(data);
-        x;
         setDevices([...devices.filter((d) => d.id !== data.id), data]);
         applyLoadingState(false);
       })
@@ -103,7 +102,7 @@ const Device = ({ data, devices, setDevices }) => {
             <Button
               variant="primary"
               type="button"
-              onClick={(e) => update()}
+              onClick={() => update()}
               id={device.id + "update"}
             >
               <Spinner
