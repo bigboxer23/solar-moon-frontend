@@ -1,6 +1,7 @@
 import { Button, Form, Modal, Spinner } from "react-bootstrap";
 import React, { useState } from "react";
 import { addDevice } from "../../services/services";
+import { preventSubmit } from "../../utils/Utils";
 
 const NewSiteDialog = ({
   show,
@@ -41,17 +42,9 @@ const NewSiteDialog = ({
             <Form.Control
               value={site.name}
               onChange={(e) => setSite({ ...site, name: e.target.value })}
-              onKeyPress={(event) => {
-                if (event.key === "Enter") {
-                  //Don't submit the form
-                  event.preventDefault();
-                  event.stopPropagation();
-                }
-              }}
+              onKeyPress={preventSubmit}
               onKeyUp={(event) => {
                 if (event.key === "Enter") {
-                  event.preventDefault();
-                  event.stopPropagation();
                   createNewSite();
                 }
               }}

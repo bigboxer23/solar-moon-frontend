@@ -2,6 +2,7 @@ import { Button, Card, Form, Spinner } from "react-bootstrap";
 import React, { useState } from "react";
 
 import { getDevices, updateDevice } from "../../services/services";
+import { preventSubmit } from "../../utils/Utils";
 
 const SiteAttributes = ({ data, all, setDevices, setActiveSite }) => {
   const [device, setDevice] = useState(data);
@@ -30,7 +31,7 @@ const SiteAttributes = ({ data, all, setDevices, setActiveSite }) => {
           <Form.Group className="mb-3" controlId="formDisplayName">
             <Form.Label>Display Name</Form.Label>
             <Form.Control
-              placeholder="Device Display Name"
+              placeholder="Display Name"
               value={device.name || ""}
               onChange={(e) =>
                 setDevice({
@@ -39,12 +40,7 @@ const SiteAttributes = ({ data, all, setDevices, setActiveSite }) => {
                   site: e.target.value,
                 })
               }
-              onKeyPress={(event) => {
-                if (event.key === "Enter") {
-                  event.preventDefault();
-                  event.stopPropagation();
-                }
-              }}
+              onKeyPress={preventSubmit}
               onKeyUp={(event) => {
                 if (event.key === "Enter") {
                   update();

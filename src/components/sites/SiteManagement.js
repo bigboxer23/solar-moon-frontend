@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { getDevices } from "../../services/services";
-import { Card, Dropdown } from "react-bootstrap";
+import { Button, Card, Dropdown } from "react-bootstrap";
 import Site from "./Site";
-import { MdOutlineAdd } from "react-icons/md";
+import { MdAddCircle, MdOutlineAdd } from "react-icons/md";
 import NewSiteDialog from "./newSiteDialog";
+import NewDeviceDialog from "./NewDeviceDialog";
 
 export const noSite = "No Site";
 const SiteManagement = () => {
@@ -11,6 +12,7 @@ const SiteManagement = () => {
   const [activeSite, setActiveSite] = useState("");
   const [noDevices, setNoDevices] = useState("");
   const [showNewSite, setShowNewSite] = useState(false);
+  const [showNewDevice, setShowNewDevice] = useState(false);
   const [newSiteFormVersion, setNewSiteFormVersion] = useState(0);
 
   useEffect(() => {
@@ -31,6 +33,15 @@ const SiteManagement = () => {
     <div className={"root-page container d-flex flex-column"}>
       <h4 className={"d-flex fw-bold header mb-0 align-items-center"}>
         <div className={"flex-grow-1"}>Site: {activeSite}</div>
+        <Button
+          className={"me-3"}
+          variant={"outline-light"}
+          title={"New Device"}
+          onClick={() => setShowNewDevice(true)}
+        >
+          <MdAddCircle style={{ marginBottom: "2px", marginRight: ".5rem" }} />
+          Add Device
+        </Button>
         <Dropdown className={"align-self-end"}>
           <Dropdown.Toggle variant="primary" id="dropdown-basic">
             Choose Site
@@ -98,6 +109,15 @@ const SiteManagement = () => {
         setDevices={setDevices}
         setActiveSite={setActiveSite}
         setVersion={setNewSiteFormVersion}
+      />
+      <NewDeviceDialog
+        key={"device" + newSiteFormVersion + activeSite}
+        show={showNewDevice}
+        setShow={setShowNewDevice}
+        setDevices={setDevices}
+        setVersion={setNewSiteFormVersion}
+        devices={devices}
+        site={activeSite}
       />
     </div>
   );
