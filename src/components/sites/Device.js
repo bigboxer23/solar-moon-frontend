@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { deleteDevice, updateDevice } from "../../services/services";
 
-const Device = ({ data, setDevices }) => {
+const Device = ({ data, devices, setDevices }) => {
   const [device, setDevice] = useState(data);
   const [deleteDeviceWarning, setDeleteDeviceWarning] = useState(false);
 
@@ -13,6 +13,8 @@ const Device = ({ data, setDevices }) => {
     updateDevice(device)
       .then(({ data }) => {
         setDevice(data);
+        x;
+        setDevices([...devices.filter((d) => d.id !== data.id), data]);
         applyLoadingState(false);
       })
       .catch((e) => {
@@ -78,6 +80,24 @@ const Device = ({ data, setDevices }) => {
                 }
               }}
             />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formDisplayName">
+            <Form.Label>Site</Form.Label>
+            <Form.Select
+              aria-label="Default select example"
+              value={device.site}
+              onChange={(e) => setDevice({ ...device, site: e.target.value })}
+            >
+              {devices
+                .filter((d) => d.virtual)
+                .map((site) => {
+                  return (
+                    <option key={site.name} value={site.name}>
+                      {site.name}
+                    </option>
+                  );
+                })}
+            </Form.Select>
           </Form.Group>
           <div className={"fw-bold d-flex align-items-center"}>
             <Button
