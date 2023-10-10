@@ -5,7 +5,7 @@ import "@aws-amplify/ui-react/styles.css";
 import { Header } from "./components/login/Header";
 import { SignInFooter } from "./components/login/SignInFooter";
 import { Footer } from "./components/login/Footer";
-import Home from "./Home";
+import Home from "./components/Home/Home";
 import "./style.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Navbar from "./components/Navbar";
