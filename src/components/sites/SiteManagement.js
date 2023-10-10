@@ -11,6 +11,7 @@ const SiteManagement = () => {
   const [activeSite, setActiveSite] = useState("");
   const [noDevices, setNoDevices] = useState("");
   const [showNewSite, setShowNewSite] = useState(false);
+  const [newSiteFormVersion, setNewSiteFormVersion] = useState(0);
 
   useEffect(() => {
     getDevices()
@@ -25,10 +26,6 @@ const SiteManagement = () => {
         console.log(e);
       });
   }, []);
-
-  useEffect(() => {
-    console.log("render b/c of devices");
-  }, [devices]);
 
   return (
     <div className={"root-page container d-flex flex-column"}>
@@ -95,10 +92,12 @@ const SiteManagement = () => {
         <Card.Body>{noDevices}</Card.Body>
       </Card>
       <NewSiteDialog
+        key={newSiteFormVersion}
         show={showNewSite}
         setShow={setShowNewSite}
         setDevices={setDevices}
         setActiveSite={setActiveSite}
+        setVersion={setNewSiteFormVersion}
       />
     </div>
   );
