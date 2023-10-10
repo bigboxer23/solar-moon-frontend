@@ -1,4 +1,4 @@
-import { api } from "./apiClient";
+import { api, openSearch } from "./apiClient";
 
 export function getCustomer() {
   return api.get("customer");
@@ -26,4 +26,8 @@ export function updateDevice(device) {
 
 export function addDevice(device) {
   return api.put("devices", device);
+}
+
+export function getTimeSeriesData(searchBody) {
+  return openSearch.post("_search", searchBody);
 }
