@@ -55,7 +55,7 @@ const Device = ({ data, devices, setDevices }) => {
           <Form.Group className="mb-3" controlId="formTechnicalName">
             <Form.Label>Device Name</Form.Label>
             <Form.Control
-              placeholder="Device Technical Name"
+              placeholder="Device Name"
               value={device.deviceName || ""}
               onChange={(e) =>
                 setDevice({ ...device, deviceName: e.target.value })
@@ -70,7 +70,7 @@ const Device = ({ data, devices, setDevices }) => {
           <Form.Group className="mb-3" controlId="formDisplayName">
             <Form.Label>Display Name</Form.Label>
             <Form.Control
-              placeholder="Device Display Name"
+              placeholder="Display Name"
               value={device.name || ""}
               onChange={(e) => setDevice({ ...device, name: e.target.value })}
               onKeyUp={(event) => {
@@ -83,7 +83,7 @@ const Device = ({ data, devices, setDevices }) => {
           <Form.Group className="mb-3" controlId="formDisplayName">
             <Form.Label>Site</Form.Label>
             <Form.Select
-              aria-label="Default select example"
+              aria-label="site select"
               value={device.site}
               onChange={(e) => setDevice({ ...device, site: e.target.value })}
             >
