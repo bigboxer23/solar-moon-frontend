@@ -26,6 +26,10 @@ const SiteManagement = () => {
       });
   }, []);
 
+  useEffect(() => {
+    console.log("render b/c of devices");
+  }, [devices]);
+
   return (
     <div className={"root-page container d-flex flex-column"}>
       <h4 className={"d-flex fw-bold header mb-0 align-items-center"}>

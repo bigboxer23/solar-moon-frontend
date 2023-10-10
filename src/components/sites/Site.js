@@ -44,7 +44,12 @@ const Site = ({ data, devices, setDevices, setActiveSite }) => {
         .filter((device) => !device.virtual)
         .map((device) => {
           return (
-            <Device key={device.id} data={device} setDevices={setDevices} />
+            <Device
+              key={device.id + device.site}
+              data={device}
+              devices={devices}
+              setDevices={setDevices}
+            />
           );
         })}
       <Button
