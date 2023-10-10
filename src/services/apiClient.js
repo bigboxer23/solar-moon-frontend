@@ -22,3 +22,22 @@ api.interceptors.request.use(
     return Promise.reject(error);
   },
 );
+
+export const openSearch = axios.create({
+  baseURL: "",
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+openSearch.interceptors.request.use(
+  async (config) => {
+    config.headers = {
+      ...config.headers,
+      authorization: `Basic `,
+    };
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  },
+);
