@@ -64,3 +64,12 @@ export function parseSearchReturn(data) {
     return { date: new Date(d.key), values: d[1].value };
   });
 }
+
+export const HOUR = 60 * 60 * 1000;
+export const DAY = 24 * HOUR;
+
+export const WEEK = 7 * DAY;
+
+export const MONTH = 30 * DAY;
+
+export const YEAR = 365 * DAY;

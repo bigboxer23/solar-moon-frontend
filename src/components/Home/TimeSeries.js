@@ -33,6 +33,7 @@ const TimeSeries = ({ device, time }) => {
           .y0(y(0))
           .y1((d) => y(d.values));
 
+        d3.select(ref.current).select("svg").remove();
         // Create the SVG container.
         const svg = d3
           .select(ref.current)
@@ -78,9 +79,9 @@ const TimeSeries = ({ device, time }) => {
           );
       },
     );
-  }, []);
+  }, [time]);
 
-  return <svg width={900} height={400} id="barchart" ref={ref} />;
+  return <svg width={900} height={400} ref={ref} />;
 };
 
 export default TimeSeries;
