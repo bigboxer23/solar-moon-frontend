@@ -16,8 +16,8 @@ const TimeSeries = ({ device, time }) => {
           height = 400 - margin.top - margin.bottom;
 
         // Declare the x (horizontal position) scale.
-        const x = d3.scaleUtc(
-          d3.extent(graphData, (d) => new Date(d.date)),
+        const x = d3.scaleTime(
+          d3.extent(graphData, (d) => d.date),
           [margin.left, width - margin.right],
         );
         // Declare the y (vertical position) scale.
@@ -29,7 +29,7 @@ const TimeSeries = ({ device, time }) => {
         // Declare the area generator.
         const area = d3
           .area()
-          .x((d) => x(new Date(d.date)))
+          .x((d) => x(d.date))
           .y0(y(0))
           .y1((d) => y(d.values));
 
