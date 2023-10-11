@@ -2,7 +2,6 @@ import { useAuthenticator } from "@aws-amplify/ui-react";
 import { useEffect, useState } from "react";
 import Preloader from "../Preloader";
 import { Card, CardHeader } from "react-bootstrap";
-import MetricTile from "./MetricTile";
 
 const Home = () => {
   const { user } = useAuthenticator((context) => [context.user]);
@@ -23,7 +22,6 @@ const Home = () => {
         <CardHeader>
           Welcome {user.attributes.email}!
           <br />
-          <MetricTile />
         </CardHeader>
       </Card>
       <Preloader load={load} />
