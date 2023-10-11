@@ -18,3 +18,14 @@ export function useStickyState(defaultValue, key) {
   }, [key, value]);
   return [value, setValue];
 }
+
+export function debounce(fn, ms) {
+  let timer;
+  return (_) => {
+    clearTimeout(timer);
+    timer = setTimeout((_) => {
+      timer = null;
+      fn.apply(this, arguments);
+    }, ms);
+  };
+}

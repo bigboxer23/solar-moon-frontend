@@ -31,8 +31,8 @@ const SiteManagement = () => {
 
   return (
     <div className={"root-page container d-flex flex-column"}>
-      <h4 className={"d-flex fw-bold header mb-0 align-items-center"}>
-        <div className={"flex-grow-1"}>Site: {activeSite}</div>
+      <h3 className={"d-flex fw-bold header mb-0 align-items-center"}>
+        <div className={"flex-grow-1"}>{activeSite}</div>
         <Button
           className={"me-3"}
           variant={"outline-light"}
@@ -84,7 +84,7 @@ const SiteManagement = () => {
             </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
-      </h4>
+      </h3>
       {devices
         .filter((device) => device.virtual)
         .filter((site) => site.name === activeSite)

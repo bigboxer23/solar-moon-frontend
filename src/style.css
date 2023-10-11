@@ -847,3 +847,20 @@ button:focus {
 .smaller-text {
   font-size: 0.875rem;
 }
+
+.time-series-graph {
+  width: 100%;
+  height: 400px;
+}
+
+@media (max-width: 767px) {
+  .time-series-graph {
+    height: 300px;
+  }
+}
+
+@media (max-width: 520px) {
+  .time-series-graph {
+    height: 275px;
+  }
+}
