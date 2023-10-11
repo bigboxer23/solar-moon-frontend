@@ -41,7 +41,9 @@ const NewSiteDialog = ({
             <Form.Label>Name</Form.Label>
             <Form.Control
               value={site.name}
-              onChange={(e) => setSite({ ...site, name: e.target.value })}
+              onChange={(e) =>
+                setSite({ ...site, name: e.target.value, site: e.target.value })
+              }
               onKeyPress={preventSubmit}
               onKeyUp={(event) => {
                 if (event.key === "Enter") {
