@@ -1,5 +1,4 @@
 export function getSearchBody(device, start, end) {
-  console.log(JSON.stringify(device) + " " + device.name);
   let data = {
     aggs: {
       2: {

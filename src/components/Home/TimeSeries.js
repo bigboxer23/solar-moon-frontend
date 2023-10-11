@@ -6,7 +6,6 @@ const TimeSeries = ({ device, time }) => {
   const ref = useRef();
 
   useEffect(() => {
-    console.log(JSON.stringify(device));
     let start = new Date(new Date().getTime() - time);
     getTimeSeriesData(getSearchBody(device, new Date(start), new Date())).then(
       ({ data }) => {
