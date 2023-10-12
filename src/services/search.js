@@ -32,7 +32,7 @@ export function getMaxCurrentBody(device, direct) {
   let data = getBaseData();
   data.size = 1;
   data["aggregations"] = {
-    max: {
+    "max#max": {
       max: {
         field: "Total Real Power",
       },
@@ -54,12 +54,12 @@ export function getAvgTotalBody(device, start, end, direct) {
   }
   let data = getBaseData();
   data["aggregations"] = {
-    avg: {
+    "avg#avg": {
       avg: {
         field: "Total Real Power",
       },
     },
-    total: {
+    "sum#total": {
       sum: {
         field: "Energy Consumed",
       },

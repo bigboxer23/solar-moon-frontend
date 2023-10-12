@@ -8,23 +8,25 @@ const MetricsTile = ({ device, time }) => {
   const [max, setMax] = useState(0);
   useEffect(() => {
     let end = new Date();
-    getAvgTotal(device, new Date(end.getTime() - time), end, true)
+    getAvgTotal(device, new Date(end.getTime() - time), end, false)
       .then(({ data }) => {
         setTotal(
           "Total " +
-            Math.round(data.aggregations["total"].value * 10) / 10 +
+            Math.round(data.aggregations["sum#total"].value * 10) / 10 +
             " kWH",
         );
         setAvg(
-          "Avg " + Math.round(data.aggregations["avg"].value * 10) / 10 + " kW",
+          "Avg " +
+            Math.round(data.aggregations["avg#avg"].value * 10) / 10 +
+            " kW",
         );
       })
       .catch((e) => console.log(e));
-    getMaxCurrent(device, true)
+    getMaxCurrent(device, false)
       .then(({ data }) => {
         setMax(
           getGaugeValue(
-            data.aggregations["max"].value,
+            data.aggregations["max#max"].value,
             data.hits.hits.length > 0
               ? data.hits.hits[0].fields[TOTAL_REAL_POWER][0]
               : 0,
