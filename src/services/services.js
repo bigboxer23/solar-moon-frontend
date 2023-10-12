@@ -28,6 +28,10 @@ export function addDevice(device) {
   return api.put("devices", device);
 }
 
-export function getTimeSeriesData(searchBody) {
+export function getTimeSeriesDataDirect(searchBody) {
   return openSearch.post("_search", searchBody);
+}
+
+export function getTimeSeriesData(searchJSON) {
+  return api.post("search", searchJSON);
 }
