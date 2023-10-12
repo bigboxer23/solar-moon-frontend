@@ -1,7 +1,7 @@
 const DATE_HISTO = "date_histogram#2";
 const AVG = "avg#1";
 const TIMESTAMP = "@timestamp";
-const TOTAL_REAL_POWER = "Total Real Power";
+export const TOTAL_REAL_POWER = "Total Real Power";
 
 export const HOUR = 60 * 60 * 1000;
 export const DAY = 24 * HOUR;
@@ -23,10 +23,34 @@ function getBucketSize(start, end) {
 function getTimeZone() {
   return new Intl.DateTimeFormat().resolvedOptions().timeZone;
 }
-
-export function getTileBody(device, start, end, direct) {
+export function getMaxCurrentBody(device, direct) {
+  let end = new Date();
+  let start = new Date(end.getTime() - WEEK);
   if (!direct) {
-    return getJSONSearch(device, start, end, "tile");
+    return getJSONSearch(device, start, end, "maxCurrent");
+  }
+  let data = getBaseData();
+  data.size = 1;
+  data["aggregations"] = {
+    max: {
+      max: {
+        field: "Total Real Power",
+      },
+    },
+  };
+  data.sort = [
+    {
+      "@timestamp": {
+        order: "desc",
+      },
+    },
+  ];
+  addFilters(data, device, start, end);
+  return data;
+}
+export function getAvgTotalBody(device, start, end, direct) {
+  if (!direct) {
+    return getJSONSearch(device, start, end, "avgTotal");
   }
   let data = getBaseData();
   data["aggregations"] = {
@@ -38,11 +62,6 @@ export function getTileBody(device, start, end, direct) {
     total: {
       sum: {
         field: "Energy Consumed",
-      },
-    },
-    max: {
-      max: {
-        field: "Total Real Power",
       },
     },
   };
@@ -97,9 +116,12 @@ function getBaseData() {
         field: TIMESTAMP,
         format: "date_time",
       },
+      {
+        field: TOTAL_REAL_POWER,
+      },
     ],
     _source: {
-      excludes: [],
+      excludes: ["*"],
     },
     query: {
       bool: {},
