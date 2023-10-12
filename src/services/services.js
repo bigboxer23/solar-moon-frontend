@@ -1,5 +1,9 @@
 import { api, openSearch } from "./apiClient";
-import { getTileBody, getTimeSeriesBody } from "./search";
+import {
+  getAvgTotalBody,
+  getMaxCurrentBody,
+  getTimeSeriesBody,
+} from "./search";
 
 export function getCustomer() {
   return api.get("customer");
@@ -39,9 +43,19 @@ export function getTimeSeriesData(device, start, end, direct) {
   );
 }
 
-export function getTileData(device, start, end, direct) {
+export function getAvgTotal(device, start, end, direct) {
   if (!direct) {
-    return api.post("search", getTileBody(device, start, end, direct));
+    return api.post("search", getAvgTotalBody(device, start, end, direct));
   }
-  return openSearch.post("_search", getTileBody(device, start, end, direct));
+  return openSearch.post(
+    "_search",
+    getAvgTotalBody(device, start, end, direct),
+  );
+}
+
+export function getMaxCurrent(device, direct) {
+  if (!direct) {
+    return api.post("search", getMaxCurrentBody(device, direct));
+  }
+  return openSearch.post("_search", getMaxCurrentBody(device, direct));
 }

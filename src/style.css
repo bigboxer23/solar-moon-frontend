@@ -872,7 +872,25 @@ button:focus {
   height: 200px;
   width: 200px;
   background-color: var(--bs-card-cap-bg);
+  border-radius: var(--bs-border-radius);
 }
 
 .metrics-tile .site-name {
+}
+
+.min-max-gauge,
+.min-max-gauge-empty {
+  width: 5px;
+  bottom: 0;
+  left: 0;
+}
+.min-max-gauge {
+  background-color: var(--imp-text-color-secondary);
+  border-radius: 0 0 0 var(--bs-border-radius);
+}
+
+.min-max-gauge-empty {
+  height: 100%;
+  background-color: var(--bs-border-color);
+  border-radius: var(--bs-border-radius) 0 0 var(--bs-border-radius);
 }
