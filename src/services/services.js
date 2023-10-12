@@ -1,4 +1,5 @@
 import { api, openSearch } from "./apiClient";
+import { getTileBody, getTimeSeriesBody } from "./search";
 
 export function getCustomer() {
   return api.get("customer");
@@ -28,10 +29,19 @@ export function addDevice(device) {
   return api.put("devices", device);
 }
 
-export function getTimeSeriesDataDirect(searchBody) {
-  return openSearch.post("_search", searchBody);
+export function getTimeSeriesData(device, start, end, direct) {
+  if (!direct) {
+    return api.post("search", getTimeSeriesBody(device, start, end, direct));
+  }
+  return openSearch.post(
+    "_search",
+    getTimeSeriesBody(device, start, end, direct),
+  );
 }
 
-export function getTimeSeriesData(searchJSON) {
-  return api.post("search", searchJSON);
+export function getTileData(device, start, end, direct) {
+  if (!direct) {
+    return api.post("search", getTileBody(device, start, end, direct));
+  }
+  return openSearch.post("_search", getTileBody(device, start, end, direct));
 }

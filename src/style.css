@@ -857,10 +857,22 @@ button:focus {
   .time-series-graph {
     height: 300px;
   }
+  .welcome {
+    display: none;
+  }
 }
 
 @media (max-width: 520px) {
   .time-series-graph {
     height: 275px;
   }
+}
+
+.metrics-tile {
+  height: 200px;
+  width: 200px;
+  background-color: var(--bs-card-cap-bg);
+}
+
+.metrics-tile .site-name {
 }

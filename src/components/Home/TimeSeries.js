@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { getTimeSeriesData } from "../../services/services";
-import { getSearchBody, parseSearchReturn } from "../../services/search";
+import { parseSearchReturn } from "../../services/search";
 import { debounce } from "../../utils/Utils";
 const TimeSeries = ({ device, time }) => {
   const ref = useRef();
@@ -103,11 +103,11 @@ const TimeSeries = ({ device, time }) => {
 
   useEffect(() => {
     let start = new Date(new Date().getTime() - time);
-    getTimeSeriesData(getSearchBody(device, new Date(start), new Date())).then(
-      ({ data }) => {
+    getTimeSeriesData(device, new Date(start), new Date(), true)
+      .then(({ data }) => {
         setGraphData(parseSearchReturn(data));
-      },
-    );
+      })
+      .catch((e) => console.log(e));
   }, [time]);
 
   return <svg className={"time-series-graph mb-3"} ref={ref} />;
