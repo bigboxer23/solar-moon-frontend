@@ -1,4 +1,16 @@
+import { getTimeSeriesDataDirect } from "./services";
+
 export function getSearchBody(device, start, end) {
+  return {
+    deviceName: device.name,
+    endDate: end.getTime(),
+    startDate: start.getTime(),
+    timeZone: "America/Chicago",
+    bucketSize: "30m",
+  };
+}
+
+export function getSearchBodyDirect(device, start, end) {
   let data = {
     aggs: {
       2: {
@@ -33,33 +45,14 @@ export function getSearchBody(device, start, end) {
       bool: {},
     },
   };
-  data.query.bool.filter = [
-    {
-      match_phrase: {
-        "device-name": device.name,
-      },
-    },
-    {
-      range: {
-        "@timestamp": {
-          gte: start.toISOString(),
-          lte: end.toISOString(),
-          format: "strict_date_optional_time",
-        },
-      },
-    },
-  ];
-  if (device.virtual) {
-    data.query.bool.filter.push({
-      match_phrase: {
-        Virtual: true,
-      },
-    });
-  }
-  return data;
 }
 
 export function parseSearchReturn(data) {
+  return data.aggregations["date_histogram#2"].buckets.map((d) => {
+    return { date: new Date(Number(d.key)), values: d["avg#1"].value };
+  });
+}
+export function parseSearchReturnDirect(data) {
   return data.aggregations["2"].buckets.map((d) => {
     return { date: new Date(d.key), values: d[1].value };
   });
