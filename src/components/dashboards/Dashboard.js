@@ -10,7 +10,7 @@ import {
 } from "react-bootstrap";
 import TimeSeries from "../Home/TimeSeries";
 import { useStickyState } from "../../utils/Utils";
-import { DAY, HOUR, MONTH, WEEK } from "../../services/search";
+import { DAY, HOUR, MONTH, WEEK, YEAR } from "../../services/search";
 const Dashboard = () => {
   const [devices, setDevices] = useState([]);
   const [activeSite, setActiveSite] = useStickyState(noSite, "dashboard.site");
@@ -70,6 +70,14 @@ const Dashboard = () => {
             value={MONTH}
           >
             Mo
+          </ToggleButton>
+          <ToggleButton
+            variant="secondary"
+            name="time-period"
+            id="tbg-btn-5"
+            value={YEAR}
+          >
+            Yr
           </ToggleButton>
         </ToggleButtonGroup>
         <Dropdown className={"align-self-end"}>
