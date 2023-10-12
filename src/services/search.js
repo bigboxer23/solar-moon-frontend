@@ -1,29 +1,53 @@
-import { getTimeSeriesDataDirect } from "./services";
+const DATE_HISTO = "date_histogram#2";
+const AVG = "avg#1";
+const TIMESTAMP = "@timestamp";
+const TOTAL_REAL_POWER = "Total Real Power";
 
+export const HOUR = 60 * 60 * 1000;
+export const DAY = 24 * HOUR;
+
+export const WEEK = 7 * DAY;
+
+export const MONTH = 30 * DAY;
+
+export const YEAR = 365 * DAY;
+function getBucketSize(start, end) {
+  let difference = end.getTime() - start.getTime();
+  console.log(difference + " " + DAY);
+  if (difference <= HOUR) return "1m";
+  if (difference <= DAY) return "30m";
+  if (difference <= WEEK) return "3h";
+  if (difference <= MONTH) return "12h";
+  return "1d";
+}
+
+function getTimeZone() {
+  return new Intl.DateTimeFormat().resolvedOptions().timeZone;
+}
 export function getSearchBody(device, start, end) {
   return {
     deviceName: device.name,
     endDate: end.getTime(),
     startDate: start.getTime(),
-    timeZone: "America/Chicago",
-    bucketSize: "30m",
+    timeZone: getTimeZone(),
+    bucketSize: getBucketSize(start, end),
   };
 }
 
 export function getSearchBodyDirect(device, start, end) {
   let data = {
-    aggs: {
-      2: {
+    aggregations: {
+      "date_histogram#2": {
         date_histogram: {
-          field: "@timestamp",
-          fixed_interval: "30m",
-          time_zone: "America/Chicago",
+          field: TIMESTAMP,
+          fixed_interval: getBucketSize(start, end),
+          time_zone: getTimeZone(),
           min_doc_count: 1,
         },
-        aggs: {
-          1: {
+        aggregations: {
+          "avg#1": {
             avg: {
-              field: "Total Real Power",
+              field: TOTAL_REAL_POWER,
             },
           },
         },
@@ -34,7 +58,7 @@ export function getSearchBodyDirect(device, start, end) {
     script_fields: {},
     docvalue_fields: [
       {
-        field: "@timestamp",
+        field: TIMESTAMP,
         format: "date_time",
       },
     ],
@@ -45,24 +69,34 @@ export function getSearchBodyDirect(device, start, end) {
       bool: {},
     },
   };
+  data.query.bool.filter = [
+    {
+      match_phrase: {
+        "device-name": device.name,
+      },
+    },
+    {
+      range: {
+        "@timestamp": {
+          gte: start.toISOString(),
+          lte: end.toISOString(),
+          format: "strict_date_optional_time",
+        },
+      },
+    },
+  ];
+  if (device.virtual) {
+    data.query.bool.filter.push({
+      match_phrase: {
+        Virtual: true,
+      },
+    });
+  }
+  return data;
 }
 
 export function parseSearchReturn(data) {
-  return data.aggregations["date_histogram#2"].buckets.map((d) => {
-    return { date: new Date(Number(d.key)), values: d["avg#1"].value };
+  return data.aggregations[DATE_HISTO].buckets.map((d) => {
+    return { date: new Date(Number(d.key)), values: d[AVG].value };
   });
 }
-export function parseSearchReturnDirect(data) {
-  return data.aggregations["2"].buckets.map((d) => {
-    return { date: new Date(d.key), values: d[1].value };
-  });
-}
-
-export const HOUR = 60 * 60 * 1000;
-export const DAY = 24 * HOUR;
-
-export const WEEK = 7 * DAY;
-
-export const MONTH = 30 * DAY;
-
-export const YEAR = 365 * DAY;
