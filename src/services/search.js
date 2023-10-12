@@ -13,7 +13,6 @@ export const MONTH = 30 * DAY;
 export const YEAR = 365 * DAY;
 function getBucketSize(start, end) {
   let difference = end.getTime() - start.getTime();
-  console.log(difference + " " + DAY);
   if (difference <= HOUR) return "1m";
   if (difference <= DAY) return "30m";
   if (difference <= WEEK) return "3h";
@@ -24,35 +23,72 @@ function getBucketSize(start, end) {
 function getTimeZone() {
   return new Intl.DateTimeFormat().resolvedOptions().timeZone;
 }
-export function getSearchBody(device, start, end) {
+
+export function getTileBody(device, start, end, direct) {
+  if (!direct) {
+    return getJSONSearch(device, start, end, "tile");
+  }
+  let data = getBaseData();
+  data["aggregations"] = {
+    avg: {
+      avg: {
+        field: "Total Real Power",
+      },
+    },
+    total: {
+      sum: {
+        field: "Energy Consumed",
+      },
+    },
+    max: {
+      max: {
+        field: "Total Real Power",
+      },
+    },
+  };
+  addFilters(data, device, start, end);
+  return data;
+}
+
+export function getTimeSeriesBody(device, start, end, direct) {
+  if (!direct) {
+    return getJSONSearch(device, start, end, "timeseries");
+  }
+  let data = getBaseData();
+  data["aggregations"] = {
+    "date_histogram#2": {
+      date_histogram: {
+        field: TIMESTAMP,
+        fixed_interval: getBucketSize(start, end),
+        time_zone: getTimeZone(),
+        min_doc_count: 1,
+      },
+      aggregations: {
+        "avg#1": {
+          avg: {
+            field: TOTAL_REAL_POWER,
+          },
+        },
+      },
+    },
+  };
+  addFilters(data, device, start, end);
+  return data;
+}
+
+function getJSONSearch(device, start, end, type) {
   return {
     deviceName: device.name,
     endDate: end.getTime(),
     startDate: start.getTime(),
     timeZone: getTimeZone(),
     bucketSize: getBucketSize(start, end),
+    type: type,
   };
 }
 
-export function getSearchBodyDirect(device, start, end) {
-  let data = {
-    aggregations: {
-      "date_histogram#2": {
-        date_histogram: {
-          field: TIMESTAMP,
-          fixed_interval: getBucketSize(start, end),
-          time_zone: getTimeZone(),
-          min_doc_count: 1,
-        },
-        aggregations: {
-          "avg#1": {
-            avg: {
-              field: TOTAL_REAL_POWER,
-            },
-          },
-        },
-      },
-    },
+function getBaseData() {
+  return {
     size: 0,
     stored_fields: ["*"],
     script_fields: {},
@@ -69,6 +105,8 @@ export function getSearchBodyDirect(device, start, end) {
       bool: {},
     },
   };
+}
+function addFilters(data, device, start, end) {
   data.query.bool.filter = [
     {
       match_phrase: {
@@ -92,7 +130,6 @@ export function getSearchBodyDirect(device, start, end) {
       },
     });
   }
-  return data;
 }
 
 export function parseSearchReturn(data) {

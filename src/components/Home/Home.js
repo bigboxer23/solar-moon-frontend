@@ -1,33 +1,45 @@
 import { useAuthenticator } from "@aws-amplify/ui-react";
-import { useEffect, useState } from "react";
-import Preloader from "../Preloader";
-import { Card, CardHeader } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Card, CardBody, CardHeader } from "react-bootstrap";
+import MetricsTile from "./MetricsTile";
+import { getDevices } from "../../services/services";
+import { useStickyState } from "../../utils/Utils";
+import PeriodToggle from "../common/PeriodToggle";
 
 const Home = () => {
   const { user } = useAuthenticator((context) => [context.user]);
-  const { route } = useAuthenticator((context) => [context.route]);
-  const [load, updateLoad] = useState(true);
+  const [devices, setDevices] = useState([]);
+  const [time, setTime] = useStickyState("D", "dashboard.time");
 
   useEffect(() => {
-    updateLoad(false);
-    /*getCustomerInfo().then(({ data }) => {
-      setCustomerId(data);
-      updateLoad(false);
-    });*/
+    getDevices()
+      .then(({ data }) => {
+        setDevices(data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   }, []);
 
-  return route === "authenticated" ? (
+  return (
     <div className={"root-page container"}>
       <Card>
-        <CardHeader>
-          Welcome {user.attributes.email}!
-          <br />
+        <CardHeader className={"d-flex align-items-center"}>
+          <div className={"welcome"}>Welcome {user.attributes.email}!</div>
+          <div className={"flex-grow-1"} />
+          <PeriodToggle time={time} setTime={setTime} />
         </CardHeader>
+        <CardBody className={"d-flex justify-content-center flex-wrap"}>
+          {devices
+            .filter((device) => device.virtual)
+            .map((device) => {
+              return (
+                <MetricsTile key={device.id} device={device} time={time} />
+              );
+            })}
+        </CardBody>
       </Card>
-      <Preloader load={load} />
     </div>
-  ) : (
-    <div>Not logged in</div>
   );
 };
 
