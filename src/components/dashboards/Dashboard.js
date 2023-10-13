@@ -67,7 +67,11 @@ const Dashboard = () => {
           {devices
             .filter((device) => !device.virtual)
             .filter((device) => device.site === activeSite)
-            .sort((d1, d2) => d1.name.localeCompare(d2.name))
+            .sort((d1, d2) =>
+              (d1.name == null ? d1.deviceName : d1.name).localeCompare(
+                d2.name == null ? d2.deviceName : d2.name,
+              ),
+            )
             .map((device) => {
               return <TimeSeries key={device.id} device={device} time={time} />;
             })}

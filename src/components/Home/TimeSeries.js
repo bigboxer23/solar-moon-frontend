@@ -103,7 +103,7 @@ const TimeSeries = ({ device, time }) => {
 
   useEffect(() => {
     let end = new Date();
-    getTimeSeriesData(device, new Date(end.getTime() - time), end, true)
+    getTimeSeriesData(device, new Date(end.getTime() - time), end, false)
       .then(({ data }) => {
         setGraphData(parseSearchReturn(data));
       })

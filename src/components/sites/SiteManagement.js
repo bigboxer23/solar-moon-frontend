@@ -32,19 +32,11 @@ const SiteManagement = () => {
   return (
     <div className={"root-page container d-flex flex-column"}>
       <h3 className={"d-flex fw-bold header mb-0 align-items-center"}>
-        <div className={"flex-grow-1"}>{activeSite}</div>
-        <Button
-          className={"me-3"}
-          variant={"outline-light"}
-          title={"New Device"}
-          onClick={() => setShowNewDevice(true)}
-        >
-          <MdAddCircle style={{ marginBottom: "2px", marginRight: ".5rem" }} />
-          Add Device
-        </Button>
+        <div className={"fs-3 site-name"}>{activeSite}</div>
+        <div className={"flex-grow-1"} />
         <Dropdown className={"align-self-end"}>
           <Dropdown.Toggle variant="primary" id="dropdown-basic">
-            Choose Site
+            {activeSite}
           </Dropdown.Toggle>
           <Dropdown.Menu>
             {devices
@@ -84,8 +76,17 @@ const SiteManagement = () => {
             </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
+        <Button
+          className={"ms-3"}
+          variant={"outline-light"}
+          title={"New Device"}
+          onClick={() => setShowNewDevice(true)}
+        >
+          <MdAddCircle style={{ marginBottom: "2px", marginRight: ".5rem" }} />
+          Add Device
+        </Button>
       </h3>
-      {devices
+      {[...devices, { id: noSite, name: noSite, virtual: true }]
         .filter((device) => device.virtual)
         .filter((site) => site.name === activeSite)
         .map((site) => {
