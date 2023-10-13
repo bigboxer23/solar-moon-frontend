@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { getDevices, updateDevice } from "../../services/services";
 import { preventSubmit } from "../../utils/Utils";
 
-const SiteAttributes = ({ data, all, setDevices, setActiveSite }) => {
+const SiteAttributes = ({ data, setDevices, setActiveSite }) => {
   const [device, setDevice] = useState(data);
 
   const update = () => {
@@ -25,7 +25,7 @@ const SiteAttributes = ({ data, all, setDevices, setActiveSite }) => {
   };
 
   return (
-    <Card className={"mb-4 device site-attributes"}>
+    <Card className={"device site-attributes"}>
       <Card.Body>
         <Form>
           <Form.Group className="mb-3" controlId="formDisplayName">
@@ -53,7 +53,7 @@ const SiteAttributes = ({ data, all, setDevices, setActiveSite }) => {
               variant="primary"
               type="button"
               id={"siteUpdate" + device.id}
-              onClick={(e) => update()}
+              onClick={() => update()}
             >
               <Spinner
                 as="span"

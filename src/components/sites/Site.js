@@ -35,7 +35,6 @@ const Site = ({ data, devices, setDevices, setActiveSite }) => {
               data={device}
               setDevices={setDevices}
               setActiveSite={setActiveSite}
-              all={devices}
             />
           );
         })}
@@ -52,23 +51,29 @@ const Site = ({ data, devices, setDevices, setActiveSite }) => {
             />
           );
         })}
-      <Button
-        onClick={() => setDeleteSiteWarning(true)}
-        variant="danger"
-        className={"ms-2 mb-3"}
-        id={"delete" + site.id}
-      >
-        <Spinner
-          as="span"
-          animation="border"
-          size="sm"
-          role="status"
-          className={"me-2 d-none"}
-        />
-        <AiOutlineDelete style={{ marginBottom: "2px", marginRight: "6px" }} />
-        Delete Site
-      </Button>
-      <Alert show={deleteSiteWarning} variant="danger">
+      {site.id === noSite ? (
+        ""
+      ) : (
+        <Button
+          onClick={() => setDeleteSiteWarning(true)}
+          variant="danger"
+          className={"ms-2 mt-3"}
+          id={"delete" + site.id}
+        >
+          <Spinner
+            as="span"
+            animation="border"
+            size="sm"
+            role="status"
+            className={"me-2 d-none"}
+          />
+          <AiOutlineDelete
+            style={{ marginBottom: "2px", marginRight: "6px" }}
+          />
+          Delete Site
+        </Button>
+      )}
+      <Alert className={"mt-3"} show={deleteSiteWarning} variant="danger">
         <p>Are you sure you want to delete this site?</p>
         <hr />
         <div className="d-flex justify-content-end">
