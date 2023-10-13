@@ -9,6 +9,9 @@ const Device = ({ data, devices, setDevices }) => {
   const [deleteDeviceWarning, setDeleteDeviceWarning] = useState(false);
 
   const update = () => {
+    if (device.deviceName === "") {
+      return;
+    }
     applyLoadingState(true);
     updateDevice(device)
       .then(({ data }) => {
@@ -48,7 +51,7 @@ const Device = ({ data, devices, setDevices }) => {
   };
 
   return (
-    <Card className={"mb-3 device"}>
+    <Card className={"mt-3 device"}>
       <Card.Header className={"fw-bold"}>{device.name}</Card.Header>
       <Card.Body>
         <Form>

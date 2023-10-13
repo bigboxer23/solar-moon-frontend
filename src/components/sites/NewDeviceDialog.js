@@ -11,7 +11,7 @@ const NewDeviceDialog = ({
   setVersion,
   site,
 }) => {
-  const [device, setDevice] = useState({ site: site });
+  const [device, setDevice] = useState({ site: site, deviceName: "" });
 
   const createNewDevice = () => {
     if (device.deviceName !== "") {

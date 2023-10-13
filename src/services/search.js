@@ -98,6 +98,7 @@ export function getTimeSeriesBody(device, start, end, direct) {
 function getJSONSearch(device, start, end, type) {
   return {
     deviceName: device.name,
+    deviceId: device.id,
     endDate: end.getTime(),
     startDate: start.getTime(),
     timeZone: getTimeZone(),

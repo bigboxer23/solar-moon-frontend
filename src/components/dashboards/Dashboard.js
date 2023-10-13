@@ -25,11 +25,12 @@ const Dashboard = () => {
   return (
     <div className={"root-page container d-flex flex-column"}>
       <Card className={"site-attributes"}>
-        <CardHeader className={"d-flex align-items-center"}>
-          <div className={"flex-grow-1 fs-3"}>{activeSite}</div>
+        <CardHeader className={"d-flex align-items-center flex-wrap"}>
+          <div className={"fs-3 site-name"}>{activeSite}</div>
+          <div className={"flex-grow-1"} />
           <Dropdown className={"align-self-end"}>
             <Dropdown.Toggle variant="primary" id="dropdown-basic">
-              Choose Site
+              {activeSite}
             </Dropdown.Toggle>
             <Dropdown.Menu>
               {devices
@@ -66,7 +67,11 @@ const Dashboard = () => {
           {devices
             .filter((device) => !device.virtual)
             .filter((device) => device.site === activeSite)
-            .sort((d1, d2) => d1.name.localeCompare(d2.name))
+            .sort((d1, d2) =>
+              (d1.name == null ? d1.deviceName : d1.name).localeCompare(
+                d2.name == null ? d2.deviceName : d2.name,
+              ),
+            )
             .map((device) => {
               return <TimeSeries key={device.id} device={device} time={time} />;
             })}
