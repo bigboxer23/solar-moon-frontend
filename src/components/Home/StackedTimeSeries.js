@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
-import {
-  getStackedTimeSeriesData,
-} from "../../services/services";
+import { getStackedTimeSeriesData } from "../../services/services";
 import { parseSearchReturn } from "../../services/search";
 import { debounce } from "../../utils/Utils";
 const StackedTimeSeries = ({ device, time }) => {
