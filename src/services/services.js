@@ -2,8 +2,13 @@ import { api, openSearch } from "./apiClient";
 import {
   getAvgTotalBody,
   getMaxCurrentBody,
+  getStackedTimeSeriesBody,
   getTimeSeriesBody,
 } from "./search";
+
+export const directSearchAPI = false;
+const service = directSearchAPI ? openSearch : api;
+const serviceName = directSearchAPI ? "_search" : "search";
 
 export function getCustomer() {
   return api.get("customer");
@@ -33,29 +38,21 @@ export function addDevice(device) {
   return api.put("devices", device);
 }
 
-export function getTimeSeriesData(device, start, end, direct) {
-  if (!direct) {
-    return api.post("search", getTimeSeriesBody(device, start, end, direct));
-  }
-  return openSearch.post(
-    "_search",
-    getTimeSeriesBody(device, start, end, direct),
+export function getTimeSeriesData(device, start, end) {
+  return service.post(serviceName, getTimeSeriesBody(device, start, end));
+}
+
+export function getStackedTimeSeriesData(device, start, end) {
+  return service.post(
+    serviceName,
+    getStackedTimeSeriesBody(device, start, end),
   );
 }
 
-export function getAvgTotal(device, start, end, direct) {
-  if (!direct) {
-    return api.post("search", getAvgTotalBody(device, start, end, direct));
-  }
-  return openSearch.post(
-    "_search",
-    getAvgTotalBody(device, start, end, direct),
-  );
+export function getAvgTotal(device, start, end) {
+  return service.post(serviceName, getAvgTotalBody(device, start, end));
 }
 
-export function getMaxCurrent(device, direct) {
-  if (!direct) {
-    return api.post("search", getMaxCurrentBody(device, direct));
-  }
-  return openSearch.post("_search", getMaxCurrentBody(device, direct));
+export function getMaxCurrent(device) {
+  return service.post(serviceName, getMaxCurrentBody(device));
 }

@@ -8,7 +8,7 @@ const MetricsTile = ({ device, time }) => {
   const [max, setMax] = useState(0);
   useEffect(() => {
     let end = new Date();
-    getAvgTotal(device, new Date(end.getTime() - time), end, false)
+    getAvgTotal(device, new Date(end.getTime() - time), end)
       .then(({ data }) => {
         setTotal(
           "Total " +
@@ -22,7 +22,7 @@ const MetricsTile = ({ device, time }) => {
         );
       })
       .catch((e) => console.log(e));
-    getMaxCurrent(device, false)
+    getMaxCurrent(device)
       .then(({ data }) => {
         setMax(
           getGaugeValue(

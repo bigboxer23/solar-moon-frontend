@@ -1,3 +1,5 @@
+import { directSearchAPI } from "./services";
+
 const DATE_HISTO = "date_histogram#2";
 const AVG = "avg#1";
 const TIMESTAMP = "@timestamp";
@@ -23,13 +25,13 @@ function getBucketSize(start, end) {
 function getTimeZone() {
   return new Intl.DateTimeFormat().resolvedOptions().timeZone;
 }
-export function getMaxCurrentBody(device, direct) {
+export function getMaxCurrentBody(device) {
   let end = new Date();
   let start = new Date(end.getTime() - WEEK);
-  if (!direct) {
+  if (!directSearchAPI) {
     return getJSONSearch(device, start, end, "maxCurrent");
   }
-  let data = getBaseData();
+  let data = getBaseData(start, end);
   data.size = 1;
   data["aggregations"] = {
     "max#max": {
@@ -45,14 +47,14 @@ export function getMaxCurrentBody(device, direct) {
       },
     },
   ];
-  addFilters(data, device, start, end);
+  addDeviceFilter(data, device);
   return data;
 }
-export function getAvgTotalBody(device, start, end, direct) {
-  if (!direct) {
+export function getAvgTotalBody(device, start, end) {
+  if (!directSearchAPI) {
     return getJSONSearch(device, start, end, "avgTotal");
   }
-  let data = getBaseData();
+  let data = getBaseData(start, end);
   data["aggregations"] = {
     "avg#avg": {
       avg: {
@@ -65,15 +67,53 @@ export function getAvgTotalBody(device, start, end, direct) {
       },
     },
   };
-  addFilters(data, device, start, end);
+  addDeviceFilter(data, device);
   return data;
 }
 
-export function getTimeSeriesBody(device, start, end, direct) {
-  if (!direct) {
+export function getStackedTimeSeriesBody(device, start, end) {
+  if (!directSearchAPI) {
+    return getJSONSearch(device, start, end, "stackedTimeSeries");
+  }
+  let data = getBaseData(start, end);
+  data["aggregations"] = {
+    "date_histogram#2": {
+      date_histogram: {
+        field: TIMESTAMP,
+        fixed_interval: getBucketSize(start, end),
+        time_zone: getTimeZone(),
+        min_doc_count: 1,
+      },
+      aggregations: {
+        "terms#terms": {
+          terms: {
+            field: "device-name.keyword",
+            order: {
+              1: "desc",
+            },
+            size: 10,
+          },
+          aggregations: {
+            1: {
+              avg: {
+                field: TOTAL_REAL_POWER,
+              },
+            },
+          },
+        },
+      },
+    },
+  };
+  addSiteFilter(data, device.site);
+  console.log(JSON.stringify(data));
+  return data;
+}
+
+export function getTimeSeriesBody(device, start, end) {
+  if (!directSearchAPI) {
     return getJSONSearch(device, start, end, "timeseries");
   }
-  let data = getBaseData();
+  let data = getBaseData(start, end);
   data["aggregations"] = {
     "date_histogram#2": {
       date_histogram: {
@@ -91,7 +131,7 @@ export function getTimeSeriesBody(device, start, end, direct) {
       },
     },
   };
-  addFilters(data, device, start, end);
+  addDeviceFilter(data, device);
   return data;
 }
 
@@ -107,7 +147,7 @@ function getJSONSearch(device, start, end, type) {
   };
 }
 
-function getBaseData() {
+function getBaseData(start, end) {
   return {
     size: 0,
     stored_fields: ["*"],
@@ -125,27 +165,43 @@ function getBaseData() {
       excludes: ["*"],
     },
     query: {
-      bool: {},
+      bool: {
+        filter: [
+          {
+            range: {
+              "@timestamp": {
+                gte: start.toISOString(),
+                lte: end.toISOString(),
+                format: "strict_date_optional_time",
+              },
+            },
+          },
+        ],
+      },
     },
   };
 }
-function addFilters(data, device, start, end) {
-  data.query.bool.filter = [
-    {
-      match_phrase: {
-        "device-name": device.name,
-      },
+
+function addSiteFilter(data, siteName) {
+  data.query.bool.filter.push({
+    match_phrase: {
+      site: siteName,
     },
+  });
+  data.query.bool.must_not = [
     {
-      range: {
-        "@timestamp": {
-          gte: start.toISOString(),
-          lte: end.toISOString(),
-          format: "strict_date_optional_time",
-        },
+      exists: {
+        field: "Virtual",
       },
     },
   ];
+}
+function addDeviceFilter(data, device) {
+  data.query.bool.filter.push({
+    match_phrase: {
+      "device-name": device.name,
+    },
+  });
   if (device.virtual) {
     data.query.bool.filter.push({
       match_phrase: {
