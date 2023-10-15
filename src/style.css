@@ -903,3 +903,16 @@ button:focus {
   background-color: var(--bs-border-color);
   border-radius: var(--bs-border-radius) 0 0 var(--bs-border-radius);
 }
+
+.legend {
+  top: 0;
+  left: 0;
+  background-color: red;
+  width: 150px;
+}
+
+.colorDot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--bs-border-radius);
+}
