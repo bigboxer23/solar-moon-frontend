@@ -1,7 +1,7 @@
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import React, { useEffect, useState } from "react";
 import { Card, CardBody, CardHeader } from "react-bootstrap";
-import MetricsTile from "./MetricsTile";
+import MetricsTile from "../graphs/MetricsTile";
 import { getDevices } from "../../services/services";
 import { useStickyState } from "../../utils/Utils";
 import PeriodToggle from "../common/PeriodToggle";

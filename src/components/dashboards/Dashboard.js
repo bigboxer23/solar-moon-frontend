@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { getDevices } from "../../services/services";
 import { noSite } from "../sites/SiteManagement";
 import { Card, CardBody, CardHeader, Dropdown } from "react-bootstrap";
-import TimeSeries from "../Home/TimeSeries";
+import TimeSeries from "../graphs/TimeSeries";
 import { useStickyState } from "../../utils/Utils";
 import PeriodToggle from "../common/PeriodToggle";
+import StackedTimeSeries from "../graphs/StackedTimeSeries";
 const Dashboard = () => {
   const [devices, setDevices] = useState([]);
   const [activeSite, setActiveSite] = useStickyState(noSite, "dashboard.site");
@@ -58,6 +59,18 @@ const Dashboard = () => {
           <PeriodToggle time={time} setTime={setTime} />
         </CardHeader>
         <CardBody>
+          {devices
+            .filter((device) => device.virtual)
+            .filter((device) => device.site === activeSite)
+            .map((device) => {
+              return (
+                <StackedTimeSeries
+                  key={device.id}
+                  device={device}
+                  time={time}
+                />
+              );
+            })}
           {devices
             .filter((device) => device.virtual)
             .filter((device) => device.site === activeSite)
