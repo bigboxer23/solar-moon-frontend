@@ -6,7 +6,7 @@ import { useStickyState } from "../../utils/Utils";
 import GroupedBarChart from "./GroupedBarGraph";
 
 const SiteGraph = ({ site, time }) => {
-  const [graph, setGraph] = useStickyState("Area", "site.graph");
+  const [graph, setGraph] = useStickyState("Combined", "site.graph");
 
   return (
     <div className={"d-flex flex-column"}>
@@ -16,7 +16,7 @@ const SiteGraph = ({ site, time }) => {
         <SiteGraphToggle graph={graph} setGraph={setGraph} />
       )}
 
-      {graph === "Area" || site.subtraction ? (
+      {graph === "Combined" || site.subtraction ? (
         <TimeSeries device={site} time={time} />
       ) : graph === "Stacked" ? (
         <StackedTimeSeries device={site} time={time} />
