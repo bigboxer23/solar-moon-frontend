@@ -71,7 +71,13 @@ const Dashboard = () => {
                 />
               );
             })}
-          {/* {devices
+          {devices
+            .filter((device) => device.virtual)
+            .filter((device) => device.site === activeSite)
+            .map((device) => {
+              return <TimeSeries key={device.id} device={device} time={time} />;
+            })}
+          {devices
             .filter((device) => !device.virtual)
             .filter((device) => device.site === activeSite)
             .sort((d1, d2) =>
@@ -81,7 +87,7 @@ const Dashboard = () => {
             )
             .map((device) => {
               return <TimeSeries key={device.id} device={device} time={time} />;
-            })}*/}
+            })}
         </CardBody>
       </Card>
     </div>

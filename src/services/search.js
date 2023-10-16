@@ -1,7 +1,7 @@
 import { directSearchAPI } from "./services";
 
-const DATE_HISTO = "date_histogram#2";
-const AVG = "avg#1";
+export const DATE_HISTO = "date_histogram#2";
+export const AVG = "avg#1";
 const TIMESTAMP = "@timestamp";
 export const TOTAL_REAL_POWER = "Total Real Power";
 
