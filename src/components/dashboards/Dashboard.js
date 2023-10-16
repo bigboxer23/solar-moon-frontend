@@ -16,7 +16,7 @@ const Dashboard = () => {
     getDevices()
       .then(({ data }) => {
         setDevices(data);
-        if (activeSite === "") {
+        if (activeSite === noSite) {
           setActiveSite(data.find((device) => device.virtual)?.name || noSite);
         }
       })

@@ -5,11 +5,12 @@ import MetricsTile from "../graphs/MetricsTile";
 import { getDevices } from "../../services/services";
 import { useStickyState } from "../../utils/Utils";
 import PeriodToggle from "../common/PeriodToggle";
+import { DAY } from "../../services/search";
 
 const Home = () => {
   const { user } = useAuthenticator((context) => [context.user]);
   const [devices, setDevices] = useState([]);
-  const [time, setTime] = useStickyState("D", "dashboard.time");
+  const [time, setTime] = useStickyState(DAY, "dashboard.time");
 
   useEffect(() => {
     getDevices()
