@@ -33,7 +33,14 @@ function NavBar() {
       className={navColor ? "sticky" : "navbar"}
     >
       <Container>
-        <Navbar.Brand as={Link} to="/" className="d-flex">
+        <Navbar.Brand
+          as={Link}
+          to="/"
+          className="d-flex"
+          onClick={() => {
+            updateExpanded(expand ? false : "expanded");
+          }}
+        >
           <img src={logo} className="img-fluid logo" alt="brand" />
         </Navbar.Brand>
         <Navbar.Toggle
