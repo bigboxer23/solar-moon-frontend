@@ -9,9 +9,13 @@ const SiteGraph = ({ site, time }) => {
 
   return (
     <div className={"d-flex flex-column"}>
-      <SiteGraphToggle graph={graph} setGraph={setGraph} />
+      {site.subtraction ? (
+        ""
+      ) : (
+        <SiteGraphToggle graph={graph} setGraph={setGraph} />
+      )}
 
-      {graph === "Area" ? (
+      {graph === "Area" || site.subtraction ? (
         <TimeSeries device={site} time={time} />
       ) : graph === "Stacked" ? (
         <StackedTimeSeries device={site} time={time} />
