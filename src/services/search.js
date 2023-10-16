@@ -5,21 +5,22 @@ export const AVG = "avg#1";
 const TIMESTAMP = "@timestamp";
 export const TOTAL_REAL_POWER = "Total Real Power";
 
-export const HOUR = 60 * 60 * 1000;
-export const DAY = 24 * HOUR;
+export const HOUR = 3600000;
+export const DAY = 86400000;
 
-export const WEEK = 7 * DAY;
+export const WEEK = 604800000;
 
-export const MONTH = 30 * DAY;
+export const MONTH = 2592000000;
 
-export const YEAR = 365 * DAY;
-function getBucketSize(start, end) {
+export const YEAR = 31536000000;
+function getBucketSize(start, end, type) {
   let difference = end.getTime() - start.getTime();
+  let grouped = type === "groupedBarGraph";
   if (difference <= HOUR) return "1m";
-  if (difference <= DAY) return "30m";
-  if (difference <= WEEK) return "3h";
-  if (difference <= MONTH) return "12h";
-  return "1d";
+  if (difference <= DAY) return grouped ? "3h" : "30m";
+  if (difference <= WEEK) return grouped ? "1d" : "3h";
+  if (difference <= MONTH) return grouped ? "4d" : "12h";
+  return grouped ? "21d" : "1d";
 }
 
 function getTimeZone() {
@@ -71,16 +72,16 @@ export function getAvgTotalBody(device, start, end) {
   return data;
 }
 
-export function getStackedTimeSeriesBody(device, start, end) {
+export function getStackedTimeSeriesBody(device, start, end, type) {
   if (!directSearchAPI) {
-    return getJSONSearch(device, start, end, "stackedTimeSeries");
+    return getJSONSearch(device, start, end, type);
   }
   let data = getBaseData(start, end);
   data["aggregations"] = {
     "date_histogram#2": {
       date_histogram: {
         field: TIMESTAMP,
-        fixed_interval: getBucketSize(start, end),
+        fixed_interval: getBucketSize(start, end, type),
         time_zone: getTimeZone(),
         min_doc_count: 1,
       },
@@ -105,7 +106,6 @@ export function getStackedTimeSeriesBody(device, start, end) {
     },
   };
   addSiteFilter(data, device.site);
-  console.log(JSON.stringify(data));
   return data;
 }
 
@@ -118,7 +118,7 @@ export function getTimeSeriesBody(device, start, end) {
     "date_histogram#2": {
       date_histogram: {
         field: TIMESTAMP,
-        fixed_interval: getBucketSize(start, end),
+        fixed_interval: getBucketSize(start, end, "timeseries"),
         time_zone: getTimeZone(),
         min_doc_count: 1,
       },
@@ -142,7 +142,7 @@ function getJSONSearch(device, start, end, type) {
     endDate: end.getTime(),
     startDate: start.getTime(),
     timeZone: getTimeZone(),
-    bucketSize: getBucketSize(start, end),
+    bucketSize: getBucketSize(start, end, type),
     type: type,
   };
 }

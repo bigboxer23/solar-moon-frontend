@@ -3,6 +3,7 @@ import React from "react";
 import TimeSeries from "./TimeSeries";
 import SiteGraphToggle from "./SiteGraphToggle";
 import { useStickyState } from "../../utils/Utils";
+import GroupedBarChart from "./GroupedBarGraph";
 
 const SiteGraph = ({ site, time }) => {
   const [graph, setGraph] = useStickyState("Area", "site.graph");
@@ -20,7 +21,7 @@ const SiteGraph = ({ site, time }) => {
       ) : graph === "Stacked" ? (
         <StackedTimeSeries device={site} time={time} />
       ) : (
-        <div>Coming soon</div>
+        <GroupedBarChart device={site} time={time} />
       )}
     </div>
   );
