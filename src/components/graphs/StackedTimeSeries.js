@@ -18,15 +18,19 @@ const StackedTimeSeries = ({ device, time }) => {
 
   const parseStackedTimeSeriesData = function (data) {
     let formattedData = [];
+    let deviceCount = 0;
     data.aggregations[DATE_HISTO].buckets.forEach((d) => {
       let date = new Date(Number(d.key));
-      d["sterms#terms"].buckets.forEach((v) => {
-        formattedData.push({
-          date: date.toISOString(),
-          name: v.key,
-          avg: v[AVG].value,
+      deviceCount = Math.max(deviceCount, d["sterms#terms"].buckets.length);
+      if (d["sterms#terms"].buckets.length >= deviceCount) {
+        d["sterms#terms"].buckets.forEach((v) => {
+          formattedData.push({
+            date: date.toISOString(),
+            name: v.key,
+            avg: v[AVG].value,
+          });
         });
-      });
+      }
     });
     return formattedData;
   };
