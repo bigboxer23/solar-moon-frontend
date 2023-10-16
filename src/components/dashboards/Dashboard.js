@@ -6,10 +6,11 @@ import TimeSeries from "../graphs/TimeSeries";
 import { useStickyState } from "../../utils/Utils";
 import PeriodToggle from "../common/PeriodToggle";
 import StackedTimeSeries from "../graphs/StackedTimeSeries";
+import { DAY } from "../../services/search";
 const Dashboard = () => {
   const [devices, setDevices] = useState([]);
   const [activeSite, setActiveSite] = useStickyState(noSite, "dashboard.site");
-  const [time, setTime] = useStickyState("D", "dashboard.time");
+  const [time, setTime] = useStickyState(DAY, "dashboard.time");
 
   useEffect(() => {
     getDevices()
