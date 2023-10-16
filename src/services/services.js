@@ -45,7 +45,14 @@ export function getTimeSeriesData(device, start, end) {
 export function getStackedTimeSeriesData(device, start, end) {
   return service.post(
     serviceName,
-    getStackedTimeSeriesBody(device, start, end),
+    getStackedTimeSeriesBody(device, start, end, "stackedTimeSeries"),
+  );
+}
+
+export function getGroupedTimeSeriesData(device, start, end) {
+  return service.post(
+    serviceName,
+    getStackedTimeSeriesBody(device, start, end, "groupedBarGraph"),
   );
 }
 

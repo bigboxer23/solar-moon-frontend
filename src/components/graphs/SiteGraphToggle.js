@@ -30,9 +30,9 @@ const SiteGraphToggle = ({ graph, setGraph }) => {
         variant="secondary"
         name="site-graph"
         id="tbg-btn-Stacked-Bar"
-        value={"Stacked Bar"}
+        value={"Grouped"}
       >
-        Stacked Bar
+        Grouped
       </ToggleButton>
     </ToggleButtonGroup>
   );
