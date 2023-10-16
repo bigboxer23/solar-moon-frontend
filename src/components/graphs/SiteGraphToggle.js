@@ -13,10 +13,10 @@ const SiteGraphToggle = ({ graph, setGraph }) => {
       <ToggleButton
         variant="secondary"
         name="site-graph"
-        id="tbg-btn-Area"
-        value={"Area"}
+        id="tbg-btn-Combined"
+        value={"Combined"}
       >
-        Area
+        Combined
       </ToggleButton>
       <ToggleButton
         variant="secondary"

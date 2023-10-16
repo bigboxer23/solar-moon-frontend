@@ -60,6 +60,7 @@ const Dashboard = () => {
           <PeriodToggle time={time} setTime={setTime} />
         </CardHeader>
         <CardBody>
+          {devices.length === 0 ? <div className={"w-100 loading"}></div> : ""}
           {devices
             .filter((device) => device.virtual)
             .filter((device) => device.site === activeSite)

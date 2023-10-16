@@ -38,7 +38,7 @@ function NavBar() {
           to="/"
           className="d-flex"
           onClick={() => {
-            updateExpanded(expand ? false : "expanded");
+            updateExpanded(false);
           }}
         >
           <img src={logo} className="img-fluid logo" alt="brand" />

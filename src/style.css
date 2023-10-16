@@ -916,3 +916,10 @@ button:focus {
   height: 10px;
   border-radius: var(--bs-border-radius);
 }
+
+.loading {
+  min-height: 250px;
+  background-image: url(./assets/pre.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+}

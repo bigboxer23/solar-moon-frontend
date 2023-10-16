@@ -86,6 +86,7 @@ const SiteManagement = () => {
           Add Device
         </Button>
       </h3>
+      {devices.length === 0 ? <div className={"w-100 loading"}></div> : ""}
       {[...devices, { id: noSite, name: noSite, virtual: true }]
         .filter((device) => device.virtual)
         .filter((site) => site.name === activeSite)

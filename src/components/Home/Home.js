@@ -30,6 +30,7 @@ const Home = () => {
           <PeriodToggle time={time} setTime={setTime} />
         </CardHeader>
         <CardBody className={"d-flex justify-content-center flex-wrap"}>
+          {devices.length === 0 ? <div className={"w-100 loading"}></div> : ""}
           {devices
             .filter((device) => device.virtual)
             .map((device) => {
