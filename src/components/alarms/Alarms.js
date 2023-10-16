@@ -12,7 +12,7 @@ const Alarms = () => {
         textDecoration="none"
         width="30vw"
       >
-        Alarms
+        Coming Soon
       </Text>
     </div>
   );
