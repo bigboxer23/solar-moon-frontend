@@ -12,7 +12,7 @@ const Reports = () => {
         textDecoration="none"
         width="30vw"
       >
-        Reports
+        Coming Soon
       </Text>
     </div>
   );

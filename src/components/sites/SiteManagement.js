@@ -36,7 +36,7 @@ const SiteManagement = () => {
         <div className={"flex-grow-1"} />
         <Dropdown className={"align-self-end"}>
           <Dropdown.Toggle variant="primary" id="dropdown-basic">
-            {activeSite}
+            {activeSite === "" ? "Loading" : activeSite}
           </Dropdown.Toggle>
           <Dropdown.Menu>
             {devices
