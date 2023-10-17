@@ -6,8 +6,10 @@ import { getDevices } from "../../services/services";
 import { useStickyState } from "../../utils/Utils";
 import PeriodToggle from "../common/PeriodToggle";
 import { DAY } from "../../services/search";
+import Loader from "../common/Loader";
 
 const Home = () => {
+  const [loading, setLoading] = useState(true);
   const { user } = useAuthenticator((context) => [context.user]);
   const [devices, setDevices] = useState([]);
   const [time, setTime] = useStickyState(DAY, "dashboard.time");
@@ -15,6 +17,7 @@ const Home = () => {
   useEffect(() => {
     getDevices()
       .then(({ data }) => {
+        setLoading(false);
         setDevices(data);
       })
       .catch((e) => {
@@ -31,7 +34,13 @@ const Home = () => {
           <PeriodToggle time={time} setTime={setTime} />
         </CardHeader>
         <CardBody className={"d-flex justify-content-center flex-wrap"}>
-          {devices.length === 0 ? <div className={"w-100 loading"}></div> : ""}
+          <Loader
+            loading={loading}
+            deviceCount={devices.length}
+            content={
+              "You don't have any sites or devices yet.  Why don't you add some by clicking the sites link above?"
+            }
+          />
           {devices
             .filter((device) => device.virtual)
             .map((device) => {

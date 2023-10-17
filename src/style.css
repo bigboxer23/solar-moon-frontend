@@ -923,3 +923,11 @@ button:focus {
   background-repeat: no-repeat;
   background-position: center;
 }
+
+.no-bottom-border {
+  border-bottom: 0 !important;
+}
+
+.no-bottom-border-radius {
+  border-radius: var(--bs-border-radius) var(--bs-border-radius) 0 0 !important;
+}

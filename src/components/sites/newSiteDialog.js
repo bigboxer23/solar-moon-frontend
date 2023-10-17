@@ -42,7 +42,12 @@ const NewSiteDialog = ({
             <Form.Control
               value={site.name}
               onChange={(e) =>
-                setSite({ ...site, name: e.target.value, site: e.target.value })
+                setSite({
+                  ...site,
+                  name: e.target.value,
+                  deviceName: e.target.value,
+                  site: e.target.value,
+                })
               }
               onKeyPress={preventSubmit}
               onKeyUp={(event) => {
