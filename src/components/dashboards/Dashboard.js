@@ -7,7 +7,9 @@ import { useStickyState } from "../../utils/Utils";
 import PeriodToggle from "../common/PeriodToggle";
 import { DAY } from "../../services/search";
 import SiteGraph from "../graphs/SiteGraph";
+import Loader from "../common/Loader";
 const Dashboard = () => {
+  const [loading, setLoading] = useState(true);
   const [devices, setDevices] = useState([]);
   const [activeSite, setActiveSite] = useStickyState(noSite, "dashboard.site");
   const [time, setTime] = useStickyState(DAY, "dashboard.time");
@@ -16,6 +18,7 @@ const Dashboard = () => {
     getDevices()
       .then(({ data }) => {
         setDevices(data);
+        setLoading(false);
         if (activeSite === noSite) {
           setActiveSite(data.find((device) => device.virtual)?.name || noSite);
         }
@@ -60,7 +63,13 @@ const Dashboard = () => {
           <PeriodToggle time={time} setTime={setTime} />
         </CardHeader>
         <CardBody>
-          {devices.length === 0 ? <div className={"w-100 loading"}></div> : ""}
+          <Loader
+            loading={loading}
+            deviceCount={devices.length}
+            content={
+              'You don\'t have any devices yet.  Add some by navigating to the "Sites" section above!'
+            }
+          />
           {devices
             .filter((device) => device.virtual)
             .filter((device) => device.site === activeSite)
