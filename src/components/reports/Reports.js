@@ -66,6 +66,14 @@ const Reports = () => {
     if (loading) {
       return;
     }
+    getDataPage(
+      site === "All Sites" ? null : site,
+      device === "All Devices" ? null : device,
+    )
+      .then(({ data }) => {
+        setRows(data.hits.hits.map((row) => getRow(row._source)));
+      })
+      .catch((e) => console.log(e));
     console.log("site or device changed");
   }, [site, device]);
   const loadSearches = function (searchButton) {
@@ -83,8 +91,8 @@ const Reports = () => {
           <div id="reports-search" className={"d-flex d-none"}>
             <Button
               variant={"secondary"}
-              title={"Search"}
-              onClick={(e) => loadSearches(e.target)}
+              title={"Search Date Range"}
+              onClick={(e) => console.log("date range search")}
             >
               <MdOutlineDateRange
                 style={{ marginBottom: "2px", marginRight: ".5rem" }}
@@ -119,8 +127,15 @@ const Reports = () => {
                 {device}
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                {[{ id: "All Devices", name: "All Devices" }, ...devices].map(
-                  (d) => {
+                {[{ id: "All Devices", name: "All Devices" }, ...devices]
+                  .filter((d) => {
+                    return (
+                      site === "All Sites" ||
+                      d.site === site ||
+                      d.name === "All Devices"
+                    );
+                  })
+                  .map((d) => {
                     return (
                       <Dropdown.Item
                         as="button"
@@ -130,8 +145,7 @@ const Reports = () => {
                         {d.name}
                       </Dropdown.Item>
                     );
-                  },
-                )}
+                  })}
               </Dropdown.Menu>
             </Dropdown>
           </div>

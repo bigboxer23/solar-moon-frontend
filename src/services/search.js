@@ -30,7 +30,7 @@ export function getMaxCurrentBody(device) {
   let end = new Date();
   let start = new Date(end.getTime() - WEEK);
   if (!directSearchAPI) {
-    return getJSONSearch(device, start, end, "maxCurrent");
+    return getJSONSearch(device, start, end, null, null, "maxCurrent");
   }
   let data = getBaseData(start, end);
   data.size = 1;
@@ -53,7 +53,7 @@ export function getMaxCurrentBody(device) {
 }
 export function getAvgTotalBody(device, start, end) {
   if (!directSearchAPI) {
-    return getJSONSearch(device, start, end, "avgTotal");
+    return getJSONSearch(device, start, end, null, null, "avgTotal");
   }
   let data = getBaseData(start, end);
   data["aggregations"] = {
@@ -74,7 +74,7 @@ export function getAvgTotalBody(device, start, end) {
 
 export function getStackedTimeSeriesBody(device, start, end, type) {
   if (!directSearchAPI) {
-    return getJSONSearch(device, start, end, type);
+    return getJSONSearch(device, start, end, null, null, type);
   }
   let data = getBaseData(start, end);
   data["aggregations"] = {
@@ -111,7 +111,7 @@ export function getStackedTimeSeriesBody(device, start, end, type) {
 
 export function getTimeSeriesBody(device, start, end) {
   if (!directSearchAPI) {
-    return getJSONSearch(device, start, end, "timeseries");
+    return getJSONSearch(device, start, end, null, null, "timeseries");
   }
   let data = getBaseData(start, end);
   data["aggregations"] = {
@@ -135,10 +135,17 @@ export function getTimeSeriesBody(device, start, end) {
   return data;
 }
 
-export function getDataPageBody() {
+export function getDataPageBody(site, device) {
   let end = new Date();
   if (!directSearchAPI) {
-    return getJSONSearch(null, new Date(end.getTime() - DAY), end, "data");
+    return getJSONSearch(
+      null,
+      new Date(end.getTime() - DAY),
+      end,
+      device,
+      site,
+      "data",
+    );
   }
   let data = getBaseData(new Date(end.getTime() - DAY), end);
   data.size = 500;
@@ -157,15 +164,16 @@ export function getDataPageBody() {
   return data;
 }
 
-function getJSONSearch(device, start, end, type) {
+function getJSONSearch(device, start, end, deviceName, site, type) {
   return {
-    deviceName: device?.name,
+    deviceName: device === null ? deviceName : device.name,
     deviceId: device?.id,
     endDate: end.getTime(),
     startDate: start.getTime(),
     timeZone: getTimeZone(),
     bucketSize: getBucketSize(start, end, type),
     type: type,
+    site: site,
   };
 }
 
