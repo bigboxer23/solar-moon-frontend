@@ -137,6 +137,9 @@ export function getTimeSeriesBody(device, start, end) {
 
 export function getDataPageBody() {
   let end = new Date();
+  if (!directSearchAPI) {
+    return getJSONSearch(null, new Date(end.getTime() - DAY), end, "data");
+  }
   let data = getBaseData(new Date(end.getTime() - DAY), end);
   data.size = 500;
   data.sort = [
@@ -150,13 +153,14 @@ export function getDataPageBody() {
   data._source = {
     excludes: [],
   };
+
   return data;
 }
 
 function getJSONSearch(device, start, end, type) {
   return {
-    deviceName: device.name,
-    deviceId: device.id,
+    deviceName: device?.name,
+    deviceId: device?.id,
     endDate: end.getTime(),
     startDate: start.getTime(),
     timeZone: getTimeZone(),
