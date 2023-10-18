@@ -1,9 +1,10 @@
-import { Card, CardBody } from "react-bootstrap";
+import { Button, Card, CardBody, CardHeader } from "react-bootstrap";
 import DataGrid from "react-data-grid";
 import "react-data-grid/lib/styles.css";
 import { getDataPage } from "../../services/services";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as d3 from "d3";
+import { MdDownload, MdSearch } from "react-icons/md";
 
 const Reports = () => {
   const [rows, setRows] = useState([]);
@@ -31,7 +32,28 @@ const Reports = () => {
   return (
     <div className={"root-page container min-vh-95 d-flex flex-column"}>
       <Card className={"flex-grow-1"}>
-        <CardBody className={"d-flex flex-column"}>
+        <CardHeader className={"d-flex"}>
+          <div className={"flex-grow-1"} />
+          <Button
+            className={"ms-3"}
+            variant={"primary"}
+            title={"Search"}
+            onClick={() => console.log("search")}
+          >
+            <MdSearch style={{ marginBottom: "2px", marginRight: ".5rem" }} />
+            Search
+          </Button>
+          <Button
+            className={"ms-3"}
+            variant={"outline-light"}
+            title={"Download"}
+            onClick={() => console.log("download")}
+          >
+            <MdDownload style={{ marginBottom: "2px", marginRight: ".5rem" }} />
+            Download
+          </Button>
+        </CardHeader>
+        <CardBody className={"d-flex flex-column rdg-holder"}>
           <DataGrid
             className={"rdg-dark flex-grow-1"}
             columns={columns}
