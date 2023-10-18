@@ -925,3 +925,11 @@ button:focus {
 .rdg-holder {
   padding: 0 !important;
 }
+.rdg-row-even {
+  background-color: var(--bs-secondary-bg);
+}
+
+.rdg-header-secondary {
+  font-size: 0.675rem;
+  line-height: 37px;
+}

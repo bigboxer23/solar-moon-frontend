@@ -17,16 +17,40 @@ const Reports = () => {
   }, []);
 
   const columns = [
-    { key: "time", name: "Time" },
+    { key: "time", name: "Time", width: 150 },
     { key: "site", name: "Site" },
     { key: "device-name", name: "Device Name" },
-    { key: "Total Energy Consumption", name: "Total Energy Consumption" },
-    { key: "Total Real Power", name: "Total Real Power" },
-    { key: "Energy Consumed", name: "Energy Consumed" },
+    {
+      key: "Total Energy Consumption",
+      name: (
+        <div className={"d-flex"}>
+          Total Energy Cons.
+          <div className={"text-muted rdg-header-secondary"}>&nbsp; kWH</div>
+        </div>
+      ),
+    },
+    {
+      key: "Total Real Power",
+      name: (
+        <div className={"d-flex"}>
+          Total Power
+          <div className={"text-muted rdg-header-secondary"}>&nbsp; kW</div>
+        </div>
+      ),
+    },
+    {
+      key: "Energy Consumed",
+      name: (
+        <div className={"d-flex"}>
+          Energy Cons.{" "}
+          <div className={"text-muted rdg-header-secondary"}>&nbsp; kWH</div>
+        </div>
+      ),
+    },
   ];
 
   const getRow = function (row) {
-    row.time = d3.timeFormat("%b %d, %y %I:%M%p")(new Date(row["@timestamp"]));
+    row.time = d3.timeFormat("%b %d, %y %I:%M %p")(new Date(row["@timestamp"]));
     return row;
   };
   return (
