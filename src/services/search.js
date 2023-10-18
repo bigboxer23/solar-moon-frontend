@@ -86,7 +86,7 @@ export function getStackedTimeSeriesBody(device, start, end, type) {
         min_doc_count: 1,
       },
       aggregations: {
-        "terms#terms": {
+        "sterms#terms": {
           terms: {
             field: "device-name.keyword",
             order: {
