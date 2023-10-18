@@ -1,6 +1,7 @@
 import { api, openSearch } from "./apiClient";
 import {
   getAvgTotalBody,
+  getDataPageBody,
   getMaxCurrentBody,
   getStackedTimeSeriesBody,
   getTimeSeriesBody,
@@ -62,4 +63,8 @@ export function getAvgTotal(device, start, end) {
 
 export function getMaxCurrent(device) {
   return service.post(serviceName, getMaxCurrentBody(device));
+}
+
+export function getDataPage() {
+  return service.post(serviceName, getDataPageBody());
 }
