@@ -27,7 +27,7 @@ const StackedTimeSeries = ({ device, time }) => {
           formattedData.push({
             date: date.toISOString(),
             name: v.key,
-            avg: v[AVG].value,
+            avg: v[AVG] ? v[AVG].value : v["1"].value,
           });
         });
       }
