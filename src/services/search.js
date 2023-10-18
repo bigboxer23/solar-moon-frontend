@@ -135,10 +135,32 @@ export function getTimeSeriesBody(device, start, end) {
   return data;
 }
 
+export function getDataPageBody() {
+  let end = new Date();
+  if (!directSearchAPI) {
+    return getJSONSearch(null, new Date(end.getTime() - DAY), end, "data");
+  }
+  let data = getBaseData(new Date(end.getTime() - DAY), end);
+  data.size = 500;
+  data.sort = [
+    {
+      "@timestamp": {
+        order: "desc",
+        unmapped_type: "boolean",
+      },
+    },
+  ];
+  data._source = {
+    excludes: [],
+  };
+
+  return data;
+}
+
 function getJSONSearch(device, start, end, type) {
   return {
-    deviceName: device.name,
-    deviceId: device.id,
+    deviceName: device?.name,
+    deviceId: device?.id,
     endDate: end.getTime(),
     startDate: start.getTime(),
     timeZone: getTimeZone(),
@@ -196,6 +218,15 @@ function addSiteFilter(data, siteName) {
     },
   ];
 }
+
+function addCustomerFilter(data, customerId) {
+  data.query.bool.filter.push({
+    match_phrase: {
+      "customer-id": customerId,
+    },
+  });
+}
+
 function addDeviceFilter(data, device) {
   data.query.bool.filter.push({
     match_phrase: {
