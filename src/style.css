@@ -906,3 +906,22 @@ button:focus {
 .no-bottom-border-radius {
   border-radius: var(--bs-border-radius) var(--bs-border-radius) 0 0 !important;
 }
+
+.rdg-header-row {
+  background-color: #282b2f;
+}
+
+.rdg-row,
+.rdg {
+  background-color: transparent;
+}
+
+.rdg {
+  border-right: 0;
+  border-left: 0;
+  border-top: 0;
+}
+
+.rdg-holder {
+  padding: 0 !important;
+}
