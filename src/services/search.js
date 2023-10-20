@@ -30,7 +30,7 @@ export function getMaxCurrentBody(device) {
   let end = new Date();
   let start = new Date(end.getTime() - WEEK);
   if (!directSearchAPI) {
-    return getJSONSearch(device, start, end, null, null, "maxCurrent");
+    return getJSONSearch(device.name, null, null, start, end, "maxCurrent");
   }
   let data = getBaseData(start, end);
   data.size = 1;
@@ -53,7 +53,7 @@ export function getMaxCurrentBody(device) {
 }
 export function getAvgTotalBody(device, start, end) {
   if (!directSearchAPI) {
-    return getJSONSearch(device, start, end, null, null, "avgTotal");
+    return getJSONSearch(device.name, null, null, start, end, "avgTotal");
   }
   let data = getBaseData(start, end);
   data["aggregations"] = {
@@ -72,9 +72,9 @@ export function getAvgTotalBody(device, start, end) {
   return data;
 }
 
-export function getStackedTimeSeriesBody(device, start, end, type) {
+export function getStackedTimeSeriesBody(site, start, end, type) {
   if (!directSearchAPI) {
-    return getJSONSearch(device, start, end, null, null, type);
+    return getJSONSearch(null, null, site.name, start, end, type);
   }
   let data = getBaseData(start, end);
   data["aggregations"] = {
@@ -111,7 +111,7 @@ export function getStackedTimeSeriesBody(device, start, end, type) {
 
 export function getTimeSeriesBody(device, start, end) {
   if (!directSearchAPI) {
-    return getJSONSearch(device, start, end, null, null, "timeseries");
+    return getJSONSearch(device.name, null, null, start, end, "timeseries");
   }
   let data = getBaseData(start, end);
   data["aggregations"] = {
@@ -135,15 +135,15 @@ export function getTimeSeriesBody(device, start, end) {
   return data;
 }
 
-export function getDataPageBody(site, device) {
+export function getDataPageBody(site, deviceName) {
   let end = new Date();
   if (!directSearchAPI) {
     return getJSONSearch(
+      deviceName,
       null,
+      site,
       new Date(end.getTime() - DAY),
       end,
-      device,
-      site,
       "data",
     );
   }
@@ -164,10 +164,10 @@ export function getDataPageBody(site, device) {
   return data;
 }
 
-function getJSONSearch(device, start, end, deviceName, site, type) {
+function getJSONSearch(deviceName, deviceId, site, start, end, type) {
   return {
-    deviceName: device === null ? deviceName : device.name,
-    deviceId: device?.id,
+    deviceName: deviceName,
+    deviceId: deviceId,
     endDate: end.getTime(),
     startDate: start.getTime(),
     timeZone: getTimeZone(),
