@@ -84,6 +84,17 @@ const Reports = () => {
     });
   };
 
+  function EmptyRowsRenderer() {
+    return (
+      <div
+        className={"fw-bolder h6 p-3"}
+        style={{ textAlign: "center", gridColumn: "1/-1" }}
+      >
+        No data available, modify your search or set-up some devices!
+      </div>
+    );
+  }
+
   return (
     <div className={"root-page container min-vh-95 d-flex flex-column"}>
       <Card className={"flex-grow-1"}>
@@ -177,13 +188,10 @@ const Reports = () => {
             className={"rdg-dark flex-grow-1"}
             columns={columns}
             rows={rows}
+            renderers={{ noRowsFallback: <EmptyRowsRenderer /> }}
           />
         </CardBody>
-        <Loader
-          loading={loading}
-          deviceCount={rows.length}
-          content={"There is no data to display."}
-        />
+        <Loader loading={loading} deviceCount={rows.length} content={""} />
       </Card>
     </div>
   );
