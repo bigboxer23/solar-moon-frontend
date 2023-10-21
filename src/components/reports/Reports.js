@@ -4,8 +4,9 @@ import "react-data-grid/lib/styles.css";
 import { getDataPage, getDevices } from "../../services/services";
 import React, { useEffect, useState } from "react";
 import * as d3 from "d3";
-import { MdDownload, MdOutlineDateRange, MdSearch } from "react-icons/md";
+import { MdDownload, MdSearch } from "react-icons/md";
 import Loader from "../common/Loader";
+import SearchBar from "./SearchBar";
 
 const Reports = () => {
   const [loading, setLoading] = useState(true);
@@ -74,7 +75,6 @@ const Reports = () => {
         setRows(data.hits.hits.map((row) => getRow(row._source)));
       })
       .catch((e) => console.log(e));
-    console.log("site or device changed");
   }, [site, device]);
   const loadSearches = function (searchButton) {
     document.getElementById("reports-search").classList.remove("d-none");
@@ -99,67 +99,13 @@ const Reports = () => {
     <div className={"root-page container min-vh-95 d-flex flex-column"}>
       <Card className={"flex-grow-1"}>
         <CardHeader className={"d-flex"}>
-          <div id="reports-search" className={"d-flex d-none flex-wrap"}>
-            <Button
-              variant={"secondary"}
-              title={"Search Date Range"}
-              onClick={(e) => console.log("date range search")}
-            >
-              <MdOutlineDateRange
-                style={{ marginBottom: "2px", marginRight: ".5rem" }}
-              />
-              Search
-            </Button>
-            <Dropdown className={"align-self-end ms-2"}>
-              <Dropdown.Toggle variant="secondary" id="dropdown-basic">
-                {site}
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                {[
-                  { id: "All Sites", name: "All Sites", virtual: true },
-                  ...devices,
-                ]
-                  .filter((device) => device.virtual)
-                  .map((d) => {
-                    return (
-                      <Dropdown.Item
-                        as="button"
-                        key={d.id}
-                        onClick={() => setSite(d.name)}
-                      >
-                        {d.name}
-                      </Dropdown.Item>
-                    );
-                  })}
-              </Dropdown.Menu>
-            </Dropdown>
-            <Dropdown className={"align-self-end ms-2"}>
-              <Dropdown.Toggle variant="secondary" id="dropdown-basic">
-                {device}
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                {[{ id: "All Devices", name: "All Devices" }, ...devices]
-                  .filter((d) => {
-                    return (
-                      site === "All Sites" ||
-                      d.site === site ||
-                      d.name === "All Devices"
-                    );
-                  })
-                  .map((d) => {
-                    return (
-                      <Dropdown.Item
-                        as="button"
-                        key={d.id + "device"}
-                        onClick={() => setDevice(d.name)}
-                      >
-                        {d.name}
-                      </Dropdown.Item>
-                    );
-                  })}
-              </Dropdown.Menu>
-            </Dropdown>
-          </div>
+          <SearchBar
+            devices={devices}
+            site={site}
+            setSite={setSite}
+            device={device}
+            setDevice={setDevice}
+          />
           <div className={"flex-grow-1"} />
           <Button
             className={"ms-3"}
