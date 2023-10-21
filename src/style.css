@@ -944,3 +944,61 @@ button:focus {
   font-size: 0.675rem;
   line-height: 37px;
 }
+
+.react-calendar {
+  background-color: var(--bs-secondary-bg) !important;
+  border: 0;
+  z-index: 1;
+}
+.react-calendar {
+  padding: 1rem;
+  border: 0 !important;
+}
+.react-calendar button {
+  border: 0 !important;
+  background-color: transparent;
+}
+
+.react-calendar abbr {
+  text-decoration: none !important;
+  cursor: auto !important;
+}
+
+.react-calendar__month-view__days__day--weekend {
+  color: inherit !important;
+}
+
+.react-calendar__month-view__days__day--neighboringMonth {
+  color: #757575 !important;
+}
+
+.react-calendar__tile:enabled:hover,
+.react-calendar__navigation button:enabled:hover,
+.react-calendar__navigation button:disabled {
+  border-radius: var(--bs-border-radius);
+  background-color: #6c757d !important;
+}
+
+.react-daterange-picker__wrapper {
+  border: var(--bs-border-width) solid var(--bs-border-color);
+  border-radius: var(--bs-border-radius);
+}
+
+.react-daterange-picker__inputGroup__input:invalid {
+  background: inherit !important;
+}
+
+.react-calendar__tile--active {
+  border-radius: var(--bs-border-radius);
+}
+
+.react-calendar__tile--hoverStart {
+  border-radius: var(--bs-border-radius) 0 0 var(--bs-border-radius);
+}
+
+.react-calendar__tile--hoverEnd {
+  border-radius: 0 var(--bs-border-radius) var(--bs-border-radius) 0;
+}
+.react-calendar--selectRange .react-calendar__tile--hover {
+  background-color: var(--imp-text-color) !important;
+}
