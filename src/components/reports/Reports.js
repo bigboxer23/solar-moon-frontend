@@ -86,7 +86,7 @@ const Reports = () => {
       })
       .catch((e) => console.log(e));
   }, [site, device, start, end]);
-  const loadSearches = function (searchButton) {
+  const loadSearches = (searchButton) => {
     document.getElementById("reports-search").classList.remove("d-none");
     searchButton.classList.add("d-none");
     getDevices().then(({ data }) => {
@@ -94,6 +94,10 @@ const Reports = () => {
     });
   };
 
+  const resetSearch = () => {
+    document.getElementById("reports-search").classList.add("d-none");
+    document.getElementById("reports-search-button").classList.remove("d-none");
+  };
   function EmptyRowsRenderer() {
     return (
       <div
@@ -119,9 +123,11 @@ const Reports = () => {
             setEnd={setEnd}
             start={start}
             setStart={setStart}
+            resetSearch={resetSearch}
           />
           <div className={"flex-grow-1"} />
           <Button
+            id={"reports-search-button"}
             className={"ms-3"}
             variant={"primary"}
             title={"Search"}

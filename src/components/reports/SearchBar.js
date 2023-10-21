@@ -24,6 +24,7 @@ const SearchBar = ({
   setStart,
   end,
   setEnd,
+  resetSearch,
 }) => {
   const [value, setValue] = useState([start, end]);
 
@@ -101,9 +102,8 @@ const SearchBar = ({
         onClick={(e) => {
           setSite("All Sites");
           setDevice("All Devices");
-          let end = new Date();
-          setEnd(end);
-          setStart(new Date(end.getTime() - DAY));
+          dateChanged(null);
+          resetSearch();
         }}
       >
         <TbFilterCancel style={{ marginBottom: "2px" }} />
