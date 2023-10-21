@@ -7,16 +7,24 @@ import * as d3 from "d3";
 import { MdDownload, MdSearch } from "react-icons/md";
 import Loader from "../common/Loader";
 import SearchBar from "./SearchBar";
+import { DAY } from "../../services/search";
 
 const Reports = () => {
   const [loading, setLoading] = useState(true);
   const [site, setSite] = useState("All Sites");
   const [device, setDevice] = useState("All Devices");
+  const [start, setStart] = useState(new Date(new Date().getTime() - DAY));
+  const [end, setEnd] = useState(new Date());
   const [devices, setDevices] = useState([]);
   const [rows, setRows] = useState([]);
 
   useEffect(() => {
-    getDataPage()
+    getDataPage(
+      site === "All Sites" ? null : site,
+      device === "All Devices" ? null : device,
+      start,
+      end,
+    )
       .then(({ data }) => {
         setLoading(false);
         setRows(data.hits.hits.map((row) => getRow(row._source)));
@@ -70,12 +78,14 @@ const Reports = () => {
     getDataPage(
       site === "All Sites" ? null : site,
       device === "All Devices" ? null : device,
+      start,
+      end,
     )
       .then(({ data }) => {
         setRows(data.hits.hits.map((row) => getRow(row._source)));
       })
       .catch((e) => console.log(e));
-  }, [site, device]);
+  }, [site, device, start, end]);
   const loadSearches = function (searchButton) {
     document.getElementById("reports-search").classList.remove("d-none");
     searchButton.classList.add("d-none");
@@ -105,6 +115,10 @@ const Reports = () => {
             setSite={setSite}
             device={device}
             setDevice={setDevice}
+            end={end}
+            setEnd={setEnd}
+            start={start}
+            setStart={setStart}
           />
           <div className={"flex-grow-1"} />
           <Button
