@@ -855,8 +855,14 @@ button:focus {
   .time-series-graph {
     height: 275px;
   }
+  .btn-txt {
+    display: none;
+  }
 }
 
+.btn-txt {
+  margin-left: 0.5rem;
+}
 .metrics-tile {
   height: 200px;
   width: 200px;

@@ -99,7 +99,7 @@ const Reports = () => {
     <div className={"root-page container min-vh-95 d-flex flex-column"}>
       <Card className={"flex-grow-1"}>
         <CardHeader className={"d-flex"}>
-          <div id="reports-search" className={"d-flex d-none"}>
+          <div id="reports-search" className={"d-flex d-none flex-wrap"}>
             <Button
               variant={"secondary"}
               title={"Search Date Range"}
@@ -176,8 +176,8 @@ const Reports = () => {
             title={"Download"}
             onClick={() => console.log("download")}
           >
-            <MdDownload style={{ marginBottom: "2px", marginRight: ".5rem" }} />
-            Download
+            <MdDownload style={{ marginBottom: "2px" }} />
+            <span className={"btn-txt"}>Download</span>
           </Button>
         </CardHeader>
         <CardBody
