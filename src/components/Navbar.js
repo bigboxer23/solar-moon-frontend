@@ -3,7 +3,7 @@ import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Container from "react-bootstrap/Container";
 import logo from "../assets/logo.svg";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { MdOutlineDashboard, MdSolarPower } from "react-icons/md";
 import { BsAlarm, BsDatabase } from "react-icons/bs";
 import { useAuthenticator } from "@aws-amplify/ui-react";
@@ -12,7 +12,6 @@ import UserMenu from "./UserMenu";
 function NavBar() {
   const [expand, updateExpanded] = useState(false);
   const [navColor, updateNavbar] = useState(false);
-  const { signOut } = useAuthenticator((context) => [context.user]);
   const { route } = useAuthenticator((context) => [context.route]);
 
   function scrollHandler() {
@@ -56,42 +55,42 @@ function NavBar() {
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav defaultActiveKey="/" className={"w-100"}>
             <Nav.Item>
-              <Nav.Link
-                as={Link}
-                to="dashboard"
+              <NavLink
+                to="/dashboard"
+                className={"text-nowrap nav-link"}
                 onClick={() => updateExpanded(false)}
               >
                 <MdOutlineDashboard style={{ marginBottom: "2px" }} />{" "}
                 Dashboards
-              </Nav.Link>
+              </NavLink>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link
-                className={"text-nowrap"}
-                as={Link}
-                to="reports"
+              <NavLink
+                className={"text-nowrap nav-link"}
+                to="/reports"
                 onClick={() => updateExpanded(false)}
               >
                 <BsDatabase style={{ marginBottom: "2px" }} /> Reports
-              </Nav.Link>
+              </NavLink>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link
-                as={Link}
-                to="alarms"
+              <NavLink
+                className={"text-nowrap nav-link"}
+                to="/alarms"
                 onClick={() => updateExpanded(false)}
               >
                 <BsAlarm style={{ marginBottom: "2px" }} /> Alarms
-              </Nav.Link>
+              </NavLink>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link
+              <NavLink
+                className={"text-nowrap nav-link"}
                 as={Link}
-                to="sites"
+                to="/sites"
                 onClick={() => updateExpanded(false)}
               >
                 <MdSolarPower style={{ marginBottom: "2px" }} /> Sites
-              </Nav.Link>
+              </NavLink>
             </Nav.Item>
             <div className={"flex-grow-1"}></div>
             <UserMenu />
