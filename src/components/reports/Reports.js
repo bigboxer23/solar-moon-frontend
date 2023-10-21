@@ -4,18 +4,27 @@ import "react-data-grid/lib/styles.css";
 import { getDataPage, getDevices } from "../../services/services";
 import React, { useEffect, useState } from "react";
 import * as d3 from "d3";
-import { MdDownload, MdOutlineDateRange, MdSearch } from "react-icons/md";
+import { MdDownload, MdSearch } from "react-icons/md";
 import Loader from "../common/Loader";
+import SearchBar from "./SearchBar";
+import { DAY } from "../../services/search";
 
 const Reports = () => {
   const [loading, setLoading] = useState(true);
   const [site, setSite] = useState("All Sites");
   const [device, setDevice] = useState("All Devices");
+  const [start, setStart] = useState(new Date(new Date().getTime() - DAY));
+  const [end, setEnd] = useState(new Date());
   const [devices, setDevices] = useState([]);
   const [rows, setRows] = useState([]);
 
   useEffect(() => {
-    getDataPage()
+    getDataPage(
+      site === "All Sites" ? null : site,
+      device === "All Devices" ? null : device,
+      start,
+      end,
+    )
       .then(({ data }) => {
         setLoading(false);
         setRows(data.hits.hits.map((row) => getRow(row._source)));
@@ -69,13 +78,14 @@ const Reports = () => {
     getDataPage(
       site === "All Sites" ? null : site,
       device === "All Devices" ? null : device,
+      start,
+      end,
     )
       .then(({ data }) => {
         setRows(data.hits.hits.map((row) => getRow(row._source)));
       })
       .catch((e) => console.log(e));
-    console.log("site or device changed");
-  }, [site, device]);
+  }, [site, device, start, end]);
   const loadSearches = function (searchButton) {
     document.getElementById("reports-search").classList.remove("d-none");
     searchButton.classList.add("d-none");
@@ -99,67 +109,17 @@ const Reports = () => {
     <div className={"root-page container min-vh-95 d-flex flex-column"}>
       <Card className={"flex-grow-1"}>
         <CardHeader className={"d-flex"}>
-          <div id="reports-search" className={"d-flex d-none"}>
-            <Button
-              variant={"secondary"}
-              title={"Search Date Range"}
-              onClick={(e) => console.log("date range search")}
-            >
-              <MdOutlineDateRange
-                style={{ marginBottom: "2px", marginRight: ".5rem" }}
-              />
-              Search
-            </Button>
-            <Dropdown className={"align-self-end ms-2"}>
-              <Dropdown.Toggle variant="secondary" id="dropdown-basic">
-                {site}
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                {[
-                  { id: "All Sites", name: "All Sites", virtual: true },
-                  ...devices,
-                ]
-                  .filter((device) => device.virtual)
-                  .map((d) => {
-                    return (
-                      <Dropdown.Item
-                        as="button"
-                        key={d.id}
-                        onClick={() => setSite(d.name)}
-                      >
-                        {d.name}
-                      </Dropdown.Item>
-                    );
-                  })}
-              </Dropdown.Menu>
-            </Dropdown>
-            <Dropdown className={"align-self-end ms-2"}>
-              <Dropdown.Toggle variant="secondary" id="dropdown-basic">
-                {device}
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                {[{ id: "All Devices", name: "All Devices" }, ...devices]
-                  .filter((d) => {
-                    return (
-                      site === "All Sites" ||
-                      d.site === site ||
-                      d.name === "All Devices"
-                    );
-                  })
-                  .map((d) => {
-                    return (
-                      <Dropdown.Item
-                        as="button"
-                        key={d.id + "device"}
-                        onClick={() => setDevice(d.name)}
-                      >
-                        {d.name}
-                      </Dropdown.Item>
-                    );
-                  })}
-              </Dropdown.Menu>
-            </Dropdown>
-          </div>
+          <SearchBar
+            devices={devices}
+            site={site}
+            setSite={setSite}
+            device={device}
+            setDevice={setDevice}
+            end={end}
+            setEnd={setEnd}
+            start={start}
+            setStart={setStart}
+          />
           <div className={"flex-grow-1"} />
           <Button
             className={"ms-3"}
@@ -176,8 +136,8 @@ const Reports = () => {
             title={"Download"}
             onClick={() => console.log("download")}
           >
-            <MdDownload style={{ marginBottom: "2px", marginRight: ".5rem" }} />
-            Download
+            <MdDownload style={{ marginBottom: "2px" }} />
+            <span className={"btn-txt"}>Download</span>
           </Button>
         </CardHeader>
         <CardBody

@@ -135,17 +135,9 @@ export function getTimeSeriesBody(device, start, end) {
   return data;
 }
 
-export function getDataPageBody(site, deviceName) {
-  let end = new Date();
+export function getDataPageBody(site, deviceName, start, end) {
   if (!directSearchAPI) {
-    return getJSONSearch(
-      deviceName,
-      null,
-      site,
-      new Date(end.getTime() - DAY),
-      end,
-      "data",
-    );
+    return getJSONSearch(deviceName, null, site, start, end, "data");
   }
   let data = getBaseData(new Date(end.getTime() - DAY), end);
   data.size = 500;
