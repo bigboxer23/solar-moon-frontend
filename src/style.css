@@ -789,6 +789,10 @@ button:focus {
   display: inline-block !important;
 }
 
+.disabled > svg {
+  display: none;
+}
+
 .copy-button:hover,
 .copy-button:active,
 .copy-button:focus-visible {
