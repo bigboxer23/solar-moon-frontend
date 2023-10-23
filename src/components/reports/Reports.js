@@ -1,8 +1,8 @@
-import { Button, Card, CardBody, CardHeader, Dropdown } from "react-bootstrap";
+import { Button, Card, CardBody, CardHeader } from "react-bootstrap";
 import DataGrid from "react-data-grid";
 import "react-data-grid/lib/styles.css";
 import { getDataPage, getDevices } from "../../services/services";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { MdDownload, MdSearch } from "react-icons/md";
 import Loader from "../common/Loader";
@@ -18,9 +18,10 @@ const Reports = () => {
   const [devices, setDevices] = useState([]);
   const [rows, setRows] = useState([]);
   const [total, setTotal] = useState(-1);
+  const gridRef = useRef(null);
 
   useEffect(() => {
-    fetchData(0, (rows) => setRows(rows));
+    fetchData(0, (rows) => setRows(rows), false);
   }, []);
 
   const columns = [
@@ -67,10 +68,10 @@ const Reports = () => {
     }
     setTotal(-1);
     document.getElementById("data-grid").classList.add("d-none");
-    fetchData(0, (rows) => setRows(rows));
+    fetchData(0, (rows) => setRows(rows), true);
   }, [site, device, start, end]);
 
-  const fetchData = (offset, rowSetter) => {
+  const fetchData = (offset, rowSetter, shouldScrollToTop) => {
     setLoading(true);
     getDataPage(
       site === "All Sites" ? null : site,
@@ -84,6 +85,9 @@ const Reports = () => {
         setTotal(data.hits.total.value);
         rowSetter(data.hits.hits.map((row) => getRow(row._source)));
         document.getElementById("data-grid").classList.remove("d-none");
+        if (shouldScrollToTop) {
+          scrollToTop();
+        }
       })
       .catch((e) => {
         setLoading(false);
@@ -115,10 +119,13 @@ const Reports = () => {
     );
   };
 
+  const scrollToTop = () => {
+    gridRef.current.scrollToCell({ rowIdx: 0, idx: 0 });
+  };
+
   async function handleScroll(event) {
     if (loading || !isAtBottom(event) || rows.length === total) return;
-    setLoading(true);
-    fetchData(rows.length, (r) => setRows([...rows, ...r]));
+    fetchData(rows.length, (r) => setRows([...rows, ...r]), false);
   }
 
   const isAtBottom = ({ currentTarget }) => {
@@ -170,6 +177,7 @@ const Reports = () => {
           className={"d-flex flex-column rdg-holder d-none"}
         >
           <DataGrid
+            ref={gridRef}
             className={"rdg-dark flex-grow-1"}
             columns={columns}
             rows={rows}
