@@ -84,6 +84,7 @@ const Reports = () => {
       start,
       end,
       offset,
+      500,
     )
       .then(({ data }) => {
         setLoading(false);

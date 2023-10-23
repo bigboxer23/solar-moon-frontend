@@ -38,6 +38,7 @@ const DownloadReportButton = ({ site, device, start, end, timeFormatter }) => {
           start,
           end,
           0,
+          10000,
         )
           .then(({ data }) => {
             let transformed = data.hits.hits.map((row) => {
