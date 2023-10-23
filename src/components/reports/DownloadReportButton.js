@@ -22,50 +22,63 @@ const DownloadReportButton = ({ site, device, start, end, timeFormatter }) => {
     },
   ];
 
+  const getFileName = () => {
+    let fileName =
+      timeFormatter({ "@timestamp": start.getTime() }) +
+      " - " +
+      timeFormatter({ "@timestamp": end.getTime() });
+
+    if (device !== null && device !== "All Devices") {
+      return fileName + " - " + device + ".csv";
+    }
+    if (site !== null && site !== "All Sites") {
+      fileName += " - " + site;
+    }
+    return fileName + ".csv";
+  };
+  const download = () => {
+    document.getElementById("report-download-button").classList.add("disabled");
+    getDataPage(
+      site === "All Sites" ? null : site,
+      device === "All Devices" ? null : device,
+      start,
+      end,
+      0,
+      10000,
+    )
+      .then(({ data }) => {
+        let transformed = data.hits.hits.map((row) => {
+          row._source.time = timeFormatter(row._source);
+          return row._source;
+        });
+        const url = window.URL.createObjectURL(
+          new Blob([jsons2csv(transformed, headers, ",", '"')]),
+        );
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", getFileName());
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        document
+          .getElementById("report-download-button")
+          .classList.remove("disabled");
+      })
+      .catch((e) => {
+        document
+          .getElementById("report-download-button")
+          .classList.remove("disabled");
+        console.log(e);
+      });
+  };
+
   return (
     <Button
       id={"report-download-button"}
       className={"ms-3"}
       variant={"outline-light"}
       title={"Download"}
-      onClick={() => {
-        document
-          .getElementById("report-download-button")
-          .classList.add("disabled");
-        getDataPage(
-          site === "All Sites" ? null : site,
-          device === "All Devices" ? null : device,
-          start,
-          end,
-          0,
-          10000,
-        )
-          .then(({ data }) => {
-            let transformed = data.hits.hits.map((row) => {
-              row._source.time = timeFormatter(row._source);
-              return row._source;
-            });
-            const url = window.URL.createObjectURL(
-              new Blob([jsons2csv(transformed, headers, ",", '"')]),
-            );
-            const link = document.createElement("a");
-            link.href = url;
-            const fileName = `downloaded Report.csv`;
-            link.setAttribute("download", fileName);
-            document.body.appendChild(link);
-            link.click();
-            link.remove();
-            document
-              .getElementById("report-download-button")
-              .classList.remove("disabled");
-          })
-          .catch((e) => {
-            document
-              .getElementById("report-download-button")
-              .classList.remove("disabled");
-            console.log(e);
-          });
-      }}
+      onClick={download}
     >
       <MdDownload style={{ marginBottom: "2px" }} />
       <Spinner
