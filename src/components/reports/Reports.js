@@ -17,20 +17,10 @@ const Reports = () => {
   const [end, setEnd] = useState(new Date());
   const [devices, setDevices] = useState([]);
   const [rows, setRows] = useState([]);
+  const [total, setTotal] = useState(-1);
 
   useEffect(() => {
-    getDataPage(
-      site === "All Sites" ? null : site,
-      device === "All Devices" ? null : device,
-      start,
-      end,
-    )
-      .then(({ data }) => {
-        setLoading(false);
-        setRows(data.hits.hits.map((row) => getRow(row._source)));
-        document.getElementById("data-grid").classList.remove("d-none");
-      })
-      .catch((e) => console.log(e));
+    fetchData(0, (rows) => setRows(rows));
   }, []);
 
   const columns = [
@@ -75,17 +65,32 @@ const Reports = () => {
     if (loading) {
       return;
     }
+    setTotal(-1);
+    document.getElementById("data-grid").classList.add("d-none");
+    fetchData(0, (rows) => setRows(rows));
+  }, [site, device, start, end]);
+
+  const fetchData = (offset, rowSetter) => {
+    setLoading(true);
     getDataPage(
       site === "All Sites" ? null : site,
       device === "All Devices" ? null : device,
       start,
       end,
+      offset,
     )
       .then(({ data }) => {
-        setRows(data.hits.hits.map((row) => getRow(row._source)));
+        setLoading(false);
+        setTotal(data.hits.total.value);
+        rowSetter(data.hits.hits.map((row) => getRow(row._source)));
+        document.getElementById("data-grid").classList.remove("d-none");
       })
-      .catch((e) => console.log(e));
-  }, [site, device, start, end]);
+      .catch((e) => {
+        setLoading(false);
+        console.log(e);
+      });
+  };
+
   const loadSearches = (searchButton) => {
     document.getElementById("reports-search").classList.remove("d-none");
     searchButton.classList.add("d-none");
@@ -98,7 +103,8 @@ const Reports = () => {
     document.getElementById("reports-search").classList.add("d-none");
     document.getElementById("reports-search-button").classList.remove("d-none");
   };
-  function EmptyRowsRenderer() {
+
+  const EmptyRowsRenderer = () => {
     return (
       <div
         className={"fw-bolder h6 p-3"}
@@ -107,7 +113,20 @@ const Reports = () => {
         No data available, modify your search or set-up some devices!
       </div>
     );
+  };
+
+  async function handleScroll(event) {
+    if (loading || !isAtBottom(event) || rows.length === total) return;
+    setLoading(true);
+    fetchData(rows.length, (r) => setRows([...rows, ...r]));
   }
+
+  const isAtBottom = ({ currentTarget }) => {
+    return (
+      currentTarget.scrollTop + 10 >=
+      currentTarget.scrollHeight - currentTarget.clientHeight
+    );
+  };
 
   return (
     <div className={"root-page container min-vh-95 d-flex flex-column"}>
@@ -155,6 +174,7 @@ const Reports = () => {
             columns={columns}
             rows={rows}
             renderers={{ noRowsFallback: <EmptyRowsRenderer /> }}
+            onScroll={handleScroll}
           />
         </CardBody>
         <Loader loading={loading} deviceCount={rows.length} content={""} />
