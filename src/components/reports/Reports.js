@@ -4,10 +4,11 @@ import "react-data-grid/lib/styles.css";
 import { getDataPage, getDevices } from "../../services/services";
 import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
-import { MdDownload, MdSearch } from "react-icons/md";
+import { MdSearch } from "react-icons/md";
 import Loader from "../common/Loader";
 import SearchBar from "./SearchBar";
 import { DAY } from "../../services/search";
+import DownloadReportButton from "./DownloadReportButton";
 
 const Reports = () => {
   const [loading, setLoading] = useState(true);
@@ -57,8 +58,12 @@ const Reports = () => {
     },
   ];
 
+  const getFormattedTime = (data) => {
+    return d3.timeFormat("%b %d, %y %I:%M %p")(new Date(data["@timestamp"]));
+  };
+
   const getRow = function (row) {
-    row.time = d3.timeFormat("%b %d, %y %I:%M %p")(new Date(row["@timestamp"]));
+    row.time = getFormattedTime(row);
     return row;
   };
 
@@ -79,6 +84,7 @@ const Reports = () => {
       start,
       end,
       offset,
+      500,
     )
       .then(({ data }) => {
         setLoading(false);
@@ -162,15 +168,13 @@ const Reports = () => {
             <MdSearch style={{ marginBottom: "2px", marginRight: ".5rem" }} />
             Search
           </Button>
-          <Button
-            className={"ms-3"}
-            variant={"outline-light"}
-            title={"Download"}
-            onClick={() => console.log("download")}
-          >
-            <MdDownload style={{ marginBottom: "2px" }} />
-            <span className={"btn-txt"}>Download</span>
-          </Button>
+          <DownloadReportButton
+            site={site}
+            device={device}
+            end={end}
+            start={start}
+            timeFormatter={getFormattedTime}
+          />
         </CardHeader>
         <CardBody
           id={"data-grid"}

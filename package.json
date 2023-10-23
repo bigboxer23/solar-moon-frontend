@@ -15,6 +15,7 @@
     "react": "^18.2.0",
     "react-avatar": "^5.0.3",
     "react-bootstrap": "^2.9.0",
+    "react-csv": "^2.2.2",
     "react-data-grid": "^7.0.0-beta.40",
     "react-day-picker": "^8.9.1",
     "react-dom": "^18.2.0",
