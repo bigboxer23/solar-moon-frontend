@@ -997,11 +997,11 @@ button:focus {
 }
 
 .react-calendar__tile--hoverStart {
-  border-radius: var(--bs-border-radius) 0 0 var(--bs-border-radius);
+  border-radius: var(--bs-border-radius) 0 0 var(--bs-border-radius) !important;
 }
 
 .react-calendar__tile--hoverEnd {
-  border-radius: 0 var(--bs-border-radius) var(--bs-border-radius) 0;
+  border-radius: 0 var(--bs-border-radius) var(--bs-border-radius) 0 !important;
 }
 .react-calendar--selectRange .react-calendar__tile--hover {
   background-color: var(--imp-text-color) !important;
