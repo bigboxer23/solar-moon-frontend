@@ -8,22 +8,25 @@ import { MdOutlineDelete } from "react-icons/md";
 import { TbUserCancel } from "react-icons/tb";
 import CopyButton from "../CopyButton";
 import ChangePassword from "./ChangePassword";
+import Loader from "../common/Loader";
 
 const UserManagement = () => {
+  const [loading, setLoading] = useState(true);
   const [customerData, setCustomerData] = useState({});
   const [accessKeyWarning, setAccessKeyWarning] = useState(false);
   const [deleteAcctWarning, setDeleteAcctWarning] = useState(false);
   useEffect(() => {
-    getCustomer();
-  }, []);
-
-  const getCustomer = () => {
     fetchCustomer()
       .then(({ data }) => {
+        setLoading(false);
         setCustomerData(data);
       })
-      .catch((e) => console.log("e " + e));
-  };
+      .catch((e) => {
+        setLoading(false);
+        console.log("e " + e);
+      });
+  }, []);
+
   const updateCustomer = (target, dataToUpdate) => {
     target.classList.add("disabled");
     updateRemoteCustomer(dataToUpdate != null ? dataToUpdate : customerData)
@@ -37,7 +40,11 @@ const UserManagement = () => {
       });
   };
 
-  return (
+  return loading ? (
+    <div className={"root-page container"}>
+      <Loader loading={loading} deviceCount={1} content={""} />
+    </div>
+  ) : (
     <div className={"root-page container"}>
       <Card className={"m-5"}>
         <Card.Header className={"fw-bold"}>Customer Information</Card.Header>
