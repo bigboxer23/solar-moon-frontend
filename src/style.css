@@ -736,11 +736,16 @@ button:focus {
   border-radius: 0 0 15px 15px;
 }
 
-[data-amplify-authenticator] .amplify-input,
-[data-amplify-authenticator] .amplify-heading,
-[data-amplify-authenticator] .amplify-text,
-[data-amplify-authenticator] .amplify-icon {
+[data-amplify-authenticator] [data-amplify-router] .amplify-input,
+[data-amplify-authenticator] [data-amplify-router] .amplify-heading,
+[data-amplify-authenticator] [data-amplify-router] .amplify-text,
+[data-amplify-authenticator] [data-amplify-router] .amplify-icon {
   color: #000;
+}
+
+[data-amplify-authenticator] [data-amplify-router] .amplify-button--disabled {
+  background-color: var(--imp-text-color);
+  opacity: 0.65;
 }
 
 [data-amplify-authenticator] .amplify-button {
