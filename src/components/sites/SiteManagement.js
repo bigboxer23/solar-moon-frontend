@@ -6,12 +6,13 @@ import { MdAddCircle, MdOutlineAdd } from "react-icons/md";
 import NewSiteDialog from "./newSiteDialog";
 import NewDeviceDialog from "./NewDeviceDialog";
 import Loader from "../common/Loader";
+import { useStickyState } from "../../utils/Utils";
 
 export const noSite = "No Site";
 const SiteManagement = () => {
   const [loading, setLoading] = useState(true);
   const [devices, setDevices] = useState([]);
-  const [activeSite, setActiveSite] = useState("");
+  const [activeSite, setActiveSite] = useStickyState("", "site.management");
   const [showNewSite, setShowNewSite] = useState(false);
   const [showNewDevice, setShowNewDevice] = useState(false);
   const [newSiteFormVersion, setNewSiteFormVersion] = useState(0);
