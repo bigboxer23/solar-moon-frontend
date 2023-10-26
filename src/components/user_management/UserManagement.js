@@ -42,13 +42,7 @@ const UserManagement = () => {
 
   return loading ? (
     <div className={"root-page container"}>
-      <Loader
-        loading={loading}
-        deviceCount={1}
-        content={
-          'You don\'t have any devices yet.  Add some by clicking the "Add Device" above!'
-        }
-      />
+      <Loader loading={loading} deviceCount={1} content={""} />
     </div>
   ) : (
     <div className={"root-page container"}>
