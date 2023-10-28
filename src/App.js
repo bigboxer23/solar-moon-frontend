@@ -20,6 +20,8 @@ import Reports from "./components/reports/Reports";
 import SiteManagement from "./components/sites/SiteManagement";
 import Alarms from "./components/alarms/Alarms";
 import UserManagement from "./components/user_management/UserManagement";
+import CheckoutForm from "./components/checkout/CheckoutForm";
+import Return from "./components/checkout/CheckoutReturn";
 
 Amplify.configure(awsExports);
 function App() {
@@ -85,6 +87,8 @@ function App() {
               <Route path="/sites" element={<SiteManagement />} />
               <Route path="/alarms" element={<Alarms />} />
               <Route path="/userManagement" element={<UserManagement />} />
+              <Route path="/checkout" element={<CheckoutForm />} />
+              <Route path="/return" element={<Return />} />
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
             <Footer />

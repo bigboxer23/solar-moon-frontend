@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@aws-amplify/ui-react": "^5.3.1",
+    "@stripe/react-stripe-js": "^2.3.1",
+    "@stripe/stripe-js": "^2.1.10",
     "@types/d3": "^7.4.1",
     "@wojtekmaj/react-daterange-picker": "^5.4.4",
     "aws-amplify": "^5.3.11",
