@@ -6,9 +6,7 @@ import {
 } from "@stripe/react-stripe-js";
 
 const CheckoutForm = () => {
-  const stripePromise = loadStripe(
-    "",
-  );
+  const stripePromise = loadStripe("");
 
   const [clientSecret, setClientSecret] = useState("");
 
