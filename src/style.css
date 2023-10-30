@@ -1011,3 +1011,22 @@ button:focus {
 .react-calendar--selectRange .react-calendar__tile--hover {
   background-color: var(--imp-text-color) !important;
 }
+.price {
+  width: 275px;
+  min-height: 275px;
+}
+
+.price:hover {
+  background-color: #24272c;
+  cursor: pointer;
+}
+
+.pricing-page {
+  z-index: 1031;
+  background-color: #23272d !important;
+  position: relative;
+  color: var(--bs-body-color);
+}
+.pricing-page .logo {
+  width: 50px !important;
+}
