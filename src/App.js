@@ -22,6 +22,7 @@ import Alarms from "./components/alarms/Alarms";
 import UserManagement from "./components/user_management/UserManagement";
 import CheckoutForm from "./components/checkout/CheckoutForm";
 import Return from "./components/checkout/CheckoutReturn";
+import PricingPage from "./components/checkout/PricingPage";
 
 Amplify.configure(awsExports);
 function App() {
@@ -79,7 +80,12 @@ function App() {
       <Authenticator components={components}>
         <Router>
           <div className="App" id={"scroll"} data-bs-theme="dark">
-            <Navbar />
+            <Routes>
+              <Route path="/checkout" element={""} />
+              <Route path="/return" element={""} />
+              <Route path="/pricing" element={""} />
+              <Route path="*" element={<Navbar />} />
+            </Routes>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/dashboard" element={<Dashboard />} />
@@ -89,6 +95,7 @@ function App() {
               <Route path="/userManagement" element={<UserManagement />} />
               <Route path="/checkout" element={<CheckoutForm />} />
               <Route path="/return" element={<Return />} />
+              <Route path="/pricing" element={<PricingPage />} />
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
             <Footer />

@@ -19,6 +19,14 @@ export function updateCustomer(customerData) {
   return api.post("customer", customerData);
 }
 
+export function getUserPortalSession() {
+  return api.post("create-customer-portal-session");
+}
+
+export function checkout(item) {
+  return api.post("create-checkout-session", { id: item });
+}
+
 export function getDevices() {
   return api.get("devices");
 }
