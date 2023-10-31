@@ -1,15 +1,22 @@
 import { Button, Card, CardBody } from "react-bootstrap";
 import logo from "../../assets/logo.svg";
-import React from "react";
+import React, { useState } from "react";
 
 import { createSearchParams, useNavigate } from "react-router-dom";
+import PriceTile from "./PriceTile";
 
 function PricingPage() {
   const navigate = useNavigate();
-  const checkoutClicked = (price) => {
+  const [monCount, setMonCount] = useState(1);
+  const [yearCount, setYearCount] = useState(1);
+
+  const checkoutClicked = (price, count) => {
     navigate({
       pathname: "/checkout",
-      search: createSearchParams({ price: price }).toString(),
+      search: createSearchParams({
+        price: price,
+        count: count,
+      }).toString(),
     });
   };
 
@@ -17,46 +24,29 @@ function PricingPage() {
     <div className={"pricing-page container min-vh-95"}>
       <div className={"d-flex ps-5"}>
         <img src={logo} className="img-fluid logo" alt="brand" />
-        <div className={"h4 p-4"}>Choose a billing cycle</div>
+        <div className={"h4 p-4"}>Choose a billing plan</div>
       </div>
       <div className={"d-flex ms-3 me-3 justify-content-center flex-wrap"}>
-        <Card
-          className={"price m-3"}
-          onClick={() => checkoutClicked("price_1O6zd9A8dDzAfRCMVFwdeAyJ")}
-        >
-          <CardBody className={"d-flex flex-column"}>
-            <div className={"d-flex mb-3 align-items-center"}>
-              <div className={"h3"}>Monthly</div>
-            </div>
-            <div className={"d-flex mb-3"}>
-              <div className={"h5"}>$50</div>
-              <div className={"text-muted ps-1"}> per mo</div>
-            </div>
-            <div className={"flex-grow-1"} />
-            <Button variant="primary" type="button">
-              Choose plan
-            </Button>
-          </CardBody>
-        </Card>
-        <Card
-          className={"price m-3"}
-          onClick={() => checkoutClicked("price_1O6zdQA8dDzAfRCMdAdXq7Bw")}
-        >
-          <CardBody className={"d-flex flex-column"}>
-            <div className={"d-flex mb-3 align-items-center"}>
-              <div className={"h3"}>Yearly</div>
-              <div className={"text-muted ps-2"}> Save 10%!</div>
-            </div>
-            <div className={"d-flex mb-3"}>
-              <div className={"h5"}>$540</div>
-              <div className={"text-muted ps-1"}> per yr</div>
-            </div>
-            <div className={"flex-grow-1"} />
-            <Button variant="primary" type="button">
-              Choose plan
-            </Button>
-          </CardBody>
-        </Card>
+        <PriceTile
+          label={"Monthly"}
+          label2={"mo"}
+          label3={""}
+          count={monCount}
+          setCount={setMonCount}
+          price={50}
+          priceId={"price_1O6zd9A8dDzAfRCMVFwdeAyJ"}
+          checkoutClicked={checkoutClicked}
+        />
+        <PriceTile
+          label={"Yearly"}
+          label2={"yr"}
+          label3={"Save 10%!"}
+          count={yearCount}
+          setCount={setYearCount}
+          price={540}
+          priceId={"price_1O6zdQA8dDzAfRCMdAdXq7Bw"}
+          checkoutClicked={checkoutClicked}
+        />
       </div>
       <Card className={"flex-grow-1 m-5"}>
         <CardBody>

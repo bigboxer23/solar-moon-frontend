@@ -1030,3 +1030,26 @@ button:focus {
 .pricing-page .logo {
   width: 50px !important;
 }
+
+.quantity-display {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  outline: none;
+}
+
+.left-modifier {
+  border-radius: var(--bs-border-radius) 0 0 var(--bs-border-radius) !important;
+}
+
+.right-modifier {
+  border-radius: 0 var(--bs-border-radius) var(--bs-border-radius) 0 !important;
+}
+
+.quantity-display {
+  width: 3rem;
+  min-height: 100%;
+  border: 0;
+  text-align: center;
+}
