@@ -17,7 +17,7 @@ const CheckoutForm = () => {
 
   useEffect(() => {
     // Create a Checkout Session as soon as the page loads
-    checkout(searchParams.get("price"))
+    checkout(searchParams.get("price"), Number(searchParams.get("count")))
       .then(({ data }) => {
         setClientSecret(data.clientSecret);
       })

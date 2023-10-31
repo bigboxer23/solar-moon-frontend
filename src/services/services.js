@@ -23,8 +23,8 @@ export function getUserPortalSession() {
   return api.post("create-customer-portal-session");
 }
 
-export function checkout(item) {
-  return api.post("create-checkout-session", { id: item });
+export function checkout(item, count) {
+  return api.post("create-checkout-session", { id: item, count: count });
 }
 
 export function getDevices() {
