@@ -89,7 +89,7 @@ function NavBar() {
                 to="/sites"
                 onClick={() => updateExpanded(false)}
               >
-                <MdSolarPower style={{ marginBottom: "2px" }} /> Sites
+                <MdSolarPower style={{ marginBottom: "2px" }} /> Management
               </NavLink>
             </Nav.Item>
             <div className={"flex-grow-1"}></div>

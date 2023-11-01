@@ -97,7 +97,6 @@ const Reports = () => {
       })
       .catch((e) => {
         setLoading(false);
-        console.log(e);
       });
   };
 

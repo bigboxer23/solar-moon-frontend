@@ -26,7 +26,7 @@ const Return = () => {
   if (status === "complete") {
     return (
       <div className={"root-page min-vh-95 container"}>
-        <Card>
+        <Card className={"m-3"}>
           <CardBody>
             <section id="success">
               <p>

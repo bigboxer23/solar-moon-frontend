@@ -21,7 +21,7 @@ const Home = () => {
         setDevices(data);
       })
       .catch((e) => {
-        console.log(e);
+        setLoading(false);
       });
   }, []);
 
