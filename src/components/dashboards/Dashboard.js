@@ -24,7 +24,7 @@ const Dashboard = () => {
         }
       })
       .catch((e) => {
-        console.log(e);
+        setLoading(false);
       });
   }, []);
   return (

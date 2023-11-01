@@ -27,7 +27,7 @@ const SiteManagement = () => {
         }
       })
       .catch((e) => {
-        console.log(e);
+        setLoading(false);
       });
   }, []);
 

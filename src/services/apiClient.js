@@ -23,6 +23,17 @@ api.interceptors.request.use(
   },
 );
 
+api.interceptors.response.use(undefined, (error) => {
+  console.log(error);
+  if (
+    error.response.status === 403 &&
+    error.response.data === "No subscription is active"
+  ) {
+    console.log("redirecting to pricing page");
+    window.location.href = "/pricing";
+  }
+  return Promise.reject(error);
+});
 export const openSearch = axios.create({
   baseURL: "",
   headers: {

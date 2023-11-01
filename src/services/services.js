@@ -19,6 +19,10 @@ export function updateCustomer(customerData) {
   return api.post("customer", customerData);
 }
 
+export const deleteCustomer = (customerId) => {
+  return api.delete("customer/" + customerId);
+};
+
 export function getUserPortalSession() {
   return api.post("create-customer-portal-session");
 }

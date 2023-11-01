@@ -82,7 +82,6 @@ function App() {
           <div className="App" id={"scroll"} data-bs-theme="dark">
             <Routes>
               <Route path="/checkout" element={""} />
-              <Route path="/return" element={""} />
               <Route path="/pricing" element={""} />
               <Route path="*" element={<Navbar />} />
             </Routes>
