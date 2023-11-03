@@ -5,7 +5,7 @@ import {
   getUserPortalSession,
   updateCustomer as updateRemoteCustomer,
 } from "../../services/services";
-import { Alert, Button, Card, Col, Form, Row, Spinner } from "react-bootstrap";
+import { Alert, Button, Card, Form, Row, Spinner } from "react-bootstrap";
 import { MdOutlineDelete } from "react-icons/md";
 import { TbUserCancel } from "react-icons/tb";
 import CopyButton from "../CopyButton";
@@ -18,6 +18,7 @@ const UserManagement = () => {
   const navigate = useNavigate();
   const { user, signOut } = useAuthenticator((context) => [context.user]);
   const [loading, setLoading] = useState(true);
+  const [billingLoading, setBillingLoading] = useState(false);
   const [customerData, setCustomerData] = useState({});
   const [accessKeyWarning, setAccessKeyWarning] = useState(false);
   const [deleteAcctWarning, setDeleteAcctWarning] = useState(false);
@@ -40,18 +41,20 @@ const UserManagement = () => {
         target.classList.remove("disabled");
       })
       .catch((e) => {
-        console.log("e: " + e);
         target.classList.remove("disabled");
       });
   };
 
   const gotoPortal = () => {
+    setBillingLoading(true);
     getUserPortalSession()
       .then(({ data }) => {
-        console.log(data);
+        setBillingLoading(false);
         window.location.href = data;
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        setBillingLoading(false);
+      });
   };
 
   return loading ? (
@@ -88,7 +91,19 @@ const UserManagement = () => {
       <Card className={"m-5"}>
         <Card.Header className={"fw-bold"}>Billing Information</Card.Header>
         <Card.Body>
-          <Button variant="primary" type="button" onClick={(e) => gotoPortal()}>
+          <Button
+            className={billingLoading ? "disabled" : ""}
+            variant="primary"
+            type="button"
+            onClick={(e) => gotoPortal()}
+          >
+            <Spinner
+              as="span"
+              animation="border"
+              size="sm"
+              role="status"
+              className={"me-2 d-none"}
+            />
             Manage Billing & Payment
           </Button>
         </Card.Body>

@@ -7,11 +7,13 @@ import {
 import logo from "../../assets/logo.svg";
 import { checkout } from "../../services/services";
 import { useSearchParams } from "react-router-dom";
+import Loader from "../common/Loader";
 
 const CheckoutForm = () => {
   const stripePromise = loadStripe("");
 
   const [clientSecret, setClientSecret] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const [searchParams] = useSearchParams();
 
@@ -19,9 +21,12 @@ const CheckoutForm = () => {
     // Create a Checkout Session as soon as the page loads
     checkout(searchParams.get("price"), Number(searchParams.get("count")))
       .then(({ data }) => {
+        setLoading(false);
         setClientSecret(data.clientSecret);
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        setLoading(false);
+      });
   }, []);
 
   return (
@@ -30,6 +35,7 @@ const CheckoutForm = () => {
         <img src={logo} className="img-fluid logo" alt="brand" />
         <div className={"h4 p-4"}>Enter payment details</div>
       </div>
+      <Loader loading={loading} deviceCount={0} content={""} />
       <EmbeddedCheckoutProvider
         stripe={stripePromise}
         options={{ clientSecret }}

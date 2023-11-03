@@ -31,6 +31,10 @@ export function checkout(item, count) {
   return api.post("billing/checkout", { id: item, count: count });
 }
 
+export function checkoutStatus(sessionId) {
+  return api.get(`billing/status?session_id=${sessionId}`);
+}
+
 export function getDevices() {
   return api.get("devices");
 }
