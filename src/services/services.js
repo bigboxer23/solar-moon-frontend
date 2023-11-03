@@ -24,11 +24,11 @@ export const deleteCustomer = (customerId) => {
 };
 
 export function getUserPortalSession() {
-  return api.post("create-customer-portal-session");
+  return api.post("billing/portal");
 }
 
 export function checkout(item, count) {
-  return api.post("create-checkout-session", { id: item, count: count });
+  return api.post("billing/checkout", { id: item, count: count });
 }
 
 export function getDevices() {
