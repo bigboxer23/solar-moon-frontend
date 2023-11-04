@@ -392,7 +392,7 @@ button:focus {
   padding-top: 10px !important;
   padding-bottom: 8px !important ;
 }
-.footer-copywright {
+.footer-copyright {
   text-align: center !important;
 }
 
@@ -402,7 +402,7 @@ button:focus {
 }
 
 @media (max-width: 767px) {
-  .footer-copywright {
+  .footer-copyright {
     text-align: center !important;
   }
 
@@ -437,10 +437,7 @@ button:focus {
 }
 
 .project-card {
-  padding-top: 50px !important;
-  padding-bottom: 50px !important;
-  padding-left: 25px !important;
-  padding-right: 25px !important;
+  padding: 50px 25px !important;
   height: auto !important;
 }
 
@@ -459,10 +456,7 @@ button:focus {
 }
 
 .blog-card {
-  padding-top: 50px !important;
-  padding-bottom: 50px !important;
-  padding-left: 25px !important;
-  padding-right: 25px !important;
+  padding: 50px 25px !important;
   height: auto !important;
 }
 
@@ -534,21 +528,6 @@ button:focus {
   padding-bottom: 30px !important;
   background-image: var(--section-background-color) !important;
   color: white !important;
-}
-
-.tech-icons {
-  font-size: 4.5em !important;
-  margin: 15px !important;
-  padding: 10px !important;
-  opacity: 0.93 !important;
-  border: 1.7px solid rgba(81, 120, 194, 0.68) !important;
-  vertical-align: middle !important;
-  text-align: center !important;
-  border-radius: 5px !important;
-  display: table !important;
-  box-shadow: 4px 5px 4px 3px rgba(81, 120, 194, 0.68) !important;
-  overflow: hidden !important;
-  transition: all 0.4s ease 0s !important;
 }
 
 @media (max-width: 767px) {
@@ -1052,4 +1031,9 @@ button:focus {
   min-height: 100%;
   border: 0;
   text-align: center;
+}
+
+.button-icon {
+  margin-bottom: 2px;
+  margin-right: 6px;
 }

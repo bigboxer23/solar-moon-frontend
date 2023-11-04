@@ -9,6 +9,7 @@ import {
 } from "react-bootstrap";
 import React, { useState } from "react";
 import { Auth } from "aws-amplify";
+import { MdOutlinePassword } from "react-icons/md";
 
 const ChangePassword = () => {
   const [password, setPassword] = useState({});
@@ -114,6 +115,7 @@ const ChangePassword = () => {
               role="status"
               className={"me-2 d-none"}
             />
+            <MdOutlinePassword className={"button-icon"} />
             Change Password
           </Button>
         </Form>

@@ -13,12 +13,12 @@ import ChangePassword from "./ChangePassword";
 import Loader from "../common/Loader";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import { useNavigate } from "react-router-dom";
+import ManagePlanTile from "./ManagePlanTile";
 
 const UserManagement = () => {
   const navigate = useNavigate();
   const { user, signOut } = useAuthenticator((context) => [context.user]);
   const [loading, setLoading] = useState(true);
-  const [billingLoading, setBillingLoading] = useState(false);
   const [customerData, setCustomerData] = useState({});
   const [accessKeyWarning, setAccessKeyWarning] = useState(false);
   const [deleteAcctWarning, setDeleteAcctWarning] = useState(false);
@@ -45,24 +45,12 @@ const UserManagement = () => {
       });
   };
 
-  const gotoPortal = () => {
-    setBillingLoading(true);
-    getUserPortalSession()
-      .then(({ data }) => {
-        setBillingLoading(false);
-        window.location.href = data;
-      })
-      .catch((e) => {
-        setBillingLoading(false);
-      });
-  };
-
   return loading ? (
-    <div className={"root-page container"}>
+    <div className={"root-page container min-vh-95"}>
       <Loader loading={loading} deviceCount={1} content={""} />
     </div>
   ) : (
-    <div className={"root-page container"}>
+    <div className={"root-page container min-vh-95"}>
       <Card className={"m-5"}>
         <Card.Header className={"fw-bold"}>Customer Information</Card.Header>
         <Card.Body>
@@ -91,21 +79,7 @@ const UserManagement = () => {
       <Card className={"m-5"}>
         <Card.Header className={"fw-bold"}>Billing Information</Card.Header>
         <Card.Body>
-          <Button
-            className={billingLoading ? "disabled" : ""}
-            variant="primary"
-            type="button"
-            onClick={(e) => gotoPortal()}
-          >
-            <Spinner
-              as="span"
-              animation="border"
-              size="sm"
-              role="status"
-              className={"me-2 d-none"}
-            />
-            Manage Billing & Payment
-          </Button>
+          <ManagePlanTile />
         </Card.Body>
       </Card>
       <Card className={"m-5"}>
@@ -145,9 +119,7 @@ const UserManagement = () => {
                 role="status"
                 className={"me-2 d-none"}
               />
-              <MdOutlineDelete
-                style={{ marginBottom: "2px", marginRight: "6px" }}
-              />
+              <MdOutlineDelete className={"button-icon"} />
               Revoke/Regenerate Access Key
             </Button>
             <Alert show={accessKeyWarning} variant="danger">
@@ -192,7 +164,7 @@ const UserManagement = () => {
             variant={"danger"}
             id={"deleteAccountButton"}
           >
-            <TbUserCancel style={{ marginBottom: "2px", marginRight: "6px" }} />
+            <TbUserCancel className={"button-icon"} />
             Delete Account
           </Button>
           <Alert show={deleteAcctWarning} variant="danger">
