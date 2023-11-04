@@ -991,7 +991,8 @@ button:focus {
   background-color: var(--imp-text-color) !important;
 }
 .price {
-  width: 275px;
+  max-width: 275px !important;
+  width: 100%;
   min-height: 275px;
 }
 
