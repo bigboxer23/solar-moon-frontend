@@ -164,7 +164,7 @@ const Reports = () => {
             title={"Search"}
             onClick={(e) => loadSearches(e.target)}
           >
-            <MdSearch style={{ marginBottom: "2px", marginRight: ".5rem" }} />
+            <MdSearch className={"button-icon"} />
             Search
           </Button>
           <DownloadReportButton

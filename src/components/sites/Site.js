@@ -67,9 +67,7 @@ const Site = ({ data, devices, setDevices, setActiveSite }) => {
             role="status"
             className={"me-2 d-none"}
           />
-          <AiOutlineDelete
-            style={{ marginBottom: "2px", marginRight: "6px" }}
-          />
+          <AiOutlineDelete className={"button-icon"} />
           Delete Site
         </Button>
       )}

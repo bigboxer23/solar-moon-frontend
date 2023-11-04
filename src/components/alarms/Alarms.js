@@ -1,7 +1,7 @@
 import { Text } from "@aws-amplify/ui-react";
 const Alarms = () => {
   return (
-    <div className={"root-page container"}>
+    <div className={"root-page container min-vh-95"}>
       <Text
         variation="primary"
         as="div"

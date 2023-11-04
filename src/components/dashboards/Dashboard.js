@@ -28,7 +28,7 @@ const Dashboard = () => {
       });
   }, []);
   return (
-    <div className={"root-page container d-flex flex-column"}>
+    <div className={"root-page container d-flex flex-column min-vh-95"}>
       <Card className={"site-attributes"}>
         <CardHeader className={"d-flex align-items-center flex-wrap"}>
           <div className={"fs-3 site-name"}>{activeSite}</div>

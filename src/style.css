@@ -1053,3 +1053,8 @@ button:focus {
   border: 0;
   text-align: center;
 }
+
+.button-icon {
+  margin-bottom: 2px;
+  margin-right: 6px;
+}

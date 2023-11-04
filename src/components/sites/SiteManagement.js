@@ -32,7 +32,7 @@ const SiteManagement = () => {
   }, []);
 
   return (
-    <div className={"root-page container d-flex flex-column"}>
+    <div className={"root-page container d-flex flex-column min-vh-95"}>
       <Card className={devices.length === 0 ? "" : "no-bottom-border-radius"}>
         <CardHeader
           className={
@@ -90,9 +90,7 @@ const SiteManagement = () => {
             title={"New Device"}
             onClick={() => setShowNewDevice(true)}
           >
-            <MdAddCircle
-              style={{ marginBottom: "2px", marginRight: ".5rem" }}
-            />
+            <MdAddCircle className={"button-icon"} />
             Add Device
           </Button>
         </CardHeader>

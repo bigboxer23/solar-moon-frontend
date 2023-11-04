@@ -26,7 +26,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className={"root-page container"}>
+    <div className={"root-page container min-vh-95"}>
       <Card>
         <CardHeader className={"d-flex align-items-center"}>
           <div className={"welcome"}>Welcome {user.attributes.email}!</div>
