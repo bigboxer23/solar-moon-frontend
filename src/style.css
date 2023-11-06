@@ -992,7 +992,6 @@ button:focus {
 }
 .price {
   max-width: 275px !important;
-  width: 100%;
   min-height: 275px;
 }
 
