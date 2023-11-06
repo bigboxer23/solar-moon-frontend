@@ -1,4 +1,4 @@
-import { Button, Dropdown, Form, InputGroup } from "react-bootstrap";
+import { Button, Dropdown } from "react-bootstrap";
 import {
   MdClear,
   MdOutlineKeyboardArrowLeft,
@@ -56,6 +56,13 @@ const SearchBar = ({
         <Dropdown.Menu>
           {[{ id: "All Sites", name: "All Sites", virtual: true }, ...devices]
             .filter((device) => device.virtual)
+            .sort((d1, d2) =>
+              (d1.name == null ? d1.deviceName : d1.name).localeCompare(
+                d2.name == null ? d2.deviceName : d2.name,
+                undefined,
+                { sensitivity: "accent" },
+              ),
+            )
             .map((d) => {
               return (
                 <Dropdown.Item
@@ -82,6 +89,13 @@ const SearchBar = ({
                 d.name === "All Devices"
               );
             })
+            .sort((d1, d2) =>
+              (d1.name == null ? d1.deviceName : d1.name).localeCompare(
+                d2.name == null ? d2.deviceName : d2.name,
+                undefined,
+                { sensitivity: "accent" },
+              ),
+            )
             .map((d) => {
               return (
                 <Dropdown.Item
@@ -89,7 +103,7 @@ const SearchBar = ({
                   key={d.id + "device"}
                   onClick={() => setDevice(d.name)}
                 >
-                  {d.name}
+                  {d.name == null ? d.deviceName : d.name}
                 </Dropdown.Item>
               );
             })}
@@ -99,7 +113,7 @@ const SearchBar = ({
         className={"ms-2"}
         variant={"secondary"}
         title={"Search Date Range"}
-        onClick={(e) => {
+        onClick={() => {
           setSite("All Sites");
           setDevice("All Devices");
           dateChanged(null);
