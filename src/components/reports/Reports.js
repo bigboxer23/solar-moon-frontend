@@ -9,6 +9,7 @@ import Loader from "../common/Loader";
 import SearchBar from "./SearchBar";
 import { DAY } from "../../services/search";
 import DownloadReportButton from "./DownloadReportButton";
+import { useIntl } from "react-intl";
 
 const Reports = () => {
   const [loading, setLoading] = useState(true);
@@ -21,6 +22,7 @@ const Reports = () => {
   const [total, setTotal] = useState(-1);
   const gridRef = useRef(null);
 
+  const intl = useIntl();
   useEffect(() => {
     fetchData(0, (rows) => setRows(rows), false);
   }, []);
@@ -64,6 +66,11 @@ const Reports = () => {
 
   const getRow = function (row) {
     row.time = getFormattedTime(row);
+    if (row["Total Energy Consumption"] != null) {
+      row["Total Energy Consumption"] = intl.formatNumber(
+        row["Total Energy Consumption"],
+      );
+    }
     return row;
   };
 
