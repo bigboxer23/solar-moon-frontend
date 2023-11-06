@@ -5,7 +5,7 @@ import { useAuthenticator } from "@aws-amplify/ui-react";
 import Avatar from "react-avatar";
 
 const UserMenu = () => {
-  const { user } = useAuthenticator((context) => [context.user]);
+  const { user, signOut } = useAuthenticator((context) => [context.user]);
 
   return (
     <NavDropdown

@@ -20,6 +20,10 @@ import Reports from "./components/reports/Reports";
 import SiteManagement from "./components/sites/SiteManagement";
 import Alarms from "./components/alarms/Alarms";
 import UserManagement from "./components/user_management/UserManagement";
+import CheckoutForm from "./components/checkout/CheckoutForm";
+import Return from "./components/checkout/CheckoutReturn";
+import PricingPage from "./components/checkout/PricingPage";
+import { IntlProvider } from "react-intl";
 
 Amplify.configure(awsExports);
 function App() {
@@ -73,25 +77,34 @@ function App() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Authenticator components={components}>
-        <Router>
-          <div className="App" id={"scroll"} data-bs-theme="dark">
-            <Navbar />
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/reports" element={<Reports />} />
-              <Route path="/sites" element={<SiteManagement />} />
-              <Route path="/alarms" element={<Alarms />} />
-              <Route path="/userManagement" element={<UserManagement />} />
-              <Route path="*" element={<Navigate to="/" />} />
-            </Routes>
-            <Footer />
-          </div>
-        </Router>
-      </Authenticator>
-    </ThemeProvider>
+    <IntlProvider locale={navigator.language}>
+      <ThemeProvider theme={theme}>
+        <Authenticator components={components}>
+          <Router>
+            <div className="App" id={"scroll"} data-bs-theme="dark">
+              <Routes>
+                <Route path="/checkout" element={""} />
+                <Route path="/pricing" element={""} />
+                <Route path="*" element={<Navbar />} />
+              </Routes>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/reports" element={<Reports />} />
+                <Route path="/sites" element={<SiteManagement />} />
+                <Route path="/alarms" element={<Alarms />} />
+                <Route path="/userManagement" element={<UserManagement />} />
+                <Route path="/checkout" element={<CheckoutForm />} />
+                <Route path="/return" element={<Return />} />
+                <Route path="/pricing" element={<PricingPage />} />
+                <Route path="*" element={<Navigate to="/" />} />
+              </Routes>
+              <Footer />
+            </div>
+          </Router>
+        </Authenticator>
+      </ThemeProvider>
+    </IntlProvider>
   );
 }
 

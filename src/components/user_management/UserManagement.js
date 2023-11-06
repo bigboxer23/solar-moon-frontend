@@ -1,29 +1,38 @@
 import React, { useEffect, useState } from "react";
 import {
+  deleteCustomer,
   getCustomer as fetchCustomer,
+  getUserPortalSession,
   updateCustomer as updateRemoteCustomer,
 } from "../../services/services";
-import { Alert, Button, Card, Col, Form, Row, Spinner } from "react-bootstrap";
+import { Alert, Button, Card, Form, Row, Spinner } from "react-bootstrap";
 import { MdOutlineDelete } from "react-icons/md";
 import { TbUserCancel } from "react-icons/tb";
 import CopyButton from "../CopyButton";
 import ChangePassword from "./ChangePassword";
+import Loader from "../common/Loader";
+import { useAuthenticator } from "@aws-amplify/ui-react";
+import { useNavigate } from "react-router-dom";
+import ManagePlanTile from "./ManagePlanTile";
 
 const UserManagement = () => {
+  const navigate = useNavigate();
+  const { user, signOut } = useAuthenticator((context) => [context.user]);
+  const [loading, setLoading] = useState(true);
   const [customerData, setCustomerData] = useState({});
   const [accessKeyWarning, setAccessKeyWarning] = useState(false);
   const [deleteAcctWarning, setDeleteAcctWarning] = useState(false);
   useEffect(() => {
-    getCustomer();
-  }, []);
-
-  const getCustomer = () => {
     fetchCustomer()
       .then(({ data }) => {
+        setLoading(false);
         setCustomerData(data);
       })
-      .catch((e) => console.log("e " + e));
-  };
+      .catch((e) => {
+        setLoading(false);
+      });
+  }, []);
+
   const updateCustomer = (target, dataToUpdate) => {
     target.classList.add("disabled");
     updateRemoteCustomer(dataToUpdate != null ? dataToUpdate : customerData)
@@ -32,13 +41,16 @@ const UserManagement = () => {
         target.classList.remove("disabled");
       })
       .catch((e) => {
-        console.log("e: " + e);
         target.classList.remove("disabled");
       });
   };
 
-  return (
-    <div className={"root-page container"}>
+  return loading ? (
+    <div className={"root-page container min-vh-95"}>
+      <Loader loading={loading} deviceCount={1} content={""} />
+    </div>
+  ) : (
+    <div className={"root-page container min-vh-95"}>
       <Card className={"m-5"}>
         <Card.Header className={"fw-bold"}>Customer Information</Card.Header>
         <Card.Body>
@@ -67,94 +79,7 @@ const UserManagement = () => {
       <Card className={"m-5"}>
         <Card.Header className={"fw-bold"}>Billing Information</Card.Header>
         <Card.Body>
-          <Form>
-            <Form.Group className="mb-3" controlId="formGridCountry">
-              <Form.Label>Country</Form.Label>
-              <Form.Control
-                placeholder="United States of America"
-                value={customerData?.country || ""}
-                onChange={(e) =>
-                  setCustomerData({ ...customerData, country: e.target.value })
-                }
-              />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formGridAddress1">
-              <Form.Label>Address</Form.Label>
-              <Form.Control
-                placeholder="1234 Main St"
-                value={customerData?.address1 || ""}
-                onChange={(e) =>
-                  setCustomerData({ ...customerData, address1: e.target.value })
-                }
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="formGridAddress2">
-              <Form.Label>Address 2</Form.Label>
-              <Form.Control
-                placeholder="Apartment, studio, or floor"
-                value={customerData?.address2 || ""}
-                onChange={(e) =>
-                  setCustomerData({ ...customerData, address2: e.target.value })
-                }
-              />
-            </Form.Group>
-
-            <Row className="mb-3">
-              <Form.Group as={Col} controlId="formGridCity">
-                <Form.Label>City</Form.Label>
-                <Form.Control
-                  value={customerData?.city || ""}
-                  onChange={(e) =>
-                    setCustomerData({ ...customerData, city: e.target.value })
-                  }
-                />
-              </Form.Group>
-
-              <Form.Group as={Col} controlId="formGridState">
-                <Form.Label>State, County, Province, or Region</Form.Label>
-                <Form.Control
-                  value={customerData?.state || ""}
-                  onChange={(e) =>
-                    setCustomerData({ ...customerData, state: e.target.value })
-                  }
-                />
-              </Form.Group>
-
-              <Form.Group as={Col} controlId="formGridZip">
-                <Form.Label>Zip</Form.Label>
-                <Form.Control
-                  value={customerData?.zip || ""}
-                  onChange={(e) =>
-                    setCustomerData({ ...customerData, zip: e.target.value })
-                  }
-                />
-              </Form.Group>
-            </Row>
-            <Button
-              variant="primary"
-              type="button"
-              onClick={(e) => updateCustomer(e.target)}
-            >
-              <Spinner
-                as="span"
-                animation="border"
-                size="sm"
-                role="status"
-                className={"me-2 d-none"}
-              />
-              Update
-            </Button>
-          </Form>
-        </Card.Body>
-      </Card>
-      <Card className={"m-5"}>
-        <Card.Header className={"fw-bold"}>Payment Information</Card.Header>
-        <Card.Body>
-          <Card.Text>
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
-          </Card.Text>
+          <ManagePlanTile />
         </Card.Body>
       </Card>
       <Card className={"m-5"}>
@@ -194,9 +119,7 @@ const UserManagement = () => {
                 role="status"
                 className={"me-2 d-none"}
               />
-              <MdOutlineDelete
-                style={{ marginBottom: "2px", marginRight: "6px" }}
-              />
+              <MdOutlineDelete className={"button-icon"} />
               Revoke/Regenerate Access Key
             </Button>
             <Alert show={accessKeyWarning} variant="danger">
@@ -241,7 +164,7 @@ const UserManagement = () => {
             variant={"danger"}
             id={"deleteAccountButton"}
           >
-            <TbUserCancel style={{ marginBottom: "2px", marginRight: "6px" }} />
+            <TbUserCancel className={"button-icon"} />
             Delete Account
           </Button>
           <Alert show={deleteAcctWarning} variant="danger">
@@ -261,10 +184,12 @@ const UserManagement = () => {
               <Button
                 onClick={() => {
                   setDeleteAcctWarning(false);
-                  updateCustomer(
-                    document.getElementById("deleteAccountButton"),
-                    { ...customerData, active: false },
-                  );
+                  deleteCustomer(customerData.customerId)
+                    .then(() => {
+                      signOut();
+                      navigate("/");
+                    })
+                    .catch((e) => console.log(e));
                 }}
                 variant="outline-danger"
                 className={"ms-2"}

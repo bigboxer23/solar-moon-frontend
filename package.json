@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@aws-amplify/ui-react": "^5.3.1",
+    "@stripe/react-stripe-js": "^2.3.1",
+    "@stripe/stripe-js": "^2.1.10",
     "@types/d3": "^7.4.1",
     "@wojtekmaj/react-daterange-picker": "^5.4.4",
     "aws-amplify": "^5.3.11",
@@ -15,10 +17,12 @@
     "react": "^18.2.0",
     "react-avatar": "^5.0.3",
     "react-bootstrap": "^2.9.0",
+    "react-csv": "^2.2.2",
     "react-data-grid": "^7.0.0-beta.40",
     "react-day-picker": "^8.9.1",
     "react-dom": "^18.2.0",
     "react-icons": "^4.11.0",
+    "react-intl": "^6.5.1",
     "react-router-dom": "^6.16.0",
     "usehooks-ts": "^2.9.1"
   },

@@ -6,12 +6,13 @@ import { MdAddCircle, MdOutlineAdd } from "react-icons/md";
 import NewSiteDialog from "./newSiteDialog";
 import NewDeviceDialog from "./NewDeviceDialog";
 import Loader from "../common/Loader";
+import { useStickyState } from "../../utils/Utils";
 
 export const noSite = "No Site";
 const SiteManagement = () => {
   const [loading, setLoading] = useState(true);
   const [devices, setDevices] = useState([]);
-  const [activeSite, setActiveSite] = useState("");
+  const [activeSite, setActiveSite] = useStickyState("", "site.management");
   const [showNewSite, setShowNewSite] = useState(false);
   const [showNewDevice, setShowNewDevice] = useState(false);
   const [newSiteFormVersion, setNewSiteFormVersion] = useState(0);
@@ -26,12 +27,12 @@ const SiteManagement = () => {
         }
       })
       .catch((e) => {
-        console.log(e);
+        setLoading(false);
       });
   }, []);
 
   return (
-    <div className={"root-page container d-flex flex-column"}>
+    <div className={"root-page container d-flex flex-column min-vh-95"}>
       <Card className={devices.length === 0 ? "" : "no-bottom-border-radius"}>
         <CardHeader
           className={
@@ -89,9 +90,7 @@ const SiteManagement = () => {
             title={"New Device"}
             onClick={() => setShowNewDevice(true)}
           >
-            <MdAddCircle
-              style={{ marginBottom: "2px", marginRight: ".5rem" }}
-            />
+            <MdAddCircle className={"button-icon"} />
             Add Device
           </Button>
         </CardHeader>

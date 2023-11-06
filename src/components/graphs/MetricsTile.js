@@ -1,25 +1,19 @@
 import { useEffect, useState } from "react";
 import { getAvgTotal, getMaxCurrent } from "../../services/services";
 import { TOTAL_REAL_POWER } from "../../services/search";
+import { FormattedNumber } from "react-intl";
+import FormattedLabel from "./FormattedLabel";
 
 const MetricsTile = ({ device, time }) => {
-  const [total, setTotal] = useState("Loading");
-  const [avg, setAvg] = useState("Loading");
+  const [total, setTotal] = useState(-1);
+  const [avg, setAvg] = useState(-1);
   const [max, setMax] = useState(0);
   useEffect(() => {
     let end = new Date();
     getAvgTotal(device, new Date(end.getTime() - time), end)
       .then(({ data }) => {
-        setTotal(
-          "Total " +
-            Math.round(data.aggregations["sum#total"].value * 10) / 10 +
-            " kWH",
-        );
-        setAvg(
-          "Avg " +
-            Math.round(data.aggregations["avg#avg"].value * 10) / 10 +
-            " kW",
-        );
+        setTotal(Math.round(data.aggregations["sum#total"].value * 10) / 10);
+        setAvg(Math.round(data.aggregations["avg#avg"].value * 10) / 10);
       })
       .catch((e) => console.log(e));
     getMaxCurrent(device)
@@ -36,19 +30,24 @@ const MetricsTile = ({ device, time }) => {
       .catch((e) => console.log(e));
   }, [time]);
 
-  function getGaugeValue(max, avg) {
+  const getGaugeValue = (max, avg) => {
     max = max === null ? 0 : max;
     let scale = 200 / max;
     return Math.round(Math.round(scale * avg));
-  }
+  };
+
   return (
     <div
       className={"metrics-tile m-3 p-3 d-flex flex-column position-relative"}
     >
       <div className={"site-name fs-4"}>{device.name}</div>
       <div className={"flex-grow-1"} />
-      <div className={"align-self-end text-muted smaller-text"}>{total}</div>
-      <div className={"align-self-end justify-self-end fw-bolder"}>{avg}</div>
+      <div className={"align-self-end text-muted smaller-text"}>
+        <FormattedLabel label={"Total"} value={total} />
+      </div>
+      <div className={"align-self-end justify-self-end fw-bolder"}>
+        <FormattedLabel label={"Avg"} value={avg} />
+      </div>
       <div className={"min-max-gauge-empty position-absolute"} />
       <div
         style={{ height: max + "px" }}

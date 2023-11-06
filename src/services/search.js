@@ -135,12 +135,16 @@ export function getTimeSeriesBody(device, start, end) {
   return data;
 }
 
-export function getDataPageBody(site, deviceName, start, end) {
+export function getDataPageBody(site, deviceName, start, end, offset, size) {
   if (!directSearchAPI) {
-    return getJSONSearch(deviceName, null, site, start, end, "data");
+    let searchJSON = getJSONSearch(deviceName, null, site, start, end, "data");
+    searchJSON.offset = offset;
+    searchJSON.size = size;
+    return searchJSON;
   }
-  let data = getBaseData(new Date(end.getTime() - DAY), end);
-  data.size = 500;
+  let data = getBaseData(start, end);
+  data.size = size;
+  data.from = length;
   data.sort = [
     {
       "@timestamp": {

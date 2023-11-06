@@ -19,6 +19,26 @@ export function updateCustomer(customerData) {
   return api.post("customer", customerData);
 }
 
+export const deleteCustomer = (customerId) => {
+  return api.delete("customer/" + customerId);
+};
+
+export function getUserPortalSession() {
+  return api.post("billing/portal");
+}
+
+export function checkout(item, count) {
+  return api.post("billing/checkout", { id: item, count: count });
+}
+
+export function checkoutStatus(sessionId) {
+  return api.get(`billing/status?session_id=${sessionId}`);
+}
+
+export function getSubscriptions() {
+  return api.get("billing/subscriptions");
+}
+
 export function getDevices() {
   return api.get("devices");
 }
@@ -65,6 +85,9 @@ export function getMaxCurrent(device) {
   return service.post(serviceName, getMaxCurrentBody(device));
 }
 
-export function getDataPage(site, device, start, end) {
-  return service.post(serviceName, getDataPageBody(site, device, start, end));
+export function getDataPage(site, device, start, end, offset, size) {
+  return service.post(
+    serviceName,
+    getDataPageBody(site, device, start, end, offset, size),
+  );
 }
