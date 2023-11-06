@@ -54,26 +54,28 @@ const SearchBar = ({
           {site}
         </Dropdown.Toggle>
         <Dropdown.Menu>
-          {[{ id: "All Sites", name: "All Sites", virtual: true }, ...devices]
-            .filter((device) => device.virtual)
-            .sort((d1, d2) =>
-              (d1.name == null ? d1.deviceName : d1.name).localeCompare(
-                d2.name == null ? d2.deviceName : d2.name,
-                undefined,
-                { sensitivity: "accent" },
+          {[
+            { id: "All Sites", name: "All Sites", virtual: true },
+            ...devices
+              .filter((device) => device.virtual)
+              .sort((d1, d2) =>
+                (d1.name == null ? d1.deviceName : d1.name).localeCompare(
+                  d2.name == null ? d2.deviceName : d2.name,
+                  undefined,
+                  { sensitivity: "accent" },
+                ),
               ),
-            )
-            .map((d) => {
-              return (
-                <Dropdown.Item
-                  as="button"
-                  key={d.id}
-                  onClick={() => setSite(d.name)}
-                >
-                  {d.name}
-                </Dropdown.Item>
-              );
-            })}
+          ].map((d) => {
+            return (
+              <Dropdown.Item
+                as="button"
+                key={d.id}
+                onClick={() => setSite(d.name)}
+              >
+                {d.name}
+              </Dropdown.Item>
+            );
+          })}
         </Dropdown.Menu>
       </Dropdown>
       <Dropdown className={"align-self-end ms-2"}>
@@ -81,32 +83,34 @@ const SearchBar = ({
           {device}
         </Dropdown.Toggle>
         <Dropdown.Menu>
-          {[{ id: "All Devices", name: "All Devices" }, ...devices]
-            .filter((d) => {
-              return (
-                site === "All Sites" ||
-                d.site === site ||
-                d.name === "All Devices"
-              );
-            })
-            .sort((d1, d2) =>
-              (d1.name == null ? d1.deviceName : d1.name).localeCompare(
-                d2.name == null ? d2.deviceName : d2.name,
-                undefined,
-                { sensitivity: "accent" },
+          {[
+            { id: "All Devices", name: "All Devices" },
+            ...devices
+              .filter((d) => {
+                return (
+                  site === "All Sites" ||
+                  d.site === site ||
+                  d.name === "All Devices"
+                );
+              })
+              .sort((d1, d2) =>
+                (d1.name == null ? d1.deviceName : d1.name).localeCompare(
+                  d2.name == null ? d2.deviceName : d2.name,
+                  undefined,
+                  { sensitivity: "accent" },
+                ),
               ),
-            )
-            .map((d) => {
-              return (
-                <Dropdown.Item
-                  as="button"
-                  key={d.id + "device"}
-                  onClick={() => setDevice(d.name)}
-                >
-                  {d.name == null ? d.deviceName : d.name}
-                </Dropdown.Item>
-              );
-            })}
+          ].map((d) => {
+            return (
+              <Dropdown.Item
+                as="button"
+                key={d.id + "device"}
+                onClick={() => setDevice(d.name)}
+              >
+                {d.name == null ? d.deviceName : d.name}
+              </Dropdown.Item>
+            );
+          })}
         </Dropdown.Menu>
       </Dropdown>
       <Button
