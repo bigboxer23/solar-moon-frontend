@@ -32,7 +32,7 @@ function ManagePlanTile() {
       });
   };
   return (
-    <Card className={"price"}>
+    <Card className={"price w-100"}>
       <CardBody className={"d-flex flex-column"}>
         <div className={"d-flex mb-3 align-items-center"}>
           <div className={"h3"}>{period}</div>

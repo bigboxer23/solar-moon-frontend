@@ -13,7 +13,7 @@ function PriceTile({
   checkoutClicked,
 }) {
   return (
-    <Card className={"price m-3"}>
+    <Card className={"price w-100 m-3"}>
       <CardBody className={"d-flex flex-column"}>
         <div className={"d-flex mb-3 align-items-center"}>
           <div className={"h3"}>{label}</div>
