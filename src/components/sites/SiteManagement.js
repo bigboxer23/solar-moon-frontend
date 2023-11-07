@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getDevices } from "../../services/services";
+import { getDevices, getSeatCount } from "../../services/services";
 import { Button, Card, CardBody, CardHeader, Dropdown } from "react-bootstrap";
 import Site from "./Site";
 import { MdAddCircle, MdOutlineAdd } from "react-icons/md";
@@ -16,6 +16,7 @@ const SiteManagement = () => {
   const [showNewSite, setShowNewSite] = useState(false);
   const [showNewDevice, setShowNewDevice] = useState(false);
   const [newSiteFormVersion, setNewSiteFormVersion] = useState(0);
+  const [subscriptionDevices, setSubscriptionDevices] = useState(0);
 
   useEffect(() => {
     getDevices()
@@ -29,7 +30,33 @@ const SiteManagement = () => {
       .catch((e) => {
         setLoading(false);
       });
+    getSeatCount().then(({ data }) => {
+      setSubscriptionDevices(data * 10);
+    });
   }, []);
+
+  const isDisabledForSubscription = () => {
+    return subscriptionDevices > devices.length ? "" : " disabled";
+  };
+
+  const getNewSiteContent = () => {
+    return subscriptionDevices > devices.length ? (
+      <div>
+        <Dropdown.Divider />
+        <Dropdown.Item
+          as="button"
+          eventKey="new"
+          className={"Success"}
+          onClick={() => setShowNewSite(true)}
+        >
+          <MdOutlineAdd className={"button-icon"} />
+          Create New Site
+        </Dropdown.Item>
+      </div>
+    ) : (
+      ""
+    );
+  };
 
   return (
     <div className={"root-page container d-flex flex-column min-vh-95"}>
@@ -49,6 +76,13 @@ const SiteManagement = () => {
             <Dropdown.Menu>
               {devices
                 .filter((device) => device.virtual)
+                .sort((d1, d2) =>
+                  (d1.name == null ? d1.deviceName : d1.name).localeCompare(
+                    d2.name == null ? d2.deviceName : d2.name,
+                    undefined,
+                    { sensitivity: "accent" },
+                  ),
+                )
                 .map((site) => {
                   return (
                     <Dropdown.Item
@@ -67,27 +101,17 @@ const SiteManagement = () => {
               >
                 {noSite}
               </Dropdown.Item>
-              <Dropdown.Divider />
-              <Dropdown.Item
-                as="button"
-                eventKey="new"
-                className={"Success"}
-                onClick={() => setShowNewSite(true)}
-              >
-                <MdOutlineAdd
-                  style={{
-                    marginBottom: "2px",
-                    marginRight: "6px",
-                  }}
-                />
-                Create New Site
-              </Dropdown.Item>
+              {getNewSiteContent()}
             </Dropdown.Menu>
           </Dropdown>
           <Button
-            className={"ms-3"}
+            className={"ms-3" + isDisabledForSubscription()}
             variant={"outline-light"}
-            title={"New Device"}
+            title={
+              isDisabledForSubscription()
+                ? "Increase the number of seats to add more devices"
+                : "New Device"
+            }
             onClick={() => setShowNewDevice(true)}
           >
             <MdAddCircle className={"button-icon"} />
