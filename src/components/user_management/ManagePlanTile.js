@@ -4,20 +4,22 @@ import {
   getSubscriptions,
   getUserPortalSession,
 } from "../../services/services";
+import { MdOutlineSubscriptions } from "react-icons/md";
 
 function ManagePlanTile() {
   const [billingLoading, setBillingLoading] = useState(false);
   const [quantity, setQuantity] = useState(0);
   const [period, setPeriod] = useState("");
   const [periodShort, setPeriodShort] = useState("");
-  const [price, setPrice] = useState(0);
-
+  const [price, setPrice] = useState(-1);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     getSubscriptions().then(({ data }) => {
       setQuantity(data[0].quantity);
       setPeriod(data[0].interval === "month" ? "Monthly" : "Yearly");
       setPeriodShort(data[0].interval === "month" ? "mo" : "yr");
       setPrice(data[0].interval === "month" ? 50 : 540);
+      setLoading(false);
     });
   }, []);
   const gotoPortal = () => {
@@ -31,21 +33,45 @@ function ManagePlanTile() {
         setBillingLoading(false);
       });
   };
+
+  const displayWhenLoading = (loading) => {
+    return loading ? "" : " d-none";
+  };
+
   return (
     <Card className={"price w-100"}>
-      <CardBody className={"d-flex flex-column"}>
-        <div className={"d-flex mb-3 align-items-center"}>
+      <CardBody className={(loading ? "loading " : "") + "d-flex flex-column"}>
+        <div
+          className={
+            "d-flex mb-3 align-items-center" + displayWhenLoading(!loading)
+          }
+        >
           <div className={"h3"}>{period}</div>
         </div>
-        <div className={"d-flex mb-1 align-content-center"}>
+        <div
+          className={
+            "d-flex mb-3 align-items-center" + displayWhenLoading(loading)
+          }
+        >
+          <div className={"fs-5"}>Loading Plan...</div>
+        </div>
+        <div
+          className={
+            "d-flex mb-1 align-content-center" + displayWhenLoading(!loading)
+          }
+        >
           <div className={"h5 "}>{10 * quantity}</div>
           <div className={"text-muted ps-1"}> devices</div>
         </div>
-        <div className={"d-flex mb-1 align-content-center"}>
+        <div
+          className={
+            "d-flex mb-1 align-content-center" + displayWhenLoading(!loading)
+          }
+        >
           <div className={"h5"}>${price * quantity}</div>
           <div className={"text-muted ps-1"}> per {periodShort}</div>
         </div>
-        <div className={"d-flex mb-3"}>
+        <div className={"d-flex mb-3" + displayWhenLoading(!loading)}>
           <div className={"text-muted smaller-text ps-1"}>
             {quantity} Seats, ${price} per seat per {periodShort}
           </div>
@@ -64,6 +90,7 @@ function ManagePlanTile() {
             role="status"
             className={"me-2 d-none"}
           />
+          <MdOutlineSubscriptions className={"button-icon"} />
           Manage
         </Button>
       </CardBody>
