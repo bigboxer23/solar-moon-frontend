@@ -35,6 +35,10 @@ export function checkoutStatus(sessionId) {
   return api.get(`billing/status?session_id=${sessionId}`);
 }
 
+export function getSeatCount() {
+  return api.get("subscription");
+}
+
 export function getSubscriptions() {
   return api.get("billing/subscriptions");
 }
