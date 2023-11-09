@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import * as d3 from "d3";
 
 export function preventSubmit(event) {
   if (event.key === "Enter") {
@@ -29,3 +30,7 @@ export function debounce(fn, ms) {
     }, ms);
   };
 }
+
+export const getFormattedTime = (date) => {
+  return d3.timeFormat("%b %d, %y %I:%M %p")(date);
+};

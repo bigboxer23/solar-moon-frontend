@@ -1,15 +1,14 @@
-import { Button, Card, CardBody, CardHeader } from "react-bootstrap";
+import { Card, CardBody, CardHeader } from "react-bootstrap";
 import DataGrid from "react-data-grid";
 import "react-data-grid/lib/styles.css";
 import { getDataPage, getDevices } from "../../services/services";
 import React, { useEffect, useRef, useState } from "react";
-import * as d3 from "d3";
-import { MdSearch } from "react-icons/md";
 import Loader from "../common/Loader";
 import SearchBar from "./SearchBar";
 import { DAY } from "../../services/search";
 import DownloadReportButton from "./DownloadReportButton";
 import { useIntl } from "react-intl";
+import { getFormattedTime } from "../../utils/Utils";
 
 const Reports = () => {
   const [loading, setLoading] = useState(true);
@@ -60,12 +59,8 @@ const Reports = () => {
     },
   ];
 
-  const getFormattedTime = (data) => {
-    return d3.timeFormat("%b %d, %y %I:%M %p")(new Date(data["@timestamp"]));
-  };
-
   const getRow = function (row) {
-    row.time = getFormattedTime(row);
+    row.time = getFormattedTime(new Date(row["@timestamp"]));
     if (row["Total Energy Consumption"] != null) {
       row["Total Energy Consumption"] = intl.formatNumber(
         row["Total Energy Consumption"],
@@ -107,19 +102,6 @@ const Reports = () => {
       });
   };
 
-  const loadSearches = (searchButton) => {
-    document.getElementById("reports-search").classList.remove("d-none");
-    searchButton.classList.add("d-none");
-    getDevices().then(({ data }) => {
-      setDevices(data);
-    });
-  };
-
-  const resetSearch = () => {
-    document.getElementById("reports-search").classList.add("d-none");
-    document.getElementById("reports-search-button").classList.remove("d-none");
-  };
-
   const EmptyRowsRenderer = () => {
     return (
       <div
@@ -152,7 +134,6 @@ const Reports = () => {
       <Card className={"flex-grow-1"}>
         <CardHeader className={"d-flex"}>
           <SearchBar
-            devices={devices}
             site={site}
             setSite={setSite}
             device={device}
@@ -161,19 +142,9 @@ const Reports = () => {
             setEnd={setEnd}
             start={start}
             setStart={setStart}
-            resetSearch={resetSearch}
+            devices={devices}
+            setDevices={setDevices}
           />
-          <div className={"flex-grow-1"} />
-          <Button
-            id={"reports-search-button"}
-            className={"ms-3"}
-            variant={"primary"}
-            title={"Search"}
-            onClick={(e) => loadSearches(e.target)}
-          >
-            <MdSearch className={"button-icon"} />
-            Search
-          </Button>
           <DownloadReportButton
             site={site}
             device={device}

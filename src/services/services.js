@@ -63,6 +63,10 @@ export function addDevice(device) {
   return api.put("devices", device);
 }
 
+export function getAlarmData() {
+  return api.post("alarms", {});
+}
+
 export function getTimeSeriesData(device, start, end) {
   return service.post(serviceName, getTimeSeriesBody(device, start, end));
 }
