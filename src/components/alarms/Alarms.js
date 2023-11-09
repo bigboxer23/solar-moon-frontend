@@ -1,4 +1,4 @@
-import { Card, CardBody, CardHeader } from "react-bootstrap";
+import { Button, Card, CardBody, CardHeader, Spinner } from "react-bootstrap";
 import DataGrid from "react-data-grid";
 import Loader from "../common/Loader";
 import React, { useEffect, useRef, useState } from "react";
@@ -6,6 +6,8 @@ import { getAlarmData, getDevices } from "../../services/services";
 import { MONTH } from "../../services/search";
 import { getFormattedTime } from "../../utils/Utils";
 import SearchBar from "../reports/SearchBar";
+import { MdRefresh } from "react-icons/md";
+
 const Alarms = () => {
   const [loading, setLoading] = useState(true);
   const [site, setSite] = useState("All Sites");
@@ -29,15 +31,11 @@ const Alarms = () => {
       width: 150,
     },
     {
-      key: "state",
-      name: "State",
-      width: 150,
-    },
-    {
       key: "siteId",
       name: "Site",
+      width: 150,
     },
-    { key: "deviceId", name: "Device" },
+    { key: "deviceId", name: "Device", width: 150 },
     { key: "message", name: "Message" },
   ];
 
@@ -47,7 +45,9 @@ const Alarms = () => {
         className={"fw-bolder h6 p-3"}
         style={{ textAlign: "center", gridColumn: "1/-1" }}
       >
-        All devices reporting as healthy!
+        {alarms.length === 0
+          ? "All devices reporting as healthy!"
+          : "Nothing matches active filters."}
       </div>
     );
   };
@@ -62,28 +62,36 @@ const Alarms = () => {
     return row;
   };
 
-  useEffect(() => {
+  const fetchDevices = () => {
     getDevices().then(({ data }) => {
-      setLoading(false);
       setDevices(data);
-      getAlarmData()
-        .then(({ data }) => {
-          setLoading(false);
-          setAlarms(
-            data
-              .sort((row, row2) => row2.startDate - row.startDate)
-              .map((row) => getRow(row)),
-          );
-          document.getElementById("data-grid").classList.remove("d-none");
-        })
-        .catch((e) => {
-          setLoading(false);
-        });
     });
+  };
+
+  useEffect(() => {
+    fetchDevices();
   }, []);
 
   useEffect(() => {
-    console.log("set alarms " + alarms.length);
+    if (devices.length === 0) {
+      return;
+    }
+    getAlarmData()
+      .then(({ data }) => {
+        setLoading(false);
+        setAlarms(
+          data
+            .sort((row, row2) => row2.startDate - row.startDate)
+            .map((row) => getRow(row)),
+        );
+        document.getElementById("data-grid").classList.remove("d-none");
+      })
+      .catch((e) => {
+        setLoading(false);
+      });
+  }, [devices]);
+
+  useEffect(() => {
     setRows(
       alarms
         .filter((alarm) => site === "All Sites" || alarm.siteId === site)
@@ -111,6 +119,15 @@ const Alarms = () => {
             devices={devices}
             setDevices={setDevices}
           />
+          <Button
+            id={"report-download-button"}
+            className={"ms-3"}
+            variant={"outline-light"}
+            title={"Refresh Data"}
+            onClick={() => fetchDevices()}
+          >
+            <MdRefresh style={{ marginBottom: "2px" }} />
+          </Button>
         </CardHeader>
         <CardBody
           id={"data-grid"}
@@ -122,6 +139,9 @@ const Alarms = () => {
             columns={columns}
             rows={rows}
             renderers={{ noRowsFallback: <EmptyRowsRenderer /> }}
+            rowClass={(row, index) => {
+              return row.state === 1 ? "active-alarm" : undefined;
+            }}
           />
         </CardBody>
         <Loader loading={loading} deviceCount={rows.length} content={""} />
