@@ -118,6 +118,7 @@ const Alarms = () => {
             setStart={setStart}
             devices={devices}
             setDevices={setDevices}
+            defaultSearchPeriod={MONTH}
           />
           <Button
             id={"report-download-button"}

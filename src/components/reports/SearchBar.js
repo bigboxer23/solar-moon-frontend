@@ -27,10 +27,14 @@ const SearchBar = ({
   setStart,
   end,
   setEnd,
+  defaultSearchPeriod,
 }) => {
   const [value, setValue] = useState([start, end]);
 
   const resetSearch = () => {
+    setSite("All Sites");
+    setDevice("All Devices");
+    dateChanged(null);
     document.getElementById("reports-search").classList.add("d-none");
     document.getElementById("reports-search-button").classList.remove("d-none");
   };
@@ -47,7 +51,7 @@ const SearchBar = ({
 
   const dateChanged = (date) => {
     if (date === null) {
-      date = [new Date(new Date().getTime() - DAY), new Date()];
+      date = [new Date(new Date().getTime() - defaultSearchPeriod), new Date()];
     }
     setValue(date);
     setStart(date[0]);
@@ -138,13 +142,8 @@ const SearchBar = ({
         <Button
           className={"ms-2"}
           variant={"secondary"}
-          title={"Search Date Range"}
-          onClick={() => {
-            setSite("All Sites");
-            setDevice("All Devices");
-            dateChanged(null);
-            resetSearch();
-          }}
+          title={"Reset Search"}
+          onClick={() => resetSearch()}
         >
           <TbFilterCancel style={{ marginBottom: "2px" }} />
           <span className={"btn-txt"}>Reset Search</span>
