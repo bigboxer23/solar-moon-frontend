@@ -144,6 +144,7 @@ const Reports = () => {
             setStart={setStart}
             devices={devices}
             setDevices={setDevices}
+            defaultSearchPeriod={DAY}
           />
           <DownloadReportButton
             site={site}
