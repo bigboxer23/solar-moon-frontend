@@ -10,10 +10,10 @@ import { useSearchParams } from "react-router-dom";
 import Loader from "../common/Loader";
 
 const CheckoutForm = () => {
-  const stripePromise = loadStripe("");
+  const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK);
+  const [loading, setLoading] = useState(true);
 
   const [clientSecret, setClientSecret] = useState("");
-  const [loading, setLoading] = useState(true);
 
   const [searchParams] = useSearchParams();
 
