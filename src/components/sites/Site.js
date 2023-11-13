@@ -5,6 +5,7 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { deleteDevice } from "../../services/services";
 import { noSite } from "./SiteManagement";
 import SiteAttributes from "./SiteAttributes";
+import { sortDevices } from "../../utils/Utils";
 
 const Site = ({ data, devices, setDevices, setActiveSite }) => {
   const [site] = useState(data);
@@ -41,6 +42,7 @@ const Site = ({ data, devices, setDevices, setActiveSite }) => {
       {devices
         .filter((device) => device.site === site.name)
         .filter((device) => !device.virtual)
+        .sort(sortDevices)
         .map((device) => {
           return (
             <Device

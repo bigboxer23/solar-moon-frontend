@@ -3,7 +3,7 @@ import { getDevices } from "../../services/services";
 import { noSite } from "../sites/SiteManagement";
 import { Card, CardBody, CardHeader, Dropdown } from "react-bootstrap";
 import TimeSeries from "../graphs/TimeSeries";
-import { useStickyState } from "../../utils/Utils";
+import { sortDevices, useStickyState } from "../../utils/Utils";
 import PeriodToggle from "../common/PeriodToggle";
 import { DAY } from "../../services/search";
 import SiteGraph from "../graphs/SiteGraph";
@@ -79,11 +79,7 @@ const Dashboard = () => {
           {devices
             .filter((device) => !device.virtual)
             .filter((device) => device.site === activeSite)
-            .sort((d1, d2) =>
-              (d1.name == null ? d1.deviceName : d1.name).localeCompare(
-                d2.name == null ? d2.deviceName : d2.name,
-              ),
-            )
+            .sort(sortDevices)
             .map((device) => {
               return <TimeSeries key={device.id} device={device} time={time} />;
             })}

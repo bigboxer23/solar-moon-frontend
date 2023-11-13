@@ -52,8 +52,41 @@ const Device = ({ data, devices, setDevices }) => {
 
   return (
     <Card className={"mt-3 device"}>
-      <Card.Header className={"fw-bold"}>{device.name}</Card.Header>
-      <Card.Body>
+      <Card.Header className={"fw-bold d-flex"}>
+        <div className={device.disabled ? "opacity-50 " : ""}>
+          {device.name}
+        </div>
+        <div className={"flex-grow-1"} />
+        <div
+          title={
+            "Disable this device. Alerting will not trigger and device will not be included in site roll up."
+          }
+        >
+          <Form.Check
+            type={"switch"}
+            id={device.id + `disable`}
+            checked={!device.disabled}
+            onChange={(e) => {
+              applyLoadingState(true);
+              setDevice({ ...device, disabled: !device.disabled });
+              updateDevice({ ...device, disabled: !device.disabled })
+                .then(({ data }) => {
+                  setDevice(data);
+                  setDevices([
+                    ...devices.filter((d) => d.id !== data.id),
+                    data,
+                  ]);
+                  applyLoadingState(false);
+                })
+                .catch((e) => {
+                  console.log(e);
+                  applyLoadingState(false);
+                });
+            }}
+          />
+        </div>
+      </Card.Header>
+      <Card.Body className={device.disabled ? "d-none" : ""}>
         <Form>
           <Form.Group className="mb-3" controlId="formTechnicalName">
             <Form.Label>Device Name</Form.Label>
@@ -148,6 +181,7 @@ const Device = ({ data, devices, setDevices }) => {
               variant="outline-danger"
               className={"ms-2"}
             >
+              <AiOutlineDelete className={"button-icon"} />
               Delete Device
             </Button>
           </div>

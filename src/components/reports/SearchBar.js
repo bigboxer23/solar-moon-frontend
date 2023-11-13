@@ -15,6 +15,7 @@ import DateRangePicker from "@wojtekmaj/react-daterange-picker";
 import "@wojtekmaj/react-daterange-picker/dist/DateRangePicker.css";
 import "react-calendar/dist/Calendar.css";
 import { getDevices } from "../../services/services";
+import { sortDevices } from "../../utils/Utils";
 
 const SearchBar = ({
   devices,
@@ -82,15 +83,7 @@ const SearchBar = ({
           <Dropdown.Menu>
             {[
               { id: "All Sites", name: "All Sites", virtual: true },
-              ...devices
-                .filter((device) => device.virtual)
-                .sort((d1, d2) =>
-                  (d1.name == null ? d1.deviceName : d1.name).localeCompare(
-                    d2.name == null ? d2.deviceName : d2.name,
-                    undefined,
-                    { sensitivity: "accent" },
-                  ),
-                ),
+              ...devices.filter((device) => device.virtual).sort(sortDevices),
             ].map((d) => {
               return (
                 <Dropdown.Item
@@ -119,13 +112,7 @@ const SearchBar = ({
                     d.name === "All Devices"
                   );
                 })
-                .sort((d1, d2) =>
-                  (d1.name == null ? d1.deviceName : d1.name).localeCompare(
-                    d2.name == null ? d2.deviceName : d2.name,
-                    undefined,
-                    { sensitivity: "accent" },
-                  ),
-                ),
+                .sort(sortDevices),
             ].map((d) => {
               return (
                 <Dropdown.Item
