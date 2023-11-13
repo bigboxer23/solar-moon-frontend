@@ -6,7 +6,7 @@ import { MdAddCircle, MdOutlineAdd } from "react-icons/md";
 import NewSiteDialog from "./newSiteDialog";
 import NewDeviceDialog from "./NewDeviceDialog";
 import Loader from "../common/Loader";
-import { useStickyState } from "../../utils/Utils";
+import { sortDevices, useStickyState } from "../../utils/Utils";
 
 export const noSite = "No Site";
 const SiteManagement = () => {
@@ -76,13 +76,7 @@ const SiteManagement = () => {
             <Dropdown.Menu>
               {devices
                 .filter((device) => device.virtual)
-                .sort((d1, d2) =>
-                  (d1.name == null ? d1.deviceName : d1.name).localeCompare(
-                    d2.name == null ? d2.deviceName : d2.name,
-                    undefined,
-                    { sensitivity: "accent" },
-                  ),
-                )
+                .sort(sortDevices)
                 .map((site) => {
                   return (
                     <Dropdown.Item

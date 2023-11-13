@@ -34,3 +34,10 @@ export function debounce(fn, ms) {
 export const getFormattedTime = (date) => {
   return d3.timeFormat("%b %d, %y %I:%M %p")(date);
 };
+
+export const sortDevices = (d1, d2) =>
+  (d1.name == null ? d1.deviceName : d1.name).localeCompare(
+    d2.name == null ? d2.deviceName : d2.name,
+    undefined,
+    { sensitivity: "accent" },
+  );
