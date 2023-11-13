@@ -51,9 +51,11 @@ const Device = ({ data, devices, setDevices }) => {
   };
 
   return (
-    <Card className={(device.disabled ? "opacity-50 " : "") + "mt-3 device"}>
+    <Card className={"mt-3 device"}>
       <Card.Header className={"fw-bold d-flex"}>
-        {device.name}
+        <div className={device.disabled ? "opacity-50 " : ""}>
+          {device.name}
+        </div>
         <div className={"flex-grow-1"} />
         <div
           title={
@@ -84,7 +86,7 @@ const Device = ({ data, devices, setDevices }) => {
           />
         </div>
       </Card.Header>
-      <Card.Body>
+      <Card.Body className={device.disabled ? "d-none" : ""}>
         <Form>
           <Form.Group className="mb-3" controlId="formTechnicalName">
             <Form.Label>Device Name</Form.Label>
