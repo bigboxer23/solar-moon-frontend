@@ -1,4 +1,4 @@
-import { Button, Card, CardBody } from "react-bootstrap";
+import { Card, CardBody } from "react-bootstrap";
 import logo from "../../assets/logo.svg";
 import React, { useState } from "react";
 
@@ -50,12 +50,15 @@ function PricingPage() {
       </div>
       <Card className={"flex-grow-1 m-5"}>
         <CardBody>
-          <div className={"h5"}>Solar Moon Analytics Plan</div>
+          <div className={"h5 align-self-start"}>Plans include:</div>
           <div className={"text-muted"}>
             <ul>
-              <li>Connect up to 10 devices per seat</li>
-              <li>Unlimited data reporting</li>
-              <li>Unlimited alarms</li>
+              <li>Up to 20 devices per seat</li>
+              <li>Site level data via virtual devices</li>
+              <li>Live data reporting</li>
+              <li>Historic data export</li>
+              <li>Device alerting via email</li>
+              <li>Periodic account digest</li>
             </ul>
           </div>
         </CardBody>

@@ -1,8 +1,9 @@
 import { NavDropdown } from "react-bootstrap";
-import { AiOutlineLogin, AiOutlineUser } from "react-icons/ai";
+import { AiOutlineUser } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import Avatar from "react-avatar";
+import { MdLogin } from "react-icons/md";
 
 const UserMenu = () => {
   const { user, signOut } = useAuthenticator((context) => [context.user]);
@@ -42,7 +43,7 @@ const UserMenu = () => {
       </NavDropdown.Item>
       <NavDropdown.Divider />
       <NavDropdown.Item as={Link} to="/" onClick={() => signOut()}>
-        <AiOutlineLogin className={"sub-menu-icon"} /> Sign Out
+        <MdLogin className={"sub-menu-icon"} /> Sign Out
       </NavDropdown.Item>
     </NavDropdown>
   );
