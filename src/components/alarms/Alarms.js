@@ -108,7 +108,7 @@ const Alarms = () => {
   }, [alarms, site, device, start, end]);
 
   useEffect(() => {
-    if (loading) {
+    if (loading || !fetching) {
       return;
     }
     fetchDevices();

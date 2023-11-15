@@ -79,7 +79,7 @@ const Reports = () => {
   }, [site, device, start, end]);
 
   useEffect(() => {
-    if (loading) {
+    if (loading || !refreshSearch) {
       return;
     }
     fetchData(0, (rows) => setRows(rows), true);

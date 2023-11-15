@@ -8,7 +8,7 @@ import {
   MdRefresh,
   MdSearch,
 } from "react-icons/md";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { TbFilterCancel } from "react-icons/tb";
 import "react-day-picker/dist/style.css";
 import DateRangePicker from "@wojtekmaj/react-daterange-picker";
