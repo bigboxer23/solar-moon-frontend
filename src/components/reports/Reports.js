@@ -8,14 +8,17 @@ import SearchBar from "./SearchBar";
 import { DAY } from "../../services/search";
 import DownloadReportButton from "./DownloadReportButton";
 import { useIntl } from "react-intl";
-import { getFormattedTime } from "../../utils/Utils";
+import { getFormattedTime, useSearchParamState } from "../../utils/Utils";
 
 const Reports = () => {
   const [loading, setLoading] = useState(true);
-  const [site, setSite] = useState("All Sites");
-  const [device, setDevice] = useState("All Devices");
-  const [start, setStart] = useState(new Date(new Date().getTime() - DAY));
-  const [end, setEnd] = useState(new Date());
+  const [site, setSite] = useSearchParamState("All Sites", "site");
+  const [device, setDevice] = useSearchParamState("All Devices", "device");
+  const [start, setStart] = useSearchParamState(
+    new Date(new Date().getTime() - DAY),
+    "start",
+  );
+  const [end, setEnd] = useSearchParamState(new Date(), "end");
   const [devices, setDevices] = useState([]);
   const [rows, setRows] = useState([]);
   const [total, setTotal] = useState(-1);
