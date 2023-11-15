@@ -19,11 +19,12 @@ const Reports = () => {
   const [devices, setDevices] = useState([]);
   const [rows, setRows] = useState([]);
   const [total, setTotal] = useState(-1);
+  const [refreshSearch, setRefreshSearch] = useState(false);
   const gridRef = useRef(null);
 
   const intl = useIntl();
   useEffect(() => {
-    fetchData(0, (rows) => setRows(rows), false);
+    fetchData(0, (rows) => setRows(rows), true);
   }, []);
 
   const columns = [
@@ -73,13 +74,20 @@ const Reports = () => {
     if (loading) {
       return;
     }
-    setTotal(-1);
     document.getElementById("data-grid").classList.add("d-none");
     fetchData(0, (rows) => setRows(rows), true);
   }, [site, device, start, end]);
 
+  useEffect(() => {
+    if (loading) {
+      return;
+    }
+    fetchData(0, (rows) => setRows(rows), true);
+  }, [refreshSearch]);
+
   const fetchData = (offset, rowSetter, shouldScrollToTop) => {
     setLoading(true);
+    setTotal(shouldScrollToTop ? -1 : total);
     getDataPage(
       site === "All Sites" ? null : site,
       device === "All Devices" ? null : device,
@@ -90,6 +98,7 @@ const Reports = () => {
     )
       .then(({ data }) => {
         setLoading(false);
+        setRefreshSearch(false);
         setTotal(data.hits.total.value);
         rowSetter(data.hits.hits.map((row) => getRow(row._source)));
         document.getElementById("data-grid").classList.remove("d-none");
@@ -99,6 +108,7 @@ const Reports = () => {
       })
       .catch((e) => {
         setLoading(false);
+        setRefreshSearch(false);
       });
   };
 
@@ -145,6 +155,8 @@ const Reports = () => {
             devices={devices}
             setDevices={setDevices}
             defaultSearchPeriod={DAY}
+            refreshSearch={refreshSearch}
+            setRefreshSearch={setRefreshSearch}
           />
           <DownloadReportButton
             site={site}

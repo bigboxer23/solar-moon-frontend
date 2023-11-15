@@ -1,16 +1,16 @@
-import { Button, Dropdown } from "react-bootstrap";
+import { Button, Dropdown, Spinner } from "react-bootstrap";
 import {
   MdClear,
   MdOutlineKeyboardArrowLeft,
   MdOutlineKeyboardArrowRight,
   MdOutlineKeyboardDoubleArrowLeft,
   MdOutlineKeyboardDoubleArrowRight,
+  MdRefresh,
   MdSearch,
 } from "react-icons/md";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TbFilterCancel } from "react-icons/tb";
 import "react-day-picker/dist/style.css";
-import { DAY } from "../../services/search";
 import DateRangePicker from "@wojtekmaj/react-daterange-picker";
 import "@wojtekmaj/react-daterange-picker/dist/DateRangePicker.css";
 import "react-calendar/dist/Calendar.css";
@@ -29,6 +29,8 @@ const SearchBar = ({
   end,
   setEnd,
   defaultSearchPeriod,
+  refreshSearch,
+  setRefreshSearch,
 }) => {
   const [value, setValue] = useState([start, end]);
 
@@ -58,6 +60,7 @@ const SearchBar = ({
     setStart(date[0]);
     setEnd(date[1]);
   };
+
   return (
     <div className={"flex-grow-1 d-flex"}>
       <div id="reports-search" className={"d-flex d-none flex-wrap"}>
@@ -89,7 +92,10 @@ const SearchBar = ({
                 <Dropdown.Item
                   as="button"
                   key={d.id}
-                  onClick={() => setSite(d.name)}
+                  onClick={() => {
+                    setSite(d.name);
+                    setDevice("All Devices");
+                  }}
                 >
                   {d.name}
                 </Dropdown.Item>
@@ -126,6 +132,22 @@ const SearchBar = ({
             })}
           </Dropdown.Menu>
         </Dropdown>
+        <Button
+          id={"report-download-button"}
+          className={(refreshSearch ? "disabled " : "") + "ms-2"}
+          variant={"secondary"}
+          title={"Refresh Data"}
+          onClick={() => setRefreshSearch(true)}
+        >
+          <Spinner
+            as="span"
+            animation="border"
+            size="sm"
+            role="status"
+            className={"d-none"}
+          />
+          <MdRefresh style={{ marginBottom: "2px" }} />
+        </Button>
         <Button
           className={"ms-2"}
           variant={"secondary"}

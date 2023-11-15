@@ -18,6 +18,7 @@ const Alarms = () => {
   const gridRef = useRef(null);
   const [rows, setRows] = useState([]);
   const [alarms, setAlarms] = useState([]);
+  const [fetching, setFetching] = useState(false);
 
   const columns = [
     {
@@ -63,9 +64,12 @@ const Alarms = () => {
   };
 
   const fetchDevices = () => {
-    getDevices().then(({ data }) => {
-      setDevices(data);
-    });
+    getDevices()
+      .then(({ data }) => {
+        setDevices(data);
+        setFetching(false);
+      })
+      .catch(() => setFetching(false));
   };
 
   useEffect(() => {
@@ -103,6 +107,13 @@ const Alarms = () => {
     );
   }, [alarms, site, device, start, end]);
 
+  useEffect(() => {
+    if (loading) {
+      return;
+    }
+    fetchDevices();
+  }, [fetching]);
+
   return (
     <div className={"root-page container min-vh-95 d-flex flex-column"}>
       <Card className={"flex-grow-1"}>
@@ -119,16 +130,9 @@ const Alarms = () => {
             devices={devices}
             setDevices={setDevices}
             defaultSearchPeriod={MONTH}
+            setRefreshSearch={setFetching}
+            refreshSearch={fetching}
           />
-          <Button
-            id={"report-download-button"}
-            className={"ms-3"}
-            variant={"outline-light"}
-            title={"Refresh Data"}
-            onClick={() => fetchDevices()}
-          >
-            <MdRefresh style={{ marginBottom: "2px" }} />
-          </Button>
         </CardHeader>
         <CardBody
           id={"data-grid"}
