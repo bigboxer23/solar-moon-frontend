@@ -20,7 +20,7 @@ function PriceTile({
           <div className={"text-muted ps-2"}>{label3}</div>
         </div>
         <div className={"d-flex mb-1 align-content-center"}>
-          <div className={"h5 "}>{10 * count}</div>
+          <div className={"h5 "}>{20 * count}</div>
           <div className={"text-muted ps-1"}> devices</div>
         </div>
         <div className={"d-flex mb-1 align-content-center"}>

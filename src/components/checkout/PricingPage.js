@@ -33,8 +33,8 @@ function PricingPage() {
           label3={""}
           count={monCount}
           setCount={setMonCount}
-          price={50}
-          priceId={"price_1O6zd9A8dDzAfRCMVFwdeAyJ"}
+          price={40}
+          priceId={process.env.REACT_APP_PRICE_MO}
           checkoutClicked={checkoutClicked}
         />
         <PriceTile
@@ -43,8 +43,8 @@ function PricingPage() {
           label3={"Save 10%!"}
           count={yearCount}
           setCount={setYearCount}
-          price={540}
-          priceId={"price_1O6zdQA8dDzAfRCMdAdXq7Bw"}
+          price={432}
+          priceId={process.env.REACT_APP_PRICE_YR}
           checkoutClicked={checkoutClicked}
         />
       </div>
