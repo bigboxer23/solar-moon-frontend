@@ -1,7 +1,7 @@
 import { Card, CardBody, CardHeader } from "react-bootstrap";
 import DataGrid from "react-data-grid";
 import "react-data-grid/lib/styles.css";
-import { getDataPage, getDevices } from "../../services/services";
+import { getDataPage } from "../../services/services";
 import React, { useEffect, useRef, useState } from "react";
 import Loader from "../common/Loader";
 import SearchBar from "./SearchBar";
@@ -9,16 +9,35 @@ import { DAY } from "../../services/search";
 import DownloadReportButton from "./DownloadReportButton";
 import { useIntl } from "react-intl";
 import { getFormattedTime, useSearchParamState } from "../../utils/Utils";
+import { useSearchParams } from "react-router-dom";
 
 const Reports = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [loading, setLoading] = useState(true);
-  const [site, setSite] = useSearchParamState("All Sites", "site");
-  const [device, setDevice] = useSearchParamState("All Devices", "device");
-  const [start, setStart] = useSearchParamState(
-    new Date(new Date().getTime() - DAY),
-    "start",
+  const [site, setSite] = useSearchParamState(
+    "All Sites",
+    "site",
+    searchParams,
+    setSearchParams,
   );
-  const [end, setEnd] = useSearchParamState(new Date(), "end");
+  const [device, setDevice] = useSearchParamState(
+    "All Devices",
+    "device",
+    searchParams,
+    setSearchParams,
+  );
+  const [start, setStart] = useSearchParamState(
+    new Date(new Date().getTime() - DAY).getTime(),
+    "start",
+    searchParams,
+    setSearchParams,
+  );
+  const [end, setEnd] = useSearchParamState(
+    new Date().getTime(),
+    "end",
+    searchParams,
+    setSearchParams,
+  );
   const [devices, setDevices] = useState([]);
   const [rows, setRows] = useState([]);
   const [total, setTotal] = useState(-1);

@@ -11,14 +11,17 @@ export function preventSubmit(event) {
 }
 
 export function defaultIfEmpty(defaultValue, value) {
-  console.log("value: " + value + " : " + defaultValue);
   return value === null || value === undefined || value === ""
     ? defaultValue
     : value;
 }
 
-export function useSearchParamState(defaultValue, key) {
-  const [searchParams, setSearchParams] = useSearchParams();
+export function useSearchParamState(
+  defaultValue,
+  key,
+  searchParams,
+  setSearchParams,
+) {
   const [value, setValue] = useState(() => {
     return defaultIfEmpty(defaultValue, searchParams.get(key));
   });

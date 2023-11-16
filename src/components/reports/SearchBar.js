@@ -32,7 +32,10 @@ const SearchBar = ({
   refreshSearch,
   setRefreshSearch,
 }) => {
-  const [value, setValue] = useState([start, end]);
+  const [value, setValue] = useState([
+    new Date(Number(start)),
+    new Date(Number(end)),
+  ]);
 
   const resetSearch = () => {
     setSite("All Sites");
@@ -57,8 +60,8 @@ const SearchBar = ({
       date = [new Date(new Date().getTime() - defaultSearchPeriod), new Date()];
     }
     setValue(date);
-    setStart(date[0]);
-    setEnd(date[1]);
+    setStart(date[0].getTime());
+    setEnd(date[1].getTime());
   };
 
   return (
