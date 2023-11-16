@@ -96,6 +96,13 @@ export function getMaxCurrent(device) {
 export function getDataPage(site, device, start, end, offset, size) {
   return service.post(
     serviceName,
-    getDataPageBody(site, device, start, end, offset, size),
+    getDataPageBody(
+      site,
+      device,
+      new Date(Number(start)),
+      new Date(Number(end)),
+      offset,
+      size,
+    ),
   );
 }

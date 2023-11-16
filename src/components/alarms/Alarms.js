@@ -1,20 +1,41 @@
-import { Button, Card, CardBody, CardHeader, Spinner } from "react-bootstrap";
+import { Card, CardBody, CardHeader } from "react-bootstrap";
 import DataGrid from "react-data-grid";
 import Loader from "../common/Loader";
 import React, { useEffect, useRef, useState } from "react";
 import { getAlarmData, getDevices } from "../../services/services";
 import { MONTH } from "../../services/search";
-import { getFormattedTime } from "../../utils/Utils";
+import { getFormattedTime, useSearchParamState } from "../../utils/Utils";
 import SearchBar from "../reports/SearchBar";
-import { MdRefresh } from "react-icons/md";
+import { useSearchParams } from "react-router-dom";
 
 const Alarms = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [loading, setLoading] = useState(true);
-  const [site, setSite] = useState("All Sites");
-  const [device, setDevice] = useState("All Devices");
+  const [site, setSite] = useSearchParamState(
+    "All Sites",
+    "site",
+    searchParams,
+    setSearchParams,
+  );
+  const [device, setDevice] = useSearchParamState(
+    "All Devices",
+    "device",
+    searchParams,
+    setSearchParams,
+  );
   const [devices, setDevices] = useState([]);
-  const [start, setStart] = useState(new Date(new Date().getTime() - MONTH));
-  const [end, setEnd] = useState(new Date());
+  const [start, setStart] = useSearchParamState(
+    new Date(new Date().getTime() - MONTH).getTime(),
+    "start",
+    searchParams,
+    setSearchParams,
+  );
+  const [end, setEnd] = useSearchParamState(
+    new Date().getTime(),
+    "end",
+    searchParams,
+    setSearchParams,
+  );
   const gridRef = useRef(null);
   const [rows, setRows] = useState([]);
   const [alarms, setAlarms] = useState([]);
