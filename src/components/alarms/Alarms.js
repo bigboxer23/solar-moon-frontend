@@ -76,7 +76,9 @@ const Alarms = () => {
 
   const getRow = function (row) {
     row.formattedStartDate = getFormattedTime(new Date(row["startDate"]));
-    row.formattedEndDate = getFormattedTime(new Date(row["endDate"]));
+    if (row["endDate"] > row["startDate"]) {
+      row.formattedEndDate = getFormattedTime(new Date(row["endDate"]));
+    }
     row.siteId =
       devices.find((device) => device.id === row.siteId)?.name || row.siteId;
     let d = devices.find((device) => device.id === row.deviceId);
