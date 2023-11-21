@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { getDevices, getSeatCount } from "../../services/services";
+import {
+  getDevice,
+  getDevices,
+  getSeatCount,
+  updateDevice,
+} from "../../services/services";
 import { Button, Card, CardBody, CardHeader, Dropdown } from "react-bootstrap";
 import Site from "./Site";
 import { MdAddCircle, MdOutlineAdd } from "react-icons/md";
@@ -7,6 +12,7 @@ import NewSiteDialog from "./newSiteDialog";
 import NewDeviceDialog from "./NewDeviceDialog";
 import Loader from "../common/Loader";
 import { sortDevices, useStickyState } from "../../utils/Utils";
+import { useSearchParams } from "react-router-dom";
 
 export const noSite = "No Site";
 const SiteManagement = () => {
@@ -17,8 +23,24 @@ const SiteManagement = () => {
   const [showNewDevice, setShowNewDevice] = useState(false);
   const [newSiteFormVersion, setNewSiteFormVersion] = useState(0);
   const [subscriptionDevices, setSubscriptionDevices] = useState(0);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
+    const disableNotifications = searchParams.get("disable");
+    if (disableNotifications === null) {
+      loadDevices();
+      return;
+    }
+    searchParams.delete("disable");
+    setSearchParams(searchParams);
+    getDevice(disableNotifications).then(({ data }) => {
+      updateDevice({ ...data, notificationsDisabled: true }).then(() => {
+        loadDevices();
+      });
+    });
+  }, []);
+
+  const loadDevices = () => {
     getDevices()
       .then(({ data }) => {
         setDevices(data);
@@ -33,7 +55,7 @@ const SiteManagement = () => {
     getSeatCount().then(({ data }) => {
       setSubscriptionDevices(data * 10);
     });
-  }, []);
+  };
 
   const isDisabledForSubscription = () => {
     return subscriptionDevices > devices.length ? "" : " disabled";

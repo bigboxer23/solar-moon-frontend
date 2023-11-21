@@ -20,7 +20,6 @@ const Device = ({ data, devices, setDevices }) => {
         applyLoadingState(false);
       })
       .catch((e) => {
-        console.log(e);
         applyLoadingState(false);
       });
   };
@@ -63,6 +62,7 @@ const Device = ({ data, devices, setDevices }) => {
           }
         >
           <Form.Check
+            className={"hidden-without-hover"}
             type={"switch"}
             id={device.id + `disable`}
             checked={!device.disabled}
@@ -134,9 +134,24 @@ const Device = ({ data, devices, setDevices }) => {
                 })}
             </Form.Select>
           </Form.Group>
+          <Form.Group className="mb-3" controlId="formDisplayName">
+            <Form.Label>Disable Notifications</Form.Label>
+            <Form.Check
+              type={"switch"}
+              id={device.id + `notificationsDisabled`}
+              checked={device.notificationsDisabled}
+              onChange={(e) => {
+                setDevice({
+                  ...device,
+                  notificationsDisabled: !device.notificationsDisabled,
+                });
+              }}
+            />
+          </Form.Group>
           <div className={"fw-bold d-flex align-items-center"}>
             <Button
               variant="primary"
+              className={"hidden-without-hover"}
               type="button"
               onClick={() => update()}
               id={device.id + "update"}
@@ -155,7 +170,7 @@ const Device = ({ data, devices, setDevices }) => {
               title={"Delete Device"}
               type={"button"}
               variant={"outline-danger"}
-              className={"ms-2 w-auto position-relative"}
+              className={"ms-2 w-auto position-relative hidden-without-hover"}
               id={device.id + "delete"}
               onClick={() => setDeleteDeviceWarning(true)}
             >
