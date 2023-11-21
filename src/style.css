@@ -784,14 +784,12 @@ button:focus {
   --bs-btn-active-bg: transparent;
 }
 
-.device .btn,
-.device .form-check-input {
+.device .hidden-without-hover {
   opacity: 0;
   transition: opacity 0.2s ease-out 0s !important;
 }
 
-.device:hover .btn,
-.device:hover .form-check-input {
+.device:hover .hidden-without-hover {
   opacity: 1;
 }
 
