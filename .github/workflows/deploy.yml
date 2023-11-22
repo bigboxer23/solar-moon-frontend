@@ -23,11 +23,6 @@ jobs:
         shell: bash
         env:
           AWS_EXPORTS_JS: ${{secrets.AWS_EXPORTS}}
-      - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: MyArtifact
-          path: ./src/aws-exports.js
       - name: Build
         run: npm run build
       - name: Deploy to S3
