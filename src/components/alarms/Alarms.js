@@ -4,7 +4,11 @@ import Loader from "../common/Loader";
 import React, { useEffect, useRef, useState } from "react";
 import { getAlarmData, getDevices } from "../../services/services";
 import { MONTH } from "../../services/search";
-import { getFormattedTime, useSearchParamState } from "../../utils/Utils";
+import {
+  getFormattedTime,
+  getRoundedTime,
+  useSearchParamState,
+} from "../../utils/Utils";
 import SearchBar from "../reports/SearchBar";
 import { useSearchParams } from "react-router-dom";
 
@@ -25,13 +29,13 @@ const Alarms = () => {
   );
   const [devices, setDevices] = useState([]);
   const [start, setStart] = useSearchParamState(
-    new Date(new Date().getTime() - MONTH).getTime(),
+    getRoundedTime(false, MONTH).getTime(),
     "start",
     searchParams,
     setSearchParams,
   );
   const [end, setEnd] = useSearchParamState(
-    new Date().getTime(),
+    getRoundedTime(true, 0).getTime(),
     "end",
     searchParams,
     setSearchParams,
