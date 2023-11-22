@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import * as d3 from "d3";
-import { useSearchParams } from "react-router-dom";
 
 export function preventSubmit(event) {
   if (event.key === "Enter") {
@@ -64,3 +63,13 @@ export const sortDevices = (d1, d2) =>
     undefined,
     { sensitivity: "accent" },
   );
+
+export const getRoundedTime = (roundedUp, offset) => {
+  const date = new Date();
+  if (!roundedUp) {
+    date.setHours(0, 0, 0, 0);
+    return new Date(date.getTime() - offset);
+  }
+  date.setHours(23, 59, 59, 999);
+  return date;
+};
