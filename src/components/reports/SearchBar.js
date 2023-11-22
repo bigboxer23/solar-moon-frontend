@@ -15,7 +15,7 @@ import DateRangePicker from "@wojtekmaj/react-daterange-picker";
 import "@wojtekmaj/react-daterange-picker/dist/DateRangePicker.css";
 import "react-calendar/dist/Calendar.css";
 import { getDevices } from "../../services/services";
-import { sortDevices } from "../../utils/Utils";
+import { getRoundedTime, sortDevices } from "../../utils/Utils";
 
 const SearchBar = ({
   devices,
@@ -57,7 +57,10 @@ const SearchBar = ({
 
   const dateChanged = (date) => {
     if (date === null) {
-      date = [new Date(new Date().getTime() - defaultSearchPeriod), new Date()];
+      date = [
+        getRoundedTime(false, defaultSearchPeriod),
+        getRoundedTime(true, 0),
+      ];
     }
     setValue(date);
     setStart(date[0].getTime());

@@ -8,7 +8,11 @@ import SearchBar from "./SearchBar";
 import { DAY } from "../../services/search";
 import DownloadReportButton from "./DownloadReportButton";
 import { useIntl } from "react-intl";
-import { getFormattedTime, useSearchParamState } from "../../utils/Utils";
+import {
+  getFormattedTime,
+  getRoundedTime,
+  useSearchParamState,
+} from "../../utils/Utils";
 import { useSearchParams } from "react-router-dom";
 
 const Reports = () => {
@@ -26,14 +30,15 @@ const Reports = () => {
     searchParams,
     setSearchParams,
   );
+
   const [start, setStart] = useSearchParamState(
-    new Date(new Date().getTime() - DAY).getTime(),
+    getRoundedTime(false, DAY).getTime(),
     "start",
     searchParams,
     setSearchParams,
   );
   const [end, setEnd] = useSearchParamState(
-    new Date().getTime(),
+    getRoundedTime(true, 0).getTime(),
     "end",
     searchParams,
     setSearchParams,
