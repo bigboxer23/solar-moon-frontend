@@ -46,7 +46,14 @@ const StackedTimeSeries = ({ device, time }) => {
     const series = d3
       .stack()
       .keys(d3.union(graphData.map((d) => d.name))) // distinct series keys, in input order
-      .value(([, D], key) => D.get(key).avg)(
+      .value(([, D], key) => {
+        try {
+          return D.get(key).avg;
+        } catch (e) {
+          console.log(key + " " + e);
+          return 0;
+        }
+      })(
       // get value for each series key and stack
       d3.index(
         graphData,
