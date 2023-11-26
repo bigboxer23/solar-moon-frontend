@@ -29,7 +29,7 @@ const Home = () => {
     <div className={"root-page container min-vh-95"}>
       <Card>
         <CardHeader className={"d-flex align-items-center"}>
-          <div className={"welcome"}>Welcome {user.attributes.email}!</div>
+          <div className={"welcome"}>Hello {user.attributes.email}!</div>
           <div className={"flex-grow-1"} />
           <PeriodToggle time={time} setTime={setTime} />
         </CardHeader>
