@@ -23,6 +23,11 @@ jobs:
         shell: bash
         env:
           AWS_EXPORTS_JS: ${{secrets.AWS_EXPORTS}}
+      - name: Setup env
+        run: echo ENV_FILE_CONTENT >> ./.env
+        shell: bash
+        env:
+          ENV_FILE_CONTENT: ${{secrets.ENV_FILE}}
       - name: Build
         run: npm run build
       - name: Deploy to S3
