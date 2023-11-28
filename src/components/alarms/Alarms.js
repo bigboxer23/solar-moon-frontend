@@ -83,11 +83,28 @@ const Alarms = () => {
     if (row["endDate"] > row["startDate"]) {
       row.formattedEndDate = getFormattedTime(new Date(row["endDate"]));
     }
+    row.message = formatMessage(row.message);
     row.siteId =
       devices.find((device) => device.id === row.siteId)?.name || row.siteId;
     let d = devices.find((device) => device.id === row.deviceId);
     row.deviceId = d?.name || d?.deviceName || row.deviceId;
     return row;
+  };
+
+  const formatMessage = function (message) {
+    const unixSec = /\d{10}/.exec(message);
+    if (unixSec == null) {
+      return message;
+    }
+    const unixMS = /\d{13}/.exec(message);
+    const timestamp =
+      Number(unixMS == null ? unixSec : unixMS) * (unixMS == null ? 1000 : 1);
+    const finalMatch = unixMS == null ? unixSec : unixMS;
+    //Replace timestamp w/local time
+    return message.replaceAll(
+      finalMatch,
+      getFormattedTime(new Date(timestamp)),
+    );
   };
 
   const fetchDevices = () => {
