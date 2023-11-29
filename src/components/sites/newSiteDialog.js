@@ -10,7 +10,11 @@ const NewSiteDialog = ({
   setActiveSite,
   setVersion,
 }) => {
-  const [site, setSite] = useState({ virtual: true, name: "" });
+  const [site, setSite] = useState({
+    virtual: true,
+    virtualIndex: "true",
+    name: "",
+  });
 
   const createNewSite = () => {
     if (site.name !== "") {
