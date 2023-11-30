@@ -73,3 +73,25 @@ export const getRoundedTime = (roundedUp, offset) => {
   date.setHours(23, 59, 59, 999);
   return date;
 };
+
+export const getFormattedDaysHoursMinutes = (time) => {
+  if (time === undefined || time === 0) {
+    return "";
+  }
+  time = time / 1000;
+  let days = ~~(time / 86400);
+  let hours = ~~(time / 3600);
+  let minutes = ~~((time % 3600) / 60);
+  //let seconds = ~~time % 60;
+  let formattedTime = "";
+  if (days > 0) {
+    formattedTime += days + "d ";
+  }
+  if (hours > 0) {
+    formattedTime += hours + "h ";
+  }
+  if (days === 0 && hours === 0 && minutes === 0) {
+    minutes = 1;
+  }
+  return formattedTime + minutes + "m";
+};

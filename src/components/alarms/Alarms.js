@@ -5,6 +5,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { getAlarmData, getDevices } from "../../services/services";
 import { MONTH } from "../../services/search";
 import {
+  getFormattedDaysHoursMinutes,
   getFormattedTime,
   getRoundedTime,
   useSearchParamState,
@@ -57,6 +58,11 @@ const Alarms = () => {
       width: 150,
     },
     {
+      key: "duration",
+      name: "Duration",
+      width: 100,
+    },
+    {
       key: "siteId",
       name: "Site",
       width: 150,
@@ -82,6 +88,9 @@ const Alarms = () => {
     row.formattedStartDate = getFormattedTime(new Date(row["startDate"]));
     if (row["endDate"] > row["startDate"]) {
       row.formattedEndDate = getFormattedTime(new Date(row["endDate"]));
+      row.duration = getFormattedDaysHoursMinutes(
+        row["endDate"] - row["startDate"],
+      );
     }
     row.message = formatMessage(row.message);
     row.siteId =
