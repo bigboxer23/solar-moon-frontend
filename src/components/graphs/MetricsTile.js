@@ -48,7 +48,7 @@ const MetricsTile = ({ device, time }) => {
       className={"metrics-tile m-3 p-3 d-flex flex-column position-relative"}
     >
       <div className={"site-name fs-4"}>{device.name}</div>
-      <div className={"weather fs-4 d-flex align-items-center"}>
+      <div className={"weather fs-4 d-flex align-items-center"} title={weather}>
         {getWeatherIcon(weather)}
         <div className={"ms-2 text-muted smaller-text"}>
           {getFormattedTemp(temperature)}
