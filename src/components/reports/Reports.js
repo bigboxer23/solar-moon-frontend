@@ -11,6 +11,7 @@ import { useIntl } from "react-intl";
 import {
   getFormattedTime,
   getRoundedTime,
+  getWeatherIcon,
   useSearchParamState,
 } from "../../utils/Utils";
 import { useSearchParams } from "react-router-dom";
@@ -54,7 +55,16 @@ const Reports = () => {
     fetchData(0, (rows) => setRows(rows), true);
   }, []);
 
+  const RowRenderer = (row) => {
+    return (
+      <div className={"d-flex justify-content-center h-100"}>
+        {getWeatherIcon(row.row["weatherSummary"])}
+      </div>
+    );
+  };
+
   const columns = [
+    { key: "weatherSummary", name: "", width: 25, renderCell: RowRenderer },
     { key: "time", name: "Time", width: 150 },
     { key: "site", name: "Site" },
     { key: "device-name", name: "Device Name" },
