@@ -1,7 +1,7 @@
-import { Button, Form, Modal, Spinner } from "react-bootstrap";
+import { Button, Col, Form, Modal, Row, Spinner } from "react-bootstrap";
 import React, { useState } from "react";
 import { addDevice } from "../../services/services";
-import { preventSubmit } from "../../utils/Utils";
+import { onEnterPressed, preventSubmit } from "../../utils/Utils";
 
 const NewSiteDialog = ({
   show,
@@ -14,6 +14,11 @@ const NewSiteDialog = ({
     virtual: true,
     virtualIndex: "true",
     name: "",
+    city: "",
+    state: "",
+    country: "",
+    latitude: -1,
+    longitude: -1,
   });
 
   const createNewSite = () => {
@@ -35,7 +40,7 @@ const NewSiteDialog = ({
   };
   const handleClose = () => setShow(false);
   return (
-    <Modal show={show} onHide={handleClose} data-bs-theme="dark">
+    <Modal size={"lg"} show={show} onHide={handleClose} data-bs-theme="dark">
       <Modal.Header closeButton>
         <Modal.Title>Create New Site</Modal.Title>
       </Modal.Header>
@@ -54,12 +59,53 @@ const NewSiteDialog = ({
                 })
               }
               onKeyPress={preventSubmit}
-              onKeyUp={(event) => {
-                if (event.key === "Enter") {
-                  createNewSite();
-                }
-              }}
+              onKeyUp={(event) => onEnterPressed(event, createNewSite)}
               autoFocus
+            />
+          </Form.Group>
+          <Row className="mb-3">
+            <Form.Group as={Col} controlId="formGridCity">
+              <Form.Label>City</Form.Label>
+              <Form.Control
+                value={site.city || ""}
+                onChange={(e) =>
+                  setSite({
+                    ...site,
+                    city: e.target.value,
+                  })
+                }
+                onKeyPress={preventSubmit}
+                onKeyUp={(event) => onEnterPressed(event, createNewSite)}
+              />
+            </Form.Group>
+
+            <Form.Group as={Col} controlId="formGridState">
+              <Form.Label>State, County, Province, or Region</Form.Label>
+              <Form.Control
+                value={site.state || ""}
+                onChange={(e) =>
+                  setSite({
+                    ...site,
+                    state: e.target.value,
+                  })
+                }
+                onKeyPress={preventSubmit}
+                onKeyUp={(event) => onEnterPressed(event, createNewSite)}
+              />
+            </Form.Group>
+          </Row>
+          <Form.Group as={Col} controlId="formGridCountry">
+            <Form.Label>Country</Form.Label>
+            <Form.Control
+              value={site.country || ""}
+              onChange={(e) =>
+                setSite({
+                  ...site,
+                  country: e.target.value,
+                })
+              }
+              onKeyPress={preventSubmit}
+              onKeyUp={(event) => onEnterPressed(event, createNewSite)}
             />
           </Form.Group>
         </Form>

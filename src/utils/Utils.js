@@ -10,6 +10,11 @@ export function preventSubmit(event) {
     event.stopPropagation();
   }
 }
+export const onEnterPressed = (event, functionToRun) => {
+  if (event.key === "Enter") {
+    functionToRun();
+  }
+};
 
 export function defaultIfEmpty(defaultValue, value) {
   return value === null || value === undefined || value === ""

@@ -2,7 +2,7 @@ import { Button, Card, Col, Form, Row, Spinner } from "react-bootstrap";
 import React, { useState } from "react";
 
 import { getDevices, updateDevice } from "../../services/services";
-import { preventSubmit } from "../../utils/Utils";
+import { onEnterPressed, preventSubmit } from "../../utils/Utils";
 
 const SiteAttributes = ({ data, setDevices, setActiveSite }) => {
   const [device, setDevice] = useState(data);
@@ -45,11 +45,6 @@ const SiteAttributes = ({ data, setDevices, setActiveSite }) => {
     return device;
   };
 
-  const submit = (event) => {
-    if (event.key === "Enter") {
-      update();
-    }
-  };
   return (
     <Card className={"device site-attributes"}>
       <Card.Body>
@@ -68,7 +63,7 @@ const SiteAttributes = ({ data, setDevices, setActiveSite }) => {
                 })
               }
               onKeyPress={preventSubmit}
-              onKeyUp={submit}
+              onKeyUp={(event) => onEnterPressed(event, update)}
             />
           </Form.Group>
           <Row className="mb-3">
@@ -83,7 +78,7 @@ const SiteAttributes = ({ data, setDevices, setActiveSite }) => {
                   })
                 }
                 onKeyPress={preventSubmit}
-                onKeyUp={submit}
+                onKeyUp={(event) => onEnterPressed(event, update)}
               />
             </Form.Group>
 
@@ -98,7 +93,7 @@ const SiteAttributes = ({ data, setDevices, setActiveSite }) => {
                   })
                 }
                 onKeyPress={preventSubmit}
-                onKeyUp={submit}
+                onKeyUp={(event) => onEnterPressed(event, update)}
               />
             </Form.Group>
 
@@ -113,7 +108,7 @@ const SiteAttributes = ({ data, setDevices, setActiveSite }) => {
                   })
                 }
                 onKeyPress={preventSubmit}
-                onKeyUp={submit}
+                onKeyUp={(event) => onEnterPressed(event, update)}
               />
             </Form.Group>
           </Row>
