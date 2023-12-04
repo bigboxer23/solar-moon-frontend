@@ -56,15 +56,22 @@ const Reports = () => {
   }, []);
 
   const RowRenderer = (row) => {
+    const temperature =
+      row.row["temperature"] === undefined
+        ? ""
+        : Math.round(row.row["temperature"]) + "°F";
     return (
-      <div className={"d-flex justify-content-center h-100"}>
+      <div
+        className={"d-flex justify-content-center h-100"}
+        title={row.row["weatherSummary"] + " " + temperature}
+      >
         {getWeatherIcon(row.row["weatherSummary"])}
       </div>
     );
   };
 
   const columns = [
-    { key: "weatherSummary", name: "", width: 25, renderCell: RowRenderer },
+    { key: "weatherSummary", name: "", width: 50, renderCell: RowRenderer },
     { key: "time", name: "Time", width: 150 },
     { key: "site", name: "Site" },
     { key: "device-name", name: "Device Name" },
