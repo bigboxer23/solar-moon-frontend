@@ -1,35 +1,42 @@
 import { useEffect, useState } from "react";
-import { getAvgTotal, getMaxCurrent } from "../../services/services";
+import { getTileContent } from "../../services/services";
 import { TOTAL_REAL_POWER } from "../../services/search";
-import { FormattedNumber } from "react-intl";
 import FormattedLabel from "./FormattedLabel";
+import { getWeatherIcon } from "../../utils/Utils";
 
 const MetricsTile = ({ device, time }) => {
   const [total, setTotal] = useState(-1);
   const [avg, setAvg] = useState(-1);
   const [max, setMax] = useState(0);
+  const [weather, setWeather] = useState("");
+  const [temperature, setTemperature] = useState(-1);
   useEffect(() => {
     let end = new Date();
-    getAvgTotal(device, new Date(end.getTime() - time), end)
+    getTileContent(device, new Date(end.getTime() - time), end)
       .then(({ data }) => {
-        setTotal(Math.round(data.aggregations["sum#total"].value * 10) / 10);
-        setAvg(Math.round(data.aggregations["avg#avg"].value * 10) / 10);
-      })
-      .catch((e) => console.log(e));
-    getMaxCurrent(device)
-      .then(({ data }) => {
+        data[0] = JSON.parse(data[0]);
+        setTotal(Math.round(data[0].aggregations["sum#total"].value * 10) / 10);
+        setAvg(Math.round(data[0].aggregations["avg#avg"].value * 10) / 10);
+        data[1] = JSON.parse(data[1]);
         setMax(
           getGaugeValue(
-            data.aggregations["max#max"].value,
-            data.hits.hits.length > 0
-              ? data.hits.hits[0].fields[TOTAL_REAL_POWER][0]
+            data[1].aggregations["max#max"].value,
+            data[1].hits.hits.length > 0
+              ? data[1].hits.hits[0].fields[TOTAL_REAL_POWER][0]
               : 0,
           ),
         );
+
+        data[2] = JSON.parse(data[2]);
+        setWeather(data[2].hits.hits[0]._source["weatherSummary"]);
+        setTemperature(data[2].hits.hits[0]._source["temperature"]);
       })
       .catch((e) => console.log(e));
   }, [time]);
 
+  const getFormattedTemp = (temp) => {
+    return temp === -1 ? "" : Math.round(temp) + "°F";
+  };
   const getGaugeValue = (max, avg) => {
     max = max === null ? 0 : max;
     let scale = 200 / max;
@@ -41,6 +48,12 @@ const MetricsTile = ({ device, time }) => {
       className={"metrics-tile m-3 p-3 d-flex flex-column position-relative"}
     >
       <div className={"site-name fs-4"}>{device.name}</div>
+      <div className={"weather fs-4 d-flex align-items-center"}>
+        {getWeatherIcon(weather)}
+        <div className={"ms-2 text-muted smaller-text"}>
+          {getFormattedTemp(temperature)}
+        </div>
+      </div>
       <div className={"flex-grow-1"} />
       <div className={"align-self-end text-muted smaller-text"}>
         <FormattedLabel label={"Total"} value={total} />

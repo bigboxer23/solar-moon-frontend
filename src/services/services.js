@@ -1,15 +1,14 @@
-import { api, openSearch } from "./apiClient";
+import { api } from "./apiClient";
+
 import {
+  DAY,
   getAvgTotalBody,
   getDataPageBody,
   getMaxCurrentBody,
   getStackedTimeSeriesBody,
   getTimeSeriesBody,
 } from "./search";
-
-export const directSearchAPI = false;
-const service = directSearchAPI ? openSearch : api;
-const serviceName = directSearchAPI ? "_search" : "search";
+import { getRoundedTime } from "../utils/Utils";
 
 export function getCustomer() {
   return api.get("customer");
@@ -68,34 +67,49 @@ export function getAlarmData() {
 }
 
 export function getTimeSeriesData(device, start, end) {
-  return service.post(serviceName, getTimeSeriesBody(device, start, end));
+  return api.post("search", getTimeSeriesBody(device, start, end));
 }
 
 export function getStackedTimeSeriesData(device, start, end) {
-  return service.post(
-    serviceName,
+  return api.post(
+    "search",
     getStackedTimeSeriesBody(device, start, end, "stackedTimeSeries"),
   );
 }
 
 export function getGroupedTimeSeriesData(device, start, end) {
-  return service.post(
-    serviceName,
+  return api.post(
+    "search",
     getStackedTimeSeriesBody(device, start, end, "groupedBarGraph"),
   );
 }
 
 export function getAvgTotal(device, start, end) {
-  return service.post(serviceName, getAvgTotalBody(device, start, end));
+  return api.post("search", getAvgTotalBody(device, start, end));
 }
 
 export function getMaxCurrent(device) {
-  return service.post(serviceName, getMaxCurrentBody(device));
+  return api.post("search", getMaxCurrentBody(device));
+}
+
+export function getTileContent(device, start, end) {
+  return api.post("search", [
+    getAvgTotalBody(device, start, end),
+    getMaxCurrentBody(device),
+    getDataPageBody(
+      device.site,
+      device.name,
+      getRoundedTime(false, DAY),
+      getRoundedTime(true, 0),
+      0,
+      1,
+    ),
+  ]);
 }
 
 export function getDataPage(site, device, start, end, offset, size) {
-  return service.post(
-    serviceName,
+  return api.post(
+    "search",
     getDataPageBody(
       site,
       device,
