@@ -29,7 +29,7 @@ const MetricsTile = ({ device, time }) => {
 
         data[2] = JSON.parse(data[2]);
         setWeather(data[2].hits.hits[0]._source["weatherSummary"]);
-        setTemperature(data[2].hits.hits[0]._source["temperature"]);
+        setTemperature(data[2].hits.hits[0]._source["temperature"] || -1);
       })
       .catch((e) => console.log(e));
   }, [time]);
