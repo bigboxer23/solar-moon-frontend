@@ -24,9 +24,9 @@ const DownloadReportButton = ({ site, device, start, end, timeFormatter }) => {
 
   const getFileName = () => {
     let fileName =
-      timeFormatter({ "@timestamp": start.getTime() }) +
+      timeFormatter(new Date(Number(start))) +
       " - " +
-      timeFormatter({ "@timestamp": end.getTime() });
+      timeFormatter(new Date(Number(end)));
 
     if (device !== null && device !== "All Devices") {
       return fileName + " - " + device + ".csv";
