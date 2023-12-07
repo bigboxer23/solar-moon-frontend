@@ -135,11 +135,11 @@ const Device = ({ data, devices, setDevices }) => {
             </Form.Select>
           </Form.Group>
           <Form.Group className="mb-3" controlId="formDisplayName">
-            <Form.Label>Disable Notifications</Form.Label>
+            <Form.Label>Notifications</Form.Label>
             <Form.Check
               type={"switch"}
               id={device.id + `notificationsDisabled`}
-              checked={device.notificationsDisabled}
+              checked={!device.notificationsDisabled}
               onChange={(e) => {
                 setDevice({
                   ...device,
