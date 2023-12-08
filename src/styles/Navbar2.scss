@@ -1,0 +1,68 @@
+@import "utils/colors";
+
+.Navbar2 {
+  height : 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: $BRAND_PRIMARY_LIGHT;
+  font-family: 'Roboto', sans-serif;
+  border-bottom: $TEXT_SECONDARY 1px solid;
+
+  .brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .brand-img {
+      height: 48px;
+      width: 48px;
+      margin-left: 2rem;
+      transform: rotate(90deg);
+    }
+  }
+
+  .link {
+    color: $TEXT_PRIMARY;
+    margin-left: 1.2rem;
+    margin-right: 1.2rem;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 18px;
+  }
+
+  .sun {
+    color: $TEXT_SECONDARY;
+    margin-left: 1.2rem;
+    margin-right: 1.2rem;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 18px;
+  }
+
+  .link-active {
+    @extend .link;
+    border-bottom: $TEXT_PRIMARY 2px solid;
+  }
+
+  .profile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 2rem;
+
+    .profile-img-temp {
+      height: 48px;
+      width: 48px;
+      background-color: $BRAND_PRIMARY;
+      border-radius: 100%;
+      display: flex;
+      justify-content: center;
+        align-items: center;
+      color: $BRAND_PRIMARY_LIGHT;
+      font-size: 20px;
+      font-weight: bold;
+    }
+  }
+
+}

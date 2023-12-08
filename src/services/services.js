@@ -8,7 +8,7 @@ import {
   getStackedTimeSeriesBody,
   getTimeSeriesBody,
 } from "./search";
-import { getRoundedTime } from "../utils/Utils";
+import { getRoundedTime, subtractIncrementFromDate } from "../utils/Utils";
 
 export function getCustomer() {
   return api.get("customer");
@@ -70,6 +70,17 @@ export function getTimeSeriesData(device, start, end) {
   return api.post("search", getTimeSeriesBody(device, start, end));
 }
 
+export function getListTimeSeriesData(devices, increment) {
+  const end = new Date();
+  const start = subtractIncrementFromDate(increment, end);
+
+  const timeSeriesBodies = devices.map((device) =>
+    getTimeSeriesBody(device, start, end),
+  );
+
+  return api.post("search", timeSeriesBodies);
+}
+
 export function getStackedTimeSeriesData(device, start, end) {
   return api.post(
     "search",
@@ -105,6 +116,13 @@ export function getTileContent(device, start, end) {
       1,
     ),
   ]);
+}
+
+export function getOverviewTotal(increment) {
+  const end = new Date();
+  const start = subtractIncrementFromDate(increment, end);
+
+  return api.post("search", getAvgTotalBody(null, start, end));
 }
 
 export function getDataPage(site, device, start, end, offset, size) {

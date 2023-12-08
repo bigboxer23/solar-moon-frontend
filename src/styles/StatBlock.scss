@@ -1,0 +1,31 @@
+@import "utils/colors";
+
+.StatBlock {
+  margin-right: 2rem;
+  display: flex;
+  .stat-block-value {
+    font-weight: bold;
+    font-size: 48px;
+    line-height: 48px;
+    display: inline-block;
+    align-self: flex-end;
+  }
+  .stat-block-title {
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 18px;
+    display: inline-block;
+    align-self: flex-end;
+    margin-left: .5rem;
+    max-width: 50px;
+    margin-bottom: 4px;
+  }
+
+  &.red {
+    color: $DANGER;
+  }
+
+  &.gray {
+    color: $TEXT_SECONDARY;
+  }
+}

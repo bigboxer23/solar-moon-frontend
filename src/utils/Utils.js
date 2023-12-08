@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import * as d3 from "d3";
 import { MdFoggy, MdOutlineWbCloudy, MdOutlineWbSunny } from "react-icons/md";
 import { IoPartlySunnyOutline } from "react-icons/io5";
+import moment from "moment";
 
 export function preventSubmit(event) {
   if (event.key === "Enter") {
@@ -79,6 +80,43 @@ export const getRoundedTime = (roundedUp, offset) => {
   }
   date.setHours(23, 59, 59, 999);
   return date;
+};
+
+export const splitDayAndNightDataSets = (data) => {
+  let dayData = [];
+  let nightData = [];
+  data.forEach((d) => {
+    const hour = moment(d.date).hour();
+
+    if (hour > 5 && hour < 18) {
+      dayData.push(d);
+      nightData.push({ date: d.date, values: null });
+    } else if (hour === 18 || hour === 5) {
+      dayData.push(d);
+      nightData.push(d);
+    } else {
+      nightData.push(d);
+      dayData.push({ date: d.date, values: null });
+    }
+  });
+  return [dayData, nightData];
+};
+
+export const subtractIncrementFromDate = (increment, date) => {
+  const subtractedDate = new Date(date);
+
+  if (increment === "hr")
+    subtractedDate.setHours(subtractedDate.getHours() - 1);
+  else if (increment === "day")
+    subtractedDate.setDate(subtractedDate.getDate() - 1);
+  else if (increment === "week")
+    subtractedDate.setDate(subtractedDate.getDate() - 7);
+  else if (increment === "month")
+    subtractedDate.setMonth(subtractedDate.getMonth() - 1);
+  else if (increment === "year")
+    subtractedDate.setFullYear(subtractedDate.getFullYear() - 1);
+
+  return subtractedDate;
 };
 
 export const getFormattedDaysHoursMinutes = (time) => {

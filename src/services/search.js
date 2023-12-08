@@ -30,7 +30,7 @@ export function getMaxCurrentBody(device) {
 }
 
 export function getAvgTotalBody(device, start, end) {
-  return getJSONSearch(device.name, null, null, start, end, "avgTotal");
+  return getJSONSearch(device?.name, null, null, start, end, "avgTotal");
 }
 
 export function getStackedTimeSeriesBody(site, start, end, type) {

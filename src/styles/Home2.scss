@@ -1,0 +1,21 @@
+@import "utils/colors";
+
+.Home2 {
+  background-color: $BRAND_PRIMARY_LIGHT;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  .summary-header {
+    padding-top: 32px;
+    padding-bottom: 32px;
+    font-size: 20px;
+    font-weight: bold;
+
+    .summary-emphasized {
+      font-size: 32px;
+      font-weight: bold;
+      color: $BRAND_PRIMARY;
+    }
+  }
+}

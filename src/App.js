@@ -24,49 +24,41 @@ import CheckoutForm from "./components/checkout/CheckoutForm";
 import Return from "./components/checkout/CheckoutReturn";
 import PricingPage from "./components/checkout/PricingPage";
 import { IntlProvider } from "react-intl";
+import Navbar2 from "./components/newUIComponents/nav/Navbar2";
+import { newTheme, oldTheme } from "./themes";
+import Home2 from "./components/newUIComponents/Home2";
+import Footer2 from "./components/newUIComponents/Footer2";
+
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  TimeScale,
+} from "chart.js";
+
+import "chartjs-adapter-moment";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  TimeScale,
+);
 
 Amplify.configure(awsExports);
 function App() {
-  const theme = {
-    name: "my-theme",
-    tokens: {
-      fonts: {
-        default: {
-          static: {
-            value: '"Raleway", serif',
-          },
-          variable: {
-            value: '"Raleway", serif',
-          },
-        },
-      },
-      colors: {
-        font: {
-          primary: "#ffffff",
-        },
-        brand: {
-          primary: {
-            10: { value: "rgba(81,120,194,.1)" },
-            20: { value: "rgba(81,120,194,.2)" },
-            40: { value: "rgba(81,120,194,.4)" },
-            60: { value: "rgba(81,120,194,.6)" },
-            80: { value: "rgba(81,120,194,1)" },
-            90: { value: "rgba(81,120,194,.9)" },
-            100: { value: "rgba(81,120,194,1)" },
-          },
-          secondary: {
-            10: { value: "rgba(240,207,96,.1)" },
-            20: { value: "rgba(240,207,96,.2)" },
-            40: { value: "rgba(240,207,96,.4)" },
-            60: { value: "rgba(240,207,96,.6)" },
-            80: { value: "rgba(240,207,96,.8)" },
-            90: { value: "rgba(240,207,96,.9)" },
-            100: { value: "rgba(240,207,96,1)" },
-          },
-        },
-      },
-    },
-  };
+  // Enable for new UI
+  const newUI = process.env.NEW_UI ?? false;
+  const theme = newUI ? newTheme : oldTheme;
 
   const components = {
     Header,
@@ -75,6 +67,11 @@ function App() {
     },
     Footer,
   };
+
+  // temp Hack for new theme bg color
+  document.getElementsByTagName("body")[0].style.backgroundColor = newUI
+    ? "#eef2f9"
+    : "#23272d";
 
   return (
     <IntlProvider locale={navigator.language}>
@@ -85,10 +82,10 @@ function App() {
               <Routes>
                 <Route path="/checkout" element={""} />
                 <Route path="/pricing" element={""} />
-                <Route path="*" element={<Navbar />} />
+                <Route path="*" element={newUI ? <Navbar2 /> : <Navbar />} />
               </Routes>
               <Routes>
-                <Route path="/" element={<Home />} />
+                <Route path="/" element={newUI ? <Home2 /> : <Home />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/reports" element={<Reports />} />
                 <Route path="/sites" element={<SiteManagement />} />
@@ -99,7 +96,7 @@ function App() {
                 <Route path="/pricing" element={<PricingPage />} />
                 <Route path="*" element={<Navigate to="/" />} />
               </Routes>
-              <Footer />
+              {newUI ? <Footer2 /> : <Footer />}
             </div>
           </Router>
         </Authenticator>
