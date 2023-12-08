@@ -24,6 +24,7 @@ import CheckoutForm from "./components/checkout/CheckoutForm";
 import Return from "./components/checkout/CheckoutReturn";
 import PricingPage from "./components/checkout/PricingPage";
 import { IntlProvider } from "react-intl";
+import Mapping from "./components/mapping/Mapping";
 
 Amplify.configure(awsExports);
 function App() {
@@ -96,6 +97,7 @@ function App() {
                 <Route path="/userManagement" element={<UserManagement />} />
                 <Route path="/checkout" element={<CheckoutForm />} />
                 <Route path="/return" element={<Return />} />
+                <Route path="/mapping" element={<Mapping />} />
                 <Route path="/pricing" element={<PricingPage />} />
                 <Route path="*" element={<Navigate to="/" />} />
               </Routes>
