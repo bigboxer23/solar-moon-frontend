@@ -31,19 +31,29 @@ const AddMapping = ({ mappings, setMappings }) => {
       console.log("not adding, already found in custom list");
       return;
     }
-    addMapping(mapping.attribute, mapping.mappingName).then(({ data }) => {
-      setMappings([
-        ...mappings,
-        {
-          mappingName: mapping.mappingName,
-          attribute: mapping.attribute,
-        },
-      ]);
-      setMapping({
-        mappingName: "",
-        attribute: AVG_CURRENT,
-      });
-    });
+    document.getElementById("add-mapping-button").classList.add("disabled");
+    addMapping(mapping.attribute, mapping.mappingName)
+      .then(({ data }) => {
+        setMappings([
+          ...mappings,
+          {
+            mappingName: mapping.mappingName,
+            attribute: mapping.attribute,
+          },
+        ]);
+        setMapping({
+          mappingName: "",
+          attribute: AVG_CURRENT,
+        });
+        document
+          .getElementById("add-mapping-button")
+          .classList.remove("disabled");
+      })
+      .catch(() =>
+        document
+          .getElementById("add-mapping-button")
+          .classList.remove("disabled"),
+      );
   };
   return (
     <Form className={""}>
@@ -79,7 +89,7 @@ const AddMapping = ({ mappings, setMappings }) => {
           </Form.Select>
         </Form.Group>
         <Button
-          id={"report-download-button"}
+          id={"add-mapping-button"}
           className={"ms-3"}
           variant={"outline-light"}
           title={"Add Attribute"}
