@@ -120,3 +120,18 @@ export function getDataPage(site, device, start, end, offset, size) {
     ),
   );
 }
+
+export function addMapping(attribute, mappingName) {
+  return api.put("mappings", {
+    attribute: attribute,
+    mappingName: mappingName,
+  });
+}
+
+export function getMappings() {
+  return api.get("mappings");
+}
+
+export function deleteMapping(mappingName) {
+  return api.delete("mappings/" + mappingName);
+}

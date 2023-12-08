@@ -1,0 +1,101 @@
+import { Button, Col, Form, Spinner } from "react-bootstrap";
+import React, { useState } from "react";
+import { attributeMappings, attributes, AVG_CURRENT } from "./MappingConstants";
+import { MdOutlineAddCircle } from "react-icons/md";
+import { addMapping } from "../../services/services";
+import { onEnterPressed, preventSubmit } from "../../utils/Utils";
+
+const AddMapping = ({ mappings, setMappings }) => {
+  const [mapping, setMapping] = useState({
+    mappingName: "",
+    attribute: AVG_CURRENT,
+  });
+
+  const addMappingClicked = () => {
+    if (mapping.mappingName.trim() === "") {
+      return;
+    }
+    if (
+      Object.entries(attributeMappings).find((d) => {
+        return d[0] === mapping.mappingName;
+      }) !== undefined
+    ) {
+      console.log("not adding, already found in default list");
+      return;
+    }
+    if (
+      mappings.find((d) => {
+        return d.mappingName === mapping.mappingName;
+      }) !== undefined
+    ) {
+      console.log("not adding, already found in custom list");
+      return;
+    }
+    addMapping(mapping.attribute, mapping.mappingName).then(({ data }) => {
+      setMappings([
+        ...mappings,
+        {
+          mappingName: mapping.mappingName,
+          attribute: mapping.attribute,
+        },
+      ]);
+      setMapping({
+        mappingName: "",
+        attribute: AVG_CURRENT,
+      });
+    });
+  };
+  return (
+    <Form className={""}>
+      <div className="d-flex align-items-end mb-3">
+        <Form.Group as={Col} controlId="mapping">
+          <Form.Label>Mapping name</Form.Label>
+          <Form.Control
+            value={mapping.mappingName}
+            onChange={(e) =>
+              setMapping({ ...mapping, mappingName: e.target.value })
+            }
+            onKeyPress={preventSubmit}
+            onKeyUp={(event) => onEnterPressed(event, addMappingClicked)}
+          />
+        </Form.Group>
+        <div className={"p-2"}>-></div>
+        <Form.Group as={Col} controlId="attribute">
+          <Form.Label>Attribute</Form.Label>
+          <Form.Select
+            aria-label="site select"
+            value={mapping.attribute}
+            onChange={(e) =>
+              setMapping({ ...mapping, attribute: e.target.value })
+            }
+          >
+            {attributes.map((attr) => {
+              return (
+                <option key={attr} value={attr}>
+                  {attr}
+                </option>
+              );
+            })}
+          </Form.Select>
+        </Form.Group>
+        <Button
+          id={"report-download-button"}
+          className={"ms-3"}
+          variant={"outline-light"}
+          title={"Add Attribute"}
+          onClick={addMappingClicked}
+        >
+          <MdOutlineAddCircle style={{ marginBottom: "2px" }} />
+          <Spinner
+            as="span"
+            animation="border"
+            size="sm"
+            role="status"
+            className={"d-none"}
+          />
+        </Button>
+      </div>
+    </Form>
+  );
+};
+export default AddMapping;
