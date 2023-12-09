@@ -28,6 +28,7 @@ import Navbar2 from "./components/newUIComponents/nav/Navbar2";
 import { newTheme, oldTheme } from "./themes";
 import Home2 from "./components/newUIComponents/Home2";
 import Footer2 from "./components/newUIComponents/Footer2";
+import Mapping from "./components/mapping/Mapping";
 
 import {
   Chart as ChartJS,
@@ -93,6 +94,7 @@ function App() {
                 <Route path="/userManagement" element={<UserManagement />} />
                 <Route path="/checkout" element={<CheckoutForm />} />
                 <Route path="/return" element={<Return />} />
+                <Route path="/mapping" element={<Mapping />} />
                 <Route path="/pricing" element={<PricingPage />} />
                 <Route path="*" element={<Navigate to="/" />} />
               </Routes>
