@@ -11,8 +11,7 @@ const MetricsTile = ({ device, time }) => {
   const [weather, setWeather] = useState("");
   const [temperature, setTemperature] = useState(-1);
   useEffect(() => {
-    let end = new Date();
-    getTileContent(device, new Date(end.getTime() - time), end)
+    getTileContent(device, time)
       .then(({ data }) => {
         data[0] = JSON.parse(data[0]);
         setTotal(Math.round(data[0].aggregations["sum#total"].value * 10) / 10);
