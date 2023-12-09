@@ -92,19 +92,25 @@ export function getMaxCurrent(device) {
   return api.post("search", getMaxCurrentBody(device));
 }
 
-export function getTileContent(device, start, end) {
-  return api.post("search", [
-    getAvgTotalBody(device, start, end),
-    getMaxCurrentBody(device),
-    getDataPageBody(
-      device.site,
-      device.name,
-      getRoundedTime(false, DAY),
-      getRoundedTime(true, 0),
-      0,
-      1,
-    ),
-  ]);
+export function getTileContent(device, offset) {
+	return api.post("search", [
+		getAvgTotalBody(
+				device,
+				offset === HOUR
+						? new Date(new Date().getTime() - offset)
+						: getRoundedTime(false, offset === DAY ? 0 : offset),
+				new Date(),
+		),
+		getMaxCurrentBody(device),
+		getDataPageBody(
+				device.site,
+				device.name,
+				getRoundedTime(false, DAY),
+				getRoundedTime(true, 0),
+				0,
+				1,
+		),
+	]);
 }
 
 export function getDataPage(site, device, start, end, offset, size) {
