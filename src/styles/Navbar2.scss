@@ -1,12 +1,12 @@
 @import "utils/colors";
 
 .Navbar2 {
-  height : 100px;
+  height: 100px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: $BRAND_PRIMARY_LIGHT;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   border-bottom: $TEXT_SECONDARY 1px solid;
 
   .brand {
@@ -58,11 +58,10 @@
       border-radius: 100%;
       display: flex;
       justify-content: center;
-        align-items: center;
+      align-items: center;
       color: $BRAND_PRIMARY_LIGHT;
       font-size: 20px;
       font-weight: bold;
     }
   }
-
 }

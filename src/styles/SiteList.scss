@@ -15,12 +15,20 @@
     margin-bottom: 16px;
     display: flex;
 
-    .site-name, .device-count, .alert-count, .average, .total {
+    .site-name,
+    .device-count,
+    .alert-count,
+    .average,
+    .total {
       font-size: 12px;
     }
   }
 
-  .site-name, .device-count, .alert-count, .average, .total {
+  .site-name,
+  .device-count,
+  .alert-count,
+  .average,
+  .total {
     width: 15%;
     font-size: 16px;
     overflow: hidden;
@@ -28,7 +36,10 @@
     text-overflow: ellipsis;
   }
 
-  .device-count, .alert-count, .average, .total {
+  .device-count,
+  .alert-count,
+  .average,
+  .total {
     text-align: end;
     padding-left: 12px;
     padding-right: 12px;
