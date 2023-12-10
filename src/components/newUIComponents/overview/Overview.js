@@ -1,9 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  getAlarmData,
-  getDevices,
-  getOverviewTotal,
-} from "../../../services/services";
+import { getOverviewData } from "../../../services/services";
 import SiteList from "./site-list/SiteList";
 import OverviewChart from "./OverviewChart";
 import TimeIncrementSelector from "./TimeIncrementSelector";
@@ -28,45 +24,49 @@ export default function Overview() {
   const [averageOutput, setAverageOutput] = useState(0);
 
   useEffect(() => {
-    // TODO: All of this data should come from one endpoint, and include data noted in subcomponents
-    getOverviewTotal(timeIncrement).then(({ data }) => {
-      const totalKWH =
-        Math.round(data.aggregations["sum#total"].value * 10) / 10;
-
-      setTotalOutput(totalKWH);
-      setAverageOutput(
-        Math.round(data.aggregations["avg#avg"].value * 10) / 10,
-      );
-    });
-    getAlarmData().then(({ data }) => {
-      const active = data.filter((d) => d.state > 0);
-      const resolved = data.filter((d) => d.state === 0);
-
-      const resolvedInTimeIncrement = resolved.filter((d) => {
-        return (
-          new Date(d.startDate) > new Date(new Date().getTime() - timeIncrement)
-        );
-      });
-
-      setResolvedAlerts(resolvedInTimeIncrement);
-      setActiveAlerts(active);
-    });
-    getDevices().then(({ data }) => {
-      const sites = data.filter((d) => d.virtual);
-      const devices = data.filter((d) => !d.virtual);
-
-      const mappedSites = sites.map((s) => {
-        return {
-          ...s,
-          devices: devices.filter((d) => d.site === s.name),
-        };
-      });
-
-      setDevices(devices);
-      setSites(mappedSites);
+    getOverviewData(timeIncrement).then(({ data }) => {
+      handleDevices(data.devices);
+      handleAlarms(data.alarms);
+      handleOverviewTotal(data.overallTotalAvg);
     });
   }, [timeIncrement]);
 
+  const handleOverviewTotal = (data) => {
+    setTotalOutput(
+      Math.round(data.aggregations["total"]._value.value * 10) / 10,
+    );
+    setAverageOutput(
+      Math.round(data.aggregations["avg"]._value.value * 10) / 10,
+    );
+  };
+
+  const handleAlarms = (data) => {
+    const active = data.filter((d) => d.state > 0);
+    const resolved = data.filter((d) => d.state === 0);
+
+    const resolvedInTimeIncrement = resolved.filter((d) => {
+      return (
+        new Date(d.startDate) > new Date(new Date().getTime() - timeIncrement)
+      );
+    });
+
+    setResolvedAlerts(resolvedInTimeIncrement);
+    setActiveAlerts(active);
+  };
+  const handleDevices = (data) => {
+    const sites = data.filter((d) => d.virtual);
+    const devices = data.filter((d) => !d.virtual);
+
+    const mappedSites = sites.map((s) => {
+      return {
+        ...s,
+        devices: devices.filter((d) => d.site === s.name),
+      };
+    });
+
+    setDevices(devices);
+    setSites(mappedSites);
+  };
   return (
     <div className="Overview">
       <div className="overview-header">

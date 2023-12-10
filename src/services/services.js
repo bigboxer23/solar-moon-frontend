@@ -66,6 +66,13 @@ export function getAlarmData() {
   return api.post("alarms", {});
 }
 
+export function getOverviewData(offset) {
+  return api.post(
+    "overview",
+    getAvgTotalBody(null, getRoundedTimeFromOffset(offset), new Date()),
+  );
+}
+
 export function getTimeSeriesData(device, offset, virtual) {
   const body = getTimeSeriesBody(
     device,
