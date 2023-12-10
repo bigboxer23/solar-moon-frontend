@@ -25,6 +25,7 @@ import Return from "./components/checkout/CheckoutReturn";
 import PricingPage from "./components/checkout/PricingPage";
 import { IntlProvider } from "react-intl";
 import Mapping from "./components/mapping/Mapping";
+import { LockPage } from "./components/lock/LockPage";
 
 Amplify.configure(awsExports);
 function App() {
@@ -86,6 +87,7 @@ function App() {
               <Routes>
                 <Route path="/checkout" element={""} />
                 <Route path="/pricing" element={""} />
+                <Route path="/lock" element={""} />
                 <Route path="*" element={<Navbar />} />
               </Routes>
               <Routes>
@@ -99,6 +101,7 @@ function App() {
                 <Route path="/return" element={<Return />} />
                 <Route path="/mapping" element={<Mapping />} />
                 <Route path="/pricing" element={<PricingPage />} />
+                <Route path="/lock" element={<LockPage />} />
                 <Route path="*" element={<Navigate to="/" />} />
               </Routes>
               <Footer />
