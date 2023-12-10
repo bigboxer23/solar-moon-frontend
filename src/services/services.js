@@ -94,7 +94,6 @@ export function getMaxCurrent(device) {
 }
 
 export function getTileContent(device, offset) {
-  console.log("offset " + offset);
   return api.post("search", [
     getAvgTotalBody(
       device,
