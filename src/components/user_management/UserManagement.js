@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import {
   deleteCustomer,
   getCustomer as fetchCustomer,
-  getUserPortalSession,
   updateCustomer as updateRemoteCustomer,
 } from "../../services/services";
 import { Alert, Button, Card, Form, Row, Spinner } from "react-bootstrap";

@@ -14,7 +14,11 @@ const Home = () => {
   const [devices, setDevices] = useState([]);
   const [time, setTime] = useStickyState(DAY, "dashboard.time");
 
+  const [unlocked, setUnlocked] = useStickyState(null, "unlock.code");
   useEffect(() => {
+    if (maybeRedirect()) {
+      return;
+    }
     getDevices()
       .then(({ data }) => {
         setLoading(false);
@@ -24,6 +28,17 @@ const Home = () => {
         setLoading(false);
       });
   }, []);
+
+  const maybeRedirect = () => {
+    if (
+      process.env.REACT_APP_ACCESS_CODE &&
+      process.env.REACT_APP_ACCESS_CODE !== unlocked
+    ) {
+      window.location.href = "/lock";
+      return true;
+    }
+    return false;
+  };
 
   return (
     <div className={"root-page container min-vh-95"}>
