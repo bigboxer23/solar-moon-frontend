@@ -10,8 +10,7 @@ export default function SiteList({ sites, timeIncrement, devices, alerts }) {
   useEffect(() => {
     setLoading(true);
     getListTimeSeriesData(sites, timeIncrement).then(({ data }) => {
-      const parsedData = data.map((d) => JSON.parse(d));
-      const mappedSiteData = parsedData.map((d, i) => {
+      const mappedSiteData = data.map((d, i) => {
         const site = sites[i];
         const siteInfo = {
           ...site,

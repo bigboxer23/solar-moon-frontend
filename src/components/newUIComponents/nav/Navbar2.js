@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import { LuSun } from "react-icons/lu";
 import logo from "../../../assets/logo.svg";
 import React from "react";
+import UserMenu from "../../UserMenu";
 
 export default function Navbar2({ props }) {
   return (
@@ -45,9 +46,7 @@ export default function Navbar2({ props }) {
           Manage
         </NavLink>
       </nav>
-      <div className="profile">
-        <div className="profile-img-temp">AD</div>
-      </div>
+      <UserMenu />
     </div>
   );
 }

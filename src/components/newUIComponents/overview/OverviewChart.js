@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { getListTimeSeriesData } from "../../../services/services";
+import { getTimeSeriesData } from "../../../services/services";
 import { Line } from "react-chartjs-2";
-import { parseSearchReturn } from "../../../services/search";
+import { DAY, parseSearchReturn } from "../../../services/search";
 import { splitDayAndNightDataSets } from "../../../utils/Utils";
 
 export default function OverviewChart({ sites, timeIncrement }) {
@@ -12,34 +12,14 @@ export default function OverviewChart({ sites, timeIncrement }) {
   useEffect(() => {
     // TODO: this data should come from upstream so we arent re-fetching here, refactor later
     setLoading(true);
-    getListTimeSeriesData(sites, timeIncrement).then(({ data }) => {
-      const parsedData = data.map((d) => parseSearchReturn(JSON.parse(d)));
-
-      const mergedData = parsedData.reduce((acc, cur) => {
-        // TODO: hack to display overview graph by merging site graphs, this should be done on the backend
-
-        if (acc.length === 0) return cur;
-
-        return acc.map((d, i) => {
-          const accumulatorItem = acc[i];
-          const currentItem = cur[i];
-
-          const accumulatorValue = accumulatorItem.values;
-          const currentValue = currentItem.values;
-
-          return {
-            date: accumulatorValue.date,
-            values: accumulatorValue.values + currentValue.values,
-          };
-        });
-      }, []);
-
-      if (timeIncrement === "day") {
-        const [dayData, nightData] = splitDayAndNightDataSets(mergedData);
+    getTimeSeriesData(sites, timeIncrement, true).then(({ data }) => {
+      const parsedData = parseSearchReturn(data);
+      if (timeIncrement === DAY) {
+        const [dayData, nightData] = splitDayAndNightDataSets(parsedData);
         setDayData(dayData);
         setNightData(nightData);
       } else {
-        setDayData(mergedData);
+        setDayData(parsedData);
         setNightData([]);
       }
       setLoading(false);

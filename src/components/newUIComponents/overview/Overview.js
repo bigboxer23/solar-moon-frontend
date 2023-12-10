@@ -7,6 +7,7 @@ import {
 import SiteList from "./site-list/SiteList";
 import OverviewChart from "./OverviewChart";
 import TimeIncrementSelector from "./TimeIncrementSelector";
+import { DAY } from "../../../services/search";
 
 function StatBlock({ title, value, className }) {
   return (
@@ -22,13 +23,12 @@ export default function Overview() {
   const [devices, setDevices] = useState(0);
   const [activeAlerts, setActiveAlerts] = useState([]);
   const [resolvedAlerts, setResolvedAlerts] = useState([]);
-  const [timeIncrement, setTimeIncrement] = useState("day");
+  const [timeIncrement, setTimeIncrement] = useState(DAY);
   const [totalOutput, setTotalOutput] = useState(0);
   const [averageOutput, setAverageOutput] = useState(0);
 
   useEffect(() => {
     // TODO: All of this data should come from one endpoint, and include data noted in subcomponents
-
     getOverviewTotal(timeIncrement).then(({ data }) => {
       const totalKWH =
         Math.round(data.aggregations["sum#total"].value * 10) / 10;
@@ -38,28 +38,19 @@ export default function Overview() {
         Math.round(data.aggregations["avg#avg"].value * 10) / 10,
       );
     });
-
     getAlarmData().then(({ data }) => {
       const active = data.filter((d) => d.state > 0);
       const resolved = data.filter((d) => d.state === 0);
 
       const resolvedInTimeIncrement = resolved.filter((d) => {
-        const date = new Date(d.startDate);
-        const now = new Date();
-
-        if (timeIncrement === "hr") now.setHours(now.getHours() - 1);
-        else if (timeIncrement === "day") now.setDate(now.getDate() - 1);
-        else if (timeIncrement === "week") now.setDate(now.getDate() - 7);
-        else if (timeIncrement === "month") now.setDate(now.getDate() - 30);
-        else if (timeIncrement === "year") now.setDate(now.getDate() - 365);
-
-        return date > now;
+        return (
+          new Date(d.startDate) > new Date(new Date().getTime() - timeIncrement)
+        );
       });
 
       setResolvedAlerts(resolvedInTimeIncrement);
       setActiveAlerts(active);
     });
-
     getDevices().then(({ data }) => {
       const sites = data.filter((d) => d.virtual);
       const devices = data.filter((d) => !d.virtual);

@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
 import { getAvgTotal } from "../../../../services/services";
-import {
-  splitDayAndNightDataSets,
-  subtractIncrementFromDate,
-} from "../../../../utils/Utils";
+import { splitDayAndNightDataSets } from "../../../../utils/Utils";
 
 export default function SiteRow({ info, graphData, timeIncrement }) {
   const { name, deviceCount, alertCount } = info;
@@ -14,10 +11,7 @@ export default function SiteRow({ info, graphData, timeIncrement }) {
 
   useEffect(() => {
     // TODO: This data should come from upstream, attached to the site info
-    const end = new Date();
-    const start = subtractIncrementFromDate(timeIncrement, end);
-
-    getAvgTotal(name, start, end).then(({ data }) => {
+    getAvgTotal(info, timeIncrement).then(({ data }) => {
       setTotal(Math.round(data.aggregations["sum#total"].value * 10) / 10);
       setAverage(Math.round(data.aggregations["avg#avg"].value * 10) / 10);
       setLoading(false);

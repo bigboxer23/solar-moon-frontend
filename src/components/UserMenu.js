@@ -13,12 +13,12 @@ const UserMenu = () => {
       title={
         <Avatar
           name={user.attributes.name}
-          size={40}
+          size={48}
           textSizeRatio={2}
           round={true}
         />
       }
-      className={"userProfile gap-3"}
+      className={"userProfile gap-3 profile"}
     >
       <div className={"d-flex ps-2 pe-2 pb-1"}>
         <Avatar

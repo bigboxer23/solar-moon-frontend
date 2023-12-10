@@ -3,6 +3,7 @@ import * as d3 from "d3";
 import { MdFoggy, MdOutlineWbCloudy, MdOutlineWbSunny } from "react-icons/md";
 import { IoPartlySunnyOutline } from "react-icons/io5";
 import moment from "moment";
+import { DAY, HOUR, MONTH, WEEK, YEAR } from "../services/search";
 
 export function preventSubmit(event) {
   if (event.key === "Enter") {
@@ -72,6 +73,12 @@ export const sortDevices = (d1, d2) =>
     { sensitivity: "accent" },
   );
 
+export const getRoundedTimeFromOffset = (offset) => {
+  return offset === HOUR
+    ? new Date(new Date().getTime() - offset)
+    : getRoundedTime(false, offset === DAY ? 0 : offset);
+};
+
 export const getRoundedTime = (roundedUp, offset) => {
   const date = new Date();
   if (!roundedUp) {
@@ -100,23 +107,6 @@ export const splitDayAndNightDataSets = (data) => {
     }
   });
   return [dayData, nightData];
-};
-
-export const subtractIncrementFromDate = (increment, date) => {
-  const subtractedDate = new Date(date);
-
-  if (increment === "hr")
-    subtractedDate.setHours(subtractedDate.getHours() - 1);
-  else if (increment === "day")
-    subtractedDate.setDate(subtractedDate.getDate() - 1);
-  else if (increment === "week")
-    subtractedDate.setDate(subtractedDate.getDate() - 7);
-  else if (increment === "month")
-    subtractedDate.setMonth(subtractedDate.getMonth() - 1);
-  else if (increment === "year")
-    subtractedDate.setFullYear(subtractedDate.getFullYear() - 1);
-
-  return subtractedDate;
 };
 
 export const getFormattedDaysHoursMinutes = (time) => {
@@ -152,4 +142,21 @@ export const getWeatherIcon = (weatherSummary) => {
     return <MdOutlineWbSunny className={"align-self-center"} />;
   }
   return weatherSummary;
+};
+
+export const timeIncrementToText = (timeIncrement, short) => {
+  switch (timeIncrement) {
+    case HOUR:
+      return short ? "H" : "Hour";
+    case DAY:
+      return short ? "D" : "Day";
+    case WEEK:
+      return short ? "Wk" : "Week";
+    case MONTH:
+      return short ? "Mo" : "Month";
+    case YEAR:
+      return short ? "Yr" : "Year";
+    default:
+      return short ? "D" : "Day";
+  }
 };

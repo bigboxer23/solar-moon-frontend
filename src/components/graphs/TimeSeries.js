@@ -102,8 +102,7 @@ const TimeSeries = ({ device, time }) => {
   }, [windowWidth, graphData]);
 
   useEffect(() => {
-    let end = new Date();
-    getTimeSeriesData(device, new Date(end.getTime() - time), end)
+    getTimeSeriesData(device, time, false)
       .then(({ data }) => {
         setGraphData(parseSearchReturn(data));
       })

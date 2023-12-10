@@ -7,9 +7,8 @@ import {
   getMaxCurrentBody,
   getStackedTimeSeriesBody,
   getTimeSeriesBody,
-  HOUR,
 } from "./search";
-import { getRoundedTime, subtractIncrementFromDate } from "../utils/Utils";
+import { getRoundedTime, getRoundedTimeFromOffset } from "../utils/Utils";
 
 export function getCustomer() {
   return api.get("customer");
@@ -67,13 +66,21 @@ export function getAlarmData() {
   return api.post("alarms", {});
 }
 
-export function getTimeSeriesData(device, start, end) {
-  return api.post("search", getTimeSeriesBody(device, start, end));
+export function getTimeSeriesData(device, offset, virtual) {
+  const body = getTimeSeriesBody(
+    device,
+    getRoundedTimeFromOffset(offset),
+    new Date(),
+  );
+  if (virtual) {
+    body.virtual = true;
+  }
+  return api.post("search", body);
 }
 
-export function getListTimeSeriesData(devices, increment) {
+export function getListTimeSeriesData(devices, offset) {
   const end = new Date();
-  const start = subtractIncrementFromDate(increment, end);
+  const start = getRoundedTimeFromOffset(offset);
 
   const timeSeriesBodies = devices.map((device) =>
     getTimeSeriesBody(device, start, end),
@@ -96,8 +103,11 @@ export function getGroupedTimeSeriesData(device, start, end) {
   );
 }
 
-export function getAvgTotal(device, start, end) {
-  return api.post("search", getAvgTotalBody(device, start, end));
+export function getAvgTotal(device, offset) {
+  return api.post(
+    "search",
+    getAvgTotalBody(device, getRoundedTimeFromOffset(offset), new Date()),
+  );
 }
 
 export function getMaxCurrent(device) {
@@ -105,15 +115,8 @@ export function getMaxCurrent(device) {
 }
 
 export function getTileContent(device, offset) {
-  console.log("offset " + offset);
   return api.post("search", [
-    getAvgTotalBody(
-      device,
-      offset === HOUR
-        ? new Date(new Date().getTime() - offset)
-        : getRoundedTime(false, offset === DAY ? 0 : offset),
-      new Date(),
-    ),
+    getAvgTotalBody(device, getRoundedTimeFromOffset(offset), new Date()),
     getMaxCurrentBody(device),
     getDataPageBody(
       device.site,
@@ -126,11 +129,14 @@ export function getTileContent(device, offset) {
   ]);
 }
 
-export function getOverviewTotal(increment) {
-  const end = new Date();
-  const start = subtractIncrementFromDate(increment, end);
-
-  return api.post("search", getAvgTotalBody(null, start, end));
+export function getOverviewTotal(offset) {
+  const body = getAvgTotalBody(
+    null,
+    getRoundedTimeFromOffset(offset),
+    new Date(),
+  );
+  body.virtual = true;
+  return api.post("search", body);
 }
 
 export function getDataPage(site, device, start, end, offset, size) {
