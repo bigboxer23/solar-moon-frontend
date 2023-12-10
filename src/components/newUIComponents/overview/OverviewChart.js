@@ -1,30 +1,28 @@
 import { useEffect, useState } from "react";
-import { getTimeSeriesData } from "../../../services/services";
 import { Line } from "react-chartjs-2";
-import { DAY, parseSearchReturn } from "../../../services/search";
+import { DAY, parseSearchReturn2 } from "../../../services/search";
 import { splitDayAndNightDataSets } from "../../../utils/Utils";
 
-export default function OverviewChart({ sites, timeIncrement }) {
+export default function OverviewChart({ sites, timeIncrement, siteData }) {
   const [loading, setLoading] = useState(true);
   const [dayData, setDayData] = useState([]);
   const [nightData, setNightData] = useState([]);
 
   useEffect(() => {
-    // TODO: this data should come from upstream so we arent re-fetching here, refactor later
-    setLoading(true);
-    getTimeSeriesData(sites, timeIncrement, true).then(({ data }) => {
-      const parsedData = parseSearchReturn(data);
-      if (timeIncrement === DAY) {
-        const [dayData, nightData] = splitDayAndNightDataSets(parsedData);
-        setDayData(dayData);
-        setNightData(nightData);
-      } else {
-        setDayData(parsedData);
-        setNightData([]);
-      }
-      setLoading(false);
-    });
-  }, [sites, timeIncrement]);
+    if (siteData == null) {
+      return;
+    }
+    setLoading(false);
+    const parsedData = parseSearchReturn2(siteData);
+    if (timeIncrement === DAY) {
+      const [dayData, nightData] = splitDayAndNightDataSets(parsedData);
+      setDayData(dayData);
+      setNightData(nightData);
+    } else {
+      setDayData(parsedData);
+      setNightData([]);
+    }
+  }, [siteData]);
 
   const data = {
     datasets: [

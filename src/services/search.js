@@ -66,3 +66,13 @@ export function parseSearchReturn(data) {
     return { date: new Date(Number(d.key)), values: d[AVG].value };
   });
 }
+
+//TODO: remove this after all calls are converted
+export function parseSearchReturn2(data) {
+  return data.aggregations["2"]._value.buckets._value.map((d) => {
+    return {
+      date: new Date(Number(d.key)),
+      values: d.aggregations["1"]._value.value,
+    };
+  });
+}

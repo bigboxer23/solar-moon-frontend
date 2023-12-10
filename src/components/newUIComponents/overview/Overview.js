@@ -22,12 +22,14 @@ export default function Overview() {
   const [timeIncrement, setTimeIncrement] = useState(DAY);
   const [totalOutput, setTotalOutput] = useState(0);
   const [averageOutput, setAverageOutput] = useState(0);
+  const [overallTimeSeries, setOverallTimeSeries] = useState(null);
 
   useEffect(() => {
     getOverviewData(timeIncrement).then(({ data }) => {
       handleDevices(data.devices);
       handleAlarms(data.alarms);
-      handleOverviewTotal(data.overallTotalAvg);
+      handleOverviewTotal(data.overall.totalAvg);
+      setOverallTimeSeries(data.overall.timeSeries);
     });
   }, [timeIncrement]);
 
@@ -96,7 +98,11 @@ export default function Overview() {
           <span className="average-output">Average: {averageOutput} kWH</span>
         </div>
       </div>
-      <OverviewChart sites={sites} timeIncrement={timeIncrement} />
+      <OverviewChart
+        siteData={overallTimeSeries}
+        sites={sites}
+        timeIncrement={timeIncrement}
+      />
       <SiteList
         sites={sites}
         devices={devices}
