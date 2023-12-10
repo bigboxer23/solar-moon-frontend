@@ -1,5 +1,5 @@
 import { Button, ListGroup, Spinner } from "react-bootstrap";
-import { MdOutlineDelete } from "react-icons/md";
+import { MdLock, MdOutlineDelete } from "react-icons/md";
 import React from "react";
 
 const MappingBlock = ({
@@ -36,7 +36,7 @@ const MappingBlock = ({
             <MdOutlineDelete />
           </Button>
         ) : (
-          ""
+          <MdLock className={"text-muted"} />
         )}
       </div>
     </ListGroup.Item>

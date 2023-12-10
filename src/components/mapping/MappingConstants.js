@@ -12,11 +12,6 @@ export const attributes = [
 ];
 
 export const attributeMappings = {};
-attributeMappings[TOTAL_ENG_CONS] = TOTAL_ENG_CONS;
-attributeMappings[TOTAL_REAL_POWER] = TOTAL_REAL_POWER;
-attributeMappings[AVG_CURRENT] = AVG_CURRENT;
-attributeMappings[AVG_VOLT] = AVG_VOLT;
-attributeMappings[TOTAL_PF] = TOTAL_PF;
 attributeMappings["Energy Consumption"] = TOTAL_ENG_CONS;
 attributeMappings["Real Power"] = TOTAL_REAL_POWER;
 attributeMappings["Current"] = AVG_CURRENT;

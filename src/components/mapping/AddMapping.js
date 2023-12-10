@@ -11,33 +11,45 @@ const AddMapping = ({ mappings, setMappings }) => {
     attribute: AVG_CURRENT,
   });
 
+  const compare = (d) => {
+    return (
+      d.mappingName.localeCompare(mapping.mappingName.trim(), undefined, {
+        sensitivity: "accent",
+      }) === 0
+    );
+  };
   const addMappingClicked = () => {
     if (mapping.mappingName.trim() === "") {
       return;
     }
     if (
-      Object.entries(attributeMappings).find((d) => {
-        return d[0] === mapping.mappingName;
-      }) !== undefined
+      Object.entries(attributeMappings)
+        .map((d) => {
+          return { mappingName: d[0] };
+        })
+        .find(compare) !== undefined ||
+      attributes
+        .map((d) => {
+          return {
+            mappingName: d,
+          };
+        })
+        .find(compare) !== undefined
     ) {
       console.log("not adding, already found in default list");
       return;
     }
-    if (
-      mappings.find((d) => {
-        return d.mappingName === mapping.mappingName;
-      }) !== undefined
-    ) {
+    if (mappings.find(compare) !== undefined) {
       console.log("not adding, already found in custom list");
       return;
     }
     document.getElementById("add-mapping-button").classList.add("disabled");
-    addMapping(mapping.attribute, mapping.mappingName)
+    addMapping(mapping.attribute, mapping.mappingName.trim())
       .then(({ data }) => {
         setMappings([
           ...mappings,
           {
-            mappingName: mapping.mappingName,
+            mappingName: mapping.mappingName.trim(),
             attribute: mapping.attribute,
           },
         ]);
