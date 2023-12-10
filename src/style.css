@@ -1044,3 +1044,7 @@ button:focus {
 .max-height-250 {
   max-height: 250px;
 }
+
+.mapping-block {
+  min-height: 38px;
+}
