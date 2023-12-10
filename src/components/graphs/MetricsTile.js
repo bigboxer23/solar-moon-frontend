@@ -13,10 +13,8 @@ const MetricsTile = ({ device, time }) => {
   useEffect(() => {
     getTileContent(device, time)
       .then(({ data }) => {
-        data[0] = JSON.parse(data[0]);
         setTotal(Math.round(data[0].aggregations["sum#total"].value * 10) / 10);
         setAvg(Math.round(data[0].aggregations["avg#avg"].value * 10) / 10);
-        data[1] = JSON.parse(data[1]);
         setMax(
           getGaugeValue(
             data[1].aggregations["max#max"].value,
@@ -26,7 +24,6 @@ const MetricsTile = ({ device, time }) => {
           ),
         );
 
-        data[2] = JSON.parse(data[2]);
         setWeather(data[2].hits.hits[0]._source["weatherSummary"]);
         setTemperature(data[2].hits.hits[0]._source["temperature"] || -1);
       })
