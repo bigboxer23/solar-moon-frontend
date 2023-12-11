@@ -54,6 +54,7 @@ ChartJS.register(
   TimeScale,
 );
 import { LockPage } from "./components/lock/LockPage";
+import Alerts from "./components/newUIComponents/Alerts";
 
 Amplify.configure(awsExports);
 function App() {
@@ -92,6 +93,7 @@ function App() {
                 <Route path="/reports" element={<Reports />} />
                 <Route path="/sites" element={<SiteManagement />} />
                 <Route path="/alarms" element={<Alarms />} />
+                {newUI && <Route path="/alerts" element={<Alerts />} />}
                 <Route path="/userManagement" element={<UserManagement />} />
                 <Route path="/checkout" element={<CheckoutForm />} />
                 <Route path="/return" element={<Return />} />

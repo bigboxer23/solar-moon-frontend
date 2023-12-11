@@ -4,6 +4,7 @@ import SiteList from "./site-list/SiteList";
 import OverviewChart from "./OverviewChart";
 import TimeIncrementSelector from "./TimeIncrementSelector";
 import { DAY, getAggregationValue } from "../../../services/search";
+import Loader from "../common/Loader";
 
 function StatBlock({ title, value, className }) {
   return (
@@ -24,6 +25,7 @@ export default function Overview() {
   const [averageOutput, setAverageOutput] = useState(0);
   const [overallTimeSeries, setOverallTimeSeries] = useState(null);
   const [sitesGraphData, setSitesGraphData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getOverviewData(timeIncrement).then(({ data }) => {
@@ -32,6 +34,7 @@ export default function Overview() {
       handleOverviewTotal(data.overall.totalAvg);
       setOverallTimeSeries(data.overall.timeSeries);
       setSitesGraphData(data.sitesOverviewData);
+      setLoading(false);
     });
   }, [timeIncrement]);
 
@@ -67,8 +70,11 @@ export default function Overview() {
     setDevices(devices);
     setSites(mappedSites);
   };
+
+  if (loading) return <Loader />;
+
   return (
-    <div className="Overview">
+    <div className="Overview fade-in">
       <div className="overview-header">
         Overview
         <TimeIncrementSelector

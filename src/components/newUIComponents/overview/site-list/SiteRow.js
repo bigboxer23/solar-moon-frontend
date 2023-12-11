@@ -47,6 +47,7 @@ export default function SiteRow({ info, graphData, timeIncrement }) {
         };
 
   const options = {
+    events: [],
     responsive: true,
     maintainAspectRatio: false,
     scales: {

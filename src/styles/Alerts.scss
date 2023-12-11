@@ -1,0 +1,51 @@
+@import "utils/shadows.scss";
+@import "utils/colors.scss";
+
+.Alerts {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+
+  .alerts-wrapper {
+    margin-top: 32px;
+    background-color: $WHITE;
+    border-radius: 8px;
+    box-shadow: $PANEL_SHADOW;
+    width: 880px;
+    padding: 32px;
+    margin-bottom: 32px;
+
+    .alerts-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 16px;
+    }
+
+    .alerts-subtitle {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 24px;
+    }
+
+    .no-alerts {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      width: 100%;
+      font-size: 16px;
+      color: $TEXT_SECONDARY;
+      margin-bottom: 24px;
+    }
+  }
+}

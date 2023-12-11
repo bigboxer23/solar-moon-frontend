@@ -46,6 +46,10 @@ export default function OverviewChart({ sites, timeIncrement, siteData }) {
   const options = {
     responsive: true,
     maintainAspectRatio: false,
+    interaction: {
+      mode: "index",
+      intersect: false,
+    },
     scales: {
       x: {
         type: "time",
@@ -73,12 +77,41 @@ export default function OverviewChart({ sites, timeIncrement, siteData }) {
     },
     elements: {
       point: {
-        radius: 0,
+        radius: 2,
       },
     },
     plugins: {
       legend: {
         display: false,
+      },
+      tooltip: {
+        backgroundColor: "#fff",
+        titleColor: "#000",
+        bodyColor: "#000",
+        displayColors: false,
+        boxPadding: 8,
+        titleAlign: "center",
+        bodyAlign: "center",
+        callbacks: {
+          title: (context) => {
+            const { dataIndex } = context[0];
+            const { date } = data.datasets[0].data[dataIndex];
+            return date.toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+              hour: "numeric",
+              minute: "numeric",
+            });
+          },
+          label: (context) => {
+            let label = context.formattedValue || "";
+            if (label) {
+              label += " kWh";
+            }
+            return label;
+          },
+        },
       },
     },
     parsing: {
@@ -87,11 +120,45 @@ export default function OverviewChart({ sites, timeIncrement, siteData }) {
     },
   };
 
+  const plugins = [
+    {
+      id: "verticalLiner",
+      afterInit: (chart, args, opts) => {
+        chart.verticalLiner = {};
+      },
+      afterEvent: (chart, args, options) => {
+        const { inChartArea } = args;
+        chart.verticalLiner = { draw: inChartArea };
+      },
+      beforeTooltipDraw: (chart, args, options) => {
+        const { draw } = chart.verticalLiner;
+        if (!draw) return;
+
+        const { ctx } = chart;
+        const { top, bottom } = chart.chartArea;
+        const { tooltip } = args;
+        const x = tooltip?.caretX;
+        if (!x) return;
+
+        ctx.save();
+
+        ctx.beginPath();
+        ctx.strokeStyle = "#5178C2";
+        ctx.lineWidth = 2;
+        ctx.moveTo(x, top);
+        ctx.lineTo(x, bottom);
+        ctx.stroke();
+
+        ctx.restore();
+      },
+    },
+  ];
+
   if (loading) return null;
 
   return (
     <div className="OverviewChart">
-      <Line data={data} options={options} />
+      <Line data={data} options={options} plugins={plugins} />
     </div>
   );
 }
