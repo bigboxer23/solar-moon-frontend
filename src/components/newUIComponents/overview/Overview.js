@@ -5,6 +5,7 @@ import OverviewChart from "./OverviewChart";
 import TimeIncrementSelector from "./TimeIncrementSelector";
 import { DAY, getAggregationValue } from "../../../services/search";
 import Loader from "../common/Loader";
+import { useStickyState } from "../../../utils/Utils";
 
 function StatBlock({ title, value, className }) {
   return (
@@ -20,7 +21,10 @@ export default function Overview() {
   const [devices, setDevices] = useState(0);
   const [activeAlerts, setActiveAlerts] = useState([]);
   const [resolvedAlerts, setResolvedAlerts] = useState([]);
-  const [timeIncrement, setTimeIncrement] = useState(DAY);
+  const [timeIncrement, setTimeIncrement] = useStickyState(
+    DAY,
+    "dashboard.time",
+  );
   const [totalOutput, setTotalOutput] = useState(0);
   const [averageOutput, setAverageOutput] = useState(0);
   const [overallTimeSeries, setOverallTimeSeries] = useState(null);
