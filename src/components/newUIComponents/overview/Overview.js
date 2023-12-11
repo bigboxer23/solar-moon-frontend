@@ -3,7 +3,7 @@ import { getOverviewData } from "../../../services/services";
 import SiteList from "./site-list/SiteList";
 import OverviewChart from "./OverviewChart";
 import TimeIncrementSelector from "./TimeIncrementSelector";
-import { DAY } from "../../../services/search";
+import { DAY, getAggregationValue } from "../../../services/search";
 
 function StatBlock({ title, value, className }) {
   return (
@@ -23,6 +23,7 @@ export default function Overview() {
   const [totalOutput, setTotalOutput] = useState(0);
   const [averageOutput, setAverageOutput] = useState(0);
   const [overallTimeSeries, setOverallTimeSeries] = useState(null);
+  const [sitesGraphData, setSitesGraphData] = useState(null);
 
   useEffect(() => {
     getOverviewData(timeIncrement).then(({ data }) => {
@@ -30,16 +31,13 @@ export default function Overview() {
       handleAlarms(data.alarms);
       handleOverviewTotal(data.overall.totalAvg);
       setOverallTimeSeries(data.overall.timeSeries);
+      setSitesGraphData(data.sitesOverviewData);
     });
   }, [timeIncrement]);
 
   const handleOverviewTotal = (data) => {
-    setTotalOutput(
-      Math.round(data.aggregations["total"]._value.value * 10) / 10,
-    );
-    setAverageOutput(
-      Math.round(data.aggregations["avg"]._value.value * 10) / 10,
-    );
+    setTotalOutput(getAggregationValue(data, "total"));
+    setAverageOutput(getAggregationValue(data, "avg"));
   };
 
   const handleAlarms = (data) => {
@@ -104,6 +102,7 @@ export default function Overview() {
         timeIncrement={timeIncrement}
       />
       <SiteList
+        sitesGraphData={sitesGraphData}
         sites={sites}
         devices={devices}
         timeIncrement={timeIncrement}

@@ -76,3 +76,7 @@ export function parseSearchReturn2(data) {
     };
   });
 }
+
+export function getAggregationValue(data, label) {
+  return Math.round(data.aggregations[label]._value.value * 10) / 10;
+}

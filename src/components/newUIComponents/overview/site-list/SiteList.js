@@ -1,32 +1,34 @@
 import { useEffect, useState } from "react";
-import { getListTimeSeriesData } from "../../../../services/services";
 import SiteRow from "./SiteRow";
-import { parseSearchReturn } from "../../../../services/search";
 
-export default function SiteList({ sites, timeIncrement, devices, alerts }) {
+export default function SiteList({
+  sites,
+  timeIncrement,
+  devices,
+  alerts,
+  sitesGraphData,
+}) {
   const [loading, setLoading] = useState(true);
   const [siteData, setSiteData] = useState([]);
 
   useEffect(() => {
-    setLoading(true);
-    getListTimeSeriesData(sites, timeIncrement).then(({ data }) => {
-      const mappedSiteData = data.map((d, i) => {
-        const site = sites[i];
-        const siteInfo = {
-          ...site,
-          deviceCount: devices.filter((d) => d.site === site.deviceName).length,
-          alertCount: alerts.filter((d) => d.siteId === site.id).length,
-        };
-
-        return {
-          info: siteInfo,
-          graphData: parseSearchReturn(d),
-        };
-      });
-      setSiteData(mappedSiteData);
-      setLoading(false);
+    if (sitesGraphData === null) {
+      return;
+    }
+    const mappedSiteData = sites.map((site) => {
+      const siteInfo = {
+        ...site,
+        deviceCount: devices.filter((d) => d.site === site.deviceName).length,
+        alertCount: alerts.filter((d) => d.siteId === site.id).length,
+      };
+      return {
+        info: siteInfo,
+        graphData: sitesGraphData[site.deviceName],
+      };
     });
-  }, [sites, timeIncrement]);
+    setSiteData(mappedSiteData);
+    setLoading(false);
+  }, [sitesGraphData]);
 
   if (loading) return null;
 

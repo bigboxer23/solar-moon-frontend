@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
-import { getAvgTotal } from "../../../../services/services";
 import { splitDayAndNightDataSets } from "../../../../utils/Utils";
+import {
+  DAY,
+  getAggregationValue,
+  parseSearchReturn2,
+} from "../../../../services/search";
+import { FormattedNumber } from "react-intl";
 
 export default function SiteRow({ info, graphData, timeIncrement }) {
   const { name, deviceCount, alertCount } = info;
@@ -10,18 +15,16 @@ export default function SiteRow({ info, graphData, timeIncrement }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // TODO: This data should come from upstream, attached to the site info
-    getAvgTotal(info, timeIncrement).then(({ data }) => {
-      setTotal(Math.round(data.aggregations["sum#total"].value * 10) / 10);
-      setAverage(Math.round(data.aggregations["avg#avg"].value * 10) / 10);
-      setLoading(false);
-    });
-  }, [timeIncrement]);
+    setTotal(getAggregationValue(graphData.totalAvg, "total"));
+    setAverage(getAggregationValue(graphData.totalAvg, "avg"));
+    setLoading(false);
+  }, [graphData]);
 
-  const [dayData, nightData] = splitDayAndNightDataSets(graphData);
+  const timeSeriesData = parseSearchReturn2(graphData.timeSeries);
+  const [dayData, nightData] = splitDayAndNightDataSets(timeSeriesData);
 
   const data =
-    timeIncrement === "day"
+    timeIncrement === DAY
       ? {
           datasets: [
             {
@@ -37,7 +40,7 @@ export default function SiteRow({ info, graphData, timeIncrement }) {
       : {
           datasets: [
             {
-              data: graphData,
+              data: timeSeriesData,
               borderColor: "#5178C2",
             },
           ],
@@ -94,8 +97,14 @@ export default function SiteRow({ info, graphData, timeIncrement }) {
       <div className="site-name">{name}</div>
       <div className="device-count">{deviceCount}</div>
       <div className="alert-count">{alertCount}</div>
-      <div className="average">{average}kWH</div>
-      <div className="total">{total}kWH</div>
+      <div className="average">
+        <FormattedNumber value={average} />
+        kWH
+      </div>
+      <div className="total">
+        <FormattedNumber value={total} />
+        kWH
+      </div>
       <div className="graph">
         <Line data={data} options={options} />
       </div>
