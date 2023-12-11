@@ -39,8 +39,8 @@ export default function Overview() {
   }, [timeIncrement]);
 
   const handleOverviewTotal = (data) => {
-    setTotalOutput(getAggregationValue(data, "total"));
-    setAverageOutput(getAggregationValue(data, "avg"));
+    setTotalOutput(getAggregationValue(data, "sum#total"));
+    setAverageOutput(getAggregationValue(data, "avg#avg"));
   };
 
   const handleAlarms = (data) => {
