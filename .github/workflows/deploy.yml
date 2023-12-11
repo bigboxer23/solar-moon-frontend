@@ -24,12 +24,13 @@ jobs:
         env:
           AWS_EXPORTS_JS: ${{secrets.AWS_EXPORTS}}
       - name: Setup env
-        run: echo $REACT_APP_STRIPE_PK >> ./.env;echo $REACT_APP_PRICE_MO >> ./.env;echo $REACT_APP_PRICE_YR >> ./.env
+        run: echo $REACT_APP_STRIPE_PK >> ./.env;echo $REACT_APP_PRICE_MO >> ./.env;echo $REACT_APP_PRICE_YR >> ./.env;echo $REACT_APP_ACCESS_CODE >> ./.env
         shell: bash
         env:
           REACT_APP_STRIPE_PK: ${{secrets.REACT_APP_STRIPE_PK}}
           REACT_APP_PRICE_MO: ${{secrets.REACT_APP_PRICE_MO}}
           REACT_APP_PRICE_YR: ${{secrets.REACT_APP_PRICE_YR}}
+          REACT_APP_ACCESS_CODE: ${{secrets.REACT_APP_ACCESS_CODE}}
       - name: Build
         run: npm run build
       - name: Deploy to S3

@@ -1036,3 +1036,15 @@ button:focus {
 .active-alarm {
   background-color: var(--bs-danger);
 }
+
+.min-width-750 {
+  min-width: 750px !important;
+}
+
+.max-height-250 {
+  max-height: 250px;
+}
+
+.mapping-block {
+  min-height: 38px;
+}

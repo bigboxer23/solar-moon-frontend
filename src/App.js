@@ -53,6 +53,8 @@ ChartJS.register(
   Legend,
   TimeScale,
 );
+import Mapping from "./components/mapping/Mapping";
+import { LockPage } from "./components/lock/LockPage";
 
 Amplify.configure(awsExports);
 function App() {
@@ -82,6 +84,7 @@ function App() {
               <Routes>
                 <Route path="/checkout" element={""} />
                 <Route path="/pricing" element={""} />
+                <Route path="/lock" element={""} />
                 <Route path="*" element={newUI ? <Navbar2 /> : <Navbar />} />
               </Routes>
               <Routes>
@@ -94,6 +97,7 @@ function App() {
                 <Route path="/checkout" element={<CheckoutForm />} />
                 <Route path="/return" element={<Return />} />
                 <Route path="/pricing" element={<PricingPage />} />
+                <Route path="/lock" element={<LockPage />} />
                 <Route path="*" element={<Navigate to="/" />} />
               </Routes>
               {newUI ? <Footer2 /> : <Footer />}

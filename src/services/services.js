@@ -7,6 +7,7 @@ import {
   getMaxCurrentBody,
   getStackedTimeSeriesBody,
   getTimeSeriesBody,
+  HOUR,
 } from "./search";
 import { getRoundedTime, getRoundedTimeFromOffset } from "../utils/Utils";
 
@@ -123,7 +124,13 @@ export function getMaxCurrent(device) {
 
 export function getTileContent(device, offset) {
   return api.post("search", [
-    getAvgTotalBody(device, getRoundedTimeFromOffset(offset), new Date()),
+    getAvgTotalBody(
+      device,
+      offset === HOUR
+        ? new Date(new Date().getTime() - offset)
+        : getRoundedTime(false, offset === DAY ? 0 : offset),
+      new Date(),
+    ),
     getMaxCurrentBody(device),
     getDataPageBody(
       device.site,
