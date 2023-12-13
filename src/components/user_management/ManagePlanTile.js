@@ -11,14 +11,18 @@ function ManagePlanTile() {
   const [quantity, setQuantity] = useState(0);
   const [period, setPeriod] = useState("");
   const [periodShort, setPeriodShort] = useState("");
-  const [price, setPrice] = useState(-1);
+  const [price, setPrice] = useState(40);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     getSubscriptions().then(({ data }) => {
+      if (data.length === 0) {
+        setLoading(false);
+        return;
+      }
       setQuantity(data[0].quantity);
       setPeriod(data[0].interval === "month" ? "Monthly" : "Yearly");
       setPeriodShort(data[0].interval === "month" ? "mo" : "yr");
-      setPrice(data[0].interval === "month" ? 50 : 540);
+      setPrice(data[0].interval === "month" ? 40 : 432);
       setLoading(false);
     });
   }, []);
@@ -60,7 +64,7 @@ function ManagePlanTile() {
             "d-flex mb-1 align-content-center" + displayWhenLoading(!loading)
           }
         >
-          <div className={"h5 "}>{10 * quantity}</div>
+          <div className={"h5 "}>{20 * quantity}</div>
           <div className={"text-muted ps-1"}> devices</div>
         </div>
         <div
