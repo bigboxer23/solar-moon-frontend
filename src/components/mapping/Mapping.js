@@ -4,6 +4,7 @@ import { attributeMappings } from "./MappingConstants";
 import { useEffect, useState } from "react";
 import { deleteMapping, getMappings } from "../../services/services";
 import AddMapping from "./AddMapping";
+import HelpButton from "../HelpButton";
 
 export default function Mapping() {
   const [mappings, setMappings] = useState([]);
@@ -24,7 +25,17 @@ export default function Mapping() {
   return (
     <div className={"root-page container d-flex flex-column min-vh-95"}>
       <Card>
-        <CardHeader className={"fw-bold"}>Attribute Mappings</CardHeader>
+        <CardHeader className={"fw-bold d-flex align-items-center"}>
+          Attribute Mappings
+          <div className={"flex-grow-1"} />
+          <HelpButton
+            text={
+              "Mappings provide a way to translate names of data points from your devices to the fields Solar Moon needs" +
+              " to generate graphs, analytics and alerts. There are a number of mappings provided by default, but if you are " +
+              "unable to change your device settings to match them, the platform can map to existing config instead."
+            }
+          />
+        </CardHeader>
         <CardBody>
           <AddMapping mappings={mappings} setMappings={setMappings} />
           <ListGroup>

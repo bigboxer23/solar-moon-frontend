@@ -5,7 +5,7 @@ import { MdOutlineAddCircle } from "react-icons/md";
 import { addMapping } from "../../services/services";
 import { onEnterPressed, preventSubmit } from "../../utils/Utils";
 
-const AddMapping = ({ mappings, setMappings }) => {
+export default function AddMapping({ mappings, setMappings }) {
   const [mapping, setMapping] = useState({
     mappingName: "",
     attribute: AVG_CURRENT,
@@ -119,5 +119,4 @@ const AddMapping = ({ mappings, setMappings }) => {
       </div>
     </Form>
   );
-};
-export default AddMapping;
+}
