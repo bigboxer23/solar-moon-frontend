@@ -2,12 +2,12 @@ import { Button, ListGroup, Spinner } from "react-bootstrap";
 import { MdLock, MdOutlineDelete } from "react-icons/md";
 import React from "react";
 
-const MappingBlock = ({
+export default function MappingBlock({
   attribute,
   mappingName,
   showDelete,
   deleteMapping,
-}) => {
+}) {
   return (
     <ListGroup.Item>
       <div className={"d-flex mapping-block align-items-center"}>
@@ -41,5 +41,4 @@ const MappingBlock = ({
       </div>
     </ListGroup.Item>
   );
-};
-export default MappingBlock;
+}
