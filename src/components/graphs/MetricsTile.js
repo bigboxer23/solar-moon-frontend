@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getTileContent } from "../../services/services";
-import { TOTAL_REAL_POWER } from "../../services/search";
+import { getAggregationValue, TOTAL_REAL_POWER } from "../../services/search";
 import FormattedLabel from "./FormattedLabel";
 import { getWeatherIcon } from "../../utils/Utils";
 
@@ -13,8 +13,8 @@ const MetricsTile = ({ device, time }) => {
   useEffect(() => {
     getTileContent(device, time)
       .then(({ data }) => {
-        setTotal(Math.round(data[0].aggregations["sum#total"].value * 10) / 10);
-        setAvg(Math.round(data[0].aggregations["avg#avg"].value * 10) / 10);
+        setTotal(getAggregationValue(data[0], "sum#total"));
+        setAvg(getAggregationValue(data[0], "avg#avg"));
         setMax(
           getGaugeValue(
             data[1].aggregations["max#max"].value,

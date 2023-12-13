@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
-import { DAY, parseSearchReturn2 } from "../../../services/search";
+import { DAY, parseSearchReturn } from "../../../services/search";
 import { splitDayAndNightDataSets } from "../../../utils/Utils";
 
 export default function OverviewChart({ sites, timeIncrement, siteData }) {
@@ -13,7 +13,7 @@ export default function OverviewChart({ sites, timeIncrement, siteData }) {
       return;
     }
     setLoading(false);
-    const parsedData = parseSearchReturn2(siteData);
+    const parsedData = parseSearchReturn(siteData);
     if (timeIncrement === DAY) {
       const [dayData, nightData] = splitDayAndNightDataSets(parsedData);
       setDayData(dayData);

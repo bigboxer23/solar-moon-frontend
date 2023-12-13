@@ -4,7 +4,7 @@ import { splitDayAndNightDataSets } from "../../../../utils/Utils";
 import {
   DAY,
   getAggregationValue,
-  parseSearchReturn2,
+  parseSearchReturn,
 } from "../../../../services/search";
 import { FormattedNumber } from "react-intl";
 
@@ -15,12 +15,12 @@ export default function SiteRow({ info, graphData, timeIncrement }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setTotal(getAggregationValue(graphData.totalAvg, "total"));
-    setAverage(getAggregationValue(graphData.totalAvg, "avg"));
+    setTotal(getAggregationValue(graphData.totalAvg, "sum#total"));
+    setAverage(getAggregationValue(graphData.totalAvg, "avg#avg"));
     setLoading(false);
   }, [graphData]);
 
-  const timeSeriesData = parseSearchReturn2(graphData.timeSeries);
+  const timeSeriesData = parseSearchReturn(graphData.timeSeries);
   const [dayData, nightData] = splitDayAndNightDataSets(timeSeriesData);
 
   const data =
@@ -94,7 +94,7 @@ export default function SiteRow({ info, graphData, timeIncrement }) {
   if (loading) return null;
 
   return (
-    <div className="SiteRow">
+    <div className="SiteRow mb-3">
       <div className="site-name">{name}</div>
       <div className="device-count">{deviceCount}</div>
       <div className="alert-count">{alertCount}</div>

@@ -67,16 +67,6 @@ export function parseSearchReturn(data) {
   });
 }
 
-//TODO: remove this after all calls are converted
-export function parseSearchReturn2(data) {
-  return data.aggregations["2"]._value.buckets._value.map((d) => {
-    return {
-      date: new Date(Number(d.key)),
-      values: d.aggregations["1"]._value.value,
-    };
-  });
-}
-
 export function getAggregationValue(data, label) {
-  return Math.round(data.aggregations[label]._value.value * 10) / 10;
+  return Math.round(data.aggregations[label].value * 10) / 10;
 }
