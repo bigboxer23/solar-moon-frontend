@@ -73,6 +73,9 @@ export const sortDevices = (d1, d2) =>
     { sensitivity: "accent" },
   );
 
+export const sortSelectAlphabetically = (d1, d2) =>
+  d1.label.localeCompare(d2.label, undefined, { sensitivity: "accent" });
+
 export const getRoundedTimeFromOffset = (offset) => {
   return offset === HOUR
     ? new Date(new Date().getTime() - offset)
