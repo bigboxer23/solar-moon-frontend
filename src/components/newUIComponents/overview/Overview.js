@@ -8,6 +8,7 @@ import Loader from '../common/Loader';
 import { useStickyState } from '../../../utils/Utils';
 import classNames from 'classnames';
 import { FormattedNumber } from 'react-intl';
+import SummaryHeader from '../SummaryHeader';
 
 function StatBlock({ title, value, className }) {
   const style = classNames('StatBlock flex', className);
@@ -37,6 +38,8 @@ export default function Overview() {
   const [averageOutput, setAverageOutput] = useState(0);
   const [overallTimeSeries, setOverallTimeSeries] = useState(null);
   const [sitesGraphData, setSitesGraphData] = useState(null);
+  const [dailyOutputTotal, setDailyOutputTotal] = useState(0);
+  const [dailyAverageOutput, setDailyAverageOutput] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -46,9 +49,17 @@ export default function Overview() {
       handleOverviewTotal(data.overall.totalAvg);
       setOverallTimeSeries(data.overall.timeSeries);
       setSitesGraphData(data.sitesOverviewData);
+      handleSummaryHeader(data.overall);
       setLoading(false);
     });
   }, [timeIncrement]);
+
+  const handleSummaryHeader = (data) => {
+    setDailyOutputTotal(
+      getAggregationValue(data.dailyEnergyConsumedTotal, 'sum#total'),
+    );
+    setDailyAverageOutput(data.dailyEnergyConsumedAverage);
+  };
 
   const handleOverviewTotal = (data) => {
     setTotalOutput(getAggregationValue(data, 'sum#total'));
@@ -86,50 +97,56 @@ export default function Overview() {
   if (loading) return <Loader />;
 
   return (
-    <div className='Overview fade-in mb-8 w-[55rem] rounded-lg bg-white p-8 shadow-panel'>
-      <div className='mb-4 flex w-full items-center justify-between text-lg font-bold'>
-        Overview
-        <TimeIncrementSelector
-          setTimeIncrement={setTimeIncrement}
+    <div className='flex flex-col items-center'>
+      <SummaryHeader
+        dailyOutput={dailyOutputTotal}
+        dailyAverageOutput={dailyAverageOutput}
+      />
+      <div className='Overview fade-in mb-8 w-[55rem] rounded-lg bg-white p-8 shadow-panel'>
+        <div className='mb-4 flex w-full items-center justify-between text-lg font-bold'>
+          Overview
+          <TimeIncrementSelector
+            setTimeIncrement={setTimeIncrement}
+            timeIncrement={timeIncrement}
+          />
+        </div>
+        <div className='mb-6 flex justify-between'>
+          <div className='flex space-x-4'>
+            <StatBlock title='sites' value={sites.length} />
+            <StatBlock title='devices' value={devices.length} />
+            <StatBlock
+              title='active alerts'
+              value={activeAlerts.length}
+              className={activeAlerts > 0 ? 'text-danger' : ''}
+            />
+            <StatBlock
+              title='resolved alerts'
+              value={resolvedAlerts.length}
+              className='text-text-secondary'
+            />
+          </div>
+          <div className='flex flex-col items-end'>
+            <span className='text-base'>
+              Total: <FormattedNumber value={totalOutput} /> kWH
+            </span>
+            <span className='average-output text-xl font-bold'>
+              Average: <FormattedNumber value={averageOutput} /> kW
+            </span>
+          </div>
+        </div>
+        <OverviewChart
+          siteData={overallTimeSeries}
+          sites={sites}
           timeIncrement={timeIncrement}
         />
+        <SiteList
+          sitesGraphData={sitesGraphData}
+          sites={sites}
+          devices={devices}
+          timeIncrement={timeIncrement}
+          alerts={[...resolvedAlerts, ...activeAlerts]}
+        />
       </div>
-      <div className='mb-6 flex justify-between'>
-        <div className='flex space-x-4'>
-          <StatBlock title='sites' value={sites.length} />
-          <StatBlock title='devices' value={devices.length} />
-          <StatBlock
-            title='active alerts'
-            value={activeAlerts.length}
-            className={activeAlerts > 0 ? 'text-danger' : ''}
-          />
-          <StatBlock
-            title='resolved alerts'
-            value={resolvedAlerts.length}
-            className='text-text-secondary'
-          />
-        </div>
-        <div className='flex flex-col items-end'>
-          <span className='text-base'>
-            Total: <FormattedNumber value={totalOutput} /> kWH
-          </span>
-          <span className='average-output text-xl font-bold'>
-            Average: <FormattedNumber value={averageOutput} /> kWH
-          </span>
-        </div>
-      </div>
-      <OverviewChart
-        siteData={overallTimeSeries}
-        sites={sites}
-        timeIncrement={timeIncrement}
-      />
-      <SiteList
-        sitesGraphData={sitesGraphData}
-        sites={sites}
-        devices={devices}
-        timeIncrement={timeIncrement}
-        alerts={[...resolvedAlerts, ...activeAlerts]}
-      />
     </div>
   );
 }

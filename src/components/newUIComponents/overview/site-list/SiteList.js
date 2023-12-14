@@ -39,8 +39,12 @@ export default function SiteList({
         <div className='w-[15%] px-2'>Site Name</div>
         <div className='w-[15%] px-2 text-end'>Device Count</div>
         <div className='w-[15%] px-2 text-end'>Alert Count</div>
-        <div className='w-[15%] px-2 text-end'>Average (kWH)</div>
-        <div className='w-[15%] px-2 text-end'>Total (kWH)</div>
+        <div className='w-[15%] px-2 text-end'>
+          Average <span className='text-text-secondary'>kW</span>
+        </div>
+        <div className='w-[15%] px-2 text-end'>
+          Total <span className='text-text-secondary'>kWH</span>
+        </div>
         <div className='w-1/4 px-2 text-end'></div>
       </div>
       {siteData.map((site) => (
