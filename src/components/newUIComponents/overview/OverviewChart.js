@@ -157,7 +157,7 @@ export default function OverviewChart({ sites, timeIncrement, siteData }) {
   if (loading) return null;
 
   return (
-    <div className="OverviewChart">
+    <div className="OverviewChart rounded-lg bg-brand-primary-light mb-6 w-full h-40 px-2 pb-1">
       <Line data={data} options={options} plugins={plugins} />
     </div>
   );

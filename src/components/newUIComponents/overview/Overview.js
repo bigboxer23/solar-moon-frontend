@@ -6,12 +6,19 @@ import TimeIncrementSelector from "./TimeIncrementSelector";
 import { DAY, getAggregationValue } from "../../../services/search";
 import Loader from "../common/Loader";
 import { useStickyState } from "../../../utils/Utils";
+import classNames from "classnames";
 
 function StatBlock({ title, value, className }) {
+  const style = classNames("StatBlock flex", className);
+
   return (
-    <div className={`StatBlock ${className}`}>
-      <div className="stat-block-value">{value}</div>
-      <div className="stat-block-title">{title}</div>
+    <div className={style}>
+      <div className="font-bold text-5xl inline-block align-self-end leading-[3rem]">
+        {value}
+      </div>
+      <div className="font-bold text-base leading-[1.125rem] inline-block align-self-end ml-2 max-w-[3.125rem] mb-1">
+        {title}
+      </div>
     </div>
   );
 }
@@ -78,32 +85,34 @@ export default function Overview() {
   if (loading) return <Loader />;
 
   return (
-    <div className="Overview fade-in">
-      <div className="overview-header">
+    <div className="Overview fade-in bg-white rounded-lg shadow-panel w-[55rem] p-8 mb-8">
+      <div className="flex justify-between items-center w-full text-lg font-bold mb-4">
         Overview
         <TimeIncrementSelector
           setTimeIncrement={setTimeIncrement}
           timeIncrement={timeIncrement}
         />
       </div>
-      <div className="stats">
-        <div className="stat-blocks">
+      <div className="flex justify-between mb-6">
+        <div className="flex space-x-4">
           <StatBlock title="sites" value={sites.length} />
           <StatBlock title="devices" value={devices.length} />
           <StatBlock
             title="active alerts"
             value={activeAlerts.length}
-            className={activeAlerts > 0 ? "red" : ""}
+            className={activeAlerts > 0 ? "text-danger" : ""}
           />
           <StatBlock
             title="resolved alerts"
             value={resolvedAlerts.length}
-            className={"gray"}
+            className={"text-text-secondary"}
           />
         </div>
-        <div className="totals">
-          <span className="total-output">Total: {totalOutput} kWH</span>
-          <span className="average-output">Average: {averageOutput} kWH</span>
+        <div className="flex flex-col items-end">
+          <span className="text-base">Total: {totalOutput} kWH</span>
+          <span className="average-output text-xl font-bold">
+            Average: {averageOutput} kWH
+          </span>
         </div>
       </div>
       <OverviewChart

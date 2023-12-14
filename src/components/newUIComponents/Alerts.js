@@ -88,21 +88,22 @@ export default function Alerts() {
   }
 
   return (
-    <main className="Alerts">
+    <main className="Alerts flex justify-center flex-col items-center w-full">
       {loading && <Loader />}
       {!loading && (
-        <div className="alerts-wrapper fade-in">
-          <div className="alerts-title">Alerts</div>
-          <AlertsFilter
-            initialFilter={filter}
-            handleFilterChange={handleFilterChange}
-            availableSites={siteOptions}
-            availableDevices={deviceOptions}
-          />
-          <div className="alerts-subtitle">Active</div>
-          <div className="alerts-list">
+        <div className="fade-in my-8 bg-white rounded-lg w-[55rem] p-8 shadow-panel">
+          <div className="flex justify-between items-center w-full  mb-10">
+            <span className="text-lg font-bold">Alerts</span>
+            <AlertsFilter
+              initialFilter={filter}
+              handleFilterChange={handleFilterChange}
+              availableSites={siteOptions}
+              availableDevices={deviceOptions}
+            />
+          </div>
+          <div className="space-y-4">
             {filteredActiveAlerts.length === 0 && (
-              <div className="no-alerts">
+              <div className="flex justify-center items-center h-full w-full text-base text-text-secondary mb-8">
                 All clear! You have no active device alerts.
               </div>
             )}
@@ -110,8 +111,10 @@ export default function Alerts() {
               <Alert key={alert.alarmId} alert={alert} active />
             ))}
           </div>
-          <div className="alerts-subtitle">Resolved Alerts</div>
-          <div className="alerts-list">
+          <div className="flex justify-between items-center w-full text-lg font-bold mb-6">
+            Resolved Alerts
+          </div>
+          <div className="space-y-4">
             {filteredResolvedAlerts.map((alert) => (
               <Alert key={alert.alarmId} alert={alert} />
             ))}

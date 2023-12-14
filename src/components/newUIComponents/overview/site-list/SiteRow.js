@@ -94,19 +94,17 @@ export default function SiteRow({ info, graphData, timeIncrement }) {
   if (loading) return null;
 
   return (
-    <div className="SiteRow mb-3">
-      <div className="site-name">{name}</div>
-      <div className="device-count">{deviceCount}</div>
-      <div className="alert-count">{alertCount}</div>
-      <div className="average">
+    <div className="SiteRow mb-3 flex w-full items-center">
+      <div className="w-[15%] px-2">{name}</div>
+      <div className="w-[15%] text-end px-2">{deviceCount}</div>
+      <div className="w-[15%] text-end px-2">{alertCount}</div>
+      <div className="w-[15%] text-end px-2">
         <FormattedNumber value={average} />
-        kWH
       </div>
-      <div className="total">
+      <div className="w-[15%] text-end px-2">
         <FormattedNumber value={total} />
-        kWH
       </div>
-      <div className="graph">
+      <div className="w-1/4 h-[2.5rem] rounded ml-auto bg-brand-primary-light">
         <Line data={data} options={options} />
       </div>
     </div>

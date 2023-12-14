@@ -84,36 +84,39 @@ export default function AlertsFilter({
   }
 
   function handleDateFilterChange([start, end]) {
-    setDateValue([start, end]);
+    // TODO: set up dates filtering later
+    setDateValue([null, null]);
     setDirty(true);
   }
 
   return (
-    <div className="AlertsFilter">
+    <div className="AlertsFilter flex items-center space-x-3">
+      {dirty && (
+        <button
+          className="border-1 rounded-full py-1.5 px-4 bg-white text-sm font-bold text-black"
+          onClick={resetFilters}
+        >
+          Reset Filters
+        </button>
+      )}
       <Dropdown
-        className="alert-filter-dropdown"
         prefixLabel={"Site"}
         options={[allOption, ...availableSites]}
         value={siteValue}
         onChange={handleSiteFilterChange}
       />
       <Dropdown
-        className="alert-filter-dropdown"
         prefixLabel={"Device"}
         options={[allOption, ...availableDevices]}
         value={deviceValue}
         onChange={handleDeviceFilterChange}
       />
-      <DateRangePicker
-        className="alert-filter-date-range-picker"
-        onChange={handleDateFilterChange}
-        value={dateValue}
-      />
-      {dirty && (
-        <button className="alert-filter-reset-button" onClick={resetFilters}>
-          Reset Filters
-        </button>
-      )}
+      {/* TODO: set up dates filtering later */}
+      {/*<DateRangePicker*/}
+      {/*  className="alert-filter-date-range-picker"*/}
+      {/*  onChange={handleDateFilterChange}*/}
+      {/*  value={dateValue}*/}
+      {/*/>*/}
     </div>
   );
 }

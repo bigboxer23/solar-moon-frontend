@@ -33,15 +33,15 @@ export default function SiteList({
   if (loading) return null;
 
   return (
-    <div className="SiteList">
-      <div className="title">Sites</div>
-      <div className="site-table-header">
-        <div className="site-name">Site Name</div>
-        <div className="device-count">Device Count</div>
-        <div className="alert-count">Alert Count</div>
-        <div className="average">Average</div>
-        <div className="total">Total</div>
-        <div className="graph"></div>
+    <div className="SiteList mt-5">
+      <div className="text-lg font-bold mb-6">Sites</div>
+      <div className="w-full text-xs font-bold items-center mb-4 flex">
+        <div className="w-[15%] px-2">Site Name</div>
+        <div className="w-[15%] text-end px-2">Device Count</div>
+        <div className="w-[15%] text-end px-2">Alert Count</div>
+        <div className="w-[15%] text-end px-2">Average (kWH)</div>
+        <div className="w-[15%] text-end px-2">Total (kWH)</div>
+        <div className="w-1/4 text-end px-2"></div>
       </div>
       {siteData.map((site) => (
         <SiteRow
