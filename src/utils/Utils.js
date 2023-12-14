@@ -115,7 +115,7 @@ export const getFormattedDaysHoursMinutes = (time) => {
   }
   time = time / 1000;
   let days = ~~(time / 86400);
-  let hours = ~~(time / 3600);
+  let hours = ~~((time / 3600) % 24);
   let minutes = ~~((time % 3600) / 60);
   //let seconds = ~~time % 60;
   let formattedTime = "";
