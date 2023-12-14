@@ -1048,3 +1048,7 @@ button:focus {
 .mapping-block {
   min-height: 38px;
 }
+
+.help-button {
+  font-size: 1.2rem;
+}

@@ -13,6 +13,7 @@ import NewDeviceDialog from "./NewDeviceDialog";
 import Loader from "../common/Loader";
 import { sortDevices, useStickyState } from "../../utils/Utils";
 import { useSearchParams } from "react-router-dom";
+import Mapping from "../mapping/Mapping";
 
 export const noSite = "No Site";
 const SiteManagement = () => {
@@ -133,6 +134,7 @@ const SiteManagement = () => {
             <MdAddCircle className={"button-icon"} />
             Add Device
           </Button>
+          <Mapping />
         </CardHeader>
         <CardBody className={devices.length === 0 ? "" : "d-none"}>
           <Loader
