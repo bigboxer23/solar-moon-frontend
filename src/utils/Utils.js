@@ -160,3 +160,16 @@ export const timeIncrementToText = (timeIncrement, short) => {
       return short ? "D" : "Day";
   }
 };
+
+export const formatMessage = function (message) {
+  const unixSec = /\d{10}/.exec(message);
+  if (unixSec == null) {
+    return message;
+  }
+  const unixMS = /\d{13}/.exec(message);
+  const timestamp =
+    Number(unixMS == null ? unixSec : unixMS) * (unixMS == null ? 1000 : 1);
+  const finalMatch = unixMS == null ? unixSec : unixMS;
+  //Replace timestamp w/local time
+  return message.replaceAll(finalMatch, getFormattedTime(new Date(timestamp)));
+};

@@ -5,6 +5,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { getAlarmData, getDevices } from "../../services/services";
 import { MONTH } from "../../services/search";
 import {
+  formatMessage,
   getFormattedDaysHoursMinutes,
   getFormattedTime,
   getRoundedTime,
@@ -98,22 +99,6 @@ const Alarms = () => {
     let d = devices.find((device) => device.id === row.deviceId);
     row.deviceId = d?.name || d?.deviceName || row.deviceId;
     return row;
-  };
-
-  const formatMessage = function (message) {
-    const unixSec = /\d{10}/.exec(message);
-    if (unixSec == null) {
-      return message;
-    }
-    const unixMS = /\d{13}/.exec(message);
-    const timestamp =
-      Number(unixMS == null ? unixSec : unixMS) * (unixMS == null ? 1000 : 1);
-    const finalMatch = unixMS == null ? unixSec : unixMS;
-    //Replace timestamp w/local time
-    return message.replaceAll(
-      finalMatch,
-      getFormattedTime(new Date(timestamp)),
-    );
   };
 
   const fetchDevices = () => {

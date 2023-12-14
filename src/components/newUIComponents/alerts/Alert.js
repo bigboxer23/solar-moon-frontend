@@ -1,5 +1,9 @@
 import moment from "moment";
 import classNames from "classnames";
+import {
+  formatMessage,
+  getFormattedDaysHoursMinutes,
+} from "../../../utils/Utils";
 
 export default function Alert({ alert, active }) {
   const timeSinceAlert = moment(alert.startDate).fromNow();
@@ -27,7 +31,8 @@ export default function Alert({ alert, active }) {
           )}
         </div>
         <div className="text-sm mr-3">
-          <span className="font-bold mr-1.5">Message:</span> {alert.message}
+          <span className="font-bold mr-1.5">Message:</span>{" "}
+          {formatMessage(alert.message)}
         </div>
       </div>
       <div>
@@ -37,8 +42,12 @@ export default function Alert({ alert, active }) {
           </div>
         )}
         {alert.state === 0 && (
-          <div className="flex justify-end text-xs italic m-0.5">
-            Resolved {timeSinceResolved}
+          <div className="flex flex-column justify-end text-xs italic m-0.5">
+            <div>Resolved {timeSinceResolved}</div>
+            <div>
+              Duration{" "}
+              {getFormattedDaysHoursMinutes(alert.endDate - alert.startDate)}
+            </div>
           </div>
         )}
       </div>

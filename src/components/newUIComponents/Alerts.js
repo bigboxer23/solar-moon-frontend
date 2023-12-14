@@ -23,8 +23,12 @@ export default function Alerts() {
 
   useEffect(() => {
     getAlarmData().then(({ data }) => {
-      const active = data.filter((d) => d.state > 0);
-      const resolved = data.filter((d) => d.state === 0);
+      const active = data
+        .filter((d) => d.state > 0)
+        .sort((row, row2) => row2.startDate - row.startDate);
+      const resolved = data
+        .filter((d) => d.state === 0)
+        .sort((row, row2) => row2.startDate - row.startDate);
 
       // Initialize alerts
       setActiveAlerts(active);
