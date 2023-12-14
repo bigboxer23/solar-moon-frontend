@@ -48,7 +48,7 @@ const DownloadReportButton = ({ site, device, start, end, timeFormatter }) => {
     )
       .then(({ data }) => {
         let transformed = data.hits.hits.map((row) => {
-          row._source.time = timeFormatter(row._source);
+          row._source.time = timeFormatter(new Date(row._source["@timestamp"]));
           return row._source;
         });
         const url = window.URL.createObjectURL(
