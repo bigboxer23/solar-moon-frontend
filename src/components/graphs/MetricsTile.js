@@ -52,10 +52,10 @@ const MetricsTile = ({ device, time }) => {
       </div>
       <div className={"flex-grow-1"} />
       <div className={"align-self-end text-muted smaller-text"}>
-        <FormattedLabel label={"Total"} value={total} />
+        <FormattedLabel label={"Total"} value={total} unit={"kWH"} />
       </div>
       <div className={"align-self-end justify-self-end fw-bolder"}>
-        <FormattedLabel label={"Avg"} value={avg} />
+        <FormattedLabel label={"Avg"} value={avg} unit={"kW"} />
       </div>
       <div className={"min-max-gauge-empty position-absolute"} />
       <div
