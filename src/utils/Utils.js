@@ -73,6 +73,9 @@ export const sortDevices = (d1, d2) =>
     { sensitivity: 'accent' },
   );
 
+export const sortSelectAlphabetically = (d1, d2) =>
+  d1.label.localeCompare(d2.label, undefined, { sensitivity: "accent" });
+
 export const getRoundedTimeFromOffset = (offset) => {
   return offset === HOUR
     ? new Date(new Date().getTime() - offset)
@@ -115,7 +118,7 @@ export const getFormattedDaysHoursMinutes = (time) => {
   }
   time = time / 1000;
   let days = ~~(time / 86400);
-  let hours = ~~(time / 3600);
+  let hours = ~~((time / 3600) % 24);
   let minutes = ~~((time % 3600) / 60);
   //let seconds = ~~time % 60;
   let formattedTime = '';

@@ -3,6 +3,7 @@ import { getAlarmData } from '../../services/services';
 import Loader from './common/Loader';
 import Alert from './alerts/Alert';
 import AlertsFilter from './alerts/AlertsFilter';
+import { sortSelectAlphabetically } from '../../utils/Utils';
 
 export default function Alerts() {
   const [loading, setLoading] = useState(true);
@@ -38,21 +39,29 @@ export default function Alerts() {
       setFilteredActiveAlerts(active);
       setFilteredResolvedAlerts(resolved);
 
-      const siteOptions = data
-        .map((d) => {
-          return { label: d.deviceSite, value: d.siteId };
-        })
-        .filter((opt) => {
-          return opt.label && opt.value;
-        });
+      const siteOptions = [
+        ...new Map(
+          data
+            .filter((d) => {
+              return d.deviceSite && d.siteId;
+            })
+            .map((d) => {
+              return [d.siteId, { label: d.deviceSite, value: d.siteId }];
+            }),
+        ).values(),
+      ].sort(sortSelectAlphabetically);
 
-      const deviceOptions = data
-        .map((d) => {
-          return { label: d.deviceName, value: d.deviceId };
-        })
-        .filter((opt) => {
-          return opt.label && opt.value;
-        });
+      const deviceOptions = [
+        ...new Map(
+          data
+            .filter((d) => {
+              return d.deviceName && d.deviceId;
+            })
+            .map((d) => {
+              return [d.deviceId, { label: d.deviceName, value: d.deviceId }];
+            }),
+        ).values(),
+      ].sort(sortSelectAlphabetically);
 
       setSiteOptions(siteOptions);
       setDeviceOptions(deviceOptions);
