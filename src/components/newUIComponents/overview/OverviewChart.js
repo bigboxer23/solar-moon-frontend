@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import { Line } from "react-chartjs-2";
-import { DAY, parseSearchReturn } from "../../../services/search";
-import { splitDayAndNightDataSets } from "../../../utils/Utils";
+import { useEffect, useState } from 'react';
+import { Line } from 'react-chartjs-2';
+import { DAY, parseSearchReturn } from '../../../services/search';
+import { splitDayAndNightDataSets } from '../../../utils/Utils';
 
-export default function OverviewChart({ sites, timeIncrement, siteData }) {
+export default function OverviewChart({ timeIncrement, siteData }) {
   const [loading, setLoading] = useState(true);
   const [dayData, setDayData] = useState([]);
   const [nightData, setNightData] = useState([]);
@@ -28,14 +28,14 @@ export default function OverviewChart({ sites, timeIncrement, siteData }) {
     datasets: [
       {
         data: dayData,
-        borderColor: "#5178C2",
+        borderColor: '#5178C2',
         borderWidth: 4,
       },
       ...(nightData.length > 0
         ? [
             {
               data: nightData,
-              borderColor: "#9754cb",
+              borderColor: '#9754cb',
               borderWidth: 4,
             },
           ]
@@ -47,12 +47,12 @@ export default function OverviewChart({ sites, timeIncrement, siteData }) {
     responsive: true,
     maintainAspectRatio: false,
     interaction: {
-      mode: "index",
+      mode: 'index',
       intersect: false,
     },
     scales: {
       x: {
-        type: "time",
+        type: 'time',
         ticks: {
           stepSize: 6,
         },
@@ -85,29 +85,29 @@ export default function OverviewChart({ sites, timeIncrement, siteData }) {
         display: false,
       },
       tooltip: {
-        backgroundColor: "#fff",
-        titleColor: "#000",
-        bodyColor: "#000",
+        backgroundColor: '#fff',
+        titleColor: '#000',
+        bodyColor: '#000',
         displayColors: false,
         boxPadding: 8,
-        titleAlign: "center",
-        bodyAlign: "center",
+        titleAlign: 'center',
+        bodyAlign: 'center',
         callbacks: {
           title: (context) => {
             const { dataIndex } = context[0];
             const { date } = data.datasets[0].data[dataIndex];
-            return date.toLocaleDateString("en-US", {
-              month: "short",
-              day: "numeric",
-              year: "numeric",
-              hour: "numeric",
-              minute: "numeric",
+            return date.toLocaleDateString('en-US', {
+              month: 'short',
+              day: 'numeric',
+              year: 'numeric',
+              hour: 'numeric',
+              minute: 'numeric',
             });
           },
           label: (context) => {
-            let label = context.formattedValue || "";
+            let label = context.formattedValue || '';
             if (label) {
-              label += " kWh";
+              label += ' kWh';
             }
             return label;
           },
@@ -115,22 +115,22 @@ export default function OverviewChart({ sites, timeIncrement, siteData }) {
       },
     },
     parsing: {
-      xAxisKey: "date",
-      yAxisKey: "values",
+      xAxisKey: 'date',
+      yAxisKey: 'values',
     },
   };
 
   const plugins = [
     {
-      id: "verticalLiner",
-      afterInit: (chart, args, opts) => {
+      id: 'verticalLiner',
+      afterInit: (chart) => {
         chart.verticalLiner = {};
       },
-      afterEvent: (chart, args, options) => {
+      afterEvent: (chart, args) => {
         const { inChartArea } = args;
         chart.verticalLiner = { draw: inChartArea };
       },
-      beforeTooltipDraw: (chart, args, options) => {
+      beforeTooltipDraw: (chart, args) => {
         const { draw } = chart.verticalLiner;
         if (!draw) return;
 
@@ -143,7 +143,7 @@ export default function OverviewChart({ sites, timeIncrement, siteData }) {
         ctx.save();
 
         ctx.beginPath();
-        ctx.strokeStyle = "#5178C2";
+        ctx.strokeStyle = '#5178C2';
         ctx.lineWidth = 2;
         ctx.moveTo(x, top);
         ctx.lineTo(x, bottom);
@@ -157,7 +157,7 @@ export default function OverviewChart({ sites, timeIncrement, siteData }) {
   if (loading) return null;
 
   return (
-    <div className="OverviewChart rounded-lg bg-brand-primary-light mb-6 w-full h-40 px-2 pb-1">
+    <div className='OverviewChart mb-6 h-40 w-full rounded-lg bg-brand-primary-light px-2 pb-1'>
       <Line data={data} options={options} plugins={plugins} />
     </div>
   );

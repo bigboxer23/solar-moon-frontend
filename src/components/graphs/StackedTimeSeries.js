@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
-import * as d3 from "d3";
-import { getStackedTimeSeriesData } from "../../services/services";
-import { debounce } from "../../utils/Utils";
-import Legend from "./Legend";
-import { AVG, DATE_HISTO } from "../../services/search";
+import { useEffect, useRef, useState } from 'react';
+import * as d3 from 'd3';
+import { getStackedTimeSeriesData } from '../../services/services';
+import { debounce } from '../../utils/Utils';
+import Legend from './Legend';
+import { AVG, DATE_HISTO } from '../../services/search';
 const StackedTimeSeries = ({ device, time }) => {
   const ref = useRef();
   const [windowWidth, setWindowWidth] = useState(
@@ -21,13 +21,13 @@ const StackedTimeSeries = ({ device, time }) => {
     let deviceCount = 0;
     data.aggregations[DATE_HISTO].buckets.forEach((d) => {
       let date = new Date(Number(d.key));
-      deviceCount = Math.max(deviceCount, d["sterms#terms"].buckets.length);
-      if (d["sterms#terms"].buckets.length >= deviceCount) {
-        d["sterms#terms"].buckets.forEach((v) => {
+      deviceCount = Math.max(deviceCount, d['sterms#terms'].buckets.length);
+      if (d['sterms#terms'].buckets.length >= deviceCount) {
+        d['sterms#terms'].buckets.forEach((v) => {
           formattedData.push({
             date: date.toISOString(),
             name: v.key,
-            avg: v[AVG] ? v[AVG].value : v["1"].value,
+            avg: v[AVG] ? v[AVG].value : v['1'].value,
           });
         });
       }
@@ -50,7 +50,7 @@ const StackedTimeSeries = ({ device, time }) => {
         try {
           return D.get(key).avg;
         } catch (e) {
-          console.log(key + " " + e);
+          console.log(key + ' ' + e);
           return 0;
         }
       })(
@@ -85,53 +85,53 @@ const StackedTimeSeries = ({ device, time }) => {
       .y0((d) => y(d[0]))
       .y1((d) => y(d[1]));
 
-    d3.select(ref.current).select("svg").remove();
+    d3.select(ref.current).select('svg').remove();
     // Create the SVG container.
     const svg = d3
       .select(ref.current)
-      .append("svg")
-      .attr("viewBox", [0, 0, width, height])
-      .attr("style", "max-width: 100%; height: auto;");
+      .append('svg')
+      .attr('viewBox', [0, 0, width, height])
+      .attr('style', 'max-width: 100%; height: auto;');
 
     // Add the y-axis, remove the domain line, add grid lines and a label.
     svg
-      .append("g")
-      .attr("transform", `translate(${margin.left},0)`)
+      .append('g')
+      .attr('transform', `translate(${margin.left},0)`)
       .call(d3.axisLeft(y).ticks(height / 40))
-      .call((g) => g.select(".domain").remove())
+      .call((g) => g.select('.domain').remove())
       .call((g) =>
         g
-          .selectAll(".tick line")
+          .selectAll('.tick line')
           .clone()
-          .attr("x2", width - margin.left - margin.right)
-          .attr("stroke-opacity", 0.1),
+          .attr('x2', width - margin.left - margin.right)
+          .attr('stroke-opacity', 0.1),
       )
       .call((g) =>
         g
-          .append("text")
-          .attr("x", -margin.left + 20)
-          .attr("y", 10)
-          .attr("fill", "currentColor")
-          .attr("text-anchor", "start")
-          .attr("class", "fw-bold")
+          .append('text')
+          .attr('x', -margin.left + 20)
+          .attr('y', 10)
+          .attr('fill', 'currentColor')
+          .attr('text-anchor', 'start')
+          .attr('class', 'fw-bold')
           .text(device.name),
       );
 
     // Append a path for each series.
     svg
-      .append("g")
+      .append('g')
       .selectAll()
       .data(series)
-      .join("path")
-      .attr("fill", (d) => color(d.key))
-      .attr("d", area)
-      .append("title")
+      .join('path')
+      .attr('fill', (d) => color(d.key))
+      .attr('d', area)
+      .append('title')
       .text((d) => d.key);
 
     // Append the horizontal axis atop the area.
     svg
-      .append("g")
-      .attr("transform", `translate(0,${height - margin.bottom})`)
+      .append('g')
+      .attr('transform', `translate(0,${height - margin.bottom})`)
       .call(d3.axisBottom(x).tickSizeOuter(0));
 
     setColorData(
@@ -142,9 +142,9 @@ const StackedTimeSeries = ({ device, time }) => {
   };
 
   useEffect(() => {
-    window.addEventListener("resize", debouncedHandleResize);
+    window.addEventListener('resize', debouncedHandleResize);
     return (_) => {
-      window.removeEventListener("resize", debouncedHandleResize);
+      window.removeEventListener('resize', debouncedHandleResize);
     };
   });
 
@@ -164,7 +164,7 @@ const StackedTimeSeries = ({ device, time }) => {
   return (
     <div>
       <Legend colorData={colorData} />
-      <svg className={"time-series-graph mb-3"} ref={ref} />
+      <svg className='time-series-graph mb-3' ref={ref} />
     </div>
   );
 };

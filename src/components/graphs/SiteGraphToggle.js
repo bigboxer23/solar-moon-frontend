@@ -1,36 +1,35 @@
-import { ToggleButton, ToggleButtonGroup } from "react-bootstrap";
-import React from "react";
+import { ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 
 const SiteGraphToggle = ({ graph, setGraph }) => {
   return (
     <ToggleButtonGroup
-      type="radio"
-      name="site-graph"
+      type='radio'
+      name='site-graph'
       value={graph}
       onChange={(t) => setGraph(t)}
-      className={"align-self-end"}
+      className='align-self-end'
     >
       <ToggleButton
-        variant="secondary"
-        name="site-graph"
-        id="tbg-btn-Combined"
-        value={"Combined"}
+        variant='secondary'
+        name='site-graph'
+        id='tbg-btn-Combined'
+        value='Combined'
       >
         Combined
       </ToggleButton>
       <ToggleButton
-        variant="secondary"
-        name="site-graph"
-        id="tbg-btn-Stacked"
-        value={"Stacked"}
+        variant='secondary'
+        name='site-graph'
+        id='tbg-btn-Stacked'
+        value='Stacked'
       >
         Stacked
       </ToggleButton>
       <ToggleButton
-        variant="secondary"
-        name="site-graph"
-        id="tbg-btn-Stacked-Bar"
-        value={"Grouped"}
+        variant='secondary'
+        name='site-graph'
+        id='tbg-btn-Stacked-Bar'
+        value='Grouped'
       >
         Grouped
       </ToggleButton>

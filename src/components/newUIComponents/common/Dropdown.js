@@ -1,6 +1,6 @@
-import { Menu, MenuButton, MenuItem } from "@szhsin/react-menu";
-import { FaChevronDown } from "react-icons/fa";
-import classNames from "classnames";
+import { Menu, MenuButton, MenuItem } from '@szhsin/react-menu';
+import { FaChevronDown } from 'react-icons/fa';
+import classNames from 'classnames';
 
 export default function Dropdown({
   prefixLabel,
@@ -9,26 +9,26 @@ export default function Dropdown({
   value,
   className,
 }) {
-  const dropdownClass = classNames("Dropdown", className);
+  const dropdownClass = classNames('Dropdown', className);
 
   return (
     <div className={dropdownClass}>
       <Menu
         gap={8}
         menuButton={
-          <MenuButton className="bg-white text-black border-1 border-solid border-border-color rounded-full px-4 py-1 flex items-center">
+          <MenuButton className='border-1 flex items-center rounded-full border-solid border-border-color bg-white px-4 py-1 text-black'>
             {prefixLabel && (
-              <span className="font-bold mr-2">{prefixLabel}:</span>
+              <span className='mr-2 font-bold'>{prefixLabel}:</span>
             )}
             {value.label}
-            <FaChevronDown size="14" className="ml-2" />
+            <FaChevronDown size='14' className='ml-2' />
           </MenuButton>
         }
-        menuClassName="pl-0 py-2 w-[9rem] rounded-lg flex flex-col list-none bg-white shadow-panel"
+        menuClassName='pl-0 py-2 w-[9rem] rounded-lg flex flex-col list-none bg-white shadow-panel'
       >
         {options.map((option) => (
           <MenuItem
-            className="font-normal text-sm text-black px-4 py-1.5 list-none cursor-pointer hover:bg-[#eee]"
+            className='cursor-pointer list-none px-4 py-1.5 text-sm font-normal text-black hover:bg-[#eee]'
             key={option.value}
             onClick={(e) => onChange(option)}
           >

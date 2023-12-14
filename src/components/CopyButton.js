@@ -1,11 +1,11 @@
-import { BiCopy } from "react-icons/bi";
-import { BsCheckLg } from "react-icons/bs";
-import { Button } from "react-bootstrap";
-import React, { useState } from "react";
-import { useCopyToClipboard } from "usehooks-ts";
+import { BiCopy } from 'react-icons/bi';
+import { BsCheckLg } from 'react-icons/bs';
+import { Button } from 'react-bootstrap';
+import { useState } from 'react';
+import { useCopyToClipboard } from 'usehooks-ts';
 
 const CopyButton = (props) => {
-  const [value, copy] = useCopyToClipboard();
+  const [_, copy] = useCopyToClipboard();
   const [copied, setCopied] = useState(false);
 
   const setCopyState = () => {
@@ -16,26 +16,26 @@ const CopyButton = (props) => {
   return (
     <Button
       title={props.title}
-      type={"button"}
-      variant={"outline-secondary"}
-      className={"ms-2 w-auto copy-button position-relative"}
+      type='button'
+      variant='outline-secondary'
+      className='copy-button position-relative ms-2 w-auto'
       onClick={() => {
         copy(props.dataSrc());
         setCopyState();
       }}
     >
       <BiCopy
-        className={copied ? "fade" : "fade show"}
-        style={{ marginBottom: "2px" }}
+        className={copied ? 'fade' : 'fade show'}
+        style={{ marginBottom: '2px' }}
       />
       <BsCheckLg
-        color={"green"}
-        className={copied ? "fade show" : "fade"}
+        color='green'
+        className={copied ? 'fade show' : 'fade'}
         style={{
-          marginBottom: "2px",
+          marginBottom: '2px',
           left: 12,
           top: 12,
-          position: "absolute",
+          position: 'absolute',
         }}
       />
     </Button>

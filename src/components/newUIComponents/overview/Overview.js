@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { getOverviewData } from "../../../services/services";
-import SiteList from "./site-list/SiteList";
-import OverviewChart from "./OverviewChart";
-import TimeIncrementSelector from "./TimeIncrementSelector";
-import { DAY, getAggregationValue } from "../../../services/search";
-import Loader from "../common/Loader";
-import { useStickyState } from "../../../utils/Utils";
-import classNames from "classnames";
-import { FormattedNumber } from "react-intl";
+import { useEffect, useState } from 'react';
+import { getOverviewData } from '../../../services/services';
+import SiteList from './site-list/SiteList';
+import OverviewChart from './OverviewChart';
+import TimeIncrementSelector from './TimeIncrementSelector';
+import { DAY, getAggregationValue } from '../../../services/search';
+import Loader from '../common/Loader';
+import { useStickyState } from '../../../utils/Utils';
+import classNames from 'classnames';
+import { FormattedNumber } from 'react-intl';
 
 function StatBlock({ title, value, className }) {
-  const style = classNames("StatBlock flex", className);
+  const style = classNames('StatBlock flex', className);
 
   return (
     <div className={style}>
-      <div className="font-bold text-5xl inline-block align-self-end leading-[3rem]">
+      <div className='align-self-end inline-block text-5xl font-bold leading-[3rem]'>
         {value}
       </div>
-      <div className="font-bold text-base leading-[1.125rem] inline-block align-self-end ml-2 max-w-[3.125rem] mb-1">
+      <div className='align-self-end mb-1 ml-2 inline-block max-w-[3.125rem] text-base font-bold leading-[1.125rem]'>
         {title}
       </div>
     </div>
@@ -31,7 +31,7 @@ export default function Overview() {
   const [resolvedAlerts, setResolvedAlerts] = useState([]);
   const [timeIncrement, setTimeIncrement] = useStickyState(
     DAY,
-    "dashboard.time",
+    'dashboard.time',
   );
   const [totalOutput, setTotalOutput] = useState(0);
   const [averageOutput, setAverageOutput] = useState(0);
@@ -51,8 +51,8 @@ export default function Overview() {
   }, [timeIncrement]);
 
   const handleOverviewTotal = (data) => {
-    setTotalOutput(getAggregationValue(data, "sum#total"));
-    setAverageOutput(getAggregationValue(data, "avg#avg"));
+    setTotalOutput(getAggregationValue(data, 'sum#total'));
+    setAverageOutput(getAggregationValue(data, 'avg#avg'));
   };
 
   const handleAlarms = (data) => {
@@ -86,34 +86,34 @@ export default function Overview() {
   if (loading) return <Loader />;
 
   return (
-    <div className="Overview fade-in bg-white rounded-lg shadow-panel w-[55rem] p-8 mb-8">
-      <div className="flex justify-between items-center w-full text-lg font-bold mb-4">
+    <div className='Overview fade-in mb-8 w-[55rem] rounded-lg bg-white p-8 shadow-panel'>
+      <div className='mb-4 flex w-full items-center justify-between text-lg font-bold'>
         Overview
         <TimeIncrementSelector
           setTimeIncrement={setTimeIncrement}
           timeIncrement={timeIncrement}
         />
       </div>
-      <div className="flex justify-between mb-6">
-        <div className="flex space-x-4">
-          <StatBlock title="sites" value={sites.length} />
-          <StatBlock title="devices" value={devices.length} />
+      <div className='mb-6 flex justify-between'>
+        <div className='flex space-x-4'>
+          <StatBlock title='sites' value={sites.length} />
+          <StatBlock title='devices' value={devices.length} />
           <StatBlock
-            title="active alerts"
+            title='active alerts'
             value={activeAlerts.length}
-            className={activeAlerts > 0 ? "text-danger" : ""}
+            className={activeAlerts > 0 ? 'text-danger' : ''}
           />
           <StatBlock
-            title="resolved alerts"
+            title='resolved alerts'
             value={resolvedAlerts.length}
-            className={"text-text-secondary"}
+            className='text-text-secondary'
           />
         </div>
-        <div className="flex flex-col items-end">
-          <span className="text-base">
+        <div className='flex flex-col items-end'>
+          <span className='text-base'>
             Total: <FormattedNumber value={totalOutput} /> kWH
           </span>
-          <span className="average-output text-xl font-bold">
+          <span className='average-output text-xl font-bold'>
             Average: <FormattedNumber value={averageOutput} /> kWH
           </span>
         </div>

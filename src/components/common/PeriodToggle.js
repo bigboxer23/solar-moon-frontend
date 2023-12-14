@@ -1,52 +1,51 @@
-import { ToggleButton, ToggleButtonGroup } from "react-bootstrap";
-import { DAY, HOUR, MONTH, WEEK, YEAR } from "../../services/search";
-import React from "react";
+import { ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
+import { DAY, HOUR, MONTH, WEEK, YEAR } from '../../services/search';
 
 const PeriodToggle = ({ time, setTime }) => {
   return (
     <ToggleButtonGroup
-      type="radio"
-      name="time-period"
+      type='radio'
+      name='time-period'
       value={time}
       onChange={(t) => setTime(t)}
-      className={"ms-3"}
+      className='ms-3'
     >
       <ToggleButton
-        variant="secondary"
-        name="time-period"
-        id="tbg-btn-1"
+        variant='secondary'
+        name='time-period'
+        id='tbg-btn-1'
         value={HOUR}
       >
         Hr
       </ToggleButton>
       <ToggleButton
-        variant="secondary"
-        name="time-period"
-        id="tbg-btn-2"
+        variant='secondary'
+        name='time-period'
+        id='tbg-btn-2'
         value={DAY}
       >
         D
       </ToggleButton>
       <ToggleButton
-        variant="secondary"
-        name="time-period"
-        id="tbg-btn-3"
+        variant='secondary'
+        name='time-period'
+        id='tbg-btn-3'
         value={WEEK}
       >
         Wk
       </ToggleButton>
       <ToggleButton
-        variant="secondary"
-        name="time-period"
-        id="tbg-btn-4"
+        variant='secondary'
+        name='time-period'
+        id='tbg-btn-4'
         value={MONTH}
       >
         Mo
       </ToggleButton>
       <ToggleButton
-        variant="secondary"
-        name="time-period"
-        id="tbg-btn-5"
+        variant='secondary'
+        name='time-period'
+        id='tbg-btn-5'
         value={YEAR}
       >
         Yr

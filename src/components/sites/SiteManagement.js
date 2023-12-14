@@ -1,25 +1,25 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import {
   getDevice,
   getDevices,
   getSeatCount,
   updateDevice,
-} from "../../services/services";
-import { Button, Card, CardBody, CardHeader, Dropdown } from "react-bootstrap";
-import Site from "./Site";
-import { MdAddCircle, MdOutlineAdd } from "react-icons/md";
-import NewSiteDialog from "./newSiteDialog";
-import NewDeviceDialog from "./NewDeviceDialog";
-import Loader from "../common/Loader";
-import { sortDevices, useStickyState } from "../../utils/Utils";
-import { useSearchParams } from "react-router-dom";
-import Mapping from "../mapping/Mapping";
+} from '../../services/services';
+import { Button, Card, CardBody, CardHeader, Dropdown } from 'react-bootstrap';
+import Site from './Site';
+import { MdAddCircle, MdOutlineAdd } from 'react-icons/md';
+import NewSiteDialog from './newSiteDialog';
+import NewDeviceDialog from './NewDeviceDialog';
+import Loader from '../common/Loader';
+import { sortDevices, useStickyState } from '../../utils/Utils';
+import { useSearchParams } from 'react-router-dom';
+import Mapping from '../mapping/Mapping';
 
-export const noSite = "No Site";
+export const noSite = 'No Site';
 const SiteManagement = () => {
   const [loading, setLoading] = useState(true);
   const [devices, setDevices] = useState([]);
-  const [activeSite, setActiveSite] = useStickyState("", "site.management");
+  const [activeSite, setActiveSite] = useStickyState('', 'site.management');
   const [showNewSite, setShowNewSite] = useState(false);
   const [showNewDevice, setShowNewDevice] = useState(false);
   const [newSiteFormVersion, setNewSiteFormVersion] = useState(0);
@@ -27,12 +27,12 @@ const SiteManagement = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
-    const disableNotifications = searchParams.get("disable");
+    const disableNotifications = searchParams.get('disable');
     if (disableNotifications === null) {
       loadDevices();
       return;
     }
-    searchParams.delete("disable");
+    searchParams.delete('disable');
     setSearchParams(searchParams);
     getDevice(disableNotifications).then(({ data }) => {
       updateDevice({ ...data, notificationsDisabled: true }).then(() => {
@@ -46,7 +46,7 @@ const SiteManagement = () => {
       .then(({ data }) => {
         setDevices(data);
         setLoading(false);
-        if (activeSite === "") {
+        if (activeSite === '') {
           setActiveSite(data.find((device) => device.virtual)?.name || noSite);
         }
       })
@@ -59,7 +59,7 @@ const SiteManagement = () => {
   };
 
   const isDisabledForSubscription = () => {
-    return subscriptionDevices > devices.length ? "" : " disabled";
+    return subscriptionDevices > devices.length ? '' : ' disabled';
   };
 
   const getNewSiteContent = () => {
@@ -67,34 +67,34 @@ const SiteManagement = () => {
       <div>
         <Dropdown.Divider />
         <Dropdown.Item
-          as="button"
-          eventKey="new"
-          className={"Success"}
+          as='button'
+          eventKey='new'
+          className='Success'
           onClick={() => setShowNewSite(true)}
         >
-          <MdOutlineAdd className={"button-icon"} />
+          <MdOutlineAdd className='button-icon' />
           Create New Site
         </Dropdown.Item>
       </div>
     ) : (
-      ""
+      ''
     );
   };
 
   return (
-    <div className={"root-page container d-flex flex-column min-vh-95"}>
-      <Card className={devices.length === 0 ? "" : "no-bottom-border-radius"}>
+    <div className='root-page d-flex flex-column min-vh-95 container'>
+      <Card className={devices.length === 0 ? '' : 'no-bottom-border-radius'}>
         <CardHeader
           className={
-            (devices.length === 0 ? "" : "no-bottom-border ") +
-            "d-flex align-items-center flex-wrap"
+            (devices.length === 0 ? '' : 'no-bottom-border ') +
+            'd-flex align-items-center flex-wrap'
           }
         >
-          <div className={"fs-3 site-name"}>{activeSite}</div>
-          <div className={"flex-grow-1"} />
-          <Dropdown className={"align-self-end"}>
-            <Dropdown.Toggle variant="primary" id="dropdown-basic">
-              {activeSite === "" ? "Loading" : activeSite}
+          <div className='fs-3 site-name'>{activeSite}</div>
+          <div className='grow-1' />
+          <Dropdown className='align-self-end'>
+            <Dropdown.Toggle variant='primary' id='dropdown-basic'>
+              {activeSite === '' ? 'Loading' : activeSite}
             </Dropdown.Toggle>
             <Dropdown.Menu>
               {devices
@@ -103,7 +103,7 @@ const SiteManagement = () => {
                 .map((site) => {
                   return (
                     <Dropdown.Item
-                      as="button"
+                      as='button'
                       key={site.name}
                       onClick={() => setActiveSite(site.name)}
                     >
@@ -112,8 +112,8 @@ const SiteManagement = () => {
                   );
                 })}
               <Dropdown.Item
-                as="button"
-                key={"none"}
+                as='button'
+                key='none'
                 onClick={() => setActiveSite(noSite)}
               >
                 {noSite}
@@ -122,21 +122,21 @@ const SiteManagement = () => {
             </Dropdown.Menu>
           </Dropdown>
           <Button
-            className={"ms-3" + isDisabledForSubscription()}
-            variant={"outline-light"}
+            className={'ms-3' + isDisabledForSubscription()}
+            variant='outline-light'
             title={
               isDisabledForSubscription()
-                ? "Increase the number of seats to add more devices"
-                : "New Device"
+                ? 'Increase the number of seats to add more devices'
+                : 'New Device'
             }
             onClick={() => setShowNewDevice(true)}
           >
-            <MdAddCircle className={"button-icon"} />
+            <MdAddCircle className='button-icon' />
             Add Device
           </Button>
           <Mapping />
         </CardHeader>
-        <CardBody className={devices.length === 0 ? "" : "d-none"}>
+        <CardBody className={devices.length === 0 ? '' : 'd-none'}>
           <Loader
             loading={loading}
             deviceCount={devices.length}
@@ -169,7 +169,7 @@ const SiteManagement = () => {
         setVersion={setNewSiteFormVersion}
       />
       <NewDeviceDialog
-        key={"device" + newSiteFormVersion + activeSite}
+        key={'device' + newSiteFormVersion + activeSite}
         show={showNewDevice}
         setShow={setShowNewDevice}
         setDevices={setDevices}

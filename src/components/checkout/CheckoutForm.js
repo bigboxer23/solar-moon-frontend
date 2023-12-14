@@ -1,25 +1,25 @@
-import { loadStripe } from "@stripe/stripe-js";
-import React, { useEffect, useState } from "react";
+import { loadStripe } from '@stripe/stripe-js';
+import { useEffect, useState } from 'react';
 import {
   EmbeddedCheckout,
   EmbeddedCheckoutProvider,
-} from "@stripe/react-stripe-js";
-import logo from "../../assets/logo.svg";
-import { checkout } from "../../services/services";
-import { useSearchParams } from "react-router-dom";
-import Loader from "../common/Loader";
+} from '@stripe/react-stripe-js';
+import logo from '../../assets/logo.svg';
+import { checkout } from '../../services/services';
+import { useSearchParams } from 'react-router-dom';
+import Loader from '../common/Loader';
 
 const CheckoutForm = () => {
   const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK);
   const [loading, setLoading] = useState(true);
 
-  const [clientSecret, setClientSecret] = useState("");
+  const [clientSecret, setClientSecret] = useState('');
 
   const [searchParams] = useSearchParams();
 
   useEffect(() => {
     // Create a Checkout Session as soon as the page loads
-    checkout(searchParams.get("price"), Number(searchParams.get("count")))
+    checkout(searchParams.get('price'), Number(searchParams.get('count')))
       .then(({ data }) => {
         setLoading(false);
         setClientSecret(data.clientSecret);
@@ -30,12 +30,12 @@ const CheckoutForm = () => {
   }, []);
 
   return (
-    <div className={"pricing-page container min-vh-95"}>
-      <div className={"d-flex ps-5"}>
-        <img src={logo} className="img-fluid logo" alt="brand" />
-        <div className={"h4 p-4"}>Enter payment details</div>
+    <div className='pricing-page min-vh-95 container'>
+      <div className='d-flex ps-5'>
+        <img src={logo} className='img-fluid logo' alt='brand' />
+        <div className='h4 p-4'>Enter payment details</div>
       </div>
-      <Loader loading={loading} deviceCount={0} content={""} />
+      <Loader loading={loading} deviceCount={0} content='' />
       <EmbeddedCheckoutProvider
         stripe={stripePromise}
         options={{ clientSecret }}

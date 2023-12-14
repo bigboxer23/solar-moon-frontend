@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { getDevices } from "../../services/services";
-import { noSite } from "../sites/SiteManagement";
-import { Card, CardBody, CardHeader, Dropdown } from "react-bootstrap";
-import TimeSeries from "../graphs/TimeSeries";
-import { sortDevices, useStickyState } from "../../utils/Utils";
-import PeriodToggle from "../common/PeriodToggle";
-import { DAY } from "../../services/search";
-import SiteGraph from "../graphs/SiteGraph";
-import Loader from "../common/Loader";
+import { useEffect, useState } from 'react';
+import { getDevices } from '../../services/services';
+import { noSite } from '../sites/SiteManagement';
+import { Card, CardBody, CardHeader, Dropdown } from 'react-bootstrap';
+import TimeSeries from '../graphs/TimeSeries';
+import { sortDevices, useStickyState } from '../../utils/Utils';
+import PeriodToggle from '../common/PeriodToggle';
+import { DAY } from '../../services/search';
+import SiteGraph from '../graphs/SiteGraph';
+import Loader from '../common/Loader';
 const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [devices, setDevices] = useState([]);
-  const [activeSite, setActiveSite] = useStickyState(noSite, "dashboard.site");
-  const [time, setTime] = useStickyState(DAY, "dashboard.time");
+  const [activeSite, setActiveSite] = useStickyState(noSite, 'dashboard.site');
+  const [time, setTime] = useStickyState(DAY, 'dashboard.time');
 
   useEffect(() => {
     getDevices()
@@ -28,13 +28,13 @@ const Dashboard = () => {
       });
   }, []);
   return (
-    <div className={"root-page container d-flex flex-column min-vh-95"}>
-      <Card className={"site-attributes"}>
-        <CardHeader className={"d-flex align-items-center flex-wrap"}>
-          <div className={"fs-3 site-name"}>{activeSite}</div>
-          <div className={"flex-grow-1"} />
-          <Dropdown className={"align-self-end"}>
-            <Dropdown.Toggle variant="primary" id="dropdown-basic">
+    <div className='root-page d-flex flex-column min-vh-95 container'>
+      <Card className='site-attributes'>
+        <CardHeader className='d-flex align-items-center flex-wrap'>
+          <div className='fs-3 site-name'>{activeSite}</div>
+          <div className='grow-1' />
+          <Dropdown className='align-self-end'>
+            <Dropdown.Toggle variant='primary' id='dropdown-basic'>
               {activeSite}
             </Dropdown.Toggle>
             <Dropdown.Menu>
@@ -43,7 +43,7 @@ const Dashboard = () => {
                 .map((site) => {
                   return (
                     <Dropdown.Item
-                      as="button"
+                      as='button'
                       key={site.name + time}
                       onClick={() => setActiveSite(site.name)}
                     >
@@ -52,8 +52,8 @@ const Dashboard = () => {
                   );
                 })}
               <Dropdown.Item
-                as="button"
-                key={"none"}
+                as='button'
+                key='none'
                 onClick={() => setActiveSite(noSite)}
               >
                 {noSite}

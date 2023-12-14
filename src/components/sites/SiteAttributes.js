@@ -1,15 +1,15 @@
-import { Button, Card, Col, Form, Row, Spinner } from "react-bootstrap";
-import React, { useState } from "react";
+import { Button, Card, Col, Form, Row, Spinner } from 'react-bootstrap';
+import { useState } from 'react';
 
-import { getDevices, updateDevice } from "../../services/services";
-import { onEnterPressed, preventSubmit } from "../../utils/Utils";
+import { getDevices, updateDevice } from '../../services/services';
+import { onEnterPressed, preventSubmit } from '../../utils/Utils';
 
 const SiteAttributes = ({ data, setDevices, setActiveSite }) => {
   const [device, setDevice] = useState(data);
 
   const update = () => {
-    let target = document.getElementById("siteUpdate" + device.id);
-    target.classList.add("disabled");
+    let target = document.getElementById('siteUpdate' + device.id);
+    target.classList.add('disabled');
 
     updateDevice(maybeUpdateLocation())
       .then((d) => {
@@ -18,12 +18,12 @@ const SiteAttributes = ({ data, setDevices, setActiveSite }) => {
         //Fetch all new devices b/c site change cascades down to devices (potentially)
         getDevices().then(({ data }) => {
           setDevices(data);
-          target.classList.remove("disabled");
+          target.classList.remove('disabled');
         });
       })
       .catch((e) => {
         console.log(e);
-        target.classList.remove("disabled");
+        target.classList.remove('disabled');
       });
   };
 
@@ -46,14 +46,14 @@ const SiteAttributes = ({ data, setDevices, setActiveSite }) => {
   };
 
   return (
-    <Card className={"device site-attributes"}>
+    <Card className='device site-attributes'>
       <Card.Body>
         <Form>
-          <Form.Group className="mb-3" controlId="formDisplayName">
+          <Form.Group className='mb-3' controlId='formDisplayName'>
             <Form.Label>Display Name</Form.Label>
             <Form.Control
-              placeholder="Display Name"
-              value={device.name || ""}
+              placeholder='Display Name'
+              value={device.name || ''}
               onChange={(e) =>
                 setDevice({
                   ...device,
@@ -66,11 +66,11 @@ const SiteAttributes = ({ data, setDevices, setActiveSite }) => {
               onKeyUp={(event) => onEnterPressed(event, update)}
             />
           </Form.Group>
-          <Row className="mb-3">
-            <Form.Group as={Col} controlId="formGridCity">
+          <Row className='mb-3'>
+            <Form.Group as={Col} controlId='formGridCity'>
               <Form.Label>City</Form.Label>
               <Form.Control
-                value={device.city || ""}
+                value={device.city || ''}
                 onChange={(e) =>
                   setDevice({
                     ...device,
@@ -82,10 +82,10 @@ const SiteAttributes = ({ data, setDevices, setActiveSite }) => {
               />
             </Form.Group>
 
-            <Form.Group as={Col} controlId="formGridState">
+            <Form.Group as={Col} controlId='formGridState'>
               <Form.Label>State, County, Province, or Region</Form.Label>
               <Form.Control
-                value={device.state || ""}
+                value={device.state || ''}
                 onChange={(e) =>
                   setDevice({
                     ...device,
@@ -97,10 +97,10 @@ const SiteAttributes = ({ data, setDevices, setActiveSite }) => {
               />
             </Form.Group>
 
-            <Form.Group as={Col} controlId="formGridCountry">
+            <Form.Group as={Col} controlId='formGridCountry'>
               <Form.Label>Country</Form.Label>
               <Form.Control
-                value={device.country || ""}
+                value={device.country || ''}
                 onChange={(e) =>
                   setDevice({
                     ...device,
@@ -115,26 +115,26 @@ const SiteAttributes = ({ data, setDevices, setActiveSite }) => {
           <div
             className={
               (device.latitude !== -1 && device.longitude !== -1
-                ? ""
-                : "opacity-0 ") +
-              "d-flex justify-content-end text-muted smaller-text"
+                ? ''
+                : 'opacity-0 ') +
+              'd-flex justify-content-end text-muted smaller-text'
             }
           >
-            {device.latitude + "," + device.longitude}
+            {device.latitude + ',' + device.longitude}
           </div>
-          <div className={"fw-bold d-flex align-items-center"}>
+          <div className='fw-bold d-flex align-items-center'>
             <Button
-              variant="primary"
-              type="button"
-              id={"siteUpdate" + device.id}
+              variant='primary'
+              type='button'
+              id={'siteUpdate' + device.id}
               onClick={() => update()}
             >
               <Spinner
-                as="span"
-                animation="border"
-                size="sm"
-                role="status"
-                className={"me-2 d-none"}
+                as='span'
+                animation='border'
+                size='sm'
+                role='status'
+                className='d-none me-2'
               />
               Update Site
             </Button>

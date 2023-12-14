@@ -1,8 +1,7 @@
-import Dropdown from "../common/Dropdown";
-import DateRangePicker from "@wojtekmaj/react-daterange-picker";
-import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-import moment from "moment";
+import Dropdown from '../common/Dropdown';
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import moment from 'moment';
 
 export default function AlertsFilter({
   handleFilterChange,
@@ -10,12 +9,12 @@ export default function AlertsFilter({
   availableDevices,
 }) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const allOption = { value: "all", label: "All" };
+  const allOption = { value: 'all', label: 'All' };
 
-  const searchParamSite = searchParams.get("site");
-  const searchParamDevice = searchParams.get("device");
-  const searchParamStart = searchParams.get("start");
-  const searchParamEnd = searchParams.get("end");
+  const searchParamSite = searchParams.get('site');
+  const searchParamDevice = searchParams.get('device');
+  const searchParamStart = searchParams.get('start');
+  const searchParamEnd = searchParams.get('end');
 
   const defaultSite =
     availableSites.find((site) => site.value === searchParamSite) || allOption;
@@ -50,10 +49,10 @@ export default function AlertsFilter({
   // Update search params when filters change
   useEffect(() => {
     const searchParams = {};
-    if (siteValue.value !== "all") {
+    if (siteValue.value !== 'all') {
       searchParams.site = siteValue.value;
     }
-    if (deviceValue.value !== "all") {
+    if (deviceValue.value !== 'all') {
       searchParams.device = deviceValue.value;
     }
 
@@ -83,30 +82,30 @@ export default function AlertsFilter({
     setDirty(true);
   }
 
-  function handleDateFilterChange([start, end]) {
-    // TODO: set up dates filtering later
-    setDateValue([null, null]);
-    setDirty(true);
-  }
+  // function handleDateFilterChange([start, end]) {
+  //   // TODO: set up dates filtering later
+  //   setDateValue([null, null]);
+  //   setDirty(true);
+  // }
 
   return (
-    <div className="AlertsFilter flex items-center space-x-3">
+    <div className='AlertsFilter flex items-center space-x-3'>
       {dirty && (
         <button
-          className="border-1 rounded-full py-1.5 px-4 bg-white text-sm font-bold text-black"
+          className='border-1 rounded-full bg-white px-4 py-1.5 text-sm font-bold text-black'
           onClick={resetFilters}
         >
           Reset Filters
         </button>
       )}
       <Dropdown
-        prefixLabel={"Site"}
+        prefixLabel='Site'
         options={[allOption, ...availableSites]}
         value={siteValue}
         onChange={handleSiteFilterChange}
       />
       <Dropdown
-        prefixLabel={"Device"}
+        prefixLabel='Device'
         options={[allOption, ...availableDevices]}
         value={deviceValue}
         onChange={handleDeviceFilterChange}

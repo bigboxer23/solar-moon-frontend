@@ -1,25 +1,25 @@
-import { Button, Col, Form, Spinner } from "react-bootstrap";
-import React, { useState } from "react";
-import { attributeMappings, attributes, AVG_CURRENT } from "./MappingConstants";
-import { MdOutlineAddCircle } from "react-icons/md";
-import { addMapping } from "../../services/services";
-import { onEnterPressed, preventSubmit } from "../../utils/Utils";
+import { Button, Col, Form, Spinner } from 'react-bootstrap';
+import { useState } from 'react';
+import { attributeMappings, attributes, AVG_CURRENT } from './MappingConstants';
+import { MdOutlineAddCircle } from 'react-icons/md';
+import { addMapping } from '../../services/services';
+import { onEnterPressed, preventSubmit } from '../../utils/Utils';
 
 export default function AddMapping({ mappings, setMappings }) {
   const [mapping, setMapping] = useState({
-    mappingName: "",
+    mappingName: '',
     attribute: AVG_CURRENT,
   });
 
   const compare = (d) => {
     return (
       d.mappingName.localeCompare(mapping.mappingName.trim(), undefined, {
-        sensitivity: "accent",
+        sensitivity: 'accent',
       }) === 0
     );
   };
   const addMappingClicked = () => {
-    if (mapping.mappingName.trim() === "") {
+    if (mapping.mappingName.trim() === '') {
       return;
     }
     if (
@@ -36,16 +36,16 @@ export default function AddMapping({ mappings, setMappings }) {
         })
         .find(compare) !== undefined
     ) {
-      console.log("not adding, already found in default list");
+      console.log('not adding, already found in default list');
       return;
     }
     if (mappings.find(compare) !== undefined) {
-      console.log("not adding, already found in custom list");
+      console.log('not adding, already found in custom list');
       return;
     }
-    document.getElementById("add-mapping-button").classList.add("disabled");
+    document.getElementById('add-mapping-button').classList.add('disabled');
     addMapping(mapping.attribute, mapping.mappingName.trim())
-      .then(({ data }) => {
+      .then(() => {
         setMappings([
           ...mappings,
           {
@@ -54,23 +54,23 @@ export default function AddMapping({ mappings, setMappings }) {
           },
         ]);
         setMapping({
-          mappingName: "",
+          mappingName: '',
           attribute: AVG_CURRENT,
         });
         document
-          .getElementById("add-mapping-button")
-          .classList.remove("disabled");
+          .getElementById('add-mapping-button')
+          .classList.remove('disabled');
       })
       .catch(() =>
         document
-          .getElementById("add-mapping-button")
-          .classList.remove("disabled"),
+          .getElementById('add-mapping-button')
+          .classList.remove('disabled'),
       );
   };
   return (
-    <Form className={""}>
-      <div className="d-flex align-items-end mb-3">
-        <Form.Group as={Col} controlId="mapping">
+    <Form className=''>
+      <div className='d-flex align-items-end mb-3'>
+        <Form.Group as={Col} controlId='mapping'>
           <Form.Label>Mapping name</Form.Label>
           <Form.Control
             value={mapping.mappingName}
@@ -81,11 +81,11 @@ export default function AddMapping({ mappings, setMappings }) {
             onKeyUp={(event) => onEnterPressed(event, addMappingClicked)}
           />
         </Form.Group>
-        <div className={"p-2"}>-></div>
-        <Form.Group as={Col} controlId="attribute">
+        <div className='p-2'>{'->'}</div>
+        <Form.Group as={Col} controlId='attribute'>
           <Form.Label>Attribute</Form.Label>
           <Form.Select
-            aria-label="site select"
+            aria-label='site select'
             value={mapping.attribute}
             onChange={(e) =>
               setMapping({ ...mapping, attribute: e.target.value })
@@ -101,19 +101,19 @@ export default function AddMapping({ mappings, setMappings }) {
           </Form.Select>
         </Form.Group>
         <Button
-          id={"add-mapping-button"}
-          className={"ms-3"}
-          variant={"outline-light"}
-          title={"Add Attribute"}
+          id='add-mapping-button'
+          className='ms-3'
+          variant='outline-light'
+          title='Add Attribute'
           onClick={addMappingClicked}
         >
-          <MdOutlineAddCircle style={{ marginBottom: "2px" }} />
+          <MdOutlineAddCircle style={{ marginBottom: '2px' }} />
           <Spinner
-            as="span"
-            animation="border"
-            size="sm"
-            role="status"
-            className={"d-none"}
+            as='span'
+            animation='border'
+            size='sm'
+            role='status'
+            className='d-none'
           />
         </Button>
       </div>

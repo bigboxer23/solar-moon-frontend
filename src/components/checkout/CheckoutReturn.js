@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
-import { Card, CardBody } from "react-bootstrap";
-import Loader from "../common/Loader";
-import { checkoutStatus } from "../../services/services";
+import { useEffect, useState } from 'react';
+import { Navigate } from 'react-router-dom';
+import { Card, CardBody } from 'react-bootstrap';
+import Loader from '../common/Loader';
+import { checkoutStatus } from '../../services/services';
 
 const Return = () => {
   const [status, setStatus] = useState(null);
-  const [customerEmail, setCustomerEmail] = useState("");
+  const [customerEmail, setCustomerEmail] = useState('');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
-    const sessionId = urlParams.get("session_id");
+    const sessionId = urlParams.get('session_id');
 
     checkoutStatus(sessionId)
       .then(({ data }) => {
@@ -24,21 +24,21 @@ const Return = () => {
         setLoading(false);
       });
   }, []);
-  if (status === "open") {
-    return <Navigate to="/checkout" />;
+  if (status === 'open') {
+    return <Navigate to='/checkout' />;
   }
 
-  if (status === "complete") {
+  if (status === 'complete') {
     return (
-      <div className={"root-page min-vh-95 container"}>
-        <Card className={"m-3"}>
+      <div className='root-page min-vh-95 container'>
+        <Card className='m-3'>
           <CardBody>
-            <Loader loading={loading} deviceCount={0} content={""} />
-            <section id="success">
+            <Loader loading={loading} deviceCount={0} content='' />
+            <section id='success'>
               <p>
                 We appreciate your business! A confirmation email will be sent
-                to {customerEmail}. If you have any questions, please email{" "}
-                <a href="mailto:info@solarmoonanalytics.com">
+                to {customerEmail}. If you have any questions, please email{' '}
+                <a href='mailto:info@solarmoonanalytics.com'>
                   info@solarmoonanalytics.com
                 </a>
                 .
@@ -50,10 +50,10 @@ const Return = () => {
     );
   }
   return (
-    <div className={"root-page min-vh-95 container"}>
-      <Card className={"m-3"}>
+    <div className='root-page min-vh-95 container'>
+      <Card className='m-3'>
         <CardBody>
-          <Loader loading={true} deviceCount={0} content={""} />
+          <Loader loading={true} deviceCount={0} content='' />
         </CardBody>
       </Card>
     </div>

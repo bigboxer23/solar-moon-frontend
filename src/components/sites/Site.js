@@ -1,27 +1,27 @@
-import { Alert, Button, Spinner } from "react-bootstrap";
-import React, { useState } from "react";
-import Device from "./Device";
-import { AiOutlineDelete } from "react-icons/ai";
-import { deleteDevice } from "../../services/services";
-import { noSite } from "./SiteManagement";
-import SiteAttributes from "./SiteAttributes";
-import { sortDevices } from "../../utils/Utils";
+import { Alert, Button, Spinner } from 'react-bootstrap';
+import { useState } from 'react';
+import Device from './Device';
+import { AiOutlineDelete } from 'react-icons/ai';
+import { deleteDevice } from '../../services/services';
+import { noSite } from './SiteManagement';
+import SiteAttributes from './SiteAttributes';
+import { sortDevices } from '../../utils/Utils';
 
 const Site = ({ data, devices, setDevices, setActiveSite }) => {
   const [site] = useState(data);
   const [deleteSiteWarning, setDeleteSiteWarning] = useState(false);
   const removeSite = () => {
-    let button = document.getElementById("delete" + site.id);
-    button.classList.add("disabled");
+    let button = document.getElementById('delete' + site.id);
+    button.classList.add('disabled');
     deleteDevice(site.id)
-      .then((data) => {
+      .then(() => {
         setDevices((d) => d.filter((device) => device.id !== site.id));
         setActiveSite(noSite);
-        button.classList.remove("disabled");
+        button.classList.remove('disabled');
       })
       .catch((e) => {
         console.log(e);
-        button.classList.remove("disabled");
+        button.classList.remove('disabled');
       });
   };
   return (
@@ -54,32 +54,32 @@ const Site = ({ data, devices, setDevices, setActiveSite }) => {
           );
         })}
       {site.id === noSite ? (
-        ""
+        ''
       ) : (
         <Button
           onClick={() => setDeleteSiteWarning(true)}
-          variant="danger"
-          className={"ms-2 mt-3"}
-          id={"delete" + site.id}
+          variant='danger'
+          className='ms-2 mt-3'
+          id={'delete' + site.id}
         >
           <Spinner
-            as="span"
-            animation="border"
-            size="sm"
-            role="status"
-            className={"me-2 d-none"}
+            as='span'
+            animation='border'
+            size='sm'
+            role='status'
+            className='d-none me-2'
           />
-          <AiOutlineDelete className={"button-icon"} />
+          <AiOutlineDelete className='button-icon' />
           Delete Site
         </Button>
       )}
-      <Alert className={"mt-3"} show={deleteSiteWarning} variant="danger">
+      <Alert className='mt-3' show={deleteSiteWarning} variant='danger'>
         <p>Are you sure you want to delete this site?</p>
         <hr />
-        <div className="d-flex justify-content-end">
+        <div className='d-flex justify-content-end'>
           <Button
             onClick={() => setDeleteSiteWarning(false)}
-            variant="outline-secondary"
+            variant='outline-secondary'
           >
             Cancel
           </Button>
@@ -88,8 +88,8 @@ const Site = ({ data, devices, setDevices, setActiveSite }) => {
               setDeleteSiteWarning(false);
               removeSite();
             }}
-            variant="outline-danger"
-            className={"ms-2"}
+            variant='outline-danger'
+            className='ms-2'
           >
             Delete Site
           </Button>

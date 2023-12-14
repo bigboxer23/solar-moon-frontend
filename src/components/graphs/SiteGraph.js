@@ -1,24 +1,23 @@
-import StackedTimeSeries from "./StackedTimeSeries";
-import React from "react";
-import TimeSeries from "./TimeSeries";
-import SiteGraphToggle from "./SiteGraphToggle";
-import { useStickyState } from "../../utils/Utils";
-import GroupedBarChart from "./GroupedBarGraph";
+import StackedTimeSeries from './StackedTimeSeries';
+import TimeSeries from './TimeSeries';
+import SiteGraphToggle from './SiteGraphToggle';
+import { useStickyState } from '../../utils/Utils';
+import GroupedBarChart from './GroupedBarGraph';
 
 const SiteGraph = ({ site, time }) => {
-  const [graph, setGraph] = useStickyState("Combined", "site.graph");
+  const [graph, setGraph] = useStickyState('Combined', 'site.graph');
 
   return (
-    <div className={"d-flex flex-column"}>
+    <div className='d-flex flex-column'>
       {site.subtraction ? (
-        ""
+        ''
       ) : (
         <SiteGraphToggle graph={graph} setGraph={setGraph} />
       )}
 
-      {graph === "Combined" || site.subtraction ? (
+      {graph === 'Combined' || site.subtraction ? (
         <TimeSeries device={site} time={time} />
-      ) : graph === "Stacked" ? (
+      ) : graph === 'Stacked' ? (
         <StackedTimeSeries device={site} time={time} />
       ) : (
         <GroupedBarChart device={site} time={time} />

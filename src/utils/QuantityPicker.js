@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
+import { useEffect, useState } from 'react';
+import { Button } from 'react-bootstrap';
 
 function QuantityPicker({ min, max, setCount }) {
   const [disableDec, setDisableDec] = useState(true);
@@ -39,18 +39,18 @@ function QuantityPicker({ min, max, setCount }) {
   };
 
   return (
-    <div className="quantity-picker d-flex align-self-end">
+    <div className='quantity-picker d-flex align-self-end'>
       <Button
-        variant={"secondary"}
-        className={"left-modifier" + (disableDec ? " disabled" : "")}
+        variant='secondary'
+        className={'left-modifier' + (disableDec ? ' disabled' : '')}
         onClick={() => decrement()}
       >
         &ndash;
       </Button>
-      <input className="quantity-display" type="text" value={value} readOnly />
+      <input className='quantity-display' type='text' value={value} readOnly />
       <Button
-        variant={"secondary"}
-        className={"right-modifier" + (disableInc ? " disabled" : "")}
+        variant='secondary'
+        className={'right-modifier' + (disableInc ? ' disabled' : '')}
         onClick={() => increment()}
       >
         &#xff0b;

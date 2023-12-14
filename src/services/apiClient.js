@@ -1,10 +1,10 @@
-import axios from "axios";
-import { Auth } from "aws-amplify";
+import axios from 'axios';
+import { Auth } from 'aws-amplify';
 
 export const api = axios.create({
-  baseURL: "/v1/",
+  baseURL: '/v1/',
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
 });
 api.interceptors.request.use(
@@ -27,17 +27,17 @@ api.interceptors.response.use(undefined, (error) => {
   console.log(error);
   if (
     error.response.status === 403 &&
-    error.response.data === "No subscription is active"
+    error.response.data === 'No subscription is active'
   ) {
-    console.log("redirecting to pricing page");
-    window.location.href = "/pricing";
+    console.log('redirecting to pricing page');
+    window.location.href = '/pricing';
   }
   return Promise.reject(error);
 });
 export const openSearch = axios.create({
-  baseURL: "",
+  baseURL: '',
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
 });
 openSearch.interceptors.request.use(

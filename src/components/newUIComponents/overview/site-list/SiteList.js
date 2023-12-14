@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import SiteRow from "./SiteRow";
+import { useEffect, useState } from 'react';
+import SiteRow from './SiteRow';
 
 export default function SiteList({
   sites,
@@ -33,15 +33,15 @@ export default function SiteList({
   if (loading) return null;
 
   return (
-    <div className="SiteList mt-5">
-      <div className="text-lg font-bold mb-6">Sites</div>
-      <div className="w-full text-xs font-bold items-center mb-4 flex">
-        <div className="w-[15%] px-2">Site Name</div>
-        <div className="w-[15%] text-end px-2">Device Count</div>
-        <div className="w-[15%] text-end px-2">Alert Count</div>
-        <div className="w-[15%] text-end px-2">Average (kWH)</div>
-        <div className="w-[15%] text-end px-2">Total (kWH)</div>
-        <div className="w-1/4 text-end px-2"></div>
+    <div className='SiteList mt-5'>
+      <div className='mb-6 text-lg font-bold'>Sites</div>
+      <div className='mb-4 flex w-full items-center text-xs font-bold'>
+        <div className='w-[15%] px-2'>Site Name</div>
+        <div className='w-[15%] px-2 text-end'>Device Count</div>
+        <div className='w-[15%] px-2 text-end'>Alert Count</div>
+        <div className='w-[15%] px-2 text-end'>Average (kWH)</div>
+        <div className='w-[15%] px-2 text-end'>Total (kWH)</div>
+        <div className='w-1/4 px-2 text-end'></div>
       </div>
       {siteData.map((site) => (
         <SiteRow

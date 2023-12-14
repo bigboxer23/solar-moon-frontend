@@ -1,44 +1,44 @@
-import { Card, CardBody, CardHeader } from "react-bootstrap";
-import DataGrid from "react-data-grid";
-import Loader from "../common/Loader";
-import React, { useEffect, useRef, useState } from "react";
-import { getAlarmData, getDevices } from "../../services/services";
-import { MONTH } from "../../services/search";
+import { Card, CardBody, CardHeader } from 'react-bootstrap';
+import DataGrid from 'react-data-grid';
+import Loader from '../common/Loader';
+import { useEffect, useRef, useState } from 'react';
+import { getAlarmData, getDevices } from '../../services/services';
+import { MONTH } from '../../services/search';
 import {
   formatMessage,
   getFormattedDaysHoursMinutes,
   getFormattedTime,
   getRoundedTime,
   useSearchParamState,
-} from "../../utils/Utils";
-import SearchBar from "../reports/SearchBar";
-import { useSearchParams } from "react-router-dom";
+} from '../../utils/Utils';
+import SearchBar from '../reports/SearchBar';
+import { useSearchParams } from 'react-router-dom';
 
 const Alarms = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [loading, setLoading] = useState(true);
   const [site, setSite] = useSearchParamState(
-    "All Sites",
-    "site",
+    'All Sites',
+    'site',
     searchParams,
     setSearchParams,
   );
   const [device, setDevice] = useSearchParamState(
-    "All Devices",
-    "device",
+    'All Devices',
+    'device',
     searchParams,
     setSearchParams,
   );
   const [devices, setDevices] = useState([]);
   const [start, setStart] = useSearchParamState(
     getRoundedTime(false, MONTH).getTime(),
-    "start",
+    'start',
     searchParams,
     setSearchParams,
   );
   const [end, setEnd] = useSearchParamState(
     getRoundedTime(true, 0).getTime(),
-    "end",
+    'end',
     searchParams,
     setSearchParams,
   );
@@ -49,48 +49,48 @@ const Alarms = () => {
 
   const columns = [
     {
-      key: "formattedStartDate",
-      name: "Start Date",
+      key: 'formattedStartDate',
+      name: 'Start Date',
       width: 150,
     },
     {
-      key: "formattedEndDate",
-      name: "End Date",
+      key: 'formattedEndDate',
+      name: 'End Date',
       width: 150,
     },
     {
-      key: "duration",
-      name: "Duration",
+      key: 'duration',
+      name: 'Duration',
       width: 100,
     },
     {
-      key: "siteId",
-      name: "Site",
+      key: 'siteId',
+      name: 'Site',
       width: 150,
     },
-    { key: "deviceId", name: "Device", width: 150 },
-    { key: "message", name: "Message" },
+    { key: 'deviceId', name: 'Device', width: 150 },
+    { key: 'message', name: 'Message' },
   ];
 
   const EmptyRowsRenderer = () => {
     return (
       <div
-        className={"fw-bolder h6 p-3"}
-        style={{ textAlign: "center", gridColumn: "1/-1" }}
+        className='fw-bolder h6 p-3'
+        style={{ textAlign: 'center', gridColumn: '1/-1' }}
       >
         {alarms.length === 0
-          ? "All devices reporting as healthy!"
-          : "Nothing matches active filters."}
+          ? 'All devices reporting as healthy!'
+          : 'Nothing matches active filters.'}
       </div>
     );
   };
 
   const getRow = function (row) {
-    row.formattedStartDate = getFormattedTime(new Date(row["startDate"]));
-    if (row["endDate"] > row["startDate"]) {
-      row.formattedEndDate = getFormattedTime(new Date(row["endDate"]));
+    row.formattedStartDate = getFormattedTime(new Date(row['startDate']));
+    if (row['endDate'] > row['startDate']) {
+      row.formattedEndDate = getFormattedTime(new Date(row['endDate']));
       row.duration = getFormattedDaysHoursMinutes(
-        row["endDate"] - row["startDate"],
+        row['endDate'] - row['startDate'],
       );
     }
     row.message = formatMessage(row.message);
@@ -126,7 +126,7 @@ const Alarms = () => {
             .sort((row, row2) => row2.startDate - row.startDate)
             .map((row) => getRow(row)),
         );
-        document.getElementById("data-grid").classList.remove("d-none");
+        document.getElementById('data-grid').classList.remove('d-none');
       })
       .catch((e) => {
         setLoading(false);
@@ -136,9 +136,9 @@ const Alarms = () => {
   useEffect(() => {
     setRows(
       alarms
-        .filter((alarm) => site === "All Sites" || alarm.siteId === site)
+        .filter((alarm) => site === 'All Sites' || alarm.siteId === site)
         .filter(
-          (alarm) => device === "All Devices" || alarm.deviceId === device,
+          (alarm) => device === 'All Devices' || alarm.deviceId === device,
         )
         .filter((alarm) => alarm.startDate > start)
         .filter((alarm) => alarm.endDate < end),
@@ -153,9 +153,9 @@ const Alarms = () => {
   }, [fetching]);
 
   return (
-    <div className={"root-page container min-vh-95 d-flex flex-column"}>
-      <Card className={"flex-grow-1"}>
-        <CardHeader className={"d-flex"}>
+    <div className='root-page min-vh-95 d-flex flex-column container'>
+      <Card className='grow-1'>
+        <CardHeader className='d-flex'>
           <SearchBar
             site={site}
             setSite={setSite}
@@ -173,21 +173,21 @@ const Alarms = () => {
           />
         </CardHeader>
         <CardBody
-          id={"data-grid"}
-          className={"d-flex flex-column rdg-holder d-none"}
+          id='data-grid'
+          className='d-flex flex-column rdg-holder d-none'
         >
           <DataGrid
             ref={gridRef}
-            className={"rdg-dark flex-grow-1"}
+            className='rdg-dark grow-1'
             columns={columns}
             rows={rows}
             renderers={{ noRowsFallback: <EmptyRowsRenderer /> }}
-            rowClass={(row, index) => {
-              return row.state === 1 ? "active-alarm" : undefined;
+            rowClass={(row) => {
+              return row.state === 1 ? 'active-alarm' : undefined;
             }}
           />
         </CardBody>
-        <Loader loading={loading} deviceCount={rows.length} content={""} />
+        <Loader loading={loading} deviceCount={rows.length} content='' />
       </Card>
     </div>
   );

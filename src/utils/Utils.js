@@ -1,25 +1,25 @@
-import { useEffect, useState } from "react";
-import * as d3 from "d3";
-import { MdFoggy, MdOutlineWbCloudy, MdOutlineWbSunny } from "react-icons/md";
-import { IoPartlySunnyOutline } from "react-icons/io5";
-import moment from "moment";
-import { DAY, HOUR, MONTH, WEEK, YEAR } from "../services/search";
+import { useEffect, useState } from 'react';
+import * as d3 from 'd3';
+import { MdFoggy, MdOutlineWbCloudy, MdOutlineWbSunny } from 'react-icons/md';
+import { IoPartlySunnyOutline } from 'react-icons/io5';
+import moment from 'moment';
+import { DAY, HOUR, MONTH, WEEK, YEAR } from '../services/search';
 
 export function preventSubmit(event) {
-  if (event.key === "Enter") {
+  if (event.key === 'Enter') {
     //Don't submit the form
     event.preventDefault();
     event.stopPropagation();
   }
 }
 export const onEnterPressed = (event, functionToRun) => {
-  if (event.key === "Enter") {
+  if (event.key === 'Enter') {
     functionToRun();
   }
 };
 
 export function defaultIfEmpty(defaultValue, value) {
-  return value === null || value === undefined || value === ""
+  return value === null || value === undefined || value === ''
     ? defaultValue
     : value;
 }
@@ -63,14 +63,14 @@ export function debounce(fn, ms) {
 }
 
 export const getFormattedTime = (date) => {
-  return d3.timeFormat("%b %d, %y %I:%M %p")(date);
+  return d3.timeFormat('%b %d, %y %I:%M %p')(date);
 };
 
 export const sortDevices = (d1, d2) =>
   (d1.name == null ? d1.deviceName : d1.name).localeCompare(
     d2.name == null ? d2.deviceName : d2.name,
     undefined,
-    { sensitivity: "accent" },
+    { sensitivity: 'accent' },
   );
 
 export const getRoundedTimeFromOffset = (offset) => {
@@ -111,35 +111,35 @@ export const splitDayAndNightDataSets = (data) => {
 
 export const getFormattedDaysHoursMinutes = (time) => {
   if (time === undefined || time === 0) {
-    return "";
+    return '';
   }
   time = time / 1000;
   let days = ~~(time / 86400);
   let hours = ~~(time / 3600);
   let minutes = ~~((time % 3600) / 60);
   //let seconds = ~~time % 60;
-  let formattedTime = "";
+  let formattedTime = '';
   if (days > 0) {
-    formattedTime += days + "d ";
+    formattedTime += days + 'd ';
   }
   if (hours > 0) {
-    formattedTime += hours + "h ";
+    formattedTime += hours + 'h ';
   }
   if (days === 0 && hours === 0 && minutes === 0) {
     minutes = 1;
   }
-  return formattedTime + minutes + "m";
+  return formattedTime + minutes + 'm';
 };
 
 export const getWeatherIcon = (weatherSummary) => {
-  if (weatherSummary === "Cloudy") {
-    return <MdOutlineWbCloudy className={"align-self-center"} />;
-  } else if (weatherSummary === "Partly Cloudy") {
-    return <IoPartlySunnyOutline className={"align-self-center"} />;
-  } else if (weatherSummary === "Fog") {
-    return <MdFoggy className={"align-self-center"} />;
-  } else if (weatherSummary === "Clear") {
-    return <MdOutlineWbSunny className={"align-self-center"} />;
+  if (weatherSummary === 'Cloudy') {
+    return <MdOutlineWbCloudy className='align-self-center' />;
+  } else if (weatherSummary === 'Partly Cloudy') {
+    return <IoPartlySunnyOutline className='align-self-center' />;
+  } else if (weatherSummary === 'Fog') {
+    return <MdFoggy className='align-self-center' />;
+  } else if (weatherSummary === 'Clear') {
+    return <MdOutlineWbSunny className='align-self-center' />;
   }
   return weatherSummary;
 };
@@ -147,17 +147,17 @@ export const getWeatherIcon = (weatherSummary) => {
 export const timeIncrementToText = (timeIncrement, short) => {
   switch (timeIncrement) {
     case HOUR:
-      return short ? "H" : "Hour";
+      return short ? 'H' : 'Hour';
     case DAY:
-      return short ? "D" : "Day";
+      return short ? 'D' : 'Day';
     case WEEK:
-      return short ? "Wk" : "Week";
+      return short ? 'Wk' : 'Week';
     case MONTH:
-      return short ? "Mo" : "Month";
+      return short ? 'Mo' : 'Month';
     case YEAR:
-      return short ? "Yr" : "Year";
+      return short ? 'Yr' : 'Year';
     default:
-      return short ? "D" : "Day";
+      return short ? 'D' : 'Day';
   }
 };
 
