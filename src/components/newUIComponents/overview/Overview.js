@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getOverviewData } from "../../../services/services";
 import SiteList from "./site-list/SiteList";
 import OverviewChart from "./OverviewChart";
@@ -7,6 +7,7 @@ import { DAY, getAggregationValue } from "../../../services/search";
 import Loader from "../common/Loader";
 import { useStickyState } from "../../../utils/Utils";
 import classNames from "classnames";
+import { FormattedNumber } from "react-intl";
 
 function StatBlock({ title, value, className }) {
   const style = classNames("StatBlock flex", className);
@@ -25,7 +26,7 @@ function StatBlock({ title, value, className }) {
 
 export default function Overview() {
   const [sites, setSites] = useState([]);
-  const [devices, setDevices] = useState(0);
+  const [devices, setDevices] = useState([]);
   const [activeAlerts, setActiveAlerts] = useState([]);
   const [resolvedAlerts, setResolvedAlerts] = useState([]);
   const [timeIncrement, setTimeIncrement] = useStickyState(
@@ -109,9 +110,11 @@ export default function Overview() {
           />
         </div>
         <div className="flex flex-col items-end">
-          <span className="text-base">Total: {totalOutput} kWH</span>
+          <span className="text-base">
+            Total: <FormattedNumber value={totalOutput} /> kWH
+          </span>
           <span className="average-output text-xl font-bold">
-            Average: {averageOutput} kWH
+            Average: <FormattedNumber value={averageOutput} /> kWH
           </span>
         </div>
       </div>
