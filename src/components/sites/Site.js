@@ -1,11 +1,12 @@
-import { Alert, Button, Spinner } from 'react-bootstrap';
 import { useState } from 'react';
-import Device from './Device';
+import { Alert, Button, Spinner } from 'react-bootstrap';
 import { AiOutlineDelete } from 'react-icons/ai';
+
 import { deleteDevice } from '../../services/services';
-import { noSite } from './SiteManagement';
-import SiteAttributes from './SiteAttributes';
 import { sortDevices } from '../../utils/Utils';
+import Device from './Device';
+import SiteAttributes from './SiteAttributes';
+import { noSite } from './SiteManagement';
 
 const Site = ({ data, devices, setDevices, setActiveSite }) => {
   const [site] = useState(data);
@@ -32,10 +33,10 @@ const Site = ({ data, devices, setDevices, setActiveSite }) => {
         .map((device) => {
           return (
             <SiteAttributes
-              key={device.id}
               data={device}
-              setDevices={setDevices}
+              key={device.id}
               setActiveSite={setActiveSite}
+              setDevices={setDevices}
             />
           );
         })}
@@ -46,9 +47,9 @@ const Site = ({ data, devices, setDevices, setActiveSite }) => {
         .map((device) => {
           return (
             <Device
-              key={device.id + device.site}
               data={device}
               devices={devices}
+              key={device.id + device.site}
               setDevices={setDevices}
             />
           );
@@ -57,17 +58,17 @@ const Site = ({ data, devices, setDevices, setActiveSite }) => {
         ''
       ) : (
         <Button
-          onClick={() => setDeleteSiteWarning(true)}
-          variant='danger'
           className='ms-2 mt-3'
           id={'delete' + site.id}
+          onClick={() => setDeleteSiteWarning(true)}
+          variant='danger'
         >
           <Spinner
-            as='span'
             animation='border'
-            size='sm'
-            role='status'
+            as='span'
             className='d-none me-2'
+            role='status'
+            size='sm'
           />
           <AiOutlineDelete className='button-icon' />
           Delete Site
@@ -84,12 +85,12 @@ const Site = ({ data, devices, setDevices, setActiveSite }) => {
             Cancel
           </Button>
           <Button
+            className='ms-2'
             onClick={() => {
               setDeleteSiteWarning(false);
               removeSite();
             }}
             variant='outline-danger'
-            className='ms-2'
           >
             Delete Site
           </Button>

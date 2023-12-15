@@ -16,9 +16,13 @@
     },
     "plugins": [
         "react",
-        "prettier"
+        "prettier",
+        "simple-import-sort",
+        "import"
     ],
     "rules": {
+        "sort-vars": "error",
+        "react/jsx-sort-props": ["error"],
         "react/prop-types": 0,
         "prettier/prettier": "error",
         "react/jsx-curly-brace-presence": [
@@ -26,6 +30,10 @@
             { "props": "never", "children": "ignore", "propElementValues": "always" }
         ],
         "tailwindcss/no-custom-classname": 0,
-        "no-unused-vars": 0
+        "no-unused-vars": 0,
+        "import/first": "error",
+        "import/no-duplicates": "error",
+        "import/newline-after-import": "error",
+        "simple-import-sort/imports": "error"
     }
 }

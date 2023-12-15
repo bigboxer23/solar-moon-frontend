@@ -1,9 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
+import { useEffect, useRef, useState } from 'react';
+
+import { AVG, DATE_HISTO } from '../../services/search';
 import { getStackedTimeSeriesData } from '../../services/services';
 import { debounce } from '../../utils/Utils';
 import Legend from './Legend';
-import { AVG, DATE_HISTO } from '../../services/search';
+
 const StackedTimeSeries = ({ device, time }) => {
   const ref = useRef();
   const [windowWidth, setWindowWidth] = useState(
@@ -38,9 +40,9 @@ const StackedTimeSeries = ({ device, time }) => {
     if (graphData === null) {
       return;
     }
-    const margin = { top: 30, right: 10, bottom: 30, left: 40 },
-      width = windowWidth - margin.left - margin.right,
-      height = 400 - margin.top - margin.bottom;
+    const margin = { top: 30, right: 10, bottom: 30, left: 40 };
+    const width = windowWidth - margin.left - margin.right;
+    const height = 400 - margin.top - margin.bottom;
 
     // Determine the series that need to be stacked.
     const series = d3

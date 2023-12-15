@@ -1,9 +1,10 @@
+import { useEffect, useRef, useState } from 'react';
 import { Card, CardBody, CardHeader } from 'react-bootstrap';
 import DataGrid from 'react-data-grid';
-import Loader from '../common/Loader';
-import { useEffect, useRef, useState } from 'react';
-import { getAlarmData, getDevices } from '../../services/services';
+import { useSearchParams } from 'react-router-dom';
+
 import { MONTH } from '../../services/search';
+import { getAlarmData, getDevices } from '../../services/services';
 import {
   formatMessage,
   getFormattedDaysHoursMinutes,
@@ -11,8 +12,8 @@ import {
   getRoundedTime,
   useSearchParamState,
 } from '../../utils/Utils';
+import Loader from '../common/Loader';
 import SearchBar from '../reports/SearchBar';
-import { useSearchParams } from 'react-router-dom';
 
 const Alarms = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -157,37 +158,37 @@ const Alarms = () => {
       <Card className='grow-1'>
         <CardHeader className='d-flex'>
           <SearchBar
-            site={site}
-            setSite={setSite}
-            device={device}
-            setDevice={setDevice}
-            end={end}
-            setEnd={setEnd}
-            start={start}
-            setStart={setStart}
-            devices={devices}
-            setDevices={setDevices}
             defaultSearchPeriod={MONTH}
-            setRefreshSearch={setFetching}
+            device={device}
+            devices={devices}
+            end={end}
             refreshSearch={fetching}
+            setDevice={setDevice}
+            setDevices={setDevices}
+            setEnd={setEnd}
+            setRefreshSearch={setFetching}
+            setSite={setSite}
+            setStart={setStart}
+            site={site}
+            start={start}
           />
         </CardHeader>
         <CardBody
-          id='data-grid'
           className='d-flex flex-column rdg-holder d-none'
+          id='data-grid'
         >
           <DataGrid
-            ref={gridRef}
             className='rdg-dark grow-1'
             columns={columns}
-            rows={rows}
+            ref={gridRef}
             renderers={{ noRowsFallback: <EmptyRowsRenderer /> }}
             rowClass={(row) => {
               return row.state === 1 ? 'active-alarm' : undefined;
             }}
+            rows={rows}
           />
         </CardBody>
-        <Loader loading={loading} deviceCount={rows.length} content='' />
+        <Loader content='' deviceCount={rows.length} loading={loading} />
       </Card>
     </div>
   );

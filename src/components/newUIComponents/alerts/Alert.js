@@ -1,5 +1,6 @@
-import moment from 'moment';
 import classNames from 'classnames';
+import moment from 'moment';
+
 import {
   formatMessage,
   getFormattedDaysHoursMinutes,

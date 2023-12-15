@@ -1,5 +1,6 @@
 import { Button, Card, CardBody, CardHeader, Form } from 'react-bootstrap';
 import { MdKey } from 'react-icons/md';
+
 import {
   onEnterPressed,
   preventSubmit,
@@ -27,15 +28,15 @@ export const LockPage = () => {
             <Form.Group className='mb-3'>
               <Form.Label>Access Code</Form.Label>
               <Form.Control
-                type='password'
-                placeholder='Enter Access Code'
                 id='accessKey'
                 onKeyPress={preventSubmit}
                 onKeyUp={(event) => onEnterPressed(event, applyAccessKey)}
+                placeholder='Enter Access Code'
+                type='password'
               />
             </Form.Group>
             <div className='grow-1' />
-            <Button type='button' onClick={applyAccessKey} variant='primary'>
+            <Button onClick={applyAccessKey} type='button' variant='primary'>
               <MdKey className='button-icon' />
               Submit Access Key
             </Button>

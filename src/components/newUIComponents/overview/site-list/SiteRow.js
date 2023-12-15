@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
-import { splitDayAndNightDataSets } from '../../../../utils/Utils';
+import { FormattedNumber } from 'react-intl';
+
 import {
   DAY,
   getAggregationValue,
   parseSearchReturn,
 } from '../../../../services/search';
-import { FormattedNumber } from 'react-intl';
+import { splitDayAndNightDataSets } from '../../../../utils/Utils';
 
 export default function SiteRow({ info, graphData, timeIncrement }) {
   const { name, deviceCount, alertCount } = info;

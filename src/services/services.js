@@ -1,5 +1,5 @@
+import { getRoundedTime, getRoundedTimeFromOffset } from '../utils/Utils';
 import { api } from './apiClient';
-
 import {
   DAY,
   getAvgTotalBody,
@@ -9,7 +9,6 @@ import {
   getTimeSeriesBody,
   HOUR,
 } from './search';
-import { getRoundedTime, getRoundedTimeFromOffset } from '../utils/Utils';
 
 export function getCustomer() {
   return api.get('customer');

@@ -1,8 +1,8 @@
-import StackedTimeSeries from './StackedTimeSeries';
-import TimeSeries from './TimeSeries';
-import SiteGraphToggle from './SiteGraphToggle';
 import { useStickyState } from '../../utils/Utils';
 import GroupedBarChart from './GroupedBarGraph';
+import SiteGraphToggle from './SiteGraphToggle';
+import StackedTimeSeries from './StackedTimeSeries';
+import TimeSeries from './TimeSeries';
 
 const SiteGraph = ({ site, time }) => {
   const [graph, setGraph] = useStickyState('Combined', 'site.graph');

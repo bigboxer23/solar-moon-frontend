@@ -1,5 +1,5 @@
-import { Button, Card, Col, Form, Row, Spinner } from 'react-bootstrap';
 import { useState } from 'react';
+import { Button, Card, Col, Form, Row, Spinner } from 'react-bootstrap';
 
 import { getDevices, updateDevice } from '../../services/services';
 import { onEnterPressed, preventSubmit } from '../../utils/Utils';
@@ -52,8 +52,6 @@ const SiteAttributes = ({ data, setDevices, setActiveSite }) => {
           <Form.Group className='mb-3' controlId='formDisplayName'>
             <Form.Label>Display Name</Form.Label>
             <Form.Control
-              placeholder='Display Name'
-              value={device.name || ''}
               onChange={(e) =>
                 setDevice({
                   ...device,
@@ -64,13 +62,14 @@ const SiteAttributes = ({ data, setDevices, setActiveSite }) => {
               }
               onKeyPress={preventSubmit}
               onKeyUp={(event) => onEnterPressed(event, update)}
+              placeholder='Display Name'
+              value={device.name || ''}
             />
           </Form.Group>
           <Row className='mb-3'>
             <Form.Group as={Col} controlId='formGridCity'>
               <Form.Label>City</Form.Label>
               <Form.Control
-                value={device.city || ''}
                 onChange={(e) =>
                   setDevice({
                     ...device,
@@ -79,13 +78,13 @@ const SiteAttributes = ({ data, setDevices, setActiveSite }) => {
                 }
                 onKeyPress={preventSubmit}
                 onKeyUp={(event) => onEnterPressed(event, update)}
+                value={device.city || ''}
               />
             </Form.Group>
 
             <Form.Group as={Col} controlId='formGridState'>
               <Form.Label>State, County, Province, or Region</Form.Label>
               <Form.Control
-                value={device.state || ''}
                 onChange={(e) =>
                   setDevice({
                     ...device,
@@ -94,13 +93,13 @@ const SiteAttributes = ({ data, setDevices, setActiveSite }) => {
                 }
                 onKeyPress={preventSubmit}
                 onKeyUp={(event) => onEnterPressed(event, update)}
+                value={device.state || ''}
               />
             </Form.Group>
 
             <Form.Group as={Col} controlId='formGridCountry'>
               <Form.Label>Country</Form.Label>
               <Form.Control
-                value={device.country || ''}
                 onChange={(e) =>
                   setDevice({
                     ...device,
@@ -109,6 +108,7 @@ const SiteAttributes = ({ data, setDevices, setActiveSite }) => {
                 }
                 onKeyPress={preventSubmit}
                 onKeyUp={(event) => onEnterPressed(event, update)}
+                value={device.country || ''}
               />
             </Form.Group>
           </Row>
@@ -124,17 +124,17 @@ const SiteAttributes = ({ data, setDevices, setActiveSite }) => {
           </div>
           <div className='fw-bold d-flex align-items-center'>
             <Button
-              variant='primary'
-              type='button'
               id={'siteUpdate' + device.id}
               onClick={() => update()}
+              type='button'
+              variant='primary'
             >
               <Spinner
-                as='span'
                 animation='border'
-                size='sm'
-                role='status'
+                as='span'
                 className='d-none me-2'
+                role='status'
+                size='sm'
               />
               Update Site
             </Button>

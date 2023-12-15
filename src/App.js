@@ -1,47 +1,49 @@
-import { Amplify } from 'aws-amplify';
-import awsExports from './aws-exports';
-import { ThemeProvider, Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
-import { Header } from './components/login/Header';
-import { SignInFooter } from './components/login/SignInFooter';
-import { Footer } from './components/login/Footer';
-import Home from './components/Home/Home';
 import './style.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Navbar from './components/Navbar';
+import 'chartjs-adapter-moment';
+
+import { Authenticator, ThemeProvider } from '@aws-amplify/ui-react';
+import { Amplify } from 'aws-amplify';
 import {
+  CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LinearScale,
+  LineElement,
+  PointElement,
+  TimeScale,
+  Title,
+  Tooltip,
+} from 'chart.js';
+import { IntlProvider } from 'react-intl';
+import {
+  BrowserRouter as Router,
   Navigate,
   Route,
-  BrowserRouter as Router,
   Routes,
 } from 'react-router-dom';
-import Dashboard from './components/dashboards/Dashboard';
-import Reports from './components/reports/Reports';
-import SiteManagement from './components/sites/SiteManagement';
+
+import awsExports from './aws-exports';
 import Alarms from './components/alarms/Alarms';
-import UserManagement from './components/user_management/UserManagement';
 import CheckoutForm from './components/checkout/CheckoutForm';
 import Return from './components/checkout/CheckoutReturn';
 import PricingPage from './components/checkout/PricingPage';
-import { IntlProvider } from 'react-intl';
-import Navbar2 from './components/newUIComponents/nav/Navbar2';
-import { newTheme, oldTheme } from './themes';
-import Home2 from './components/newUIComponents/Home2';
+import Dashboard from './components/dashboards/Dashboard';
+import Home from './components/Home/Home';
+import { LockPage } from './components/lock/LockPage';
+import { Footer } from './components/login/Footer';
+import { Header } from './components/login/Header';
+import { SignInFooter } from './components/login/SignInFooter';
+import Navbar from './components/Navbar';
+import Alerts from './components/newUIComponents/Alerts';
 import Footer2 from './components/newUIComponents/Footer2';
-
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-  TimeScale,
-} from 'chart.js';
-
-import 'chartjs-adapter-moment';
+import Home2 from './components/newUIComponents/Home2';
+import Navbar2 from './components/newUIComponents/nav/Navbar2';
+import Reports from './components/reports/Reports';
+import SiteManagement from './components/sites/SiteManagement';
+import UserManagement from './components/user_management/UserManagement';
+import { newTheme, oldTheme } from './themes';
 
 ChartJS.register(
   CategoryScale,
@@ -53,8 +55,6 @@ ChartJS.register(
   Legend,
   TimeScale,
 );
-import { LockPage } from './components/lock/LockPage';
-import Alerts from './components/newUIComponents/Alerts';
 
 Amplify.configure(awsExports);
 function App() {
@@ -80,26 +80,26 @@ function App() {
       <ThemeProvider theme={theme}>
         <Authenticator components={components}>
           <Router>
-            <div className='App' id='scroll' data-bs-theme='dark'>
+            <div className='App' data-bs-theme='dark' id='scroll'>
               <Routes>
-                <Route path='/checkout' element='' />
-                <Route path='/pricing' element='' />
-                <Route path='/lock' element='' />
-                <Route path='*' element={newUI ? <Navbar2 /> : <Navbar />} />
+                <Route element='' path='/checkout' />
+                <Route element='' path='/pricing' />
+                <Route element='' path='/lock' />
+                <Route element={newUI ? <Navbar2 /> : <Navbar />} path='*' />
               </Routes>
               <Routes>
-                <Route path='/' element={newUI ? <Home2 /> : <Home />} />
-                <Route path='/dashboard' element={<Dashboard />} />
-                <Route path='/reports' element={<Reports />} />
-                <Route path='/sites' element={<SiteManagement />} />
-                <Route path='/alarms' element={<Alarms />} />
-                {newUI && <Route path='/alerts' element={<Alerts />} />}
-                <Route path='/userManagement' element={<UserManagement />} />
-                <Route path='/checkout' element={<CheckoutForm />} />
-                <Route path='/return' element={<Return />} />
-                <Route path='/pricing' element={<PricingPage />} />
-                <Route path='/lock' element={<LockPage />} />
-                <Route path='*' element={<Navigate to='/' />} />
+                <Route element={newUI ? <Home2 /> : <Home />} path='/' />
+                <Route element={<Dashboard />} path='/dashboard' />
+                <Route element={<Reports />} path='/reports' />
+                <Route element={<SiteManagement />} path='/sites' />
+                <Route element={<Alarms />} path='/alarms' />
+                {newUI && <Route element={<Alerts />} path='/alerts' />}
+                <Route element={<UserManagement />} path='/userManagement' />
+                <Route element={<CheckoutForm />} path='/checkout' />
+                <Route element={<Return />} path='/return' />
+                <Route element={<PricingPage />} path='/pricing' />
+                <Route element={<LockPage />} path='/lock' />
+                <Route element={<Navigate to='/' />} path='*' />
               </Routes>
               {newUI ? <Footer2 /> : <Footer />}
             </div>

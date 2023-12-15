@@ -1,12 +1,13 @@
-import { useState } from 'react';
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
-import Container from 'react-bootstrap/Container';
-import logo from '../assets/logo.svg';
-import { Link, NavLink } from 'react-router-dom';
-import { MdOutlineDashboard, MdSolarPower } from 'react-icons/md';
-import { BsAlarm, BsDatabase } from 'react-icons/bs';
 import { useAuthenticator } from '@aws-amplify/ui-react';
+import { useState } from 'react';
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import { BsAlarm, BsDatabase } from 'react-icons/bs';
+import { MdOutlineDashboard, MdSolarPower } from 'react-icons/md';
+import { Link, NavLink } from 'react-router-dom';
+
+import logo from '../assets/logo.svg';
 import UserMenu from './UserMenu';
 
 function NavBar() {
@@ -26,21 +27,21 @@ function NavBar() {
 
   return route === 'authenticated' ? (
     <Navbar
+      className={navColor ? 'sticky' : 'navbar'}
+      expand='md'
       expanded={expand}
       fixed='top'
-      expand='md'
-      className={navColor ? 'sticky' : 'navbar'}
     >
       <Container>
         <Navbar.Brand
           as={Link}
-          to='/'
           className='d-flex'
           onClick={() => {
             updateExpanded(false);
           }}
+          to='/'
         >
-          <img src={logo} className='img-fluid logo' alt='brand' />
+          <img alt='brand' className='img-fluid logo' src={logo} />
         </Navbar.Brand>
         <Navbar.Toggle
           aria-controls='responsive-navbar-nav'
@@ -53,12 +54,12 @@ function NavBar() {
           <span></span>
         </Navbar.Toggle>
         <Navbar.Collapse id='responsive-navbar-nav'>
-          <Nav defaultActiveKey='/' className='w-100'>
+          <Nav className='w-100' defaultActiveKey='/'>
             <Nav.Item>
               <NavLink
-                to='/dashboard'
                 className='text-nowrap nav-link'
                 onClick={() => updateExpanded(false)}
+                to='/dashboard'
               >
                 <MdOutlineDashboard style={{ marginBottom: '2px' }} />{' '}
                 Dashboards
@@ -67,8 +68,8 @@ function NavBar() {
             <Nav.Item>
               <NavLink
                 className='text-nowrap nav-link'
-                to='/reports'
                 onClick={() => updateExpanded(false)}
+                to='/reports'
               >
                 <BsDatabase style={{ marginBottom: '2px' }} /> Reports
               </NavLink>
@@ -76,18 +77,18 @@ function NavBar() {
             <Nav.Item>
               <NavLink
                 className='text-nowrap nav-link'
-                to='/alarms'
                 onClick={() => updateExpanded(false)}
+                to='/alarms'
               >
                 <BsAlarm style={{ marginBottom: '2px' }} /> Alarms
               </NavLink>
             </Nav.Item>
             <Nav.Item>
               <NavLink
-                className='text-nowrap nav-link'
                 as={Link}
-                to='/sites'
+                className='text-nowrap nav-link'
                 onClick={() => updateExpanded(false)}
+                to='/sites'
               >
                 <MdSolarPower style={{ marginBottom: '2px' }} /> Management
               </NavLink>

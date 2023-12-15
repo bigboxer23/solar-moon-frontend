@@ -1,7 +1,7 @@
+import { useState } from 'react';
+import { Button } from 'react-bootstrap';
 import { BiCopy } from 'react-icons/bi';
 import { BsCheckLg } from 'react-icons/bs';
-import { Button } from 'react-bootstrap';
-import { useState } from 'react';
 import { useCopyToClipboard } from 'usehooks-ts';
 
 const CopyButton = (props) => {
@@ -15,22 +15,22 @@ const CopyButton = (props) => {
 
   return (
     <Button
-      title={props.title}
-      type='button'
-      variant='outline-secondary'
       className='copy-button position-relative ms-2 w-auto'
       onClick={() => {
         copy(props.dataSrc());
         setCopyState();
       }}
+      title={props.title}
+      type='button'
+      variant='outline-secondary'
     >
       <BiCopy
         className={copied ? 'fade' : 'fade show'}
         style={{ marginBottom: '2px' }}
       />
       <BsCheckLg
-        color='green'
         className={copied ? 'fade show' : 'fade'}
+        color='green'
         style={{
           marginBottom: '2px',
           left: 12,

@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
 import * as d3 from 'd3';
-import { MdFoggy, MdOutlineWbCloudy, MdOutlineWbSunny } from 'react-icons/md';
-import { IoPartlySunnyOutline } from 'react-icons/io5';
 import moment from 'moment';
+import { useEffect, useState } from 'react';
+import { IoPartlySunnyOutline } from 'react-icons/io5';
+import { MdFoggy, MdOutlineWbCloudy, MdOutlineWbSunny } from 'react-icons/md';
+
 import { DAY, HOUR, MONTH, WEEK, YEAR } from '../services/search';
 
 export function preventSubmit(event) {

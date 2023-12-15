@@ -1,12 +1,13 @@
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { useEffect, useState } from 'react';
 import { Card, CardBody, CardHeader } from 'react-bootstrap';
-import MetricsTile from '../graphs/MetricsTile';
+
+import { DAY } from '../../services/search';
 import { getDevices } from '../../services/services';
 import { useStickyState } from '../../utils/Utils';
-import PeriodToggle from '../common/PeriodToggle';
-import { DAY } from '../../services/search';
 import Loader from '../common/Loader';
+import PeriodToggle from '../common/PeriodToggle';
+import MetricsTile from '../graphs/MetricsTile';
 
 const Home = () => {
   const [loading, setLoading] = useState(true);
@@ -46,21 +47,21 @@ const Home = () => {
         <CardHeader className='d-flex align-items-center'>
           <div className='welcome'>Hello {user.attributes.email}!</div>
           <div className='grow-1' />
-          <PeriodToggle time={time} setTime={setTime} />
+          <PeriodToggle setTime={setTime} time={time} />
         </CardHeader>
         <CardBody className='d-flex justify-content-center flex-wrap'>
           <Loader
-            loading={loading}
-            deviceCount={devices.length}
             content={
               "You don't have any sites or devices yet.  Why don't you add some by clicking the sites link above?"
             }
+            deviceCount={devices.length}
+            loading={loading}
           />
           {devices
             .filter((device) => device.virtual)
             .map((device) => {
               return (
-                <MetricsTile key={device.id} device={device} time={time} />
+                <MetricsTile device={device} key={device.id} time={time} />
               );
             })}
         </CardBody>

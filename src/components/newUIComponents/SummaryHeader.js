@@ -9,17 +9,17 @@ export default function SummaryHeader({ dailyOutput, dailyAverageOutput }) {
       You have generated
       <FormattedLabel
         className='mx-1.5 text-3xl font-bold text-brand-primary'
-        value={Math.round(dailyOutput)}
         label=''
         separator=' '
         unit='kWH'
+        value={Math.round(dailyOutput)}
       />
       {"today, That's "}
       <FormattedLabel
         className='mx-1.5 text-3xl font-bold text-brand-primary'
-        value={calculatePercent(dailyOutput, dailyAverageOutput)}
         label=''
         unit='%'
+        value={calculatePercent(dailyOutput, dailyAverageOutput)}
       />
       of your daily average.
     </span>

@@ -3,33 +3,33 @@ import { ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 const SiteGraphToggle = ({ graph, setGraph }) => {
   return (
     <ToggleButtonGroup
-      type='radio'
-      name='site-graph'
-      value={graph}
-      onChange={(t) => setGraph(t)}
       className='align-self-end'
+      name='site-graph'
+      onChange={(t) => setGraph(t)}
+      type='radio'
+      value={graph}
     >
       <ToggleButton
-        variant='secondary'
-        name='site-graph'
         id='tbg-btn-Combined'
+        name='site-graph'
         value='Combined'
+        variant='secondary'
       >
         Combined
       </ToggleButton>
       <ToggleButton
-        variant='secondary'
-        name='site-graph'
         id='tbg-btn-Stacked'
+        name='site-graph'
         value='Stacked'
+        variant='secondary'
       >
         Stacked
       </ToggleButton>
       <ToggleButton
-        variant='secondary'
-        name='site-graph'
         id='tbg-btn-Stacked-Bar'
+        name='site-graph'
         value='Grouped'
+        variant='secondary'
       >
         Grouped
       </ToggleButton>

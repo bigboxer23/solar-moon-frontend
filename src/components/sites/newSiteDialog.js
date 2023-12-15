@@ -1,5 +1,6 @@
-import { Button, Col, Form, Modal, Row, Spinner } from 'react-bootstrap';
 import { useState } from 'react';
+import { Button, Col, Form, Modal, Row, Spinner } from 'react-bootstrap';
+
 import { addDevice } from '../../services/services';
 import { onEnterPressed, preventSubmit } from '../../utils/Utils';
 
@@ -40,7 +41,7 @@ const NewSiteDialog = ({
   };
   const handleClose = () => setShow(false);
   return (
-    <Modal size='lg' show={show} onHide={handleClose} data-bs-theme='dark'>
+    <Modal data-bs-theme='dark' onHide={handleClose} show={show} size='lg'>
       <Modal.Header closeButton>
         <Modal.Title>Create New Site</Modal.Title>
       </Modal.Header>
@@ -49,7 +50,7 @@ const NewSiteDialog = ({
           <Form.Group className='mb-3' controlId='formName'>
             <Form.Label>Name</Form.Label>
             <Form.Control
-              value={site.name}
+              autoFocus
               onChange={(e) =>
                 setSite({
                   ...site,
@@ -60,14 +61,13 @@ const NewSiteDialog = ({
               }
               onKeyPress={preventSubmit}
               onKeyUp={(event) => onEnterPressed(event, createNewSite)}
-              autoFocus
+              value={site.name}
             />
           </Form.Group>
           <Row className='mb-3'>
             <Form.Group as={Col} controlId='formGridCity'>
               <Form.Label>City</Form.Label>
               <Form.Control
-                value={site.city || ''}
                 onChange={(e) =>
                   setSite({
                     ...site,
@@ -76,13 +76,13 @@ const NewSiteDialog = ({
                 }
                 onKeyPress={preventSubmit}
                 onKeyUp={(event) => onEnterPressed(event, createNewSite)}
+                value={site.city || ''}
               />
             </Form.Group>
 
             <Form.Group as={Col} controlId='formGridState'>
               <Form.Label>State, County, Province, or Region</Form.Label>
               <Form.Control
-                value={site.state || ''}
                 onChange={(e) =>
                   setSite({
                     ...site,
@@ -91,13 +91,13 @@ const NewSiteDialog = ({
                 }
                 onKeyPress={preventSubmit}
                 onKeyUp={(event) => onEnterPressed(event, createNewSite)}
+                value={site.state || ''}
               />
             </Form.Group>
           </Row>
           <Form.Group as={Col} controlId='formGridCountry'>
             <Form.Label>Country</Form.Label>
             <Form.Control
-              value={site.country || ''}
               onChange={(e) =>
                 setSite({
                   ...site,
@@ -106,6 +106,7 @@ const NewSiteDialog = ({
               }
               onKeyPress={preventSubmit}
               onKeyUp={(event) => onEnterPressed(event, createNewSite)}
+              value={site.country || ''}
             />
           </Form.Group>
         </Form>
@@ -113,15 +114,15 @@ const NewSiteDialog = ({
       <Modal.Footer>
         <Button
           id='createSite'
-          variant='primary'
           onClick={() => createNewSite()}
+          variant='primary'
         >
           <Spinner
-            as='span'
             animation='border'
-            size='sm'
-            role='status'
+            as='span'
             className='d-none me-2'
+            role='status'
+            size='sm'
           />
           Create Site
         </Button>

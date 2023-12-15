@@ -5,10 +5,10 @@ const Legend = ({ colorData }) => {
         .sort((d1, d2) => d1.name.localeCompare(d2.name))
         .map((d) => {
           return (
-            <div key={d.name} className='d-flex align-items-center p-2'>
+            <div className='d-flex align-items-center p-2' key={d.name}>
               <div
-                style={{ backgroundColor: d.color }}
                 className='colorDot me-1'
+                style={{ backgroundColor: d.color }}
               />
               {d.name}
             </div>

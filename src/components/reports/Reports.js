@@ -1,20 +1,22 @@
+import 'react-data-grid/lib/styles.css';
+
+import { useEffect, useRef, useState } from 'react';
 import { Card, CardBody, CardHeader } from 'react-bootstrap';
 import DataGrid from 'react-data-grid';
-import 'react-data-grid/lib/styles.css';
-import { getDataPage } from '../../services/services';
-import { useEffect, useRef, useState } from 'react';
-import Loader from '../common/Loader';
-import SearchBar from './SearchBar';
-import { DAY } from '../../services/search';
-import DownloadReportButton from './DownloadReportButton';
 import { useIntl } from 'react-intl';
+import { useSearchParams } from 'react-router-dom';
+
+import { DAY } from '../../services/search';
+import { getDataPage } from '../../services/services';
 import {
   getFormattedTime,
   getRoundedTime,
   getWeatherIcon,
   useSearchParamState,
 } from '../../utils/Utils';
-import { useSearchParams } from 'react-router-dom';
+import Loader from '../common/Loader';
+import DownloadReportButton from './DownloadReportButton';
+import SearchBar from './SearchBar';
 
 const Reports = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -188,42 +190,42 @@ const Reports = () => {
       <Card className='grow-1'>
         <CardHeader className='d-flex'>
           <SearchBar
-            site={site}
-            setSite={setSite}
-            device={device}
-            setDevice={setDevice}
-            end={end}
-            setEnd={setEnd}
-            start={start}
-            setStart={setStart}
-            devices={devices}
-            setDevices={setDevices}
             defaultSearchPeriod={DAY}
+            device={device}
+            devices={devices}
+            end={end}
             refreshSearch={refreshSearch}
+            setDevice={setDevice}
+            setDevices={setDevices}
+            setEnd={setEnd}
             setRefreshSearch={setRefreshSearch}
+            setSite={setSite}
+            setStart={setStart}
+            site={site}
+            start={start}
           />
           <DownloadReportButton
-            site={site}
             device={device}
             end={end}
+            site={site}
             start={start}
             timeFormatter={getFormattedTime}
           />
         </CardHeader>
         <CardBody
-          id='data-grid'
           className='d-flex flex-column rdg-holder d-none'
+          id='data-grid'
         >
           <DataGrid
-            ref={gridRef}
             className='rdg-dark grow-1'
             columns={columns}
-            rows={rows}
-            renderers={{ noRowsFallback: <EmptyRowsRenderer /> }}
             onScroll={handleScroll}
+            ref={gridRef}
+            renderers={{ noRowsFallback: <EmptyRowsRenderer /> }}
+            rows={rows}
           />
         </CardBody>
-        <Loader loading={loading} deviceCount={rows.length} content='' />
+        <Loader content='' deviceCount={rows.length} loading={loading} />
       </Card>
     </div>
   );

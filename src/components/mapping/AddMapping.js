@@ -1,9 +1,10 @@
-import { Button, Col, Form, Spinner } from 'react-bootstrap';
 import { useState } from 'react';
-import { attributeMappings, attributes, AVG_CURRENT } from './MappingConstants';
+import { Button, Col, Form, Spinner } from 'react-bootstrap';
 import { MdOutlineAddCircle } from 'react-icons/md';
+
 import { addMapping } from '../../services/services';
 import { onEnterPressed, preventSubmit } from '../../utils/Utils';
+import { attributeMappings, attributes, AVG_CURRENT } from './MappingConstants';
 
 export default function AddMapping({ mappings, setMappings }) {
   const [mapping, setMapping] = useState({
@@ -73,12 +74,12 @@ export default function AddMapping({ mappings, setMappings }) {
         <Form.Group as={Col} controlId='mapping'>
           <Form.Label>Mapping name</Form.Label>
           <Form.Control
-            value={mapping.mappingName}
             onChange={(e) =>
               setMapping({ ...mapping, mappingName: e.target.value })
             }
             onKeyPress={preventSubmit}
             onKeyUp={(event) => onEnterPressed(event, addMappingClicked)}
+            value={mapping.mappingName}
           />
         </Form.Group>
         <div className='p-2'>{'->'}</div>
@@ -86,10 +87,10 @@ export default function AddMapping({ mappings, setMappings }) {
           <Form.Label>Attribute</Form.Label>
           <Form.Select
             aria-label='site select'
-            value={mapping.attribute}
             onChange={(e) =>
               setMapping({ ...mapping, attribute: e.target.value })
             }
+            value={mapping.attribute}
           >
             {attributes.map((attr) => {
               return (
@@ -101,19 +102,19 @@ export default function AddMapping({ mappings, setMappings }) {
           </Form.Select>
         </Form.Group>
         <Button
-          id='add-mapping-button'
           className='ms-3'
-          variant='outline-light'
-          title='Add Attribute'
+          id='add-mapping-button'
           onClick={addMappingClicked}
+          title='Add Attribute'
+          variant='outline-light'
         >
           <MdOutlineAddCircle style={{ marginBottom: '2px' }} />
           <Spinner
-            as='span'
             animation='border'
-            size='sm'
-            role='status'
+            as='span'
             className='d-none'
+            role='status'
+            size='sm'
           />
         </Button>
       </div>

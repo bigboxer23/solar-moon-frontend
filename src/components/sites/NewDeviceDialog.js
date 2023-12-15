@@ -1,5 +1,6 @@
-import { Button, Form, Modal, Spinner } from 'react-bootstrap';
 import { useState } from 'react';
+import { Button, Form, Modal, Spinner } from 'react-bootstrap';
+
 import { addDevice } from '../../services/services';
 import { preventSubmit } from '../../utils/Utils';
 
@@ -31,7 +32,7 @@ const NewDeviceDialog = ({
   };
   const handleClose = () => setShow(false);
   return (
-    <Modal show={show} onHide={handleClose} data-bs-theme='dark'>
+    <Modal data-bs-theme='dark' onHide={handleClose} show={show}>
       <Modal.Header closeButton>
         <Modal.Title>Create New Device</Modal.Title>
       </Modal.Header>
@@ -41,8 +42,6 @@ const NewDeviceDialog = ({
             <Form.Label>Device Name</Form.Label>
             <Form.Control
               autoFocus
-              placeholder='Device Name'
-              value={device.deviceName || ''}
               onChange={(e) =>
                 setDevice({ ...device, deviceName: e.target.value })
               }
@@ -52,13 +51,13 @@ const NewDeviceDialog = ({
                   createNewDevice();
                 }
               }}
+              placeholder='Device Name'
+              value={device.deviceName || ''}
             />
           </Form.Group>
           <Form.Group className='mb-3' controlId='formDisplayName'>
             <Form.Label>Display Name</Form.Label>
             <Form.Control
-              placeholder='Display Name'
-              value={device.name || ''}
               onChange={(e) => setDevice({ ...device, name: e.target.value })}
               onKeyPress={preventSubmit}
               onKeyUp={(event) => {
@@ -66,14 +65,16 @@ const NewDeviceDialog = ({
                   createNewDevice();
                 }
               }}
+              placeholder='Display Name'
+              value={device.name || ''}
             />
           </Form.Group>
           <Form.Group className='mb-3' controlId='formDisplayName'>
             <Form.Label>Site</Form.Label>
             <Form.Select
               aria-label='site select'
-              value={device.site}
               onChange={(e) => setDevice({ ...device, site: e.target.value })}
+              value={device.site}
             >
               {devices
                 .filter((d) => d.virtual)
@@ -91,15 +92,15 @@ const NewDeviceDialog = ({
       <Modal.Footer>
         <Button
           id='createDevice'
-          variant='primary'
           onClick={() => createNewDevice()}
+          variant='primary'
         >
           <Spinner
-            as='span'
             animation='border'
-            size='sm'
-            role='status'
+            as='span'
             className='d-none me-2'
+            role='status'
+            size='sm'
           />
           Create Device
         </Button>

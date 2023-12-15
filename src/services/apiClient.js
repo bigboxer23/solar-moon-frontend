@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { Auth } from 'aws-amplify';
+import axios from 'axios';
 
 export const api = axios.create({
   baseURL: '/v1/',

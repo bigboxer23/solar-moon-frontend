@@ -1,5 +1,6 @@
-import { NavLink } from 'react-router-dom';
 import { LuSun } from 'react-icons/lu';
+import { NavLink } from 'react-router-dom';
+
 import logo from '../../../assets/logo.svg';
 import UserMenu from '../../UserMenu';
 
@@ -14,50 +15,50 @@ export default function Navbar2() {
     <>
       <div className='Navbar2 flex h-[6.25rem] w-full items-center justify-between border-b border-text-secondary bg-brand-primary-light'>
         <div className='flex items-center justify-center'>
-          <img src={logo} className='ml-8 h-12 w-12' alt='brand' />
+          <img alt='brand' className='ml-8 h-12 w-12' src={logo} />
         </div>
         <nav className='space-x-10'>
           <NavLink
-            to='/'
             className={({ isActive }) =>
               isActive ? activeLinkStyle : linkStyle
             }
+            to='/'
           >
             Dashboard
           </NavLink>
           <LuSun className={separatorStyle} />
           <NavLink
-            to='/sites'
             className={({ isActive }) =>
               isActive ? activeLinkStyle : linkStyle
             }
+            to='/sites'
           >
             Sites
           </NavLink>
           <LuSun className={separatorStyle} />
           <NavLink
-            to='/reports'
             className={({ isActive }) =>
               isActive ? activeLinkStyle : linkStyle
             }
+            to='/reports'
           >
             Reports
           </NavLink>
           <LuSun className={separatorStyle} />
           <NavLink
-            to='/alerts'
             className={({ isActive }) =>
               isActive ? activeLinkStyle : linkStyle
             }
+            to='/alerts'
           >
             Alerts
           </NavLink>
           <LuSun className={separatorStyle} />
           <NavLink
-            to='/manage'
             className={({ isActive }) =>
               isActive ? activeLinkStyle : linkStyle
             }
+            to='/manage'
           >
             Manage
           </NavLink>

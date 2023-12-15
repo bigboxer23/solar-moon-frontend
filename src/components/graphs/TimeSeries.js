@@ -1,8 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
-import { getTimeSeriesData } from '../../services/services';
+import { useEffect, useRef, useState } from 'react';
+
 import { parseSearchReturn } from '../../services/search';
+import { getTimeSeriesData } from '../../services/services';
 import { debounce } from '../../utils/Utils';
+
 const TimeSeries = ({ device, time }) => {
   const ref = useRef();
   const [windowWidth, setWindowWidth] = useState(
@@ -18,9 +20,9 @@ const TimeSeries = ({ device, time }) => {
     if (graphData === null) {
       return;
     }
-    const margin = { top: 30, right: 10, bottom: 30, left: 40 },
-      width = windowWidth - margin.left - margin.right,
-      height = 400 - margin.top - margin.bottom;
+    const margin = { top: 30, right: 10, bottom: 30, left: 40 };
+    const height = 400 - margin.top - margin.bottom;
+    const width = windowWidth - margin.left - margin.right;
 
     // Declare the x (horizontal position) scale.
     const x = d3.scaleTime(

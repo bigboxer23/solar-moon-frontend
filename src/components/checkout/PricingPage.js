@@ -1,8 +1,8 @@
-import { Card, CardBody } from 'react-bootstrap';
-import logo from '../../assets/logo.svg';
 import { useState } from 'react';
-
+import { Card, CardBody } from 'react-bootstrap';
 import { createSearchParams, useNavigate } from 'react-router-dom';
+
+import logo from '../../assets/logo.svg';
 import PriceTile from './PriceTile';
 
 function PricingPage() {
@@ -23,29 +23,29 @@ function PricingPage() {
   return (
     <div className='pricing-page min-vh-95 container'>
       <div className='d-flex ps-5'>
-        <img src={logo} className='img-fluid logo' alt='brand' />
+        <img alt='brand' className='img-fluid logo' src={logo} />
         <div className='h4 p-4'>Choose a billing plan</div>
       </div>
       <div className='d-flex justify-content-center me-3 ms-3 flex-wrap'>
         <PriceTile
+          checkoutClicked={checkoutClicked}
+          count={monCount}
           label='Monthly'
           label2='mo'
           label3=''
-          count={monCount}
-          setCount={setMonCount}
           price={40}
           priceId={process.env.REACT_APP_PRICE_MO}
-          checkoutClicked={checkoutClicked}
+          setCount={setMonCount}
         />
         <PriceTile
+          checkoutClicked={checkoutClicked}
+          count={yearCount}
           label='Yearly'
           label2='yr'
           label3='Save 10%!'
-          count={yearCount}
-          setCount={setYearCount}
           price={432}
           priceId={process.env.REACT_APP_PRICE_YR}
-          checkoutClicked={checkoutClicked}
+          setCount={setYearCount}
         />
       </div>
       <Card className='grow-1 m-5'>

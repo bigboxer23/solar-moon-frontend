@@ -1,4 +1,5 @@
 import { Button, Card, CardBody } from 'react-bootstrap';
+
 import QuantityPicker from '../../utils/QuantityPicker';
 
 function PriceTile({
@@ -36,9 +37,9 @@ function PriceTile({
         <QuantityPicker max={10} min={1} setCount={setCount} />
         <Button
           className='mt-3'
-          variant='primary'
-          type='button'
           onClick={() => checkoutClicked(priceId, count)}
+          type='button'
+          variant='primary'
         >
           Choose plan
         </Button>

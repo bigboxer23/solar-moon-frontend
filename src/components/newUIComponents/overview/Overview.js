@@ -1,14 +1,15 @@
-import { useEffect, useState } from 'react';
-import { getOverviewData } from '../../../services/services';
-import SiteList from './site-list/SiteList';
-import OverviewChart from './OverviewChart';
-import TimeIncrementSelector from './TimeIncrementSelector';
-import { DAY, getAggregationValue } from '../../../services/search';
-import Loader from '../common/Loader';
-import { useStickyState } from '../../../utils/Utils';
 import classNames from 'classnames';
+import { useEffect, useState } from 'react';
 import { FormattedNumber } from 'react-intl';
+
+import { DAY, getAggregationValue } from '../../../services/search';
+import { getOverviewData } from '../../../services/services';
+import { useStickyState } from '../../../utils/Utils';
+import Loader from '../common/Loader';
 import SummaryHeader from '../SummaryHeader';
+import OverviewChart from './OverviewChart';
+import SiteList from './site-list/SiteList';
+import TimeIncrementSelector from './TimeIncrementSelector';
 
 function StatBlock({ title, value, className }) {
   const style = classNames('StatBlock flex', className);
@@ -99,8 +100,8 @@ export default function Overview() {
   return (
     <div className='flex flex-col items-center'>
       <SummaryHeader
-        dailyOutput={dailyOutputTotal}
         dailyAverageOutput={dailyAverageOutput}
+        dailyOutput={dailyOutputTotal}
       />
       <div className='Overview fade-in mb-8 w-[55rem] rounded-lg bg-white p-8 shadow-panel'>
         <div className='mb-4 flex w-full items-center justify-between text-lg font-bold'>
@@ -115,14 +116,14 @@ export default function Overview() {
             <StatBlock title='sites' value={sites.length} />
             <StatBlock title='devices' value={devices.length} />
             <StatBlock
+              className={activeAlerts > 0 ? 'text-danger' : ''}
               title='active alerts'
               value={activeAlerts.length}
-              className={activeAlerts > 0 ? 'text-danger' : ''}
             />
             <StatBlock
+              className='text-text-secondary'
               title='resolved alerts'
               value={resolvedAlerts.length}
-              className='text-text-secondary'
             />
           </div>
           <div className='flex flex-col items-end'>
@@ -140,11 +141,11 @@ export default function Overview() {
           timeIncrement={timeIncrement}
         />
         <SiteList
-          sitesGraphData={sitesGraphData}
-          sites={sites}
-          devices={devices}
-          timeIncrement={timeIncrement}
           alerts={[...resolvedAlerts, ...activeAlerts]}
+          devices={devices}
+          sites={sites}
+          sitesGraphData={sitesGraphData}
+          timeIncrement={timeIncrement}
         />
       </div>
     </div>

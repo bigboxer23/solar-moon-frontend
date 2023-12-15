@@ -1,19 +1,20 @@
 import { useEffect, useState } from 'react';
+import { Button, Card, CardBody, CardHeader, Dropdown } from 'react-bootstrap';
+import { MdAddCircle, MdOutlineAdd } from 'react-icons/md';
+import { useSearchParams } from 'react-router-dom';
+
 import {
   getDevice,
   getDevices,
   getSeatCount,
   updateDevice,
 } from '../../services/services';
-import { Button, Card, CardBody, CardHeader, Dropdown } from 'react-bootstrap';
-import Site from './Site';
-import { MdAddCircle, MdOutlineAdd } from 'react-icons/md';
-import NewSiteDialog from './newSiteDialog';
-import NewDeviceDialog from './NewDeviceDialog';
-import Loader from '../common/Loader';
 import { sortDevices, useStickyState } from '../../utils/Utils';
-import { useSearchParams } from 'react-router-dom';
+import Loader from '../common/Loader';
 import Mapping from '../mapping/Mapping';
+import NewDeviceDialog from './NewDeviceDialog';
+import NewSiteDialog from './newSiteDialog';
+import Site from './Site';
 
 export const noSite = 'No Site';
 const SiteManagement = () => {
@@ -68,8 +69,8 @@ const SiteManagement = () => {
         <Dropdown.Divider />
         <Dropdown.Item
           as='button'
-          eventKey='new'
           className='Success'
+          eventKey='new'
           onClick={() => setShowNewSite(true)}
         >
           <MdOutlineAdd className='button-icon' />
@@ -93,7 +94,7 @@ const SiteManagement = () => {
           <div className='fs-3 site-name'>{activeSite}</div>
           <div className='grow-1' />
           <Dropdown className='align-self-end'>
-            <Dropdown.Toggle variant='primary' id='dropdown-basic'>
+            <Dropdown.Toggle id='dropdown-basic' variant='primary'>
               {activeSite === '' ? 'Loading' : activeSite}
             </Dropdown.Toggle>
             <Dropdown.Menu>
@@ -123,13 +124,13 @@ const SiteManagement = () => {
           </Dropdown>
           <Button
             className={'ms-3' + isDisabledForSubscription()}
-            variant='outline-light'
+            onClick={() => setShowNewDevice(true)}
             title={
               isDisabledForSubscription()
                 ? 'Increase the number of seats to add more devices'
                 : 'New Device'
             }
-            onClick={() => setShowNewDevice(true)}
+            variant='outline-light'
           >
             <MdAddCircle className='button-icon' />
             Add Device
@@ -138,11 +139,11 @@ const SiteManagement = () => {
         </CardHeader>
         <CardBody className={devices.length === 0 ? '' : 'd-none'}>
           <Loader
-            loading={loading}
-            deviceCount={devices.length}
             content={
               'You don\'t have any devices yet.  Add some by clicking the "Add Device" above!'
             }
+            deviceCount={devices.length}
+            loading={loading}
           />
         </CardBody>
       </Card>
@@ -152,29 +153,29 @@ const SiteManagement = () => {
         .map((site) => {
           return (
             <Site
-              key={site.id}
               data={site}
               devices={devices}
-              setDevices={setDevices}
+              key={site.id}
               setActiveSite={setActiveSite}
+              setDevices={setDevices}
             />
           );
         })}
       <NewSiteDialog
         key={newSiteFormVersion}
-        show={showNewSite}
-        setShow={setShowNewSite}
-        setDevices={setDevices}
         setActiveSite={setActiveSite}
+        setDevices={setDevices}
+        setShow={setShowNewSite}
         setVersion={setNewSiteFormVersion}
+        show={showNewSite}
       />
       <NewDeviceDialog
-        key={'device' + newSiteFormVersion + activeSite}
-        show={showNewDevice}
-        setShow={setShowNewDevice}
-        setDevices={setDevices}
-        setVersion={setNewSiteFormVersion}
         devices={devices}
+        key={'device' + newSiteFormVersion + activeSite}
+        setDevices={setDevices}
+        setShow={setShowNewDevice}
+        setVersion={setNewSiteFormVersion}
+        show={showNewDevice}
         site={activeSite}
       />
     </div>

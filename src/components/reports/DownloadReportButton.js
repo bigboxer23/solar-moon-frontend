@@ -1,7 +1,8 @@
-import { getDataPage } from '../../services/services';
-import { MdDownload } from 'react-icons/md';
 import { Button, Spinner } from 'react-bootstrap';
 import { jsons2csv } from 'react-csv/lib/core';
+import { MdDownload } from 'react-icons/md';
+
+import { getDataPage } from '../../services/services';
 
 const DownloadReportButton = ({ site, device, start, end, timeFormatter }) => {
   const headers = [
@@ -74,19 +75,19 @@ const DownloadReportButton = ({ site, device, start, end, timeFormatter }) => {
 
   return (
     <Button
-      id='report-download-button'
       className='ms-3'
-      variant='outline-light'
-      title='Download'
+      id='report-download-button'
       onClick={download}
+      title='Download'
+      variant='outline-light'
     >
       <MdDownload style={{ marginBottom: '2px' }} />
       <Spinner
-        as='span'
         animation='border'
-        size='sm'
-        role='status'
+        as='span'
         className='d-none'
+        role='status'
+        size='sm'
       />
       <span className='btn-txt'>Download</span>
     </Button>

@@ -1,17 +1,18 @@
+import { useAuthenticator } from '@aws-amplify/ui-react';
 import { useEffect, useState } from 'react';
+import { Alert, Button, Card, Form, Row, Spinner } from 'react-bootstrap';
+import { MdOutlineDelete } from 'react-icons/md';
+import { TbUserCancel } from 'react-icons/tb';
+import { useNavigate } from 'react-router-dom';
+
 import {
   deleteCustomer,
   getCustomer as fetchCustomer,
   updateCustomer as updateRemoteCustomer,
 } from '../../services/services';
-import { Alert, Button, Card, Form, Row, Spinner } from 'react-bootstrap';
-import { MdOutlineDelete } from 'react-icons/md';
-import { TbUserCancel } from 'react-icons/tb';
+import Loader from '../common/Loader';
 import CopyButton from '../CopyButton';
 import ChangePassword from './ChangePassword';
-import Loader from '../common/Loader';
-import { useAuthenticator } from '@aws-amplify/ui-react';
-import { useNavigate } from 'react-router-dom';
 import ManagePlanTile from './ManagePlanTile';
 
 const UserManagement = () => {
@@ -46,7 +47,7 @@ const UserManagement = () => {
 
   return loading ? (
     <div className='root-page min-vh-95 container'>
-      <Loader loading={loading} deviceCount={1} content='' />
+      <Loader content='' deviceCount={1} loading={loading} />
     </div>
   ) : (
     <div className='root-page min-vh-95 container'>
@@ -57,19 +58,19 @@ const UserManagement = () => {
             <Form.Group className='mb-3' controlId='formEmail'>
               <Form.Label>Email address</Form.Label>
               <Form.Control
-                type='email'
                 placeholder='Enter email'
                 readOnly={true}
+                type='email'
                 value={customerData?.email || ''}
               />
             </Form.Group>
             <Form.Group controlId='formName'>
               <Form.Label>Name</Form.Label>
               <Form.Control
-                value={customerData?.name || ''}
                 onChange={(e) =>
                   setCustomerData({ ...customerData, name: e.target.value })
                 }
+                value={customerData?.name || ''}
               />
             </Form.Group>
           </Form>
@@ -94,29 +95,29 @@ const UserManagement = () => {
               </Form.Text>
               <Row className='me-0 ms-0 flex-nowrap'>
                 <Form.Control
+                  className='grow-1 w-auto'
                   placeholder='Access Key'
                   readOnly={true}
-                  className='grow-1 w-auto'
                   value={customerData?.accessKey || ''}
                 />
                 <CopyButton
-                  title='Copy Access Key'
                   dataSrc={() => customerData?.accessKey}
+                  title='Copy Access Key'
                 />
               </Row>
             </Form.Group>
             <Button
-              type='button'
-              onClick={() => setAccessKeyWarning(true)}
-              variant='danger'
               id='revokeAccessKey'
+              onClick={() => setAccessKeyWarning(true)}
+              type='button'
+              variant='danger'
             >
               <Spinner
-                as='span'
                 animation='border'
-                size='sm'
-                role='status'
+                as='span'
                 className='d-none me-2'
+                role='status'
+                size='sm'
               />
               <MdOutlineDelete className='button-icon' />
               Revoke/Regenerate Access Key
@@ -136,6 +137,7 @@ const UserManagement = () => {
                   Cancel
                 </Button>
                 <Button
+                  className='ms-2'
                   onClick={() => {
                     setAccessKeyWarning(false);
                     updateCustomer(document.getElementById('revokeAccessKey'), {
@@ -144,7 +146,6 @@ const UserManagement = () => {
                     });
                   }}
                   variant='outline-danger'
-                  className='ms-2'
                 >
                   Revoke Key
                 </Button>
@@ -158,10 +159,10 @@ const UserManagement = () => {
         <Card.Header className='fw-bold'>Delete Account</Card.Header>
         <Card.Body>
           <Button
-            type='button'
-            onClick={() => setDeleteAcctWarning(true)}
-            variant='danger'
             id='deleteAccountButton'
+            onClick={() => setDeleteAcctWarning(true)}
+            type='button'
+            variant='danger'
           >
             <TbUserCancel className='button-icon' />
             Delete Account
@@ -181,6 +182,7 @@ const UserManagement = () => {
                 Cancel
               </Button>
               <Button
+                className='ms-2'
                 onClick={() => {
                   setDeleteAcctWarning(false);
                   deleteCustomer(customerData.customerId)
@@ -191,7 +193,6 @@ const UserManagement = () => {
                     .catch((e) => console.log(e));
                 }}
                 variant='outline-danger'
-                className='ms-2'
               >
                 Delete Account
               </Button>

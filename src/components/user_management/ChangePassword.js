@@ -1,3 +1,5 @@
+import { Auth } from 'aws-amplify';
+import { useState } from 'react';
 import {
   Button,
   Card,
@@ -7,8 +9,6 @@ import {
   ToastBody,
   ToastContainer,
 } from 'react-bootstrap';
-import { useState } from 'react';
-import { Auth } from 'aws-amplify';
 import { MdOutlinePassword } from 'react-icons/md';
 
 const ChangePassword = () => {
@@ -61,59 +61,59 @@ const ChangePassword = () => {
       <Card.Header className='fw-bold'>Change Password</Card.Header>
       <Card.Body>
         <Form
-          noValidate
           id='changePWForm'
+          noValidate
           onSubmit={handleSubmit}
           validated={validated}
         >
           <Form.Group className='mb-3' controlId='formOldPassword'>
             <Form.Label>Old Password</Form.Label>
             <Form.Control
-              required
-              type='password'
-              placeholder='Old Password'
               onChange={(e) =>
                 setPassword({ ...password, oldPassword: e.target.value })
               }
+              placeholder='Old Password'
+              required
+              type='password'
             />
           </Form.Group>
           <Form.Group controlId='formNewPassword'>
             <Form.Label>New Password</Form.Label>
             <Form.Control
-              required
-              type='password'
-              placeholder='New Password'
               onChange={(e) =>
                 setPassword({ ...password, newPassword: e.target.value })
               }
+              placeholder='New Password'
+              required
+              type='password'
             />
           </Form.Group>
           <Form.Group controlId='formConfirmNewPassword'>
             <Form.Label>Confirm New Password</Form.Label>
             <Form.Control
-              required
-              type='password'
-              placeholder='Confirm New Password'
               onChange={(e) =>
                 setPassword({ ...password, confirmNewPassword: e.target.value })
               }
+              placeholder='Confirm New Password'
+              required
+              type='password'
             />
             <Form.Control.Feedback type='invalid'>
               {error}
             </Form.Control.Feedback>
           </Form.Group>
           <Button
-            id='changePasswordSubmit'
             className='mt-3 '
-            variant='primary'
+            id='changePasswordSubmit'
             type='submit'
+            variant='primary'
           >
             <Spinner
-              as='span'
               animation='border'
-              size='sm'
-              role='status'
+              as='span'
               className='d-none me-2'
+              role='status'
+              size='sm'
             />
             <MdOutlinePassword className='button-icon' />
             Change Password
@@ -121,12 +121,12 @@ const ChangePassword = () => {
         </Form>
         <ToastContainer position='bottom-end'>
           <Toast
-            className='m-2'
-            onClose={() => setShowToast(false)}
-            show={showToast}
-            delay={2500}
             autohide
             bg='success'
+            className='m-2'
+            delay={2500}
+            onClose={() => setShowToast(false)}
+            show={showToast}
           >
             <ToastBody>Password successfully updated!</ToastBody>
           </Toast>

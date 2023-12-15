@@ -1,7 +1,8 @@
-import Dropdown from '../common/Dropdown';
+import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import moment from 'moment';
+
+import Dropdown from '../common/Dropdown';
 
 export default function AlertsFilter({
   handleFilterChange,
@@ -99,16 +100,16 @@ export default function AlertsFilter({
         </button>
       )}
       <Dropdown
-        prefixLabel='Site'
-        options={[allOption, ...availableSites]}
-        value={siteValue}
         onChange={handleSiteFilterChange}
+        options={[allOption, ...availableSites]}
+        prefixLabel='Site'
+        value={siteValue}
       />
       <Dropdown
-        prefixLabel='Device'
-        options={[allOption, ...availableDevices]}
-        value={deviceValue}
         onChange={handleDeviceFilterChange}
+        options={[allOption, ...availableDevices]}
+        prefixLabel='Device'
+        value={deviceValue}
       />
       {/* TODO: set up dates filtering later */}
       {/*<DateRangePicker*/}

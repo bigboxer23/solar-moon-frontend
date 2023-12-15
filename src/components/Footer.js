@@ -1,4 +1,4 @@
-import { Container, Row, Col } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
 import { AiFillGithub } from 'react-icons/ai';
 
 function Footer() {
@@ -6,24 +6,24 @@ function Footer() {
   let year = date.getFullYear();
   let company = 'Solar Moon Analytics, LLC';
   return (
-    <Container fluid className='footer'>
+    <Container className='footer' fluid>
       <Row>
-        <Col md='4' className='footer-copyright'>
+        <Col className='footer-copyright' md='4'>
           <h3>Developed by {company}</h3>
         </Col>
-        <Col md='4' className='footer-copyright'>
+        <Col className='footer-copyright' md='4'>
           <h3>
             Copyright © {year} {company}
           </h3>
         </Col>
-        <Col md='4' className='footer-body'>
+        <Col className='footer-body' md='4'>
           <ul className='footer-icons'>
             <li className='social-icons'>
               <a
                 href='https://github.com/bigboxer23'
+                rel='noopener noreferrer'
                 style={{ color: 'white' }}
                 target='_blank'
-                rel='noopener noreferrer'
               >
                 <AiFillGithub />
               </a>

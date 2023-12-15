@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
+
 import { getAlarmData } from '../../services/services';
-import Loader from './common/Loader';
+import { sortSelectAlphabetically } from '../../utils/Utils';
 import Alert from './alerts/Alert';
 import AlertsFilter from './alerts/AlertsFilter';
-import { sortSelectAlphabetically } from '../../utils/Utils';
+import Loader from './common/Loader';
 
 export default function Alerts() {
   const [loading, setLoading] = useState(true);
@@ -108,10 +109,10 @@ export default function Alerts() {
           <div className='mb-10 flex w-full items-center  justify-between'>
             <span className='text-lg font-bold'>Alerts</span>
             <AlertsFilter
-              initialFilter={filter}
-              handleFilterChange={handleFilterChange}
-              availableSites={siteOptions}
               availableDevices={deviceOptions}
+              availableSites={siteOptions}
+              handleFilterChange={handleFilterChange}
+              initialFilter={filter}
             />
           </div>
           <div className='space-y-4'>
@@ -121,7 +122,7 @@ export default function Alerts() {
               </div>
             )}
             {filteredActiveAlerts.map((alert) => (
-              <Alert key={alert.alarmId} alert={alert} active />
+              <Alert active alert={alert} key={alert.alarmId} />
             ))}
           </div>
           <div className='mb-6 flex w-full items-center justify-between text-lg font-bold'>
@@ -129,7 +130,7 @@ export default function Alerts() {
           </div>
           <div className='space-y-4'>
             {filteredResolvedAlerts.map((alert) => (
-              <Alert key={alert.alarmId} alert={alert} />
+              <Alert alert={alert} key={alert.alarmId} />
             ))}
           </div>
         </div>

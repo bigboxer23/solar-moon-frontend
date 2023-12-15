@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Navigate } from 'react-router-dom';
 import { Card, CardBody } from 'react-bootstrap';
-import Loader from '../common/Loader';
+import { Navigate } from 'react-router-dom';
+
 import { checkoutStatus } from '../../services/services';
+import Loader from '../common/Loader';
 
 const Return = () => {
   const [status, setStatus] = useState(null);
@@ -33,7 +34,7 @@ const Return = () => {
       <div className='root-page min-vh-95 container'>
         <Card className='m-3'>
           <CardBody>
-            <Loader loading={loading} deviceCount={0} content='' />
+            <Loader content='' deviceCount={0} loading={loading} />
             <section id='success'>
               <p>
                 We appreciate your business! A confirmation email will be sent
@@ -53,7 +54,7 @@ const Return = () => {
     <div className='root-page min-vh-95 container'>
       <Card className='m-3'>
         <CardBody>
-          <Loader loading={true} deviceCount={0} content='' />
+          <Loader content='' deviceCount={0} loading={true} />
         </CardBody>
       </Card>
     </div>

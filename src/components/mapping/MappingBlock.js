@@ -17,20 +17,20 @@ export default function MappingBlock({
         {showDelete ? (
           <Button
             className='hidden-without-hover'
-            type='button'
+            id='revokeAccessKey'
             onClick={(e) => {
               e.currentTarget.classList.add('disabled');
               deleteMapping(mappingName);
             }}
+            type='button'
             variant='outline-danger'
-            id='revokeAccessKey'
           >
             <Spinner
-              as='span'
               animation='border'
-              size='sm'
-              role='status'
+              as='span'
               className='d-none'
+              role='status'
+              size='sm'
             />
             <MdOutlineDelete />
           </Button>

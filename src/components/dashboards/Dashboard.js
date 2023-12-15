@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
-import { getDevices } from '../../services/services';
-import { noSite } from '../sites/SiteManagement';
 import { Card, CardBody, CardHeader, Dropdown } from 'react-bootstrap';
-import TimeSeries from '../graphs/TimeSeries';
-import { sortDevices, useStickyState } from '../../utils/Utils';
-import PeriodToggle from '../common/PeriodToggle';
+
 import { DAY } from '../../services/search';
-import SiteGraph from '../graphs/SiteGraph';
+import { getDevices } from '../../services/services';
+import { sortDevices, useStickyState } from '../../utils/Utils';
 import Loader from '../common/Loader';
+import PeriodToggle from '../common/PeriodToggle';
+import SiteGraph from '../graphs/SiteGraph';
+import TimeSeries from '../graphs/TimeSeries';
+import { noSite } from '../sites/SiteManagement';
+
 const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [devices, setDevices] = useState([]);
@@ -34,7 +36,7 @@ const Dashboard = () => {
           <div className='fs-3 site-name'>{activeSite}</div>
           <div className='grow-1' />
           <Dropdown className='align-self-end'>
-            <Dropdown.Toggle variant='primary' id='dropdown-basic'>
+            <Dropdown.Toggle id='dropdown-basic' variant='primary'>
               {activeSite}
             </Dropdown.Toggle>
             <Dropdown.Menu>
@@ -60,15 +62,15 @@ const Dashboard = () => {
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
-          <PeriodToggle time={time} setTime={setTime} />
+          <PeriodToggle setTime={setTime} time={time} />
         </CardHeader>
         <CardBody>
           <Loader
-            loading={loading}
-            deviceCount={devices.length}
             content={
               'You don\'t have any devices yet.  Add some by navigating to the "Sites" section above!'
             }
+            deviceCount={devices.length}
+            loading={loading}
           />
           {devices
             .filter((device) => device.virtual)
@@ -81,7 +83,7 @@ const Dashboard = () => {
             .filter((device) => device.site === activeSite)
             .sort(sortDevices)
             .map((device) => {
-              return <TimeSeries key={device.id} device={device} time={time} />;
+              return <TimeSeries device={device} key={device.id} time={time} />;
             })}
         </CardBody>
       </Card>

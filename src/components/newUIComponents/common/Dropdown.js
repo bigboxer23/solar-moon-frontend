@@ -1,6 +1,6 @@
 import { Menu, MenuButton, MenuItem } from '@szhsin/react-menu';
-import { FaChevronDown } from 'react-icons/fa';
 import classNames from 'classnames';
+import { FaChevronDown } from 'react-icons/fa';
 
 export default function Dropdown({
   prefixLabel,
@@ -21,7 +21,7 @@ export default function Dropdown({
               <span className='mr-2 font-bold'>{prefixLabel}:</span>
             )}
             {value.label}
-            <FaChevronDown size='14' className='ml-2' />
+            <FaChevronDown className='ml-2' size='14' />
           </MenuButton>
         }
         menuClassName='pl-0 py-2 w-[9rem] rounded-lg flex flex-col list-none bg-white shadow-panel'

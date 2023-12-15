@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { getTileContent } from '../../services/services';
+
 import { getAggregationValue, TOTAL_REAL_POWER } from '../../services/search';
-import FormattedLabel from './FormattedLabel';
+import { getTileContent } from '../../services/services';
 import { getWeatherIcon } from '../../utils/Utils';
+import FormattedLabel from './FormattedLabel';
 
 const MetricsTile = ({ device, time }) => {
   const [total, setTotal] = useState(-1);
@@ -57,8 +58,8 @@ const MetricsTile = ({ device, time }) => {
       </div>
       <div className='min-max-gauge-empty position-absolute' />
       <div
-        style={{ height: max + 'px' }}
         className='min-max-gauge position-absolute'
+        style={{ height: max + 'px' }}
       />
     </div>
   );

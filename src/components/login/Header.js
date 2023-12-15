@@ -1,4 +1,5 @@
 import { Flex, Image, useTheme } from '@aws-amplify/ui-react';
+
 import logo from '../../assets/logo.svg';
 
 export function Header() {
@@ -8,8 +9,8 @@ export function Header() {
     <Flex justifyContent='center'>
       <Image
         alt='logo'
-        src={logo}
         padding={tokens.space.xl}
+        src={logo}
         style={{ width: 200 }}
       />
     </Flex>

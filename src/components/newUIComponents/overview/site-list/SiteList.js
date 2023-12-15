@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+
 import SiteRow from './SiteRow';
 
 export default function SiteList({
@@ -49,9 +50,9 @@ export default function SiteList({
       </div>
       {siteData.map((site) => (
         <SiteRow
-          key={site.info.deviceName}
-          info={site.info}
           graphData={site.graphData}
+          info={site.info}
+          key={site.info.deviceName}
           timeIncrement={timeIncrement}
         />
       ))}

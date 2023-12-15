@@ -1,8 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
-import { getGroupedTimeSeriesData } from '../../services/services';
-import { debounce } from '../../utils/Utils';
-import Legend from './Legend';
+import { useEffect, useRef, useState } from 'react';
+
 import {
   AVG,
   DATE_HISTO,
@@ -12,6 +10,10 @@ import {
   WEEK,
   YEAR,
 } from '../../services/search';
+import { getGroupedTimeSeriesData } from '../../services/services';
+import { debounce } from '../../utils/Utils';
+import Legend from './Legend';
+
 const GroupedBarChart = ({ device, time }) => {
   const ref = useRef();
   const [windowWidth, setWindowWidth] = useState(
@@ -46,9 +48,9 @@ const GroupedBarChart = ({ device, time }) => {
     if (graphData === null) {
       return;
     }
-    const margin = { top: 30, right: 10, bottom: 30, left: 40 },
-      width = windowWidth - margin.left - margin.right,
-      height = 400 - margin.top - margin.bottom;
+    const margin = { top: 30, right: 10, bottom: 30, left: 40 };
+    const width = windowWidth - margin.left - margin.right;
+    const height = 400 - margin.top - margin.bottom;
 
     const formatTime = (d) => {
       switch (time) {

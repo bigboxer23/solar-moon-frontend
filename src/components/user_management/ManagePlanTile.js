@@ -1,10 +1,11 @@
-import { Button, Card, CardBody, Spinner } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
+import { Button, Card, CardBody, Spinner } from 'react-bootstrap';
+import { MdOutlineSubscriptions } from 'react-icons/md';
+
 import {
   getSubscriptions,
   getUserPortalSession,
 } from '../../services/services';
-import { MdOutlineSubscriptions } from 'react-icons/md';
 
 function ManagePlanTile() {
   const [billingLoading, setBillingLoading] = useState(false);
@@ -83,16 +84,16 @@ function ManagePlanTile() {
         <div className='grow-1' />
         <Button
           className={billingLoading ? 'disabled mt-3' : 'mt-3'}
-          variant='primary'
-          type='button'
           onClick={() => gotoPortal()}
+          type='button'
+          variant='primary'
         >
           <Spinner
-            as='span'
             animation='border'
-            size='sm'
-            role='status'
+            as='span'
             className='d-none me-2'
+            role='status'
+            size='sm'
           />
           <MdOutlineSubscriptions className='button-icon' />
           Manage

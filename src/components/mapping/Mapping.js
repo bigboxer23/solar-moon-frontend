@@ -1,11 +1,12 @@
+import { useEffect, useState } from 'react';
 import { Button, Card, CardBody, ListGroup, Modal } from 'react-bootstrap';
+import { MdSettingsInputComposite } from 'react-icons/md';
+
+import { deleteMapping, getMappings } from '../../services/services';
+import HelpButton from '../HelpButton';
+import AddMapping from './AddMapping';
 import MappingBlock from './MappingBlock';
 import { attributeMappings } from './MappingConstants';
-import { useEffect, useState } from 'react';
-import { deleteMapping, getMappings } from '../../services/services';
-import AddMapping from './AddMapping';
-import HelpButton from '../HelpButton';
-import { MdSettingsInputComposite } from 'react-icons/md';
 
 export default function Mapping() {
   const [showMapping, setShowMapping] = useState(false);
@@ -29,17 +30,17 @@ export default function Mapping() {
     <div>
       <Button
         className='ms-3'
-        variant='outline-light'
         onClick={() => setShowMapping(true)}
+        variant='outline-light'
       >
         <MdSettingsInputComposite className='button-icon' />
         Mappings
       </Button>
       <Modal
         data-bs-theme='dark'
+        onHide={() => setShowMapping(false)}
         show={showMapping}
         size='xl'
-        onHide={() => setShowMapping(false)}
       >
         <Modal.Header closeButton>
           <Modal.Title className='d-flex'>
@@ -88,11 +89,11 @@ export default function Mapping() {
                     .map((m) => {
                       return (
                         <MappingBlock
-                          key={m.mappingName}
                           attribute={m.attribute}
+                          deleteMapping={delMapping}
+                          key={m.mappingName}
                           mappingName={m.mappingName}
                           showDelete={!m.readOnly}
-                          deleteMapping={delMapping}
                         />
                       );
                     })}
