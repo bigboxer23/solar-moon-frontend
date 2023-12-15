@@ -49,17 +49,17 @@ const MetricsTile = ({ device, time }) => {
           {getFormattedTemp(temperature)}
         </div>
       </div>
-      <div className={"flex-grow-1"} />
-      <div className={"align-self-end text-muted smaller-text"}>
+      <div className='grow-1' />
+      <div className='align-self-end text-muted smaller-text'>
         <FormattedLabel
-          label={"Total"}
+          label='Total'
+          separator={' '}
+          unit='kWH'
           value={total}
-          unit={"kWH"}
-          separator={" "}
         />
       </div>
-      <div className={"align-self-end justify-self-end fw-bolder"}>
-        <FormattedLabel label={"Avg"} value={avg} unit={"kW"} separator={" "} />
+      <div className='align-self-end fw-bolder justify-self-end'>
+        <FormattedLabel label='Avg' separator={' '} unit='kW' value={avg} />
       </div>
       <div className='min-max-gauge-empty position-absolute' />
       <div
