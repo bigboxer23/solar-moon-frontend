@@ -40,7 +40,7 @@ import Alerts from './components/newUIComponents/Alerts';
 import Footer2 from './components/newUIComponents/Footer2';
 import Home2 from './components/newUIComponents/Home2';
 import Navbar2 from './components/newUIComponents/nav/Navbar2';
-import Reports from './components/reports/Reports';
+import Reports from './components/newUIComponents/reports/Reports';
 import SiteManagement from './components/sites/SiteManagement';
 import UserManagement from './components/user_management/UserManagement';
 import { newTheme, oldTheme } from './themes';

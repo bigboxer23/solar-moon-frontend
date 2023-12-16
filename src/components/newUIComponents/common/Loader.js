@@ -1,6 +1,6 @@
-export default function Loader() {
+export default function Loader({ className }) {
   return (
-    <div className='Loader'>
+    <div className={className + 'Loader'}>
       <div className='loader-ellipsis'>
         <div></div>
         <div></div>

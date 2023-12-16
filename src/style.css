@@ -711,6 +711,14 @@ button:focus {
   min-height: 95vh;
 }
 
+.min-vh-90 {
+  min-height: 90vh;
+}
+
+.min-vh-70 {
+  min-height: 70vh;
+}
+
 [data-amplify-authenticator] [data-amplify-router] {
   border-radius: 0 0 15px 15px;
 }
@@ -902,7 +910,7 @@ button:focus {
 }
 
 .rdg-header-row {
-  background-color: #282b2f;
+  background-color: #f5f5f5;
 }
 
 .rdg-row,
@@ -919,8 +927,8 @@ button:focus {
 .rdg-holder {
   padding: 0 !important;
 }
-.rdg-row-even {
-  background-color: var(--bs-secondary-bg);
+.rdg-row-odd {
+  background-color: #f5f5f5;
 }
 
 .rdg-header-secondary {
