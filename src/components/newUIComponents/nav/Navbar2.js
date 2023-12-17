@@ -8,7 +8,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 import { useOnClickOutside } from 'usehooks-ts';
 
 import logo from '../../../assets/logo.svg';
-import UserMenu from '../../UserMenu';
+import ProfileMenu from './ProfileMenu';
 
 // TODO: break this up, it's a mess (break out the slider menu at least)
 export default function Navbar2() {
@@ -123,8 +123,8 @@ export default function Navbar2() {
           </NavLink>
         </nav>
         {/* annoying hack because this thing has bizarre positioning */}
-        <div className='mb-4 mr-8 hidden items-center justify-center sm:flex'>
-          <UserMenu />
+        <div className='mr-8 hidden items-center justify-center sm:flex'>
+          <ProfileMenu />
         </div>
         <div className='mr-6 flex items-center justify-center sm:hidden'>
           <FaBars className='text-2xl' onClick={() => setSlideMenuOpen(true)} />
