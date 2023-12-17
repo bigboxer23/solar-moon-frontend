@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 
-import { getAlarmData } from '../../services/services';
-import { sortSelectAlphabetically } from '../../utils/Utils';
-import Alert from './alerts/Alert';
-import AlertsFilter from './alerts/AlertsFilter';
-import Loader from './common/Loader';
+import { getAlarmData } from '../../../../services/services';
+import { sortSelectAlphabetically } from '../../../../utils/Utils';
+import Loader from '../../common/Loader';
+import Alert from './Alert';
+import AlertsFilter from './AlertsFilter';
 
 export default function Alerts() {
   const [loading, setLoading] = useState(true);

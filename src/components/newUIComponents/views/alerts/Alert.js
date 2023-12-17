@@ -4,7 +4,7 @@ import moment from 'moment';
 import {
   formatMessage,
   getFormattedDaysHoursMinutes,
-} from '../../../utils/Utils';
+} from '../../../../utils/Utils';
 
 export default function Alert({ alert, active }) {
   const timeSinceAlert = moment(alert.startDate).fromNow();

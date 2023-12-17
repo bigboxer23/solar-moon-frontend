@@ -5,15 +5,15 @@ import DataGrid from 'react-data-grid';
 import { useIntl } from 'react-intl';
 import { useSearchParams } from 'react-router-dom';
 
-import { DAY } from '../../../services/search';
-import { getDataPage } from '../../../services/services';
+import { DAY } from '../../../../services/search';
+import { getDataPage } from '../../../../services/services';
 import {
   getFormattedTime,
   getRoundedTime,
   getWeatherIcon,
   useSearchParamState,
-} from '../../../utils/Utils';
-import Loader from '../../newUIComponents/common/Loader';
+} from '../../../../utils/Utils';
+import Loader from '../../common/Loader';
 import DownloadReportButton from './DownloadReportButton';
 import SearchBar from './SearchBar';
 

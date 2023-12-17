@@ -25,23 +25,22 @@ import {
 } from 'react-router-dom';
 
 import awsExports from './aws-exports';
-import Alarms from './components/alarms/Alarms';
 import CheckoutForm from './components/checkout/CheckoutForm';
 import Return from './components/checkout/CheckoutReturn';
 import PricingPage from './components/checkout/PricingPage';
-import Dashboard from './components/dashboards/Dashboard';
 import Home from './components/Home/Home';
 import { LockPage } from './components/lock/LockPage';
 import { Footer } from './components/login/Footer';
 import { Header } from './components/login/Header';
 import { SignInFooter } from './components/login/SignInFooter';
 import Navbar from './components/Navbar';
-import Alerts from './components/newUIComponents/Alerts';
 import Footer2 from './components/newUIComponents/Footer2';
-import Home2 from './components/newUIComponents/Home2';
 import Navbar2 from './components/newUIComponents/nav/Navbar2';
-import Reports from './components/newUIComponents/reports/Reports';
-import SiteManagement from './components/sites/SiteManagement';
+import Alerts from './components/newUIComponents/views/alerts/Alerts';
+import Dashboard from './components/newUIComponents/views/dashboard/Dashboard';
+import Reports from './components/newUIComponents/views/reports/Reports';
+import SiteDetails from './components/newUIComponents/views/site-details/SiteDetails';
+import SiteList from './components/newUIComponents/views/site-list/SiteList';
 import UserManagement from './components/user_management/UserManagement';
 import { newTheme, oldTheme } from './themes';
 
@@ -88,20 +87,19 @@ function App() {
                 <Route element={newUI ? <Navbar2 /> : <Navbar />} path='*' />
               </Routes>
               <Routes>
-                <Route element={newUI ? <Home2 /> : <Home />} path='/' />
-                <Route element={<Dashboard />} path='/dashboard' />
+                <Route element={newUI ? <Dashboard /> : <Home />} path='/' />
                 <Route element={<Reports />} path='/reports' />
-                <Route element={<SiteManagement />} path='/sites' />
-                <Route element={<Alarms />} path='/alarms' />
-                {newUI && <Route element={<Alerts />} path='/alerts' />}
-                <Route element={<UserManagement />} path='/userManagement' />
+                <Route element={<SiteList />} path='/sites' />
+                <Route element={<SiteDetails />} path='/sites/:siteId' />
+                <Route element={<Alerts />} path='/alerts' />
+                <Route element={<UserManagement />} path='/profile' />
                 <Route element={<CheckoutForm />} path='/checkout' />
                 <Route element={<Return />} path='/return' />
                 <Route element={<PricingPage />} path='/pricing' />
                 <Route element={<LockPage />} path='/lock' />
                 <Route element={<Navigate to='/' />} path='*' />
               </Routes>
-              {newUI ? <Footer2 /> : <Footer />}
+              <Footer2 />
             </div>
           </Router>
         </Authenticator>

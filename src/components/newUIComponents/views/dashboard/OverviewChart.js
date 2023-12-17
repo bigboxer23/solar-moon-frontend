@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 
-import { DAY, parseSearchReturn } from '../../../services/search';
-import { splitDayAndNightDataSets } from '../../../utils/Utils';
+import { DAY, parseSearchReturn } from '../../../../services/search';
+import { splitDayAndNightDataSets } from '../../../../utils/Utils';
 
 export default function OverviewChart({ timeIncrement, siteData }) {
   const [loading, setLoading] = useState(true);

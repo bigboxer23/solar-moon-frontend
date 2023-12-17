@@ -1,4 +1,4 @@
-import FormattedLabel from '../graphs/FormattedLabel';
+import FormattedLabel from '../../../graphs/FormattedLabel';
 
 export default function SummaryHeader({ dailyOutput, dailyAverageOutput }) {
   const calculatePercent = (total, average) => {

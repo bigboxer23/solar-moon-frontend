@@ -1,6 +1,6 @@
-import Overview from './overview/Overview';
+import Overview from './Overview';
 
-export default function Home2() {
+export default function Dashboard() {
   return (
     <main className='Home2 flex flex-col items-center bg-brand-primary-light'>
       <Overview />

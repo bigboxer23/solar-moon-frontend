@@ -6,8 +6,8 @@ import {
   DAY,
   getAggregationValue,
   parseSearchReturn,
-} from '../../../../services/search';
-import { splitDayAndNightDataSets } from '../../../../utils/Utils';
+} from '../../../../../services/search';
+import { splitDayAndNightDataSets } from '../../../../../utils/Utils';
 
 export default function SiteRow({ info, graphData, timeIncrement }) {
   const { name, deviceCount, alertCount } = info;

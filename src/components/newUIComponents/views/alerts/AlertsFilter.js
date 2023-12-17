@@ -2,7 +2,7 @@ import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-import Dropdown from '../common/Dropdown';
+import Dropdown from '../../common/Dropdown';
 
 export default function AlertsFilter({
   handleFilterChange,

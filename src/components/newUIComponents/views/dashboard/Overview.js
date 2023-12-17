@@ -2,13 +2,13 @@ import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import { FormattedNumber } from 'react-intl';
 
-import { DAY, getAggregationValue } from '../../../services/search';
-import { getOverviewData } from '../../../services/services';
-import { useStickyState } from '../../../utils/Utils';
-import Loader from '../common/Loader';
-import SummaryHeader from '../SummaryHeader';
+import { DAY, getAggregationValue } from '../../../../services/search';
+import { getOverviewData } from '../../../../services/services';
+import { useStickyState } from '../../../../utils/Utils';
+import Loader from '../../common/Loader';
 import OverviewChart from './OverviewChart';
 import SiteList from './site-list/SiteList';
+import SummaryHeader from './SummaryHeader';
 import TimeIncrementSelector from './TimeIncrementSelector';
 
 function StatBlock({ title, value, className }) {

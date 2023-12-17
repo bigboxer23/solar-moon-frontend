@@ -3,9 +3,9 @@ import { useState } from 'react';
 import { jsons2csv } from 'react-csv/lib/core';
 import { FaDownload, FaSpinner } from 'react-icons/fa';
 
-import { getDataPage } from '../../../services/services';
-import Button from '../common/Button';
-import Spinner from '../common/Spinner';
+import { getDataPage } from '../../../../services/services';
+import Button from '../../common/Button';
+import Spinner from '../../common/Spinner';
 
 const DownloadReportButton = ({ site, device, start, end, timeFormatter }) => {
   const [downloading, setDownloading] = useState(false);

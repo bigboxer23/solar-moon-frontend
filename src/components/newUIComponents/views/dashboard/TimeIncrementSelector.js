@@ -1,8 +1,8 @@
 import { Menu, MenuButton, MenuItem } from '@szhsin/react-menu';
 import { FaChevronDown } from 'react-icons/fa';
 
-import { DAY, MONTH, WEEK, YEAR } from '../../../services/search';
-import { timeIncrementToText } from '../../../utils/Utils';
+import { DAY, MONTH, WEEK, YEAR } from '../../../../services/search';
+import { timeIncrementToText } from '../../../../utils/Utils';
 
 export default function TimeIncrementSelector({
   timeIncrement,

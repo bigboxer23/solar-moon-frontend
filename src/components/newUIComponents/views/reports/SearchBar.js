@@ -15,11 +15,11 @@ import {
   MdOutlineKeyboardDoubleArrowRight,
 } from 'react-icons/md';
 
-import { getDevices } from '../../../services/services';
-import { getRoundedTime, sortDevices } from '../../../utils/Utils';
-import Button from '../common/Button';
-import Dropdown from '../common/Dropdown';
-import Spinner from '../common/Spinner';
+import { getDevices } from '../../../../services/services';
+import { getRoundedTime, sortDevices } from '../../../../utils/Utils';
+import Button from '../../common/Button';
+import Dropdown from '../../common/Dropdown';
+import Spinner from '../../common/Spinner';
 
 const SearchBar = ({
   devices = [],
