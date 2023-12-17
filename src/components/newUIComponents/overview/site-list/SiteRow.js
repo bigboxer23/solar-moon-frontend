@@ -96,16 +96,16 @@ export default function SiteRow({ info, graphData, timeIncrement }) {
 
   return (
     <div className='SiteRow mb-3 flex w-full items-center'>
-      <div className='w-[15%] px-2'>{name}</div>
-      <div className='w-[15%] px-2 text-end'>{deviceCount}</div>
-      <div className='w-[15%] px-2 text-end'>{alertCount}</div>
-      <div className='w-[15%] px-2 text-end'>
+      <div className='w-[20%] pr-1 sm:w-[15%]'>{name}</div>
+      <div className='hidden text-end sm:block sm:w-[15%]'>{deviceCount}</div>
+      <div className='w-[10%] px-1 text-end sm:w-[15%]'>{alertCount}</div>
+      <div className='w-[20%] overflow-hidden text-ellipsis px-1 text-end sm:w-[15%]'>
         <FormattedNumber value={average} />
       </div>
-      <div className='w-[15%] px-2 text-end'>
+      <div className='w-[20%] overflow-hidden text-ellipsis px-1 text-end sm:w-[15%]'>
         <FormattedNumber value={total} />
       </div>
-      <div className='ml-auto h-[2.5rem] w-1/4 rounded bg-brand-primary-light'>
+      <div className='ml-auto h-[2.5rem] w-[30%] rounded bg-brand-primary-light sm:w-1/4'>
         <Line data={data} options={options} />
       </div>
     </div>

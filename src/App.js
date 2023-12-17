@@ -1,6 +1,6 @@
 import '@aws-amplify/ui-react/styles.css';
 import './style.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
+//import 'bootstrap/dist/css/bootstrap.min.css';
 import 'chartjs-adapter-moment';
 
 import { Authenticator, ThemeProvider } from '@aws-amplify/ui-react';

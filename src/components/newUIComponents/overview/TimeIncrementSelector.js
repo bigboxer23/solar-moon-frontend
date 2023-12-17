@@ -15,7 +15,7 @@ export default function TimeIncrementSelector({
     <div className='TimeIncrementSelector'>
       <Menu
         menuButton={
-          <MenuButton className='border-0 bg-white p-2 text-sm text-black'>
+          <MenuButton className='flex items-center border-0 bg-white p-2 text-sm text-black'>
             {timeIncrementToText(timeIncrement, false)}
             <FaChevronDown className='ml-2' />
           </MenuButton>

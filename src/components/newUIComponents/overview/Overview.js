@@ -12,14 +12,14 @@ import SiteList from './site-list/SiteList';
 import TimeIncrementSelector from './TimeIncrementSelector';
 
 function StatBlock({ title, value, className }) {
-  const style = classNames('StatBlock flex', className);
+  const style = classNames('StatBlock flex space-x-2', className);
 
   return (
     <div className={style}>
-      <div className='align-self-end inline-block text-5xl font-bold leading-[3rem]'>
+      <div className='inline-block self-end text-5xl font-bold leading-[3rem]'>
         {value}
       </div>
-      <div className='align-self-end mb-1 ml-2 inline-block max-w-[3.125rem] text-base font-bold leading-[1.125rem]'>
+      <div className='mb-1 inline-block max-w-[3.3rem] self-end text-base font-bold leading-[1.125rem]'>
         {title}
       </div>
     </div>
@@ -98,12 +98,12 @@ export default function Overview() {
   if (loading) return <Loader />;
 
   return (
-    <div className='flex flex-col items-center'>
+    <div className='flex max-w-full flex-col items-center'>
       <SummaryHeader
         dailyAverageOutput={dailyAverageOutput}
         dailyOutput={dailyOutputTotal}
       />
-      <div className='Overview fade-in mb-8 w-[55rem] rounded-lg bg-white p-8 shadow-panel'>
+      <div className='Overview fade-in mb-8 w-[55rem] max-w-full bg-white p-6 shadow-panel sm:rounded-lg sm:p-8'>
         <div className='mb-4 flex w-full items-center justify-between text-lg font-bold'>
           Overview
           <TimeIncrementSelector
@@ -112,7 +112,7 @@ export default function Overview() {
           />
         </div>
         <div className='mb-6 flex justify-between'>
-          <div className='flex space-x-4'>
+          <div className='grid grid-cols-2 gap-2.5 sm:grid-cols-4'>
             <StatBlock title='sites' value={sites.length} />
             <StatBlock title='devices' value={devices.length} />
             <StatBlock
@@ -127,12 +127,18 @@ export default function Overview() {
             />
           </div>
           <div className='flex flex-col items-end'>
-            <span className='text-base'>
-              Total: <FormattedNumber value={totalOutput} /> kWH
-            </span>
-            <span className='average-output text-xl font-bold'>
-              Average: <FormattedNumber value={averageOutput} /> kW
-            </span>
+            <div className='flex flex-col space-x-1 text-end text-base sm:flex-row'>
+              <div>Total:</div>
+              <div>
+                <FormattedNumber value={totalOutput} /> kWH
+              </div>
+            </div>
+            <div className='average-output flex flex-col space-x-1 text-end text-xl font-bold sm:flex-row'>
+              <div>Average:</div>
+              <div>
+                <FormattedNumber value={averageOutput} /> kW
+              </div>
+            </div>
           </div>
         </div>
         <OverviewChart

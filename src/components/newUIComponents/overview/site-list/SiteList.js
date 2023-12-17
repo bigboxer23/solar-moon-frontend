@@ -37,16 +37,19 @@ export default function SiteList({
     <div className='SiteList mt-5'>
       <div className='mb-6 text-lg font-bold'>Sites</div>
       <div className='mb-4 flex w-full items-center text-xs font-bold'>
-        <div className='w-[15%] px-2'>Site Name</div>
-        <div className='w-[15%] px-2 text-end'>Device Count</div>
-        <div className='w-[15%] px-2 text-end'>Alert Count</div>
-        <div className='w-[15%] px-2 text-end'>
+        <div className='w-[20%] pr-1 sm:w-[15%]'>Site Name</div>
+        <div className='hidden text-end sm:block sm:w-[15%]'>Device Count</div>
+        <div className='w-[10%] px-1 text-end sm:w-[15%]'>Alerts</div>
+        <div className='hidden text-end sm:block sm:w-[15%]'>
           Average <span className='text-text-secondary'>kW</span>
         </div>
-        <div className='w-[15%] px-2 text-end'>
+        <div className='w-[20%] px-1 text-end sm:hidden'>
+          Avg <span className='text-text-secondary'>kW</span>
+        </div>
+        <div className='w-[20%] px-1 text-end sm:w-[15%]'>
           Total <span className='text-text-secondary'>kWH</span>
         </div>
-        <div className='w-1/4 px-2 text-end'></div>
+        <div className='h-full w-[30%] text-end sm:w-1/4'></div>
       </div>
       {siteData.map((site) => (
         <SiteRow

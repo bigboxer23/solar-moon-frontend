@@ -105,8 +105,8 @@ export default function Alerts() {
     <main className='Alerts flex w-full flex-col items-center justify-center'>
       {loading && <Loader />}
       {!loading && (
-        <div className='fade-in my-8 w-[55rem] rounded-lg bg-white p-8 shadow-panel'>
-          <div className='mb-10 flex w-full items-center  justify-between'>
+        <div className='fade-in my-8 w-[55rem] max-w-full rounded-lg bg-white p-6 shadow-panel sm:p-8'>
+          <div className='mb-10 flex w-full justify-between'>
             <span className='text-lg font-bold'>Alerts</span>
             <AlertsFilter
               availableDevices={deviceOptions}
@@ -117,7 +117,7 @@ export default function Alerts() {
           </div>
           <div className='space-y-4'>
             {filteredActiveAlerts.length === 0 && (
-              <div className='mb-8 flex h-full w-full items-center justify-center text-base text-text-secondary'>
+              <div className='mb-8 flex h-full w-full items-center justify-center px-6 text-center text-base text-text-secondary'>
                 All clear! You have no active device alerts.
               </div>
             )}

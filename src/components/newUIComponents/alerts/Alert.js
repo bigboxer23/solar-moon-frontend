@@ -10,7 +10,7 @@ export default function Alert({ alert, active }) {
   const timeSinceAlert = moment(alert.startDate).fromNow();
   const timeSinceResolved = moment(alert.endDate).fromNow();
   const alertClass = classNames(
-    'Alert flex w-full justify-between bg-[#f5f5f5] p-4 rounded-md',
+    'Alert flex w-full justify-between bg-[#f5f5f5] p-4 rounded-md overflow-hidden flex-col-reverse sm:flex-row',
     {
       'bg-[#fee2e2]': active,
     },
@@ -18,8 +18,8 @@ export default function Alert({ alert, active }) {
 
   return (
     <div className={alertClass}>
-      <div>
-        <div className='flex justify-start'>
+      <div className='flex flex-col space-y-1'>
+        <div className='flex flex-col space-y-1 sm:flex-row sm:space-y-0'>
           <div className='mr-3 text-sm'>
             <span className='mr-1.5 font-bold'>Device:</span>
             {alert.deviceName ? alert.deviceName : alert.deviceId}
@@ -36,20 +36,16 @@ export default function Alert({ alert, active }) {
           {formatMessage(alert.message)}
         </div>
       </div>
-      <div>
-        {alert.state === 1 && (
-          <div className='m-0.5 flex justify-end text-xs italic'>
-            {timeSinceAlert}
-          </div>
-        )}
+      <div className='mb-1 flex flex-row justify-between space-x-1 text-xs italic sm:mb-0 sm:flex-col'>
+        {alert.state === 1 && <div>{timeSinceAlert}</div>}
         {alert.state === 0 && (
-          <div className='flex-column m-0.5 flex justify-end text-xs italic'>
-            <div>Resolved {timeSinceResolved}</div>
+          <>
+            <div> Resolved {timeSinceResolved}</div>
             <div>
               Duration{' '}
               {getFormattedDaysHoursMinutes(alert.endDate - alert.startDate)}
             </div>
-          </div>
+          </>
         )}
       </div>
     </div>

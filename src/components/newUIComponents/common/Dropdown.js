@@ -16,7 +16,7 @@ export default function Dropdown({
       <Menu
         gap={8}
         menuButton={
-          <MenuButton className='border-1 flex items-center rounded-full border-solid border-border-color bg-white px-4 py-1 text-black'>
+          <MenuButton className='border-1 flex items-center rounded-full border-solid border-border-color bg-white text-black'>
             {prefixLabel && (
               <span className='mr-2 font-bold'>{prefixLabel}:</span>
             )}

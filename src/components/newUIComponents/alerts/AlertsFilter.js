@@ -83,17 +83,11 @@ export default function AlertsFilter({
     setDirty(true);
   }
 
-  // function handleDateFilterChange([start, end]) {
-  //   // TODO: set up dates filtering later
-  //   setDateValue([null, null]);
-  //   setDirty(true);
-  // }
-
   return (
-    <div className='AlertsFilter flex items-center space-x-3'>
+    <div className='AlertsFilter flex flex-col items-end space-y-3 sm:flex-row sm:items-center sm:space-x-6 sm:space-y-0'>
       {dirty && (
         <button
-          className='border-1 rounded-full bg-white px-4 py-1.5 text-sm font-bold text-black'
+          className='border-1 hidden bg-white text-sm font-bold text-text-secondary underline sm:block sm:rounded-full'
           onClick={resetFilters}
         >
           Reset Filters
@@ -111,12 +105,14 @@ export default function AlertsFilter({
         prefixLabel='Device'
         value={deviceValue}
       />
-      {/* TODO: set up dates filtering later */}
-      {/*<DateRangePicker*/}
-      {/*  className="alert-filter-date-range-picker"*/}
-      {/*  onChange={handleDateFilterChange}*/}
-      {/*  value={dateValue}*/}
-      {/*/>*/}
+      {dirty && (
+        <button
+          className='border-1 block rounded-full bg-white text-sm font-bold text-text-secondary underline sm:hidden'
+          onClick={resetFilters}
+        >
+          Reset Filters
+        </button>
+      )}
     </div>
   );
 }
