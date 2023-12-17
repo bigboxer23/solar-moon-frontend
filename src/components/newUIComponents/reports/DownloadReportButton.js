@@ -1,10 +1,15 @@
-import { Button, Spinner } from 'react-bootstrap';
+import classNames from 'classnames';
+import { useState } from 'react';
 import { jsons2csv } from 'react-csv/lib/core';
-import { MdDownload } from 'react-icons/md';
+import { FaDownload, FaSpinner } from 'react-icons/fa';
 
 import { getDataPage } from '../../../services/services';
+import Button from '../common/Button';
+import Spinner from '../common/Spinner';
 
 const DownloadReportButton = ({ site, device, start, end, timeFormatter }) => {
+  const [downloading, setDownloading] = useState(false);
+
   const headers = [
     { key: 'time', label: 'Time' },
     { key: 'site', label: 'Site' },
@@ -29,26 +34,28 @@ const DownloadReportButton = ({ site, device, start, end, timeFormatter }) => {
       ' - ' +
       timeFormatter(new Date(Number(end)));
 
-    if (device !== null && device !== 'All Devices') {
+    if (device !== null && device !== 'All') {
       return fileName + ' - ' + device + '.csv';
     }
-    if (site !== null && site !== 'All Sites') {
+    if (site !== null && site !== 'All') {
       fileName += ' - ' + site;
     }
     return fileName + '.csv';
   };
+
   const download = () => {
-    document.getElementById('report-download-button').classList.add('disabled');
+    setDownloading(true);
+
     getDataPage(
-      site === 'All Sites' ? null : site,
-      device === 'All Devices' ? null : device,
+      site === 'All' ? null : site,
+      device === 'All' ? null : device,
       start,
       end,
       0,
       10000,
     )
       .then(({ data }) => {
-        let transformed = data.hits.hits.map((row) => {
+        const transformed = data.hits.hits.map((row) => {
           row._source.time = timeFormatter(new Date(row._source['@timestamp']));
           return row._source;
         });
@@ -61,35 +68,27 @@ const DownloadReportButton = ({ site, device, start, end, timeFormatter }) => {
         document.body.appendChild(link);
         link.click();
         link.remove();
-        document
-          .getElementById('report-download-button')
-          .classList.remove('disabled');
+
+        setDownloading(false);
       })
       .catch((e) => {
-        document
-          .getElementById('report-download-button')
-          .classList.remove('disabled');
+        setDownloading(false);
         console.log(e);
       });
   };
 
   return (
     <Button
-      className='ms-3'
-      id='report-download-button'
+      buttonProps={{
+        title: 'Download',
+      }}
+      disabled={downloading}
       onClick={download}
-      title='Download'
       variant='outline-secondary'
     >
-      <MdDownload style={{ marginBottom: '2px' }} />
-      <Spinner
-        animation='border'
-        as='span'
-        className='d-none'
-        role='status'
-        size='sm'
-      />
-      <span className='btn-txt'>Download</span>
+      {!downloading && <FaDownload className='mr-2' />}
+      {downloading && <Spinner className='mr-2' />}
+      Download
     </Button>
   );
 };

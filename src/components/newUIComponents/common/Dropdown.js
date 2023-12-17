@@ -4,9 +4,9 @@ import { FaChevronDown } from 'react-icons/fa';
 
 export default function Dropdown({
   prefixLabel,
-  options,
+  options = [],
   onChange,
-  value,
+  value = options?.[0],
   className,
 }) {
   const dropdownClass = classNames('Dropdown', className);
@@ -20,11 +20,11 @@ export default function Dropdown({
             {prefixLabel && (
               <span className='mr-2 font-bold'>{prefixLabel}:</span>
             )}
-            {value.label}
+            {value?.label}
             <FaChevronDown className='ml-2' size='14' />
           </MenuButton>
         }
-        menuClassName='pl-0 py-2 w-[9rem] rounded-lg flex flex-col list-none bg-white shadow-panel'
+        menuClassName='pl-0 py-2 w-[9rem] rounded-lg flex flex-col list-none bg-white shadow-panel z-10'
       >
         {options.map((option) => (
           <MenuItem

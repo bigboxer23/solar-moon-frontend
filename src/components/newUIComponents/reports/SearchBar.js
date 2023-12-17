@@ -3,24 +3,26 @@ import '@wojtekmaj/react-daterange-picker/dist/DateRangePicker.css';
 import 'react-calendar/dist/Calendar.css';
 
 import DateRangePicker from '@wojtekmaj/react-daterange-picker';
+import classNames from 'classnames';
 import { useState } from 'react';
-import { Button, Dropdown, Spinner } from 'react-bootstrap';
+import { FaSearch } from 'react-icons/fa';
+import { FaRotate } from 'react-icons/fa6';
 import {
   MdClear,
   MdOutlineKeyboardArrowLeft,
   MdOutlineKeyboardArrowRight,
   MdOutlineKeyboardDoubleArrowLeft,
   MdOutlineKeyboardDoubleArrowRight,
-  MdRefresh,
-  MdSearch,
 } from 'react-icons/md';
-import { TbFilterCancel } from 'react-icons/tb';
 
 import { getDevices } from '../../../services/services';
 import { getRoundedTime, sortDevices } from '../../../utils/Utils';
+import Button from '../common/Button';
+import Dropdown from '../common/Dropdown';
+import Spinner from '../common/Spinner';
 
 const SearchBar = ({
-  devices,
+  devices = [],
   setDevices,
   site,
   setSite,
@@ -34,22 +36,22 @@ const SearchBar = ({
   refreshSearch,
   setRefreshSearch,
 }) => {
+  const [searchActive, setSearchActive] = useState(false);
+
   const [value, setValue] = useState([
     new Date(Number(start)),
     new Date(Number(end)),
   ]);
 
   const resetSearch = () => {
-    setSite('All Sites');
-    setDevice('All Devices');
+    setSite('All');
+    setDevice('All');
     dateChanged(null);
-    document.getElementById('reports-search').classList.add('d-none');
-    document.getElementById('reports-search-button').classList.remove('d-none');
+    setSearchActive(false);
   };
 
   const loadSearches = () => {
-    document.getElementById('reports-search').classList.remove('d-none');
-    document.getElementById('reports-search-button').classList.add('d-none');
+    setSearchActive(true);
     if (devices.length === 0) {
       getDevices().then(({ data }) => {
         setDevices(data);
@@ -69,110 +71,97 @@ const SearchBar = ({
     setEnd(date[1].getTime());
   };
 
+  const allOption = { value: 'all', label: 'All' };
+
+  const siteOptions = devices
+    .filter((device) => device.virtual)
+    .sort(sortDevices)
+    .map((d) => {
+      return {
+        value: d.deviceId,
+        label: d.deviceName,
+      };
+    });
+
+  const deviceOptions = devices
+    .filter((device) => !device.virtual)
+    .sort(sortDevices)
+    .map((d) => {
+      return {
+        value: d.deviceId,
+        label: d.deviceName,
+      };
+    });
+
   return (
-    <div className='grow-1 d-flex'>
-      <div className='d-flex d-none flex-wrap' id='reports-search'>
-        <DateRangePicker
-          calendarIcon={null}
-          calendarType='gregory'
-          clearIcon={<MdClear />}
-          next2Label={<MdOutlineKeyboardDoubleArrowRight className='h3 mb-0' />}
-          nextLabel={<MdOutlineKeyboardArrowRight className='h3 mb-0' />}
-          onChange={dateChanged}
-          prev2Label={<MdOutlineKeyboardDoubleArrowLeft className='h3 mb-0' />}
-          prevLabel={<MdOutlineKeyboardArrowLeft className='h3 mb-0' />}
-          value={value}
-        />
-        <Dropdown className='align-self-end ms-2'>
-          <Dropdown.Toggle id='dropdown-basic' variant='secondary'>
-            {site}
-          </Dropdown.Toggle>
-          <Dropdown.Menu>
-            {[
-              { id: 'All Sites', name: 'All Sites', virtual: true },
-              ...devices.filter((device) => device.virtual).sort(sortDevices),
-            ].map((d) => {
-              return (
-                <Dropdown.Item
-                  as='button'
-                  key={d.id}
-                  onClick={() => {
-                    setSite(d.name);
-                    setDevice('All Devices');
-                  }}
-                >
-                  {d.name}
-                </Dropdown.Item>
-              );
-            })}
-          </Dropdown.Menu>
-        </Dropdown>
-        <Dropdown className='align-self-end ms-2'>
-          <Dropdown.Toggle id='dropdown-basic' variant='secondary'>
-            {device}
-          </Dropdown.Toggle>
-          <Dropdown.Menu>
-            {[
-              { id: 'All Devices', name: 'All Devices' },
-              ...devices
-                .filter((d) => {
-                  return (
-                    site === 'All Sites' ||
-                    d.site === site ||
-                    d.name === 'All Devices'
-                  );
-                })
-                .sort(sortDevices),
-            ].map((d) => {
-              return (
-                <Dropdown.Item
-                  as='button'
-                  key={d.id + 'device'}
-                  onClick={() => setDevice(d.name)}
-                >
-                  {d.name == null ? d.deviceName : d.name}
-                </Dropdown.Item>
-              );
-            })}
-          </Dropdown.Menu>
-        </Dropdown>
-        <Button
-          className={(refreshSearch ? 'disabled ' : '') + 'ms-2'}
-          id='report-download-button'
-          onClick={() => setRefreshSearch(true)}
-          title='Refresh Data'
-          variant='secondary'
-        >
-          <Spinner
-            animation='border'
-            as='span'
-            className='d-none'
-            role='status'
-            size='sm'
+    <div className='flex w-full items-center justify-center'>
+      <div
+        className={classNames('flex flex-wrap items-center w-full', {
+          hidden: !searchActive,
+          flex: searchActive,
+        })}
+      >
+        <div className='ml-6 flex items-center space-x-4'>
+          <DateRangePicker
+            calendarIcon={null}
+            calendarType='gregory'
+            clearIcon={<MdClear />}
+            next2Label={
+              <MdOutlineKeyboardDoubleArrowRight className='h3 mb-0' />
+            }
+            nextLabel={<MdOutlineKeyboardArrowRight className='h3 mb-0' />}
+            onChange={dateChanged}
+            prev2Label={
+              <MdOutlineKeyboardDoubleArrowLeft className='h3 mb-0' />
+            }
+            prevLabel={<MdOutlineKeyboardArrowLeft className='h3 mb-0' />}
+            value={value}
           />
-          <MdRefresh style={{ marginBottom: '2px' }} />
-        </Button>
+          <Dropdown
+            onChange={(option) => setSite(option.label)}
+            options={[allOption, ...siteOptions]}
+            prefixLabel='Site'
+            value={siteOptions.find((option) => option.label === site)}
+          />
+          <Dropdown
+            onChange={(option) => setDevice(option.label)}
+            options={[allOption, ...deviceOptions]}
+            prefixLabel='Device'
+            value={deviceOptions.find((option) => option.label === device)}
+          />
+          <Button
+            disabled={refreshSearch}
+            id='report-download-button'
+            onClick={() => setRefreshSearch(true)}
+            title='Refresh Data'
+            variant='icon'
+          >
+            {refreshSearch && <Spinner />}
+            {!refreshSearch && <FaRotate className='text-base' />}
+          </Button>
+        </div>
         <Button
-          className='ms-2'
+          buttonProps={{
+            title: 'Reset Search',
+          }}
+          className='ml-auto mr-4'
           onClick={() => resetSearch()}
-          title='Reset Search'
-          variant='secondary'
+          variant='text'
         >
-          <TbFilterCancel style={{ marginBottom: '2px' }} />
-          <span className='btn-txt'>Reset Search</span>
+          Close Search
         </Button>
       </div>
-      <div className='grow-1' />
-      <Button
-        className='ms-3'
-        id='reports-search-button'
-        onClick={(e) => loadSearches()}
-        title='Search'
-        variant='primary'
-      >
-        <MdSearch className='button-icon' />
-        Search
-      </Button>
+      {!searchActive && (
+        <Button
+          className='ml-auto mr-4'
+          onClick={() => loadSearches()}
+          title='Search'
+          variant='primary'
+        >
+          <FaSearch className='mr-2' />
+          Search
+        </Button>
+      )}
     </div>
   );
 };

@@ -21,13 +21,13 @@ const Reports = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [loading, setLoading] = useState(true);
   const [site, setSite] = useSearchParamState(
-    'All Sites',
+    'All',
     'site',
     searchParams,
     setSearchParams,
   );
   const [device, setDevice] = useSearchParamState(
-    'All Devices',
+    'All',
     'device',
     searchParams,
     setSearchParams,
@@ -63,7 +63,7 @@ const Reports = () => {
         : Math.round(row.row['temperature']) + '°F';
     return (
       <div
-        className='d-flex justify-content-center h-100'
+        className='flex h-full justify-center'
         title={row.row['weatherSummary'] + ' ' + temperature}
       >
         {getWeatherIcon(row.row['weatherSummary'])}
@@ -79,9 +79,9 @@ const Reports = () => {
     {
       key: 'Total Energy Consumption',
       name: (
-        <div className='d-flex'>
+        <div className='flex'>
           Total Energy Cons.
-          <div className='rdg-header-secondary text-text-secondary '>
+          <div className='rdg-header-secondary text-text-secondary'>
             &nbsp; kWH
           </div>
         </div>
@@ -90,7 +90,7 @@ const Reports = () => {
     {
       key: 'Total Real Power',
       name: (
-        <div className='d-flex'>
+        <div className='flex'>
           Total Power
           <div className='rdg-header-secondary text-text-secondary'>
             &nbsp; kW
@@ -101,7 +101,7 @@ const Reports = () => {
     {
       key: 'Energy Consumed',
       name: (
-        <div className='d-flex'>
+        <div className='flex'>
           Energy Cons.{' '}
           <div className='rdg-header-secondary text-text-secondary'>
             &nbsp; kWH
@@ -125,7 +125,6 @@ const Reports = () => {
     if (loading) {
       return;
     }
-    document.getElementById('data-grid').classList.add('hidden');
     fetchData(0, (rows) => setRows(rows), true);
   }, [site, device, start, end]);
 
@@ -152,7 +151,6 @@ const Reports = () => {
         setRefreshSearch(false);
         setTotal(data.hits.total.value);
         rowSetter(data.hits.hits.map((row) => getRow(row._source)));
-        document.getElementById('data-grid').classList.remove('hidden');
         if (shouldScrollToTop) {
           scrollToTop();
         }
@@ -193,9 +191,8 @@ const Reports = () => {
   return (
     <main className='Reports flex w-full flex-col'>
       <div className='fade-in grow-1 my-8 me-5 ms-5 flex flex-col rounded-lg bg-white p-8 shadow-panel'>
-        <div className='mb-10 flex w-full items-center  justify-between'>
+        <div className='mb-10 flex w-full items-center justify-between'>
           <span className='text-lg font-bold'>Reports</span>
-          <div className='grow' />
           <SearchBar
             defaultSearchPeriod={DAY}
             device={device}
@@ -219,17 +216,21 @@ const Reports = () => {
             timeFormatter={getFormattedTime}
           />
         </div>
-        <div className='hidden·grow·rdg-holder·flex·flex-col' id='data-grid'>
-          <DataGrid
-            className='min-vh-70 grow'
-            columns={columns}
-            onScroll={handleScroll}
-            ref={gridRef}
-            renderers={{ noRowsFallback: <EmptyRowsRenderer /> }}
-            rows={rows}
-          />
+        <div className='flex w-full justify-center'>
+          {!loading && (
+            <div className='w-full' id='data-grid'>
+              <DataGrid
+                className='min-vh-70 grow'
+                columns={columns}
+                onScroll={handleScroll}
+                ref={gridRef}
+                renderers={{ noRowsFallback: <EmptyRowsRenderer /> }}
+                rows={rows}
+              />
+            </div>
+          )}
+          {loading && <Loader className='align-self-center' />}
         </div>
-        {loading && <Loader className='align-self-center ' />}
       </div>
     </main>
   );
