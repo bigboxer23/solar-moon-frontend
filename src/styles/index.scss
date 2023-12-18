@@ -10,10 +10,6 @@ body {
 @tailwind components;
 @tailwind utilities;
 
-@import "EllipsisLoader";
-@import "restyles/DatePicker";
-@import "restyles/Grid";
-
-
-// Delete me!!
-@import "../style.css";
+@import 'EllipsisLoader';
+@import 'restyles/DatePicker';
+@import 'restyles/Grid';

@@ -38,7 +38,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx && stylelint \"**/*.{css,scss}\"",
+    "lint-fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix && stylelint \"**/*.{css,scss}\" --fix"
   },
   "browserslist": {
     "production": [
@@ -56,12 +57,14 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "eslint": "^8.55.0",
     "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.0",
     "eslint-plugin-prettier": "^5.0.1",
     "eslint-plugin-simple-import-sort": "^10.0.0",
-    "eslint-plugin-import": "^2.29.0",
     "eslint-plugin-tailwindcss": "^3.13.0",
     "prettier": "^3.1.1",
-    "react-scripts": "5.0.1"
+    "react-scripts": "5.0.1",
+    "stylelint": "^16.0.2",
+    "stylelint-prettier": "^5.0.0"
   },
   "proxy": "https://app.solarmoonanalytics.com"
 }
