@@ -20,6 +20,7 @@ import SearchBar from './SearchBar';
 const Reports = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [loading, setLoading] = useState(true);
+  const [subLoad, setSubLoad] = useState(false);
   const [site, setSite] = useSearchParamState(
     'All',
     'site',
@@ -137,6 +138,7 @@ const Reports = () => {
 
   const fetchData = (offset, rowSetter, shouldScrollToTop) => {
     setLoading(true);
+    setSubLoad(offset > 0);
     setTotal(shouldScrollToTop ? -1 : total);
     getDataPage(
       site === 'All' ? null : site,
@@ -148,6 +150,7 @@ const Reports = () => {
     )
       .then(({ data }) => {
         setLoading(false);
+        setSubLoad(false);
         setRefreshSearch(false);
         setTotal(data.hits.total.value);
         rowSetter(data.hits.hits.map((row) => getRow(row._source)));
@@ -218,14 +221,16 @@ const Reports = () => {
         </div>
         <div className='flex w-full flex-col justify-center'>
           <div className='w-full' id='data-grid'>
-            <DataGrid
-              className='min-vh-70 rdg-light grow'
-              columns={columns}
-              onScroll={handleScroll}
-              ref={gridRef}
-              renderers={{ noRowsFallback: <EmptyRowsRenderer /> }}
-              rows={rows}
-            />
+            {(!loading || subLoad) && (
+              <DataGrid
+                className='min-vh-70 rdg-light grow'
+                columns={columns}
+                onScroll={handleScroll}
+                ref={gridRef}
+                renderers={{ noRowsFallback: <EmptyRowsRenderer /> }}
+                rows={rows}
+              />
+            )}
           </div>
           {loading && <Loader className='self-center' />}
         </div>
