@@ -86,9 +86,9 @@ const DownloadReportButton = ({ site, device, start, end, timeFormatter }) => {
       onClick={download}
       variant='outline-secondary'
     >
-      {!downloading && <FaDownload className='mr-2' />}
-      {downloading && <Spinner className='mr-2' />}
-      Download
+      {!downloading && <FaDownload />}
+      {downloading && <Spinner />}
+      <span className='hidden sm:ml-2 sm:block'>Download</span>
     </Button>
   );
 };

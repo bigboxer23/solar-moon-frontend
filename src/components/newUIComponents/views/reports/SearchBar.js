@@ -101,10 +101,11 @@ const SearchBar = ({
           flex: searchActive,
         })}
       >
-        <div className='ml-6 flex items-center space-x-4'>
+        <div className='ml-2 flex flex-wrap items-center space-x-4 sm:ml-6'>
           <DateRangePicker
             calendarIcon={null}
             calendarType='gregory'
+            className='mr-6 sm:mr-0'
             clearIcon={<MdClear />}
             next2Label={
               <MdOutlineKeyboardDoubleArrowRight className='h3 mb-0' />
@@ -139,17 +140,17 @@ const SearchBar = ({
             {refreshSearch && <Spinner />}
             {!refreshSearch && <FaRotate className='text-base' />}
           </Button>
+          <Button
+            buttonProps={{
+              title: 'Reset Search',
+            }}
+            className='ml-auto mr-4'
+            onClick={() => resetSearch()}
+            variant='text'
+          >
+            Reset
+          </Button>
         </div>
-        <Button
-          buttonProps={{
-            title: 'Reset Search',
-          }}
-          className='ml-auto mr-4'
-          onClick={() => resetSearch()}
-          variant='text'
-        >
-          Reset Search
-        </Button>
       </div>
       {!searchActive && (
         <Button

@@ -57,7 +57,7 @@ const Reports = () => {
     fetchData(0, (rows) => setRows(rows), true);
   }, []);
 
-  const RowRenderer = (row) => {
+  const WeatherRowRenderer = (row) => {
     const temperature =
       row.row['temperature'] === undefined
         ? ''
@@ -73,7 +73,19 @@ const Reports = () => {
   };
 
   const columns = [
-    { key: 'weatherSummary', name: '', width: 50, renderCell: RowRenderer },
+    {
+      key: 'weatherSummary',
+      name: (
+        <div
+          className='flex h-full items-center justify-center'
+          title='Weather Conditions'
+        >
+          {getWeatherIcon('Partly Cloudy')}
+        </div>
+      ),
+      width: 50,
+      renderCell: WeatherRowRenderer,
+    },
     { key: 'time', name: 'Time', width: 150 },
     { key: 'site', name: 'Site' },
     { key: 'device-name', name: 'Device Name' },
@@ -193,9 +205,9 @@ const Reports = () => {
 
   return (
     <main className='Reports flex w-full flex-col'>
-      <div className='fade-in grow-1 my-8 me-2 flex flex-col rounded-lg bg-white shadow-panel sm:me-5 sm:ms-5'>
-        <div className='flex w-full items-center justify-between p-8'>
-          <span className='text-lg font-bold'>Reports</span>
+      <div className='fade-in grow-1 my-8 me-2 ms-2 flex flex-col rounded-lg bg-white shadow-panel sm:me-5 sm:ms-5'>
+        <div className='flex w-full items-center justify-between p-2 pb-4 pt-8 sm:p-8'>
+          <span className='hidden text-lg font-bold sm:block'>Reports</span>
           <SearchBar
             defaultSearchPeriod={DAY}
             device={device}
