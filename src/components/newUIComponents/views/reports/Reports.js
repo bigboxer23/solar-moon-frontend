@@ -64,7 +64,7 @@ const Reports = () => {
         : Math.round(row.row['temperature']) + '°F';
     return (
       <div
-        className='flex h-full justify-center'
+        className='flex h-full items-center justify-center'
         title={row.row['weatherSummary'] + ' ' + temperature}
       >
         {getWeatherIcon(row.row['weatherSummary'])}
@@ -193,8 +193,8 @@ const Reports = () => {
 
   return (
     <main className='Reports flex w-full flex-col'>
-      <div className='fade-in grow-1 my-8 me-5 ms-5 flex flex-col rounded-lg bg-white p-8 shadow-panel'>
-        <div className='mb-10 flex w-full items-center justify-between'>
+      <div className='fade-in grow-1 my-8 me-2 flex flex-col rounded-lg bg-white shadow-panel sm:me-5 sm:ms-5'>
+        <div className='flex w-full items-center justify-between p-8'>
           <span className='text-lg font-bold'>Reports</span>
           <SearchBar
             defaultSearchPeriod={DAY}
@@ -219,7 +219,7 @@ const Reports = () => {
             timeFormatter={getFormattedTime}
           />
         </div>
-        <div className='flex w-full flex-col justify-center'>
+        <div className='flex w-full flex-col justify-center p-2 sm:pb-6 sm:pe-6 sm:ps-6'>
           <div className='w-full' id='data-grid'>
             {(!loading || subLoad) && (
               <DataGrid
