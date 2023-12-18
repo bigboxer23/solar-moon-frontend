@@ -139,8 +139,8 @@ const Reports = () => {
     setLoading(true);
     setTotal(shouldScrollToTop ? -1 : total);
     getDataPage(
-      site === 'All Sites' ? null : site,
-      device === 'All Devices' ? null : device,
+      site === 'All' ? null : site,
+      device === 'All' ? null : device,
       start,
       end,
       offset,
@@ -216,20 +216,18 @@ const Reports = () => {
             timeFormatter={getFormattedTime}
           />
         </div>
-        <div className='flex w-full justify-center'>
-          {!loading && (
-            <div className='w-full' id='data-grid'>
-              <DataGrid
-                className='min-vh-70 grow'
-                columns={columns}
-                onScroll={handleScroll}
-                ref={gridRef}
-                renderers={{ noRowsFallback: <EmptyRowsRenderer /> }}
-                rows={rows}
-              />
-            </div>
-          )}
-          {loading && <Loader className='align-self-center' />}
+        <div className='flex w-full flex-col justify-center'>
+          <div className='w-full' id='data-grid'>
+            <DataGrid
+              className='min-vh-70 rdg-light grow'
+              columns={columns}
+              onScroll={handleScroll}
+              ref={gridRef}
+              renderers={{ noRowsFallback: <EmptyRowsRenderer /> }}
+              rows={rows}
+            />
+          </div>
+          {loading && <Loader className='self-center' />}
         </div>
       </div>
     </main>

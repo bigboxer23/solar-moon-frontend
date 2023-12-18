@@ -78,8 +78,8 @@ const SearchBar = ({
     .sort(sortDevices)
     .map((d) => {
       return {
-        value: d.deviceId,
-        label: d.deviceName,
+        value: d.id,
+        label: d.name == null ? d.deviceName : d.name,
       };
     });
 
@@ -88,8 +88,8 @@ const SearchBar = ({
     .sort(sortDevices)
     .map((d) => {
       return {
-        value: d.deviceId,
-        label: d.deviceName,
+        value: d.id,
+        label: d.name == null ? d.deviceName : d.name,
       };
     });
 
@@ -148,7 +148,7 @@ const SearchBar = ({
           onClick={() => resetSearch()}
           variant='text'
         >
-          Close Search
+          Reset Search
         </Button>
       </div>
       {!searchActive && (
