@@ -55,7 +55,7 @@ const Reports = () => {
     fetchData(0, (rows) => setRows(rows), true);
   }, []);
 
-  const RowRenderer = (row) => {
+  const WeatherRowRenderer = (row) => {
     const temperature =
       row.row["temperature"] === undefined
         ? ""
@@ -71,7 +71,19 @@ const Reports = () => {
   };
 
   const columns = [
-    { key: "weatherSummary", name: "", width: 50, renderCell: RowRenderer },
+    {
+      key: "weatherSummary",
+      name: (
+        <div
+          className="d-flex h-100 align-items-center justify-content-center"
+          title="Weather Conditions"
+        >
+          {getWeatherIcon("Partly Cloudy")}
+        </div>
+      ),
+      width: 50,
+      renderCell: WeatherRowRenderer,
+    },
     { key: "time", name: "Time", width: 150 },
     { key: "site", name: "Site" },
     { key: "device-name", name: "Device Name" },
