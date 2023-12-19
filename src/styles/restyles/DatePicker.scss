@@ -22,8 +22,10 @@
 }
 
 .react-daterange-picker__wrapper {
-  border: var(--bs-border-width) solid var(--bs-border-color);
-  border-radius: theme('borderRadius.DEFAULT');
+  border: theme('borderWidth.DEFAULT') solid theme('borderColor.neutral.300') !important;
+  border-radius: theme('borderRadius.full');
+  padding: theme('padding[0.5]') theme('padding.4') theme('padding[0.5]')
+    theme('padding.4');
 }
 
 .react-daterange-picker__inputGroup__input:invalid {
