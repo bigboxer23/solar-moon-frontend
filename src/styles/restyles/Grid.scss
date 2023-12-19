@@ -1,5 +1,5 @@
 .rdg-header-row {
-  background-color: #f5f5f5;
+  background-color: theme('colors.grid-background-alt');
 }
 
 .rdg-row,
@@ -18,7 +18,7 @@
 }
 
 .rdg-row-odd {
-  background-color: #f5f5f5;
+  background-color: theme('colors.grid-background-alt');
 }
 
 .rdg-header-secondary {

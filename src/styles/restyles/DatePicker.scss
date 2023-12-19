@@ -1,15 +1,7 @@
 .react-calendar {
-  background-color: var(--bs-secondary-bg) !important;
-  border: 0;
   z-index: 1;
-}
-.react-calendar {
-  padding: 1rem;
   border: 0 !important;
-}
-.react-calendar button {
-  border: 0 !important;
-  background-color: transparent;
+  padding: theme('padding.4');
 }
 
 .react-calendar abbr {
@@ -21,20 +13,17 @@
   color: inherit !important;
 }
 
-.react-calendar__month-view__days__day--neighboringMonth {
-  color: #757575 !important;
-}
-
 .react-calendar__tile:enabled:hover,
 .react-calendar__navigation button:enabled:hover,
 .react-calendar__navigation button:disabled {
-  border-radius: var(--bs-border-radius);
-  background-color: #6c757d !important;
+  border-radius: theme('borderRadius.DEFAULT');
+  background-color: theme('colors.brand-primary') !important;
+  color: #ffffff !important;
 }
 
 .react-daterange-picker__wrapper {
   border: var(--bs-border-width) solid var(--bs-border-color);
-  border-radius: var(--bs-border-radius);
+  border-radius: theme('borderRadius.DEFAULT');
 }
 
 .react-daterange-picker__inputGroup__input:invalid {
@@ -42,16 +31,25 @@
 }
 
 .react-calendar__tile--active {
-  border-radius: var(--bs-border-radius);
+  background-color: theme('colors.brand-primary-light') !important;
+  color: black !important;
 }
 
-.react-calendar__tile--hoverStart {
-  border-radius: var(--bs-border-radius) 0 0 var(--bs-border-radius) !important;
+.react-calendar__tile--now {
+  border-radius: theme('borderRadius.DEFAULT');
+  background-color: theme('colors.brand-secondary') !important;
 }
 
-.react-calendar__tile--hoverEnd {
-  border-radius: 0 var(--bs-border-radius) var(--bs-border-radius) 0 !important;
+.react-calendar__tile--hoverStart,
+.react-calendar__tile--rangeStart {
+  border-radius: theme('borderRadius.DEFAULT') 0 0 theme('borderRadius.DEFAULT') !important;
+}
+
+.react-calendar__tile--hoverEnd,
+.react-calendar__tile--rangeEnd {
+  border-radius: 0 theme('borderRadius.DEFAULT') theme('borderRadius.DEFAULT') 0 !important;
 }
 .react-calendar--selectRange .react-calendar__tile--hover {
-  background-color: var(--imp-text-color) !important;
+  background-color: theme('colors.brand-primary') !important;
+  color: #ffffff !important;
 }

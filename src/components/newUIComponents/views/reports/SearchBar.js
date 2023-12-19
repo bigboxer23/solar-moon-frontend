@@ -104,6 +104,7 @@ const SearchBar = ({
       >
         <div className='ml-2 flex flex-wrap items-center space-x-4 sm:ml-6'>
           <DateRangePicker
+            calendarClassName='shadow-panel'
             calendarIcon={null}
             calendarType='gregory'
             className='mr-6 sm:mr-0'
