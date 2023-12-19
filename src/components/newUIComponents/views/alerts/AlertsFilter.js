@@ -2,6 +2,7 @@ import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
+import { ALL } from '../../../../services/search';
 import Dropdown from '../../common/Dropdown';
 
 export default function AlertsFilter({
@@ -10,7 +11,7 @@ export default function AlertsFilter({
   availableDevices,
 }) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const allOption = { value: 'all', label: 'All' };
+  const allOption = { value: ALL, label: ALL };
 
   const searchParamSite = searchParams.get('site');
   const searchParamDevice = searchParams.get('device');
@@ -50,10 +51,10 @@ export default function AlertsFilter({
   // Update search params when filters change
   useEffect(() => {
     const searchParams = {};
-    if (siteValue.value !== 'all') {
+    if (siteValue.value !== ALL) {
       searchParams.site = siteValue.value;
     }
-    if (deviceValue.value !== 'all') {
+    if (deviceValue.value !== ALL) {
       searchParams.device = deviceValue.value;
     }
 

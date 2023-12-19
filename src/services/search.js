@@ -10,6 +10,9 @@ export const WEEK = 604800000;
 export const MONTH = 2592000000;
 
 export const YEAR = 31536000000;
+
+export const ALL = 'All';
+
 function getBucketSize(start, end, type) {
   let difference = end.getTime() - start.getTime();
   let grouped = type === 'groupedBarGraph';

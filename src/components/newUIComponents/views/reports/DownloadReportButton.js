@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { jsons2csv } from 'react-csv/lib/core';
 import { FaDownload, FaSpinner } from 'react-icons/fa';
 
+import { ALL } from '../../../../services/search';
 import { getDataPage } from '../../../../services/services';
 import Button from '../../common/Button';
 import Spinner from '../../common/Spinner';
@@ -34,10 +35,10 @@ const DownloadReportButton = ({ site, device, start, end, timeFormatter }) => {
       ' - ' +
       timeFormatter(new Date(Number(end)));
 
-    if (device !== null && device !== 'All') {
+    if (device !== null && device !== ALL) {
       return fileName + ' - ' + device + '.csv';
     }
-    if (site !== null && site !== 'All') {
+    if (site !== null && site !== ALL) {
       fileName += ' - ' + site;
     }
     return fileName + '.csv';
@@ -47,8 +48,8 @@ const DownloadReportButton = ({ site, device, start, end, timeFormatter }) => {
     setDownloading(true);
 
     getDataPage(
-      site === 'All' ? null : site,
-      device === 'All' ? null : device,
+      site === ALL ? null : site,
+      device === ALL ? null : device,
       start,
       end,
       0,

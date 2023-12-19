@@ -5,7 +5,7 @@ import DataGrid from 'react-data-grid';
 import { useIntl } from 'react-intl';
 import { useSearchParams } from 'react-router-dom';
 
-import { DAY } from '../../../../services/search';
+import { ALL, DAY } from '../../../../services/search';
 import { getDataPage } from '../../../../services/services';
 import {
   getFormattedTime,
@@ -22,13 +22,13 @@ const Reports = () => {
   const [loading, setLoading] = useState(true);
   const [subLoad, setSubLoad] = useState(false);
   const [site, setSite] = useSearchParamState(
-    'All',
+    ALL,
     'site',
     searchParams,
     setSearchParams,
   );
   const [device, setDevice] = useSearchParamState(
-    'All',
+    ALL,
     'device',
     searchParams,
     setSearchParams,
@@ -153,8 +153,8 @@ const Reports = () => {
     setSubLoad(offset > 0);
     setTotal(shouldScrollToTop ? -1 : total);
     getDataPage(
-      site === 'All' ? null : site,
-      device === 'All' ? null : device,
+      site === ALL ? null : site,
+      device === ALL ? null : device,
       start,
       end,
       offset,

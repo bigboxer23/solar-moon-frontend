@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+import { ALL } from '../../../../services/search';
 import { getAlarmData } from '../../../../services/services';
 import { sortSelectAlphabetically } from '../../../../utils/Utils';
 import Loader from '../../common/Loader';
@@ -17,8 +18,8 @@ export default function Alerts() {
   const [deviceOptions, setDeviceOptions] = useState([]);
 
   const [filter, setFilter] = useState({
-    device: 'all',
-    site: 'all',
+    device: ALL,
+    site: ALL,
     start: null,
     end: null,
   });
@@ -73,10 +74,10 @@ export default function Alerts() {
 
   useEffect(() => {
     const filterFn = (alert) => {
-      if (filter.device !== 'all' && filter.device !== alert.deviceId) {
+      if (filter.device !== ALL && filter.device !== alert.deviceId) {
         return false;
       }
-      if (filter.site !== 'all' && filter.site !== alert.siteId) {
+      if (filter.site !== ALL && filter.site !== alert.siteId) {
         return false;
       }
       const alertDate = new Date(alert.startDate);

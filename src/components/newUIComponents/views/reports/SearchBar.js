@@ -15,6 +15,7 @@ import {
   MdOutlineKeyboardDoubleArrowRight,
 } from 'react-icons/md';
 
+import { ALL } from '../../../../services/search';
 import { getDevices } from '../../../../services/services';
 import { getRoundedTime, sortDevices } from '../../../../utils/Utils';
 import Button from '../../common/Button';
@@ -44,8 +45,8 @@ const SearchBar = ({
   ]);
 
   const resetSearch = () => {
-    setSite('All');
-    setDevice('All');
+    setSite(ALL);
+    setDevice(ALL);
     dateChanged(null);
     setSearchActive(false);
   };
@@ -71,7 +72,7 @@ const SearchBar = ({
     setEnd(date[1].getTime());
   };
 
-  const allOption = { value: 'all', label: 'All' };
+  const allOption = { value: ALL, label: ALL };
 
   const siteOptions = devices
     .filter((device) => device.virtual)
