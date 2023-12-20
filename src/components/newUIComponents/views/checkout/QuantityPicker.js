@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import Button from '../../common/Button';
 
-function QuantityPicker({ min, max, setCount }) {
+function QuantityPicker({ min, max, setCount, className }) {
   const [disableDec, setDisableDec] = useState(true);
   const [disableInc, setDisableInc] = useState(false);
   const [value, setValue] = useState(min);
@@ -40,7 +40,7 @@ function QuantityPicker({ min, max, setCount }) {
   };
 
   return (
-    <div className='quantity-picker flex self-end'>
+    <div className={className + ' quantity-picker flex self-end'}>
       <Button
         className='left-modifier'
         disabled={disableDec}

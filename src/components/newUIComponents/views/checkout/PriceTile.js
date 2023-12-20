@@ -28,13 +28,18 @@ function PriceTile({
           <div className='ps-1 text-sm text-gray-500'> per {label2}</div>
         </div>
         <div className='mb-3 flex'>
-          <div className='smaller-text ps-1 text-sm text-gray-500'>
+          <div className='smaller-text  text-sm text-gray-500'>
             ${price} per seat per {label2}
           </div>
         </div>
         <div className='grow-1' />
-        <div className='me-2 self-end text-sm text-gray-500'>Seats</div>
-        <QuantityPicker max={10} min={1} setCount={setCount} />
+        <div className='mb-1 me-2 self-start text-sm text-gray-500'>Seats</div>
+        <QuantityPicker
+          className='mb-3 self-center'
+          max={10}
+          min={1}
+          setCount={setCount}
+        />
         <Button
           className='mt-3 justify-center'
           onClick={() => checkoutClicked(priceId, count)}
