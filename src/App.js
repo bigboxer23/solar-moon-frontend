@@ -1,6 +1,5 @@
 import '@aws-amplify/ui-react/styles.css';
 import './style.css';
-//import 'bootstrap/dist/css/bootstrap.min.css';
 import 'chartjs-adapter-moment';
 
 import { Authenticator, ThemeProvider } from '@aws-amplify/ui-react';
@@ -27,7 +26,6 @@ import {
 import awsExports from './aws-exports';
 import CheckoutForm from './components/checkout/CheckoutForm';
 import Return from './components/checkout/CheckoutReturn';
-import PricingPage from './components/checkout/PricingPage';
 import Home from './components/Home/Home';
 import { LockPage } from './components/lock/LockPage';
 import { Footer } from './components/login/Footer';
@@ -37,6 +35,7 @@ import Navbar from './components/Navbar';
 import Footer2 from './components/newUIComponents/Footer2';
 import Navbar2 from './components/newUIComponents/nav/Navbar2';
 import Alerts from './components/newUIComponents/views/alerts/Alerts';
+import PricingPage from './components/newUIComponents/views/checkout/PricingPage';
 import Dashboard from './components/newUIComponents/views/dashboard/Dashboard';
 import Reports from './components/newUIComponents/views/reports/Reports';
 import SiteDetails from './components/newUIComponents/views/site-details/SiteDetails';
