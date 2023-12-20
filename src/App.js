@@ -26,8 +26,6 @@ import {
 import awsExports from './aws-exports';
 import CheckoutForm from './components/checkout/CheckoutForm';
 import Return from './components/checkout/CheckoutReturn';
-import Home from './components/Home/Home';
-import { LockPage } from './components/lock/LockPage';
 import { Footer } from './components/login/Footer';
 import { Header } from './components/login/Header';
 import { SignInFooter } from './components/login/SignInFooter';
@@ -37,6 +35,7 @@ import Navbar2 from './components/newUIComponents/nav/Navbar2';
 import Alerts from './components/newUIComponents/views/alerts/Alerts';
 import PricingPage from './components/newUIComponents/views/checkout/PricingPage';
 import Dashboard from './components/newUIComponents/views/dashboard/Dashboard';
+import { LockPage } from './components/newUIComponents/views/lock/LockPage';
 import Reports from './components/newUIComponents/views/reports/Reports';
 import SiteDetails from './components/newUIComponents/views/site-details/SiteDetails';
 import SiteList from './components/newUIComponents/views/site-list/SiteList';
@@ -86,7 +85,7 @@ function App() {
                 <Route element={newUI ? <Navbar2 /> : <Navbar />} path='*' />
               </Routes>
               <Routes>
-                <Route element={newUI ? <Dashboard /> : <Home />} path='/' />
+                <Route element={<Dashboard />} path='/' />
                 <Route element={<Reports />} path='/reports' />
                 <Route element={<SiteList />} path='/sites' />
                 <Route element={<SiteDetails />} path='/sites/:siteId' />
