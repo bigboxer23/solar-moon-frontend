@@ -110,14 +110,18 @@ const SearchBar = ({
             className='mr-6 sm:mr-0'
             clearIcon={<MdClear />}
             next2Label={
-              <MdOutlineKeyboardDoubleArrowRight className='h3 mb-0' />
+              <MdOutlineKeyboardDoubleArrowRight className='w-full text-lg' />
             }
-            nextLabel={<MdOutlineKeyboardArrowRight className='h3 mb-0' />}
+            nextLabel={
+              <MdOutlineKeyboardArrowRight className='w-full text-lg' />
+            }
             onChange={dateChanged}
             prev2Label={
-              <MdOutlineKeyboardDoubleArrowLeft className='h3 mb-0' />
+              <MdOutlineKeyboardDoubleArrowLeft className='w-full text-lg' />
             }
-            prevLabel={<MdOutlineKeyboardArrowLeft className='h3 mb-0' />}
+            prevLabel={
+              <MdOutlineKeyboardArrowLeft className='w-full text-lg' />
+            }
             value={value}
           />
           <Dropdown
