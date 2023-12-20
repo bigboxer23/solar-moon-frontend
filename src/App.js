@@ -57,7 +57,7 @@ ChartJS.register(
 Amplify.configure(awsExports);
 function App() {
   // Enable for new UI
-  const newUI = process.env.REACT_APP_NEW_UI ?? false;
+  const newUI = true;
   const theme = newUI ? newTheme : oldTheme;
 
   const components = {
