@@ -1,0 +1,14 @@
+[data-amplify-router] {
+  border: 0 !important;
+}
+
+[data-amplify-form] .amplify-button {
+  border-radius: theme('borderRadius.full');
+}
+.amplify-field-group__outer-end .amplify-button {
+  border-radius: 0 theme('borderRadius.full') theme('borderRadius.full') 0;
+}
+
+.amplify-link {
+  text-decoration: underline !important;
+}

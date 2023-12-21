@@ -4,16 +4,16 @@ export const oldTheme = {
     fonts: {
       default: {
         static: {
-          value: '"Raleway", serif',
+          value: '"Roboto", sans-serif',
         },
         variable: {
-          value: '"Raleway", serif',
+          value: '"Roboto", sans-serif',
         },
       },
     },
     colors: {
       font: {
-        primary: '#ffffff',
+        primary: '#000',
       },
       brand: {
         primary: {

@@ -40,7 +40,7 @@ import Reports from './components/newUIComponents/views/reports/Reports';
 import SiteDetails from './components/newUIComponents/views/site-details/SiteDetails';
 import SiteList from './components/newUIComponents/views/site-list/SiteList';
 import UserManagement from './components/user_management/UserManagement';
-import { newTheme, oldTheme } from './themes';
+import { oldTheme } from './themes';
 
 ChartJS.register(
   CategoryScale,
@@ -55,10 +55,6 @@ ChartJS.register(
 
 Amplify.configure(awsExports);
 function App() {
-  // Enable for new UI
-  const newUI = true;
-  const theme = newUI ? newTheme : oldTheme;
-
   const components = {
     Header,
     SignIn: {
@@ -68,21 +64,19 @@ function App() {
   };
 
   // temp Hack for new theme bg color
-  document.getElementsByTagName('body')[0].style.backgroundColor = newUI
-    ? '#eef2f9'
-    : '#23272d';
+  document.getElementsByTagName('body')[0].style.backgroundColor = '#eef2f9';
 
   return (
     <IntlProvider locale={navigator.language}>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={oldTheme}>
         <Authenticator components={components}>
           <Router>
-            <div className='App' data-bs-theme='dark' id='scroll'>
+            <div className='App' id='scroll'>
               <Routes>
                 <Route element='' path='/checkout' />
                 <Route element='' path='/pricing' />
                 <Route element='' path='/lock' />
-                <Route element={newUI ? <Navbar2 /> : <Navbar />} path='*' />
+                <Route element={<Navbar2 />} path='*' />
               </Routes>
               <Routes>
                 <Route element={<Dashboard />} path='/' />
