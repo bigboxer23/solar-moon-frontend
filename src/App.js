@@ -24,15 +24,14 @@ import {
 } from 'react-router-dom';
 
 import awsExports from './aws-exports';
-import CheckoutForm from './components/checkout/CheckoutForm';
-import Return from './components/checkout/CheckoutReturn';
 import { Footer } from './components/login/Footer';
 import { Header } from './components/login/Header';
 import { SignInFooter } from './components/login/SignInFooter';
-import Navbar from './components/Navbar';
 import Footer2 from './components/newUIComponents/Footer2';
 import Navbar2 from './components/newUIComponents/nav/Navbar2';
 import Alerts from './components/newUIComponents/views/alerts/Alerts';
+import CheckoutForm from './components/newUIComponents/views/checkout/CheckoutForm';
+import Return from './components/newUIComponents/views/checkout/CheckoutReturn';
 import PricingPage from './components/newUIComponents/views/checkout/PricingPage';
 import Dashboard from './components/newUIComponents/views/dashboard/Dashboard';
 import { LockPage } from './components/newUIComponents/views/lock/LockPage';
