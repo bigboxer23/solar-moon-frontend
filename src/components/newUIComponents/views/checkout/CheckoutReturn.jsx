@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { Card, CardBody } from 'react-bootstrap';
 import { Navigate } from 'react-router-dom';
 
 import { checkoutStatus } from '../../../../services/services';
@@ -11,9 +10,9 @@ const Return = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const sessionId = urlParams.get('session_id');
+    const sessionId = new URLSearchParams(window.location.search).get(
+      'session_id',
+    );
 
     checkoutStatus(sessionId)
       .then(({ data }) => {
@@ -29,34 +28,31 @@ const Return = () => {
     return <Navigate to='/checkout' />;
   }
 
-  if (status === 'complete') {
-    return (
-      <div className='root-page min-vh-95 container'>
-        <Card className='m-3'>
-          <CardBody>
-            <Loader content='' deviceCount={0} loading={loading} />
-            <section id='success'>
+  return (
+    <div className='my-8 flex max-w-full flex-col items-center'>
+      <div className='flex w-full flex-wrap justify-center'>
+        <div>
+          {loading && <Loader />}
+          {status === 'complete' && (
+            <main className='fade-in my-8 w-[25rem] max-w-full rounded-lg bg-white p-6 shadow-panel sm:w-[55rem] sm:p-8'>
               <p>
-                We appreciate your business! A confirmation email will be sent
-                to {customerEmail}. If you have any questions, please email{' '}
-                <a href='mailto:info@solarmoonanalytics.com'>
+                Thank you, we appreciate your business!
+                <br />
+                <br />A confirmation email will be sent to {customerEmail}.
+                <br />
+                <br /> If you have any questions, please email{' '}
+                <a
+                  className='underline'
+                  href='mailto:info@solarmoonanalytics.com'
+                >
                   info@solarmoonanalytics.com
                 </a>
                 .
               </p>
-            </section>
-          </CardBody>
-        </Card>
+            </main>
+          )}
+        </div>
       </div>
-    );
-  }
-  return (
-    <div className='root-page min-vh-95 container'>
-      <Card className='m-3'>
-        <CardBody>
-          <Loader content='' deviceCount={0} loading={true} />
-        </CardBody>
-      </Card>
     </div>
   );
 };
