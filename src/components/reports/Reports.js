@@ -73,21 +73,26 @@ const Reports = () => {
   };
 
   const columns = [
-    { key: 'weatherSummary', name: (
+    {
+      key: 'weatherSummary',
+      name: (
         <div
-          className='d-flex h-100 align-items-center justify-content-center'
+          className='flex h-full content-center items-center'
           title='Weather Conditions'
         >
           {getWeatherIcon('Partly Cloudy')}
         </div>
-      ), width: 50, renderCell: WeatherRowRenderer },
+      ),
+      width: 50,
+      renderCell: WeatherRowRenderer,
+    },
     { key: 'time', name: 'Time', width: 150 },
     { key: 'site', name: 'Site' },
     { key: 'device-name', name: 'Device Name' },
     {
       key: 'Total Energy Consumption',
       name: (
-        <div className='d-flex'>
+        <div className='flex'>
           Total Energy Cons.
           <div className='text-muted rdg-header-secondary'>&nbsp; kWH</div>
         </div>
