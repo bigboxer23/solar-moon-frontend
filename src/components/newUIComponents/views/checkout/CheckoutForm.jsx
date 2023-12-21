@@ -34,8 +34,8 @@ const CheckoutForm = () => {
   return (
     <div>
       <HeaderBar headerText='Enter payment details' />
-      <div className='flex w-full justify-center'>
-        {loading && <Loader className='justify-center' />}
+      <div className='flex w-full flex-col py-8'>
+        {loading && <Loader className='self-center' />}
         <EmbeddedCheckoutProvider
           options={{ clientSecret }}
           stripe={stripePromise}
