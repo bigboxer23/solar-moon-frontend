@@ -7,7 +7,7 @@ import { getOverviewData } from '../../../../services/services';
 import { useStickyState } from '../../../../utils/Utils';
 import Loader from '../../common/Loader';
 import OverviewChart from './OverviewChart';
-import SiteList from './site-list/SiteList';
+import OverviewSiteList from './site-list/OverviewSiteList';
 import SummaryHeader from './SummaryHeader';
 import TimeIncrementSelector from './TimeIncrementSelector';
 
@@ -146,7 +146,7 @@ export default function Overview() {
           sites={sites}
           timeIncrement={timeIncrement}
         />
-        <SiteList
+        <OverviewSiteList
           alerts={[...resolvedAlerts, ...activeAlerts]}
           devices={devices}
           sites={sites}

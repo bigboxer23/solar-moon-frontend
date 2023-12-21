@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
-import SiteRow from './SiteRow';
+import OverviewSiteRow from './OverviewSiteRow';
 
-export default function SiteList({
+export default function OverviewSiteList({
   sites,
   timeIncrement,
   devices,
@@ -36,7 +36,7 @@ export default function SiteList({
   return (
     <div className='SiteList mt-5'>
       <div className='mb-6 text-lg font-bold'>Sites</div>
-      <div className='mb-4 flex w-full items-center text-xs font-bold'>
+      <div className='mb-4 flex w-full items-center px-2 text-xs font-bold'>
         <div className='w-[20%] pr-1 sm:w-[15%]'>Site Name</div>
         <div className='hidden text-end sm:block sm:w-[15%]'>Device Count</div>
         <div className='w-[10%] px-1 text-end sm:w-[15%]'>Alerts</div>
@@ -52,7 +52,7 @@ export default function SiteList({
         <div className='h-full w-[30%] text-end sm:w-1/4'></div>
       </div>
       {siteData.map((site) => (
-        <SiteRow
+        <OverviewSiteRow
           graphData={site.graphData}
           info={site.info}
           key={site.info.deviceName}

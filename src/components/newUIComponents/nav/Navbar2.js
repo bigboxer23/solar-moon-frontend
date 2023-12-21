@@ -16,12 +16,12 @@ export default function Navbar2() {
     'text-text-secondary text-lg text-decoration-none font-bold hidden lg:block';
   const linkStyle = 'text-black font-bold text-lg text-decoration-none';
   const activeLinkStyle =
-    'text-black font-bold text-lg decoration-2 underline-offset-4';
+    'text-black font-bold text-lg border-b-2 border-text-primary text-decoration-none border-black';
 
   const slideMenuLinkStyle =
-    'text-start text-black font-bold text-2xl text-decoration-none';
+    'text-start text-black font-bold text-2xl text-decoration-none w-fit';
   const slideMenuActiveLinkStyle =
-    'text-black font-bold text-2xl decoration-2 underline-offset-4';
+    'text-black font-bold text-2xl border-b-2 border-text-primary text-decoration-none border-black w-fit';
 
   const [slideMenuOpen, setSlideMenuOpen] = useState(false);
 
@@ -64,13 +64,13 @@ export default function Navbar2() {
   return (
     <>
       <div className='Navbar2 flex h-[4.5rem] w-full items-center justify-between border-b border-text-secondary bg-brand-primary-light sm:h-[6.25rem]'>
-        <div className='flex items-center justify-center'>
+        <NavLink className='flex items-center justify-center' to='/'>
           <img
             alt='brand'
             className='ml-6 h-10 w-10 sm:ml-8 sm:h-12 sm:w-12'
             src={logo}
           />
-        </div>
+        </NavLink>
         <div className='flex items-center justify-center sm:hidden'>
           <span className='text-xl font-bold text-black'>
             {getPageName(location)}
@@ -145,7 +145,7 @@ export default function Navbar2() {
             <FaXmark className='text-3xl' />
           </button>
         </div>
-        <nav className='flex flex-col space-y-8 '>
+        <nav className='flex w-full flex-col space-y-8'>
           <NavLink
             className={({ isActive }) =>
               isActive ? slideMenuActiveLinkStyle : slideMenuLinkStyle
