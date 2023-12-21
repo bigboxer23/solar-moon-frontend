@@ -26,6 +26,7 @@
     "react-data-grid": "^7.0.0-beta.40",
     "react-day-picker": "^8.9.1",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.49.2",
     "react-icons": "^4.11.0",
     "react-intl": "^6.5.5",
     "react-router-dom": "^6.16.0",
