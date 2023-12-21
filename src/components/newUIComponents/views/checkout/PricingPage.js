@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { createSearchParams, useNavigate } from 'react-router-dom';
 
 import logo from '../../../../assets/logo.svg';
+import HeaderBar from '../../nav/HeaderBar';
 import PriceTile from './PriceTile';
 
 export default function PricingPage() {
@@ -21,18 +22,7 @@ export default function PricingPage() {
 
   return (
     <div className='pricing-page'>
-      <div className='Navbar2 flex h-[4.5rem] w-full items-center border-b border-text-secondary bg-brand-primary-light sm:h-[6.25rem]'>
-        <div className='flex items-center justify-center'>
-          <img
-            alt='brand'
-            className='ml-6 h-10 w-10 sm:ml-8 sm:h-12 sm:w-12'
-            src={logo}
-          />
-        </div>
-        <div className='ms-4 flex items-center'>
-          <span className='text-xl font-bold'>Choose a billing plan</span>
-        </div>
-      </div>
+      <HeaderBar headerText='Choose a billing plan' />
       <div className='my-8 flex max-w-full flex-col items-center'>
         <div className='flex w-full flex-wrap justify-center'>
           <PriceTile

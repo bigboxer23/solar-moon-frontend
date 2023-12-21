@@ -9,6 +9,7 @@ import { useSearchParams } from 'react-router-dom';
 import logo from '../../../../assets/logo.svg';
 import { checkout } from '../../../../services/services';
 import Loader from '../../common/Loader';
+import HeaderBar from '../../nav/HeaderBar';
 
 const CheckoutForm = () => {
   const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK);
@@ -32,19 +33,8 @@ const CheckoutForm = () => {
 
   return (
     <div>
-      <div className='Navbar2 flex h-[4.5rem] w-full items-center border-b border-text-secondary bg-brand-primary-light sm:h-[6.25rem]'>
-        <div className='flex items-center justify-center'>
-          <img
-            alt='brand'
-            className='ml-6 h-10 w-10 sm:ml-8 sm:h-12 sm:w-12'
-            src={logo}
-          />
-        </div>
-        <div className='ms-4 flex items-center'>
-          <span className='text-xl font-bold'>Enter payment details</span>
-        </div>
-      </div>
-      <div className='flex justify-center'>
+      <HeaderBar headerText='Enter payment details' />
+      <div className='flex w-full justify-center'>
         {loading && <Loader className='justify-center' />}
         <EmbeddedCheckoutProvider
           options={{ clientSecret }}

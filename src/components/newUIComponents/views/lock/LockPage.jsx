@@ -4,6 +4,7 @@ import { MdKey } from 'react-icons/md';
 import logo from '../../../../assets/logo.svg';
 import { useStickyState } from '../../../../utils/Utils';
 import Button from '../../common/Button';
+import HeaderBar from '../../nav/HeaderBar';
 
 export const LockPage = () => {
   const [_, setUnlocked] = useStickyState(null, 'unlock.code');
@@ -20,15 +21,7 @@ export const LockPage = () => {
 
   return (
     <div className='LockPage flex max-w-full flex-col items-center'>
-      <div className='Navbar2 flex h-[4.5rem] w-full items-center border-b border-text-secondary bg-brand-primary-light sm:h-[6.25rem]'>
-        <div className='flex items-center justify-center'>
-          <img
-            alt='brand'
-            className='ml-6 h-10 w-10 sm:ml-8 sm:h-12 sm:w-12'
-            src={logo}
-          />
-        </div>
-      </div>
+      <HeaderBar headerText='' />
       <main className='fade-in my-8 flex w-[30rem] max-w-full flex-col content-center bg-white p-6 shadow-panel sm:rounded-lg sm:p-8'>
         <div className='text-base font-bold'>
           Enter the access code to proceed to the site
