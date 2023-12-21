@@ -6,8 +6,8 @@ import { DAY, getAggregationValue } from '../../../../services/search';
 import { getOverviewData } from '../../../../services/services';
 import { useStickyState } from '../../../../utils/Utils';
 import Loader from '../../common/Loader';
+import OverviewSiteList from './dashboard-site-list/OverviewSiteList';
 import OverviewChart from './OverviewChart';
-import OverviewSiteList from './site-list/OverviewSiteList';
 import SummaryHeader from './SummaryHeader';
 import TimeIncrementSelector from './TimeIncrementSelector';
 
