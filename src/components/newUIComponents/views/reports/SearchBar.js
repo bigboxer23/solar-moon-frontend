@@ -84,15 +84,12 @@ const SearchBar = ({
       };
     });
 
-  const deviceOptions = devices
-    .filter((device) => !device.virtual)
-    .sort(sortDevices)
-    .map((d) => {
-      return {
-        value: d.id,
-        label: d.name == null ? d.deviceName : d.name,
-      };
-    });
+  const deviceOptions = devices.sort(sortDevices).map((d) => {
+    return {
+      value: d.id,
+      label: d.name == null ? d.deviceName : d.name,
+    };
+  });
 
   return (
     <div className='flex w-full items-center justify-center'>
