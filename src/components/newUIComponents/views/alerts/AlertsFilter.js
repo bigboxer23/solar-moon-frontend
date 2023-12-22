@@ -76,6 +76,7 @@ export default function AlertsFilter({
 
   function handleSiteFilterChange(siteOption) {
     setSiteValue(siteOption);
+    setDeviceValue(allOption);
     setDirty(true);
   }
 
@@ -102,7 +103,16 @@ export default function AlertsFilter({
       />
       <Dropdown
         onChange={handleDeviceFilterChange}
-        options={[allOption, ...availableDevices]}
+        options={[
+          allOption,
+          ...availableDevices.filter((d) => {
+            return (
+              siteValue.label === ALL ||
+              d.site === siteValue.label ||
+              d.name === ALL
+            );
+          }),
+        ]}
         prefixLabel='Device'
         value={deviceValue}
       />

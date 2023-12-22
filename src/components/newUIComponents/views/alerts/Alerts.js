@@ -60,11 +60,13 @@ export default function Alerts() {
               return d.deviceName && d.deviceId;
             })
             .map((d) => {
-              return [d.deviceId, { label: d.deviceName, value: d.deviceId }];
+              return [
+                d.deviceId,
+                { label: d.deviceName, value: d.deviceId, site: d.deviceSite },
+              ];
             }),
         ).values(),
       ].sort(sortSelectAlphabetically);
-
       setSiteOptions(siteOptions);
       setDeviceOptions(deviceOptions);
 

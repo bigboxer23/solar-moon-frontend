@@ -84,12 +84,17 @@ const SearchBar = ({
       };
     });
 
-  const deviceOptions = devices.sort(sortDevices).map((d) => {
-    return {
-      value: d.id,
-      label: d.name == null ? d.deviceName : d.name,
-    };
-  });
+  const deviceOptions = devices
+    .filter((d) => {
+      return site === ALL || d.site === site || d.name === ALL;
+    })
+    .sort(sortDevices)
+    .map((d) => {
+      return {
+        value: d.id,
+        label: d.name == null ? d.deviceName : d.name,
+      };
+    });
 
   return (
     <div className='flex w-full items-center justify-center'>
@@ -122,7 +127,10 @@ const SearchBar = ({
             value={value}
           />
           <Dropdown
-            onChange={(option) => setSite(option.label)}
+            onChange={(option) => {
+              setSite(option.label);
+              setDevice(ALL);
+            }}
             options={[allOption, ...siteOptions]}
             prefixLabel='Site'
             value={siteOptions.find((option) => option.label === site)}
