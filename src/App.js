@@ -35,6 +35,7 @@ import Return from './components/newUIComponents/views/checkout/CheckoutReturn';
 import PricingPage from './components/newUIComponents/views/checkout/PricingPage';
 import Dashboard from './components/newUIComponents/views/dashboard/Dashboard';
 import { LockPage } from './components/newUIComponents/views/lock/LockPage';
+import Mapping from './components/newUIComponents/views/mapping/Mapping';
 import Reports from './components/newUIComponents/views/reports/Reports';
 import SiteDetails from './components/newUIComponents/views/site-details/SiteDetails';
 import SiteList from './components/newUIComponents/views/site-list/SiteList';
@@ -88,6 +89,7 @@ function App() {
                 <Route element={<Return />} path='/return' />
                 <Route element={<PricingPage />} path='/pricing' />
                 <Route element={<LockPage />} path='/lock' />
+                <Route element={<Mapping />} path='/mapping' />
                 <Route element={<Navigate to='/' />} path='*' />
               </Routes>
               <Footer2 />
