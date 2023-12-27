@@ -1,7 +1,7 @@
 import { useController } from 'react-hook-form';
 
 const boxStylePreset = {
-  inputStyle: 'appearance-none grow-1 outline-none',
+  inputStyle: 'grow-1 outline-none',
   wrapperStyle:
     'flex flex-col border border-gray-300 rounded-md focus-within:border-brand-primary py-2 px-4',
   labelStyle: 'text-sm text-gray-700',
@@ -9,7 +9,7 @@ const boxStylePreset = {
 };
 
 const underlineStylePreset = {
-  inputStyle: 'appearance-none grow-1 outline-none',
+  inputStyle: 'grow-1 outline-none',
   wrapperStyle:
     'flex flex-col border-b border-gray-300 focus-within:border-brand-primary pb-1',
   labelStyle: 'text-sm text-gray-700',
@@ -23,10 +23,10 @@ const presets = {
 
 function buildStyles(
   variant,
-  inputClassName = '',
-  wrapperClassName = '',
-  labelClassName = '',
-  errorClassName = '',
+  inputClassName,
+  wrapperClassName,
+  labelClassName,
+  errorClassName,
   extendVariantStyles = true,
 ) {
   const { inputStyle, wrapperStyle, labelStyle, errorStyle } = presets[variant];
@@ -48,7 +48,8 @@ function buildStyles(
   };
 }
 
-export function Input({
+export function Select({
+  attributes,
   inputProps,
   prefix,
   suffix,
@@ -77,7 +78,15 @@ export function Input({
           {label && <div className={labelStyle}>{label}</div>}
           <div className='flex space-x-2'>
             {prefix}
-            <input className={inputStyle} {...inputProps} />
+            <select className={inputStyle} {...inputProps}>
+              {attributes.map((attr) => {
+                return (
+                  <option key={attr} value={attr}>
+                    {attr}
+                  </option>
+                );
+              })}
+            </select>
             {suffix}
           </div>
         </label>
@@ -87,7 +96,7 @@ export function Input({
   );
 }
 
-export function ControlledInput({
+export function ControlledSelect({
   control,
   name,
   inputProps,
@@ -97,5 +106,5 @@ export function ControlledInput({
 }) {
   const { field } = useController({ control, name });
 
-  return <Input inputProps={{ ...inputProps, ...field }} {...rest} />;
+  return <Select inputProps={{ ...inputProps, ...field }} {...rest} />;
 }
