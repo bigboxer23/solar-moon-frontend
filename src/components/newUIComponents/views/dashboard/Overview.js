@@ -3,7 +3,12 @@ import { useEffect, useState } from 'react';
 import { FormattedNumber } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
-import { DAY, getAggregationValue } from '../../../../services/search';
+import {
+  AVG_AGGREGATION,
+  DAY,
+  getAggregationValue,
+  TOTAL_AGGREGATION,
+} from '../../../../services/search';
 import { getOverviewData } from '../../../../services/services';
 import { useStickyState } from '../../../../utils/Utils';
 import Loader from '../../common/Loader';
@@ -49,7 +54,7 @@ export default function Overview() {
     getOverviewData(timeIncrement).then(({ data }) => {
       handleDevices(data.devices);
       handleAlarms(data.alarms);
-      handleOverviewTotal(data.overall.totalAvg);
+      handleOverviewTotal(data.overall.avg, data.overall.total);
       setOverallTimeSeries(data.overall.timeSeries);
       setSitesGraphData(data.sitesOverviewData);
       handleSummaryHeader(data.overall);
@@ -59,14 +64,14 @@ export default function Overview() {
 
   const handleSummaryHeader = (data) => {
     setDailyOutputTotal(
-      getAggregationValue(data.dailyEnergyConsumedTotal, 'sum#total'),
+      getAggregationValue(data.dailyEnergyConsumedTotal, TOTAL_AGGREGATION),
     );
     setDailyAverageOutput(data.dailyEnergyConsumedAverage);
   };
 
-  const handleOverviewTotal = (data) => {
-    setTotalOutput(getAggregationValue(data, 'sum#total'));
-    setAverageOutput(getAggregationValue(data, 'avg#avg'));
+  const handleOverviewTotal = (avg, total) => {
+    setTotalOutput(getAggregationValue(total, TOTAL_AGGREGATION));
+    setAverageOutput(getAggregationValue(avg, AVG_AGGREGATION));
   };
 
   const handleAlarms = (data) => {

@@ -13,6 +13,10 @@ export const YEAR = 31536000000;
 
 export const ALL = 'All';
 
+export const AVG_AGGREGATION = 'avg#avg';
+
+export const TOTAL_AGGREGATION = 'sum#total';
+
 function getBucketSize(start, end, type) {
   let difference = end.getTime() - start.getTime();
   let grouped = type === 'groupedBarGraph';

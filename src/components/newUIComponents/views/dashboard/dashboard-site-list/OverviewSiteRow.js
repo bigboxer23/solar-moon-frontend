@@ -4,9 +4,11 @@ import { FormattedNumber } from 'react-intl';
 import { NavLink } from 'react-router-dom';
 
 import {
+  AVG_AGGREGATION,
   DAY,
   getAggregationValue,
   parseSearchReturn,
+  TOTAL_AGGREGATION,
 } from '../../../../../services/search';
 import { splitDayAndNightDataSets } from '../../../../../utils/Utils';
 
@@ -17,8 +19,8 @@ export default function OverviewSiteRow({ info, graphData, timeIncrement }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setTotal(getAggregationValue(graphData.totalAvg, 'sum#total'));
-    setAverage(getAggregationValue(graphData.totalAvg, 'avg#avg'));
+    setTotal(getAggregationValue(graphData.total, TOTAL_AGGREGATION));
+    setAverage(getAggregationValue(graphData.avg, AVG_AGGREGATION));
     setLoading(false);
   }, [graphData]);
 
