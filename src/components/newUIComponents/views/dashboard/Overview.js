@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import { FormattedNumber } from 'react-intl';
+import { useNavigate } from 'react-router-dom';
 
 import { DAY, getAggregationValue } from '../../../../services/search';
 import { getOverviewData } from '../../../../services/services';
@@ -11,11 +12,11 @@ import OverviewChart from './OverviewChart';
 import SummaryHeader from './SummaryHeader';
 import TimeIncrementSelector from './TimeIncrementSelector';
 
-function StatBlock({ title, value, className }) {
+function StatBlock({ title, value, className, onClick }) {
   const style = classNames('StatBlock flex space-x-2', className);
 
   return (
-    <div className={style}>
+    <div className={style} onClick={onClick}>
       <div className='inline-block self-end text-5xl font-bold leading-[3rem]'>
         {value}
       </div>
@@ -42,6 +43,7 @@ export default function Overview() {
   const [dailyOutputTotal, setDailyOutputTotal] = useState(0);
   const [dailyAverageOutput, setDailyAverageOutput] = useState(0);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getOverviewData(timeIncrement).then(({ data }) => {
@@ -116,7 +118,10 @@ export default function Overview() {
             <StatBlock title='sites' value={sites.length} />
             <StatBlock title='devices' value={devices.length} />
             <StatBlock
-              className={activeAlerts > 0 ? 'text-danger' : ''}
+              className={
+                'cursor-pointer' + (activeAlerts > 0 ? ' text-danger' : '')
+              }
+              onClick={() => navigate('/alerts')}
               title='active alerts'
               value={activeAlerts.length}
             />
