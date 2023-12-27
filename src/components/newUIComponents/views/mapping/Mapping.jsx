@@ -1,11 +1,10 @@
-import Tippy from '@tippyjs/react';
 import { useEffect, useState } from 'react';
-import { FaRegQuestionCircle } from 'react-icons/fa';
 
 import { deleteMapping, getMappings } from '../../../../services/services';
 import AddMapping from './AddMapping';
 import MappingBlock from './MappingBlock';
 import { attributeMappings } from './MappingConstants';
+import Help from '../../common/Help';
 
 export default function Mapping() {
   const [mappings, setMappings] = useState([]);
@@ -28,17 +27,7 @@ export default function Mapping() {
       <div className='fade-in my-8 w-[55rem] max-w-full rounded-lg bg-white p-6 shadow-panel sm:p-8'>
         <div className='mb-10 flex w-full items-center space-x-1'>
           <span className='text-lg font-bold'>Attribute Mappings</span>
-          <Tippy
-            content='Mappings provide a way to translate names of data points from your devices to the fields Solar Moon needs to generate graphs, analytics and alerts. There are a number of mappings provided by default, but if you are unable to change your device settings to match them, the platform can map to existing config instead.'
-            placement='bottom'
-          >
-            <div>
-              <FaRegQuestionCircle
-                className='cursor-pointer text-neutral-400'
-                size={18}
-              />
-            </div>
-          </Tippy>
+          <Help content='Mappings provide a way to translate names of data points from your devices to the fields Solar Moon needs to generate graphs, analytics and alerts. There are a number of mappings provided by default, but if you are unable to change your device settings to match them, the platform can map to existing config instead.' />
         </div>
         <div>
           <AddMapping mappings={mappings} setMappings={setMappings} />

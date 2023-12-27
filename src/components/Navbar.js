@@ -57,7 +57,7 @@ function NavBar() {
           <Nav className='w-100' defaultActiveKey='/'>
             <Nav.Item>
               <NavLink
-                className='text-nowrap nav-link'
+                className='nav-link text-nowrap'
                 onClick={() => updateExpanded(false)}
                 to='/dashboard'
               >
@@ -67,7 +67,7 @@ function NavBar() {
             </Nav.Item>
             <Nav.Item>
               <NavLink
-                className='text-nowrap nav-link'
+                className='nav-link text-nowrap'
                 onClick={() => updateExpanded(false)}
                 to='/reports'
               >
@@ -76,7 +76,7 @@ function NavBar() {
             </Nav.Item>
             <Nav.Item>
               <NavLink
-                className='text-nowrap nav-link'
+                className='nav-link text-nowrap'
                 onClick={() => updateExpanded(false)}
                 to='/alarms'
               >
@@ -86,7 +86,7 @@ function NavBar() {
             <Nav.Item>
               <NavLink
                 as={Link}
-                className='text-nowrap nav-link'
+                className='nav-link text-nowrap'
                 onClick={() => updateExpanded(false)}
                 to='/sites'
               >
