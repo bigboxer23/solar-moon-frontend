@@ -32,7 +32,7 @@ export default function Button({
     [dangerButtonClass]: variant === 'danger',
     [textButtonClass]: variant === 'text',
     [iconButtonClass]: variant === 'icon',
-    'opacity-70 cursor-not-allowed': disabled,
+    'opacity-70 pointer-events-none': disabled,
   });
 
   return (
