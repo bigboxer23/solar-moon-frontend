@@ -1,5 +1,6 @@
 import { Menu, MenuButton, MenuItem } from '@szhsin/react-menu';
 import classNames from 'classnames';
+import { useController } from 'react-hook-form';
 import { FaChevronDown } from 'react-icons/fa';
 
 export default function Dropdown({
@@ -38,4 +39,10 @@ export default function Dropdown({
       </Menu>
     </div>
   );
+}
+
+export function ControlledDropdown({ name, control, ...rest }) {
+  const { field } = useController({ name, control });
+
+  return <Dropdown onChange={field.onChange} {...rest} />;
 }

@@ -1,18 +1,38 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { MdKey } from 'react-icons/md';
+import * as yup from 'yup';
 
-import logo from '../../../../assets/logo.svg';
 import { useStickyState } from '../../../../utils/Utils';
 import Button from '../../common/Button';
+import { ControlledInput } from '../../common/Input';
 import HeaderBar from '../../nav/HeaderBar';
+
+const yupSchema = yup
+  .object()
+  .shape({
+    AccessCode: yup
+      .string()
+      .required('This field is required')
+      .matches(process.env.REACT_APP_ACCESS_CODE, 'Invalid access code'),
+  })
+  .required();
 
 export const LockPage = () => {
   const [_, setUnlocked] = useStickyState(null, 'unlock.code');
   const {
-    register,
+    control,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    mode: 'onBlur',
+    resolver: yupResolver(yupSchema),
+    defaultValues: {
+      AccessCode: '',
+    },
+  });
+
+  console.log('errors', errors);
 
   const onSubmit = (data) => {
     setUnlocked(data.AccessCode);
@@ -27,27 +47,19 @@ export const LockPage = () => {
           Enter the access code to proceed to the site
         </div>
         <form
-          className='mt-8 flex w-full flex-col'
+          className='mt-6 flex w-full flex-col'
           onSubmit={handleSubmit(onSubmit)}
         >
-          {/*<label>Access Code</label>*/}
-          <input
-            autoComplete='off'
-            placeholder='Enter Access Code'
+          <ControlledInput
+            control={control}
+            errorMessage={errors.AccessCode?.message}
+            inputProps={{
+              placeholder: 'Enter Access Code',
+            }}
+            name='AccessCode'
             type='password'
-            {...register('AccessCode', {
-              required: true,
-              validate: (value, formValues) =>
-                process.env.REACT_APP_ACCESS_CODE === value,
-            })}
+            variant='underline'
           />
-          {errors.AccessCode && (
-            <span className='mt-1 text-sm text-danger'>
-              {errors.AccessCode?.type === 'required'
-                ? 'This field is required'
-                : 'Invalid access code'}
-            </span>
-          )}
           <Button
             className='mt-8 justify-center'
             type='submit'

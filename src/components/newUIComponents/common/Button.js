@@ -20,8 +20,8 @@ export default function Button({
   onClick,
   variant = 'primary',
   className,
-  disabled,
-  buttonProps,
+  disabled = false,
+  buttonProps = {},
 }) {
   const buttonClass = classNames(`Button-${variant} flex`, className, {
     [primaryButtonClass]: variant === 'primary',
