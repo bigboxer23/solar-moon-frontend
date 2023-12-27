@@ -61,7 +61,7 @@ export function Input({
   errorMessage,
   extendVariantStyles = true,
 }) {
-  const { inputStyle, wrapperStyle, labekStyle, errorStyle } = buildStyles(
+  const { inputStyle, wrapperStyle, labelStyle, errorStyle } = buildStyles(
     variant,
     inputClassName,
     wrapperClassName,
@@ -72,15 +72,17 @@ export function Input({
 
   return (
     <>
-      <label className={`Input ${wrapperStyle}`}>
-        {label && <div className={labekStyle}>{label}</div>}
-        <div className='flex space-x-2'>
-          {prefix}
-          <input className={inputStyle} {...inputProps} />
-          {suffix}
-        </div>
-      </label>
-      {errorMessage && <div className={errorStyle}>{errorMessage}</div>}
+      <div>
+        <label className={`Input ${wrapperStyle}`}>
+          {label && <div className={labelStyle}>{label}</div>}
+          <div className='flex space-x-2'>
+            {prefix}
+            <input className={inputStyle} {...inputProps} />
+            {suffix}
+          </div>
+        </label>
+        {errorMessage && <div className={errorStyle}>{errorMessage}</div>}
+      </div>
     </>
   );
 }
