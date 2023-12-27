@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 
 import { deleteMapping, getMappings } from '../../../../services/services';
+import Help from '../../common/Help';
 import AddMapping from './AddMapping';
 import MappingBlock from './MappingBlock';
 import { attributeMappings } from './MappingConstants';
-import Help from '../../common/Help';
 
 export default function Mapping() {
   const [mappings, setMappings] = useState([]);
