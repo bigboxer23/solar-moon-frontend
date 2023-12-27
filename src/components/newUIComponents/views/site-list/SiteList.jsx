@@ -13,6 +13,16 @@ export default function SiteList() {
       .then(({ data }) => {
         setLoading(false);
         const sites = data.filter((d) => d.virtual);
+
+        data
+          .filter((d) => !d.virtual)
+          .forEach((d) => {
+            const site = sites.find((s) => s.name === d.site);
+            if (site) {
+              site.deviceCount = site.deviceCount + 1 || 1;
+            }
+          });
+
         setSites(sites);
       })
       .catch((e) => {
@@ -31,7 +41,7 @@ export default function SiteList() {
     <main className='SiteList flex flex-col items-center bg-brand-primary-light'>
       <div className='fade-in my-8 w-[55rem] max-w-full space-y-4 rounded-lg bg-white p-6 shadow-panel sm:p-8'>
         <div className='text-base font-bold'>Sites</div>
-        <div className='flex flex-col justify-center space-y-4'>
+        <div className='flex flex-col justify-center space-y-2'>
           {sites.map((site) => (
             <SiteRow key={site.id} site={site} />
           ))}
