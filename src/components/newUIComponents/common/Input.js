@@ -23,10 +23,10 @@ const presets = {
 
 function buildStyles(
   variant,
-  inputClassName,
-  wrapperClassName,
-  labelClassName,
-  errorClassName,
+  inputClassName = '',
+  wrapperClassName = '',
+  labelClassName = '',
+  errorClassName = '',
   extendVariantStyles = true,
 ) {
   const { inputStyle, wrapperStyle, labelStyle, errorStyle } = presets[variant];
