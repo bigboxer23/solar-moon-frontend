@@ -102,13 +102,15 @@ export default function OverviewSiteRow({ info, graphData, timeIncrement }) {
       className='SiteRow mb-3 flex w-full items-center rounded px-2 py-1 transition-all duration-150 ease-in-out hover:bg-brand-primary-light'
       to={`/sites/${id}`}
     >
-      <div className='w-[20%] pr-1 sm:w-[15%]'>{name}</div>
+      <div className='w-[25%] pr-1 sm:w-[15%]'>{name}</div>
       <div className='hidden text-end sm:block sm:w-[15%]'>{deviceCount}</div>
-      <div className='w-[10%] px-1 text-end sm:w-[15%]'>{alertCount}</div>
+      <div className='hidden px-1 text-end sm:block sm:w-[15%]'>
+        {alertCount}
+      </div>
       <div className='w-[20%] overflow-hidden text-ellipsis px-1 text-end sm:w-[15%]'>
         <FormattedNumber value={average} />
       </div>
-      <div className='w-[20%] overflow-hidden text-ellipsis px-1 text-end sm:w-[15%]'>
+      <div className='w-[25%] overflow-hidden text-ellipsis px-2 text-end sm:w-[15%]'>
         <FormattedNumber value={total} />
       </div>
       <div className='ml-auto h-[2.5rem] w-[30%] rounded bg-brand-primary-light sm:w-1/4'>
