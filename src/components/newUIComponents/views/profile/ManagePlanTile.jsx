@@ -9,7 +9,7 @@ import Button from '../../common/Button';
 import Loader from '../../common/Loader';
 import Spinner from '../../common/Spinner';
 
-function ManagePlanTile() {
+export default function ManagePlanTile() {
   const [billingLoading, setBillingLoading] = useState(false);
   const [quantity, setQuantity] = useState(0);
   const [period, setPeriod] = useState('');
@@ -86,5 +86,3 @@ function ManagePlanTile() {
     </div>
   );
 }
-
-export default ManagePlanTile;
