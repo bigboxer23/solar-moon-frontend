@@ -185,7 +185,7 @@ const UserManagement = () => {
                 className='ms-2'
                 onClick={() => {
                   setDeleteAcctWarning(false);
-                  deleteCustomer(customerData.customerId)
+                  deleteCustomer()
                     .then(() => {
                       signOut();
                       navigate('/');

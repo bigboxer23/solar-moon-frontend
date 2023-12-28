@@ -18,8 +18,8 @@ export function updateCustomer(customerData) {
   return api.post('customer', customerData);
 }
 
-export const deleteCustomer = (customerId) => {
-  return api.delete('customer/' + customerId);
+export const deleteCustomer = () => {
+  return api.delete('customer/');
 };
 
 export function getUserPortalSession() {

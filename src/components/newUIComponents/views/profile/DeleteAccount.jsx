@@ -55,7 +55,7 @@ export default function DeleteAccount({ customerData }) {
                     signOut();
                     navigate('/');
                   })
-                  .catch((e) => console.log(e));
+                  .catch((e) => setDeleting(false));
               }}
               variant='outline-danger'
             >
