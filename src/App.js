@@ -36,10 +36,10 @@ import PricingPage from './components/newUIComponents/views/checkout/PricingPage
 import Dashboard from './components/newUIComponents/views/dashboard/Dashboard';
 import { LockPage } from './components/newUIComponents/views/lock/LockPage';
 import Mapping from './components/newUIComponents/views/mapping/Mapping';
+import Profile from './components/newUIComponents/views/profile/Profile';
 import Reports from './components/newUIComponents/views/reports/Reports';
 import SiteDetails from './components/newUIComponents/views/site-details/SiteDetails';
 import SiteList from './components/newUIComponents/views/site-list/SiteList';
-import UserManagement from './components/user_management/UserManagement';
 import { oldTheme } from './themes';
 
 ChartJS.register(
@@ -84,7 +84,7 @@ function App() {
                 <Route element={<SiteList />} path='/sites' />
                 <Route element={<SiteDetails />} path='/sites/:siteId' />
                 <Route element={<Alerts />} path='/alerts' />
-                <Route element={<UserManagement />} path='/profile' />
+                <Route element={<Profile />} path='/profile' />
                 <Route element={<CheckoutForm />} path='/checkout' />
                 <Route element={<Return />} path='/return' />
                 <Route element={<PricingPage />} path='/pricing' />
