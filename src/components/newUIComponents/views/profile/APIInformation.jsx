@@ -23,7 +23,7 @@ export default function APIInformation({ customerData, setCustomerData }) {
   };
 
   return (
-    <div className='fade-in my-8 w-[55rem] max-w-full rounded-lg bg-white p-6 shadow-panel sm:p-8'>
+    <div className='fade-in my-8 w-[40rem] max-w-full rounded-lg bg-white p-6 shadow-panel sm:p-8'>
       <div className='mb-10 flex w-full justify-between'>
         <span className='text-lg font-bold'>API Information</span>
       </div>
@@ -42,9 +42,10 @@ export default function APIInformation({ customerData, setCustomerData }) {
           }
           type='text'
           variant='underline'
-          wrapperClassName='mb-4'
+          wrapperClassName='mb-6'
         />
         <Button
+          className='ml-auto'
           id='revokeAccessKey'
           onClick={() => setAccessKeyWarning(true)}
           type='button'
@@ -65,13 +66,14 @@ export default function APIInformation({ customerData, setCustomerData }) {
             <hr />
             <div className='mt-8 flex content-end'>
               <Button
+                className='ml-auto'
                 onClick={() => setAccessKeyWarning(false)}
                 variant='secondary'
               >
                 Cancel
               </Button>
               <Button
-                className='ms-2'
+                className='ml-auto ms-2'
                 onClick={() => {
                   setAccessKeyWarning(false);
                   updateCustomer({

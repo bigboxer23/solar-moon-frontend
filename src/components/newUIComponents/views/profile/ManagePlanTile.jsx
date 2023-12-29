@@ -20,6 +20,10 @@ export default function ManagePlanTile() {
     getSubscriptions().then(({ data }) => {
       if (data.length === 0) {
         setLoading(false);
+        setQuantity(1);
+        setPeriod('Monthly');
+        setPeriodShort('month');
+        setPrice(40);
         return;
       }
       setQuantity(data[0].quantity);
@@ -42,25 +46,25 @@ export default function ManagePlanTile() {
   };
 
   return (
-    <div className='price fade-in my-8 w-[55rem] max-w-full rounded-lg bg-white p-6 shadow-panel sm:p-8'>
+    <div className='price fade-in my-8 w-[40rem] max-w-full rounded-lg bg-white p-6 shadow-panel sm:p-8'>
       <div className='mb-10 flex w-full justify-between'>
         <span className='text-lg font-bold'>Billing Information</span>
       </div>
       {loading && <Loader />}
       {!loading && (
         <div className='flex flex-col'>
-          <div className='mb-3 flex items-center'>
+          <div className='mb-2 flex items-center'>
             <div className='text-xl font-bold'>{period}</div>
           </div>
-          <div className='mb-1 flex items-center'>
+          <div className='mb-2 flex items-center'>
             <div className='text-lg'>{20 * quantity}</div>
             <div className='ps-1 text-sm text-gray-500'> devices</div>
           </div>
-          <div className='mb-1 flex items-center'>
+          <div className='mb-2 flex items-center'>
             <div className='text-lg'>${price * quantity}</div>
             <div className='ps-1 text-sm text-gray-500'> per {periodShort}</div>
           </div>
-          <div className='mb-3 flex'>
+          <div className='mb-6 flex'>
             <div className='smaller-text  text-sm text-gray-500'>
               {quantity} Seats, ${price} per seat per {periodShort}
             </div>
@@ -68,7 +72,7 @@ export default function ManagePlanTile() {
           <div className='grow-1' />
           <div>
             <Button
-              className='mt-3'
+              className='ml-auto mt-3'
               disabled={billingLoading}
               onClick={() => gotoPortal()}
               type='button'

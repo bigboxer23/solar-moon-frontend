@@ -14,11 +14,12 @@ export default function DeleteAccount({ customerData }) {
   const { signOut } = useAuthenticator((context) => [context.user]);
 
   return (
-    <div className='fade-in my-8 w-[55rem] max-w-full rounded-lg bg-white p-6 shadow-panel sm:p-8'>
+    <div className='fade-in my-8 w-[40rem] max-w-full rounded-lg bg-white p-6 shadow-panel sm:p-8'>
       <div className='mb-10 flex w-full justify-between'>
         <span className='text-lg font-bold'>Delete Account</span>
       </div>
       <Button
+        className='ml-auto '
         disabled={deleting}
         id='deleteAccountButton'
         onClick={() => setDeleteAcctWarning(true)}
@@ -40,13 +41,14 @@ export default function DeleteAccount({ customerData }) {
           <hr />
           <div className='mt-8 flex content-end'>
             <Button
+              className='ml-auto '
               onClick={() => setDeleteAcctWarning(false)}
               variant='secondary'
             >
               Cancel
             </Button>
             <Button
-              className='ms-2'
+              className='ml-auto ms-2 '
               onClick={() => {
                 setDeleteAcctWarning(false);
                 setDeleting(true);
