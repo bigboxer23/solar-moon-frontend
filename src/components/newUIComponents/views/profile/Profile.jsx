@@ -23,10 +23,10 @@ export default function Profile() {
   }, []);
 
   return (
-    <div className='flex max-w-full flex-col items-center'>
+    <main className='me-2 ms-2 flex max-w-full flex-col items-center'>
       {loading && <Loader />}
       {!loading && (
-        <main>
+        <div className='max-w-full'>
           <CustomerInformation
             email={customerData?.email || ''}
             name={customerData?.name || ''}
@@ -38,8 +38,8 @@ export default function Profile() {
           />
           <ChangePassword />
           <DeleteAccount />
-        </main>
+        </div>
       )}
-    </div>
+    </main>
   );
 }
