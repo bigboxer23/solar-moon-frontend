@@ -19,11 +19,6 @@ export default function ManagePlanTile() {
   useEffect(() => {
     getSubscriptions().then(({ data }) => {
       if (data.length === 0) {
-        setLoading(false);
-        setQuantity(1);
-        setPeriod('Monthly');
-        setPeriodShort('month');
-        setPrice(40);
         return;
       }
       setQuantity(data[0].quantity);
