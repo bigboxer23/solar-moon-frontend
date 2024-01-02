@@ -1,7 +1,7 @@
 import { useController } from 'react-hook-form';
 
 const boxStylePreset = {
-  inputStyle: 'grow-1 outline-none',
+  inputStyle: 'grow outline-none',
   wrapperStyle:
     'flex flex-col border border-gray-300 rounded-md focus-within:border-brand-primary py-2 px-4',
   labelStyle: 'text-sm text-gray-700',
@@ -9,7 +9,7 @@ const boxStylePreset = {
 };
 
 const underlineStylePreset = {
-  inputStyle: 'grow-1 outline-none',
+  inputStyle: 'grow outline-none',
   wrapperStyle:
     'flex flex-col border-b border-gray-300 focus-within:border-brand-primary pb-1',
   labelStyle: 'text-sm text-gray-700',

@@ -42,7 +42,7 @@ export default function DeleteAccount({ customerData }) {
             })
             .catch((e) => setDeleting(false));
         }}
-        setShow={setDeleteAcctWarning()}
+        setShow={setDeleteAcctWarning}
         show={deleteAcctWarning}
         title='Are you sure you want to delete your account? Doing so is
               non-reversible.'
