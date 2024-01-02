@@ -19,7 +19,7 @@ const NewSiteDialog = ({
   const yupSchema = yup
     .object()
     .shape({
-      name: yup.string().required('This field is required'),
+      name: yup.string().required('Site name is required'),
     })
     .required();
 

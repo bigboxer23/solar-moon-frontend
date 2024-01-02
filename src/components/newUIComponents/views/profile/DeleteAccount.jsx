@@ -4,6 +4,7 @@ import { TbUserCancel } from 'react-icons/tb';
 import { useNavigate } from 'react-router-dom';
 
 import { deleteCustomer } from '../../../../services/services';
+import AlertSection from '../../common/AlertSection';
 import Button from '../../common/Button';
 import Spinner from '../../common/Spinner';
 
@@ -30,42 +31,22 @@ export default function DeleteAccount({ customerData }) {
         {deleting && <Spinner className='button-icon' />}
         Delete Account
       </Button>
-      {deleteAcctWarning && (
-        <div className='mt-8 rounded-lg border-2 border-danger p-4'>
-          <div className='mb-2 flex w-full justify-between text-danger'>
-            <span className='text-lg font-bold'>
-              Are you sure you want to delete your account? Doing so is
-              non-reversible.
-            </span>
-          </div>
-          <hr />
-          <div className='mt-8 flex content-end'>
-            <Button
-              className='ml-auto '
-              onClick={() => setDeleteAcctWarning(false)}
-              variant='secondary'
-            >
-              Cancel
-            </Button>
-            <Button
-              className='ml-auto ms-2 '
-              onClick={() => {
-                setDeleteAcctWarning(false);
-                setDeleting(true);
-                deleteCustomer(customerData.customerId)
-                  .then(() => {
-                    signOut();
-                    navigate('/');
-                  })
-                  .catch((e) => setDeleting(false));
-              }}
-              variant='outline-danger'
-            >
-              Delete Account
-            </Button>
-          </div>
-        </div>
-      )}
+      <AlertSection
+        buttonTitle='Delete Account'
+        onClick={() => {
+          setDeleting(true);
+          deleteCustomer(customerData.customerId)
+            .then(() => {
+              signOut();
+              navigate('/');
+            })
+            .catch((e) => setDeleting(false));
+        }}
+        setShow={setDeleteAcctWarning()}
+        show={deleteAcctWarning}
+        title='Are you sure you want to delete your account? Doing so is
+              non-reversible.'
+      />
     </div>
   );
 }
