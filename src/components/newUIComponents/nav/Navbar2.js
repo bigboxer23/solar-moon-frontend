@@ -117,7 +117,7 @@ export default function Navbar2() {
             className={({ isActive }) =>
               isActive ? activeLinkStyle : linkStyle
             }
-            to='/manage'
+            to='/siteManagement'
           >
             Manage
           </NavLink>
@@ -186,7 +186,7 @@ export default function Navbar2() {
             className={({ isActive }) =>
               isActive ? slideMenuActiveLinkStyle : slideMenuLinkStyle
             }
-            to='/manage'
+            to='/siteManagement'
           >
             Manage
           </NavLink>

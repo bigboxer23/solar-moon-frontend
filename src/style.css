@@ -792,15 +792,6 @@ button:focus {
   --bs-btn-active-bg: transparent;
 }
 
-.device .hidden-without-hover {
-  opacity: 0;
-  transition: opacity 0.1s ease-out 0s !important;
-}
-
-.device:hover .hidden-without-hover {
-  opacity: 1;
-}
-
 .header {
   background: #444950;
   color: var(--bs-body-color);
@@ -822,10 +813,6 @@ button:focus {
 
 .modal-header {
   color: var(--bs-body-color);
-}
-
-.site-attributes {
-  border-radius: 0 0 var(--bs-border-radius) var(--bs-border-radius) !important;
 }
 
 .smaller-text {

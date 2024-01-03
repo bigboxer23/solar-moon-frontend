@@ -60,7 +60,7 @@ export default function ManagePlanTile() {
             <div className='ps-1 text-sm text-gray-500'> per {periodShort}</div>
           </div>
           <div className='mb-6 flex'>
-            <div className='smaller-text  text-sm text-gray-500'>
+            <div className='smaller-text text-sm text-gray-500'>
               {quantity} Seats, ${price} per seat per {periodShort}
             </div>
           </div>

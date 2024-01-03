@@ -107,7 +107,7 @@ const SiteAttributes = ({ data, setDevices, setActiveSite }) => {
           variant='underline'
           wrapperClassName='mb-6'
         />
-        <div className='flex flex-col items-end'>
+        <div className='flex items-center'>
           <div
             className={
               (data.latitude !== -1 && data.longitude !== -1
@@ -118,6 +118,7 @@ const SiteAttributes = ({ data, setDevices, setActiveSite }) => {
           >
             {data.latitude + ',' + data.longitude}
           </div>
+          <div className='grow' />
           <Button
             disabled={loading}
             onClick={() => handleSubmit(update)}

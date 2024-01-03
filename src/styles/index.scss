@@ -11,9 +11,11 @@ body {
 @tailwind utilities;
 
 @import 'EllipsisLoader';
+@import 'Switch';
 @import 'restyles/DatePicker';
 @import 'restyles/Grid';
 @import 'restyles/QuantityPicker';
 @import 'restyles/Amplify';
+@import 'restyles/Device';
 
 @import 'tippy.js/dist/tippy.css';
