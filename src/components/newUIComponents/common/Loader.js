@@ -1,4 +1,4 @@
-export default function Loader({ className }) {
+export default function Loader({ className = '' }) {
   return (
     <div className={className + ' Loader'}>
       <div className='loader-ellipsis'>
