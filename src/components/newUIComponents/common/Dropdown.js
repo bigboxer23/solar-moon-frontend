@@ -1,4 +1,4 @@
-import { Menu, MenuButton, MenuItem } from '@szhsin/react-menu';
+import { Menu, MenuButton, MenuDivider, MenuItem } from '@szhsin/react-menu';
 import classNames from 'classnames';
 import { useController } from 'react-hook-form';
 import { FaChevronDown } from 'react-icons/fa';
@@ -27,15 +27,25 @@ export default function Dropdown({
         }
         menuClassName='pl-0 py-2 w-[9rem] rounded-lg flex flex-col list-none bg-white shadow-panel z-10'
       >
-        {options.map((option) => (
-          <MenuItem
-            className='cursor-pointer list-none px-4 py-1.5 text-sm font-normal text-black hover:bg-[#eee]'
-            key={option.value}
-            onClick={(e) => onChange(option)}
-          >
-            {option.label}
-          </MenuItem>
-        ))}
+        {options.map((option) => {
+          if (option.divider)
+            return (
+              <MenuDivider
+                className='me-3 ms-3 h-[1px] bg-[#eee]'
+                key={option.value}
+              />
+            );
+          return (
+            <MenuItem
+              className='flex cursor-pointer list-none items-center px-4 py-1.5 text-sm font-normal text-black hover:bg-[#eee]'
+              key={option.value}
+              onClick={(e) => onChange(option)}
+            >
+              {option.icon !== undefined && option.icon}
+              {option.label}
+            </MenuItem>
+          );
+        })}
       </Menu>
     </div>
   );
