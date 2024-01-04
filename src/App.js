@@ -7,6 +7,7 @@ import { Amplify } from 'aws-amplify';
 import {
   CategoryScale,
   Chart as ChartJS,
+  Colors,
   Legend,
   LinearScale,
   LineElement,
@@ -47,6 +48,7 @@ ChartJS.register(
   CategoryScale,
   LinearScale,
   PointElement,
+  Colors,
   LineElement,
   Title,
   Tooltip,

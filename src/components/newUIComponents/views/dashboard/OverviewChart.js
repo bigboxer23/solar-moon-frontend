@@ -3,6 +3,7 @@ import { Line } from 'react-chartjs-2';
 
 import { DAY, parseSearchReturn } from '../../../../services/search';
 import { splitDayAndNightDataSets } from '../../../../utils/Utils';
+import { tooltipPlugin } from '../../common/graphPlugins';
 
 export default function OverviewChart({ timeIncrement, siteData }) {
   const [loading, setLoading] = useState(true);
@@ -121,45 +122,11 @@ export default function OverviewChart({ timeIncrement, siteData }) {
     },
   };
 
-  const plugins = [
-    {
-      id: 'verticalLiner',
-      afterInit: (chart) => {
-        chart.verticalLiner = {};
-      },
-      afterEvent: (chart, args) => {
-        const { inChartArea } = args;
-        chart.verticalLiner = { draw: inChartArea };
-      },
-      beforeTooltipDraw: (chart, args) => {
-        const { draw } = chart.verticalLiner;
-        if (!draw) return;
-
-        const { ctx } = chart;
-        const { top, bottom } = chart.chartArea;
-        const { tooltip } = args;
-        const x = tooltip?.caretX;
-        if (!x) return;
-
-        ctx.save();
-
-        ctx.beginPath();
-        ctx.strokeStyle = '#5178C2';
-        ctx.lineWidth = 2;
-        ctx.moveTo(x, top);
-        ctx.lineTo(x, bottom);
-        ctx.stroke();
-
-        ctx.restore();
-      },
-    },
-  ];
-
   if (loading) return null;
 
   return (
     <div className='OverviewChart mb-6 h-40 w-full rounded-lg bg-brand-primary-light px-2 pb-1'>
-      <Line data={data} options={options} plugins={plugins} />
+      <Line data={data} options={options} plugins={[tooltipPlugin]} />
     </div>
   );
 }

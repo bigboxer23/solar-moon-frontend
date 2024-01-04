@@ -4,7 +4,15 @@ import { useEffect, useState } from 'react';
 import { IoPartlySunnyOutline } from 'react-icons/io5';
 import { MdFoggy, MdOutlineWbCloudy, MdOutlineWbSunny } from 'react-icons/md';
 
-import { DAY, HOUR, MONTH, WEEK, YEAR } from '../services/search';
+import {
+  AVG,
+  DATE_HISTO,
+  DAY,
+  HOUR,
+  MONTH,
+  WEEK,
+  YEAR,
+} from '../services/search';
 
 export function preventSubmit(event) {
   if (event.key === 'Enter') {
@@ -176,4 +184,23 @@ export const formatMessage = function (message) {
   const finalMatch = unixMS == null ? unixSec : unixMS;
   //Replace timestamp w/local time
   return message.replaceAll(finalMatch, getFormattedTime(new Date(timestamp)));
+};
+
+export const parseStackedTimeSeriesData = function (data) {
+  let formattedData = [];
+  let deviceCount = 0;
+  data.aggregations[DATE_HISTO].buckets.forEach((d) => {
+    let date = new Date(Number(d.key));
+    deviceCount = Math.max(deviceCount, d['sterms#terms'].buckets.length);
+    if (d['sterms#terms'].buckets.length >= deviceCount) {
+      d['sterms#terms'].buckets.forEach((v) => {
+        formattedData.push({
+          date: date.toISOString(),
+          name: v.key,
+          avg: v[AVG] ? v[AVG].value : v['1'].value,
+        });
+      });
+    }
+  });
+  return formattedData;
 };
