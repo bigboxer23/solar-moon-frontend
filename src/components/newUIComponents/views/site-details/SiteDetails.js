@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { FaArrowLeft } from 'react-icons/fa';
 import { FormattedNumber } from 'react-intl';
-import { NavLink, redirect, useMatch } from 'react-router-dom';
+import { NavLink, redirect, useMatch, useNavigate } from 'react-router-dom';
 
 import {
   AVG_AGGREGATION,
@@ -42,6 +42,7 @@ export default function SiteDetails() {
   const siteId = match?.params?.siteId;
   const [activeSiteAlerts, setActiveSiteAlerts] = useState([]);
   const [resolvedSiteAlerts, setResolvedSiteAlerts] = useState([]);
+  const navigate = useNavigate();
 
   if (!siteId) {
     return redirect('/sites');
@@ -130,9 +131,14 @@ export default function SiteDetails() {
         </div>
         <div className='mb-4 flex space-x-4'>
           <StatBlock title='devices' value={devices.length} />
-          <StatBlock title='active alerts' value={activeSiteAlerts.length} />
+          <StatBlock
+            onClick={() => navigate(`/alerts?site=${siteId}`)}
+            title='active alerts'
+            value={activeSiteAlerts.length}
+          />
           <StatBlock
             className='text-text-secondary'
+            onClick={() => navigate(`/alerts?site=${siteId}`)}
             title='resolved alerts'
             value={resolvedSiteAlerts.length}
           />

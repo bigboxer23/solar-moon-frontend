@@ -1,7 +1,9 @@
 import classNames from 'classnames';
 
 export default function StatBlock({ title, value, className, onClick }) {
-  const style = classNames('StatBlock flex space-x-2', className);
+  const style = classNames('StatBlock flex space-x-2', className, {
+    'cursor-pointer': onClick,
+  });
 
   return (
     <div className={style} onClick={onClick}>

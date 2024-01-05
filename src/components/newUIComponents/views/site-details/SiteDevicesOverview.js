@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { FormattedNumber } from 'react-intl';
+import { useNavigate } from 'react-router-dom';
 
 import {
   AVG_AGGREGATION,
@@ -23,6 +24,7 @@ export default function SiteDevicesOverview({
   const [deviceGraphData, setDeviceGraphData] = useState([]);
   const [deviceAvgTotal, setDeviceAvgTotal] = useState([]);
   const [expandedDevice, setExpandedDevice] = useState(-1);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getListTimeSeriesData(devices, timeIncrement).then(({ data }) => {
@@ -71,6 +73,7 @@ export default function SiteDevicesOverview({
                 <div className='mt-2 flex w-full items-center'>
                   <div className='flex space-x-4'>
                     <StatBlock
+                      onClick={() => navigate(`/alerts?device=${device.id}`)}
                       title='active alerts'
                       value={
                         activeSiteAlerts.filter(
@@ -80,6 +83,7 @@ export default function SiteDevicesOverview({
                     />
                     <StatBlock
                       className='text-text-secondary'
+                      onClick={() => navigate(`/alerts?device=${device.id}`)}
                       title='resolved alerts'
                       value={
                         resolvedSiteAlerts.filter(

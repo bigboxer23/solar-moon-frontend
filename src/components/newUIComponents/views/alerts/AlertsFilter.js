@@ -41,6 +41,15 @@ export default function AlertsFilter({
 
   useEffect(() => {
     handleFilterChange({
+      site: defaultSite.value,
+      device: defaultDevice.value,
+      start: dateValue[0] ? dateValue[0] : null,
+      end: dateValue[1] ? dateValue[1] : null,
+    });
+  }, []);
+
+  useEffect(() => {
+    handleFilterChange({
       site: siteValue.value,
       device: deviceValue.value,
       start: dateValue[0] ? dateValue[0] : null,
