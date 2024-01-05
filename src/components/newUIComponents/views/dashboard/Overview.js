@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import { FormattedNumber } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
@@ -12,25 +11,11 @@ import {
 import { getOverviewData } from '../../../../services/services';
 import { useStickyState } from '../../../../utils/Utils';
 import Loader from '../../common/Loader';
+import StatBlock from '../../common/StatBlock';
 import OverviewSiteList from './dashboard-site-list/OverviewSiteList';
 import OverviewChart from './OverviewChart';
 import SummaryHeader from './SummaryHeader';
 import TimeIncrementSelector from './TimeIncrementSelector';
-
-function StatBlock({ title, value, className, onClick }) {
-  const style = classNames('StatBlock flex space-x-2', className);
-
-  return (
-    <div className={style} onClick={onClick}>
-      <div className='inline-block self-end text-5xl font-bold leading-[3rem]'>
-        {value}
-      </div>
-      <div className='mb-1 inline-block max-w-[3.3rem] self-end text-base font-bold leading-[1.125rem]'>
-        {title}
-      </div>
-    </div>
-  );
-}
 
 export default function Overview() {
   const [sites, setSites] = useState([]);

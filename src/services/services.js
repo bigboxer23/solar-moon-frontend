@@ -110,6 +110,17 @@ export function getGroupedTimeSeriesData(device, start, end) {
   );
 }
 
+export function getListAvgTotal(devices, offset) {
+  const end = new Date();
+  const start = getRoundedTimeFromOffset(offset);
+
+  const avgTotalBodies = devices.map((device) =>
+    getAvgTotalBody(device, start, end),
+  );
+
+  return api.post('search', avgTotalBodies);
+}
+
 export function getAvgTotal(device, offset) {
   return api.post(
     'search',
