@@ -12,7 +12,7 @@ export default function SiteRow({ site }) {
       <div className='flex flex-col justify-center'>
         <div className='text-base font-bold'>{site.deviceName}</div>
         <div className='text-xs text-neutral-500'>
-          {site.city}, {site.country}
+          {site.city && site.country && `${site.city}, ${site.country}`}
         </div>
       </div>
 

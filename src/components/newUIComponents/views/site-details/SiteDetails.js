@@ -121,7 +121,7 @@ export default function SiteDetails() {
               id: {site.clientId}
             </span>
             <span className='text-sm text-neutral-500'>
-              {`${site.city}, ${site.country}`}
+              {site.city && site.country && `${site.city}, ${site.country}`}
             </span>
           </div>
           <TimeIncrementSelector
