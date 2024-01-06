@@ -1,9 +1,9 @@
-import { Card, CardBody } from "react-bootstrap";
-import logo from "../../assets/logo.svg";
-import React, { useState } from "react";
+import { useState } from 'react';
+import { Card, CardBody } from 'react-bootstrap';
+import { createSearchParams, useNavigate } from 'react-router-dom';
 
-import { createSearchParams, useNavigate } from "react-router-dom";
-import PriceTile from "./PriceTile";
+import logo from '../../assets/logo.svg';
+import PriceTile from './PriceTile';
 
 function PricingPage() {
   const navigate = useNavigate();
@@ -12,7 +12,7 @@ function PricingPage() {
 
   const checkoutClicked = (price, count) => {
     navigate({
-      pathname: "/checkout",
+      pathname: '/checkout',
       search: createSearchParams({
         price: price,
         count: count,
@@ -21,37 +21,37 @@ function PricingPage() {
   };
 
   return (
-    <div className={"pricing-page container min-vh-95"}>
-      <div className={"d-flex ps-5"}>
-        <img src={logo} className="img-fluid logo" alt="brand" />
-        <div className={"h4 p-4"}>Choose a billing plan</div>
+    <div className='pricing-page min-vh-95 container'>
+      <div className='d-flex ps-5'>
+        <img alt='brand' className='img-fluid logo' src={logo} />
+        <div className='h4 p-4'>Choose a billing plan</div>
       </div>
-      <div className={"d-flex ms-3 me-3 justify-content-center flex-wrap"}>
+      <div className='d-flex justify-content-center me-3 ms-3 flex-wrap'>
         <PriceTile
-          label={"Monthly"}
-          label2={"mo"}
-          label3={""}
+          checkoutClicked={checkoutClicked}
           count={monCount}
-          setCount={setMonCount}
+          label='Monthly'
+          label2='mo'
+          label3=''
           price={40}
           priceId={process.env.REACT_APP_PRICE_MO}
-          checkoutClicked={checkoutClicked}
+          setCount={setMonCount}
         />
         <PriceTile
-          label={"Yearly"}
-          label2={"yr"}
-          label3={"Save 10%!"}
+          checkoutClicked={checkoutClicked}
           count={yearCount}
-          setCount={setYearCount}
+          label='Yearly'
+          label2='yr'
+          label3='Save 10%!'
           price={432}
           priceId={process.env.REACT_APP_PRICE_YR}
-          checkoutClicked={checkoutClicked}
+          setCount={setYearCount}
         />
       </div>
-      <Card className={"flex-grow-1 m-5"}>
+      <Card className='grow-1 m-5'>
         <CardBody>
-          <div className={"h5 align-self-start"}>Plans include:</div>
-          <div className={"text-muted"}>
+          <div className='h5 align-self-start'>Plans include:</div>
+          <div className='text-muted'>
             <ul>
               <li>Up to 20 devices per seat</li>
               <li>Site level data via virtual devices</li>

@@ -1,6 +1,5 @@
-import { Button, ListGroup, Spinner } from "react-bootstrap";
-import { MdLock, MdOutlineDelete } from "react-icons/md";
-import React from "react";
+import { Button, ListGroup, Spinner } from 'react-bootstrap';
+import { MdLock, MdOutlineDelete } from 'react-icons/md';
 
 export default function MappingBlock({
   attribute,
@@ -10,33 +9,33 @@ export default function MappingBlock({
 }) {
   return (
     <ListGroup.Item>
-      <div className={"d-flex mapping-block align-items-center"}>
+      <div className='d-flex mapping-block align-items-center'>
         <code>{mappingName}</code>
-        <span className={"ps-2 pe-2"}>-></span>
+        <span className='pe-2 ps-2'>{'->'}</span>
         <kbd>{attribute}</kbd>
-        <div className={"flex-grow-1"}></div>
+        <div className='grow-1'></div>
         {showDelete ? (
           <Button
-            className={"hidden-without-hover"}
-            type={"button"}
+            className='hidden-without-hover'
+            id='revokeAccessKey'
             onClick={(e) => {
-              e.currentTarget.classList.add("disabled");
+              e.currentTarget.classList.add('disabled');
               deleteMapping(mappingName);
             }}
-            variant={"outline-danger"}
-            id={"revokeAccessKey"}
+            type='button'
+            variant='outline-danger'
           >
             <Spinner
-              as="span"
-              animation="border"
-              size="sm"
-              role="status"
-              className={"d-none"}
+              animation='border'
+              as='span'
+              className='d-none'
+              role='status'
+              size='sm'
             />
             <MdOutlineDelete />
           </Button>
         ) : (
-          <MdLock className={"text-muted"} />
+          <MdLock className='text-muted' />
         )}
       </div>
     </ListGroup.Item>

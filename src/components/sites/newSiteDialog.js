@@ -1,7 +1,8 @@
-import { Button, Col, Form, Modal, Row, Spinner } from "react-bootstrap";
-import React, { useState } from "react";
-import { addDevice } from "../../services/services";
-import { onEnterPressed, preventSubmit } from "../../utils/Utils";
+import { useState } from 'react';
+import { Button, Col, Form, Modal, Row, Spinner } from 'react-bootstrap';
+
+import { addDevice } from '../../services/services';
+import { onEnterPressed, preventSubmit } from '../../utils/Utils';
 
 const NewSiteDialog = ({
   show,
@@ -12,19 +13,19 @@ const NewSiteDialog = ({
 }) => {
   const [site, setSite] = useState({
     virtual: true,
-    virtualIndex: "true",
-    name: "",
-    city: "",
-    state: "",
-    country: "",
+    virtualIndex: 'true',
+    name: '',
+    city: '',
+    state: '',
+    country: '',
     latitude: -1,
     longitude: -1,
   });
 
   const createNewSite = () => {
-    if (site.name !== "") {
-      let button = document.getElementById("createSite");
-      button.classList.add("disabled");
+    if (site.name !== '') {
+      let button = document.getElementById('createSite');
+      button.classList.add('disabled');
       addDevice(site)
         .then(({ data }) => {
           setDevices((devices) => [...devices, data]);
@@ -33,23 +34,23 @@ const NewSiteDialog = ({
           setShow(false);
         })
         .catch((e) => {
-          button.classList.remove("disabled");
+          button.classList.remove('disabled');
           console.log(e);
         });
     }
   };
   const handleClose = () => setShow(false);
   return (
-    <Modal size={"lg"} show={show} onHide={handleClose} data-bs-theme="dark">
+    <Modal data-bs-theme='dark' onHide={handleClose} show={show} size='lg'>
       <Modal.Header closeButton>
         <Modal.Title>Create New Site</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form>
-          <Form.Group className="mb-3" controlId="formName">
+          <Form.Group className='mb-3' controlId='formName'>
             <Form.Label>Name</Form.Label>
             <Form.Control
-              value={site.name}
+              autoFocus
               onChange={(e) =>
                 setSite({
                   ...site,
@@ -60,14 +61,13 @@ const NewSiteDialog = ({
               }
               onKeyPress={preventSubmit}
               onKeyUp={(event) => onEnterPressed(event, createNewSite)}
-              autoFocus
+              value={site.name}
             />
           </Form.Group>
-          <Row className="mb-3">
-            <Form.Group as={Col} controlId="formGridCity">
+          <Row className='mb-3'>
+            <Form.Group as={Col} controlId='formGridCity'>
               <Form.Label>City</Form.Label>
               <Form.Control
-                value={site.city || ""}
                 onChange={(e) =>
                   setSite({
                     ...site,
@@ -76,13 +76,13 @@ const NewSiteDialog = ({
                 }
                 onKeyPress={preventSubmit}
                 onKeyUp={(event) => onEnterPressed(event, createNewSite)}
+                value={site.city || ''}
               />
             </Form.Group>
 
-            <Form.Group as={Col} controlId="formGridState">
+            <Form.Group as={Col} controlId='formGridState'>
               <Form.Label>State, County, Province, or Region</Form.Label>
               <Form.Control
-                value={site.state || ""}
                 onChange={(e) =>
                   setSite({
                     ...site,
@@ -91,13 +91,13 @@ const NewSiteDialog = ({
                 }
                 onKeyPress={preventSubmit}
                 onKeyUp={(event) => onEnterPressed(event, createNewSite)}
+                value={site.state || ''}
               />
             </Form.Group>
           </Row>
-          <Form.Group as={Col} controlId="formGridCountry">
+          <Form.Group as={Col} controlId='formGridCountry'>
             <Form.Label>Country</Form.Label>
             <Form.Control
-              value={site.country || ""}
               onChange={(e) =>
                 setSite({
                   ...site,
@@ -106,22 +106,23 @@ const NewSiteDialog = ({
               }
               onKeyPress={preventSubmit}
               onKeyUp={(event) => onEnterPressed(event, createNewSite)}
+              value={site.country || ''}
             />
           </Form.Group>
         </Form>
       </Modal.Body>
       <Modal.Footer>
         <Button
-          id="createSite"
-          variant="primary"
+          id='createSite'
           onClick={() => createNewSite()}
+          variant='primary'
         >
           <Spinner
-            as="span"
-            animation="border"
-            size="sm"
-            role="status"
-            className={"me-2 d-none"}
+            animation='border'
+            as='span'
+            className='d-none me-2'
+            role='status'
+            size='sm'
           />
           Create Site
         </Button>

@@ -1,46 +1,48 @@
-import { Card, CardBody, CardHeader } from "react-bootstrap";
-import DataGrid from "react-data-grid";
-import "react-data-grid/lib/styles.css";
-import { getDataPage } from "../../services/services";
-import React, { useEffect, useRef, useState } from "react";
-import Loader from "../common/Loader";
-import SearchBar from "./SearchBar";
-import { DAY } from "../../services/search";
-import DownloadReportButton from "./DownloadReportButton";
-import { useIntl } from "react-intl";
+import 'react-data-grid/lib/styles.css';
+
+import { useEffect, useRef, useState } from 'react';
+import { Card, CardBody, CardHeader } from 'react-bootstrap';
+import DataGrid from 'react-data-grid';
+import { useIntl } from 'react-intl';
+import { useSearchParams } from 'react-router-dom';
+
+import { DAY } from '../../services/search';
+import { getDataPage } from '../../services/services';
 import {
   getFormattedTime,
   getRoundedTime,
   getWeatherIcon,
   useSearchParamState,
-} from "../../utils/Utils";
-import { useSearchParams } from "react-router-dom";
+} from '../../utils/Utils';
+import Loader from '../common/Loader';
+import DownloadReportButton from './DownloadReportButton';
+import SearchBar from './SearchBar';
 
 const Reports = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [loading, setLoading] = useState(true);
   const [site, setSite] = useSearchParamState(
-    "All Sites",
-    "site",
+    'All Sites',
+    'site',
     searchParams,
     setSearchParams,
   );
   const [device, setDevice] = useSearchParamState(
-    "All Devices",
-    "device",
+    'All Devices',
+    'device',
     searchParams,
     setSearchParams,
   );
 
   const [start, setStart] = useSearchParamState(
     getRoundedTime(false, DAY).getTime(),
-    "start",
+    'start',
     searchParams,
     setSearchParams,
   );
   const [end, setEnd] = useSearchParamState(
     getRoundedTime(true, 0).getTime(),
-    "end",
+    'end',
     searchParams,
     setSearchParams,
   );
@@ -57,70 +59,70 @@ const Reports = () => {
 
   const WeatherRowRenderer = (row) => {
     const temperature =
-      row.row["temperature"] === undefined
-        ? ""
-        : Math.round(row.row["temperature"]) + "°F";
+      row.row['temperature'] === undefined
+        ? ''
+        : Math.round(row.row['temperature']) + '°F';
     return (
       <div
-        className={"d-flex justify-content-center h-100"}
-        title={row.row["weatherSummary"] + " " + temperature}
+        className='d-flex justify-content-center h-100'
+        title={row.row['weatherSummary'] + ' ' + temperature}
       >
-        {getWeatherIcon(row.row["weatherSummary"])}
+        {getWeatherIcon(row.row['weatherSummary'])}
       </div>
     );
   };
 
   const columns = [
     {
-      key: "weatherSummary",
+      key: 'weatherSummary',
       name: (
         <div
-          className="d-flex h-100 align-items-center justify-content-center"
-          title="Weather Conditions"
+          className='flex h-full content-center items-center'
+          title='Weather Conditions'
         >
-          {getWeatherIcon("Partly Cloudy")}
+          {getWeatherIcon('Partly Cloudy')}
         </div>
       ),
       width: 50,
       renderCell: WeatherRowRenderer,
     },
-    { key: "time", name: "Time", width: 150 },
-    { key: "site", name: "Site" },
-    { key: "device-name", name: "Device Name" },
+    { key: 'time', name: 'Time', width: 150 },
+    { key: 'site', name: 'Site' },
+    { key: 'device-name', name: 'Device Name' },
     {
-      key: "Total Energy Consumption",
+      key: 'Total Energy Consumption',
       name: (
-        <div className={"d-flex"}>
+        <div className='flex'>
           Total Energy Cons.
-          <div className={"text-muted rdg-header-secondary"}>&nbsp; kWH</div>
+          <div className='text-muted rdg-header-secondary'>&nbsp; kWH</div>
         </div>
       ),
     },
     {
-      key: "Total Real Power",
+      key: 'Total Real Power',
       name: (
-        <div className={"d-flex"}>
+        <div className='d-flex'>
           Total Power
-          <div className={"text-muted rdg-header-secondary"}>&nbsp; kW</div>
+          <div className='text-muted rdg-header-secondary'>&nbsp; kW</div>
         </div>
       ),
     },
     {
-      key: "Energy Consumed",
+      key: 'Energy Consumed',
       name: (
-        <div className={"d-flex"}>
-          Energy Cons.{" "}
-          <div className={"text-muted rdg-header-secondary"}>&nbsp; kWH</div>
+        <div className='d-flex'>
+          Energy Cons.{' '}
+          <div className='text-muted rdg-header-secondary'>&nbsp; kWH</div>
         </div>
       ),
     },
   ];
 
   const getRow = function (row) {
-    row.time = getFormattedTime(new Date(row["@timestamp"]));
-    if (row["Total Energy Consumption"] != null) {
-      row["Total Energy Consumption"] = intl.formatNumber(
-        row["Total Energy Consumption"],
+    row.time = getFormattedTime(new Date(row['@timestamp']));
+    if (row['Total Energy Consumption'] != null) {
+      row['Total Energy Consumption'] = intl.formatNumber(
+        row['Total Energy Consumption'],
       );
     }
     return row;
@@ -130,7 +132,7 @@ const Reports = () => {
     if (loading) {
       return;
     }
-    document.getElementById("data-grid").classList.add("d-none");
+    document.getElementById('data-grid').classList.add('d-none');
     fetchData(0, (rows) => setRows(rows), true);
   }, [site, device, start, end]);
 
@@ -145,8 +147,8 @@ const Reports = () => {
     setLoading(true);
     setTotal(shouldScrollToTop ? -1 : total);
     getDataPage(
-      site === "All Sites" ? null : site,
-      device === "All Devices" ? null : device,
+      site === 'All Sites' ? null : site,
+      device === 'All Devices' ? null : device,
       start,
       end,
       offset,
@@ -157,7 +159,7 @@ const Reports = () => {
         setRefreshSearch(false);
         setTotal(data.hits.total.value);
         rowSetter(data.hits.hits.map((row) => getRow(row._source)));
-        document.getElementById("data-grid").classList.remove("d-none");
+        document.getElementById('data-grid').classList.remove('d-none');
         if (shouldScrollToTop) {
           scrollToTop();
         }
@@ -171,8 +173,8 @@ const Reports = () => {
   const EmptyRowsRenderer = () => {
     return (
       <div
-        className={"fw-bolder h6 p-3"}
-        style={{ textAlign: "center", gridColumn: "1/-1" }}
+        className='fw-bolder h6 p-3'
+        style={{ textAlign: 'center', gridColumn: '1/-1' }}
       >
         No data available, modify your search or set-up some devices!
       </div>
@@ -196,46 +198,46 @@ const Reports = () => {
   };
 
   return (
-    <div className={"root-page container min-vh-95 d-flex flex-column"}>
-      <Card className={"flex-grow-1"}>
-        <CardHeader className={"d-flex"}>
+    <div className='root-page min-vh-95 d-flex flex-column container'>
+      <Card className='grow-1'>
+        <CardHeader className='d-flex'>
           <SearchBar
-            site={site}
-            setSite={setSite}
-            device={device}
-            setDevice={setDevice}
-            end={end}
-            setEnd={setEnd}
-            start={start}
-            setStart={setStart}
-            devices={devices}
-            setDevices={setDevices}
             defaultSearchPeriod={DAY}
+            device={device}
+            devices={devices}
+            end={end}
             refreshSearch={refreshSearch}
+            setDevice={setDevice}
+            setDevices={setDevices}
+            setEnd={setEnd}
             setRefreshSearch={setRefreshSearch}
+            setSite={setSite}
+            setStart={setStart}
+            site={site}
+            start={start}
           />
           <DownloadReportButton
-            site={site}
             device={device}
             end={end}
+            site={site}
             start={start}
             timeFormatter={getFormattedTime}
           />
         </CardHeader>
         <CardBody
-          id={"data-grid"}
-          className={"d-flex flex-column rdg-holder d-none"}
+          className='d-flex flex-column rdg-holder d-none'
+          id='data-grid'
         >
           <DataGrid
-            ref={gridRef}
-            className={"rdg-dark flex-grow-1"}
+            className='rdg-dark grow-1'
             columns={columns}
-            rows={rows}
-            renderers={{ noRowsFallback: <EmptyRowsRenderer /> }}
             onScroll={handleScroll}
+            ref={gridRef}
+            renderers={{ noRowsFallback: <EmptyRowsRenderer /> }}
+            rows={rows}
           />
         </CardBody>
-        <Loader loading={loading} deviceCount={rows.length} content={""} />
+        <Loader content='' deviceCount={rows.length} loading={loading} />
       </Card>
     </div>
   );

@@ -167,7 +167,7 @@ button:focus {
 }
 
 .navbar-nav .nav-item a::after {
-  content: "";
+  content: '';
   position: relative;
   display: block;
   height: 5px;
@@ -349,7 +349,7 @@ button:focus {
 }
 
 .home-social-icons::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
@@ -639,7 +639,7 @@ button:focus {
 }
 
 .resume .resume-item::before {
-  content: "";
+  content: '';
   position: absolute;
   width: 16px;
   height: 16px;
@@ -709,6 +709,14 @@ button:focus {
 
 .min-vh-95 {
   min-height: 95vh;
+}
+
+.min-vh-90 {
+  min-height: 90vh;
+}
+
+.min-vh-70 {
+  min-height: 70vh;
 }
 
 [data-amplify-authenticator] [data-amplify-router] {
@@ -784,17 +792,6 @@ button:focus {
   --bs-btn-active-bg: transparent;
 }
 
-.device .hidden-without-hover,
-.mapping-block .hidden-without-hover {
-  opacity: 0;
-  transition: opacity 0.1s ease-out 0s !important;
-}
-
-.device:hover .hidden-without-hover,
-.mapping-block:hover .hidden-without-hover {
-  opacity: 1;
-}
-
 .header {
   background: #444950;
   color: var(--bs-body-color);
@@ -816,10 +813,6 @@ button:focus {
 
 .modal-header {
   color: var(--bs-body-color);
-}
-
-.site-attributes {
-  border-radius: 0 0 var(--bs-border-radius) var(--bs-border-radius) !important;
 }
 
 .smaller-text {
@@ -901,133 +894,6 @@ button:focus {
   border-radius: var(--bs-border-radius) var(--bs-border-radius) 0 0 !important;
 }
 
-.rdg-header-row {
-  background-color: #282b2f;
-}
-
-.rdg-row,
-.rdg {
-  background-color: transparent;
-}
-
-.rdg {
-  border-right: 0;
-  border-left: 0;
-  border-top: 0;
-}
-
-.rdg-holder {
-  padding: 0 !important;
-}
-.rdg-row-even {
-  background-color: var(--bs-secondary-bg);
-}
-
-.rdg-header-secondary {
-  font-size: 0.675rem;
-  line-height: 37px;
-}
-
-.react-calendar {
-  background-color: var(--bs-secondary-bg) !important;
-  border: 0;
-  z-index: 1;
-}
-.react-calendar {
-  padding: 1rem;
-  border: 0 !important;
-}
-.react-calendar button {
-  border: 0 !important;
-  background-color: transparent;
-}
-
-.react-calendar abbr {
-  text-decoration: none !important;
-  cursor: auto !important;
-}
-
-.react-calendar__month-view__days__day--weekend {
-  color: inherit !important;
-}
-
-.react-calendar__month-view__days__day--neighboringMonth {
-  color: #757575 !important;
-}
-
-.react-calendar__tile:enabled:hover,
-.react-calendar__navigation button:enabled:hover,
-.react-calendar__navigation button:disabled {
-  border-radius: var(--bs-border-radius);
-  background-color: #6c757d !important;
-}
-
-.react-daterange-picker__wrapper {
-  border: var(--bs-border-width) solid var(--bs-border-color);
-  border-radius: var(--bs-border-radius);
-}
-
-.react-daterange-picker__inputGroup__input:invalid {
-  background: inherit !important;
-}
-
-.react-calendar__tile--active {
-  border-radius: var(--bs-border-radius);
-}
-
-.react-calendar__tile--hoverStart {
-  border-radius: var(--bs-border-radius) 0 0 var(--bs-border-radius) !important;
-}
-
-.react-calendar__tile--hoverEnd {
-  border-radius: 0 var(--bs-border-radius) var(--bs-border-radius) 0 !important;
-}
-.react-calendar--selectRange .react-calendar__tile--hover {
-  background-color: var(--imp-text-color) !important;
-}
-.price {
-  max-width: 275px !important;
-  min-height: 275px;
-}
-
-.price:hover {
-  background-color: #24272c;
-  cursor: pointer;
-}
-
-.pricing-page {
-  z-index: 1031;
-  background-color: #23272d !important;
-  position: relative;
-  color: var(--bs-body-color);
-}
-.pricing-page .logo {
-  width: 50px !important;
-}
-
-.quantity-display {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  outline: none;
-}
-
-.left-modifier {
-  border-radius: var(--bs-border-radius) 0 0 var(--bs-border-radius) !important;
-}
-
-.right-modifier {
-  border-radius: 0 var(--bs-border-radius) var(--bs-border-radius) 0 !important;
-}
-
-.quantity-display {
-  width: 3rem;
-  min-height: 100%;
-  border: 0;
-  text-align: center;
-}
-
 .button-icon {
   margin-bottom: 2px;
   margin-right: 6px;
@@ -1035,14 +901,6 @@ button:focus {
 
 .active-alarm {
   background-color: var(--bs-danger);
-}
-
-.min-width-750 {
-  min-width: 750px !important;
-}
-
-.max-height-250 {
-  max-height: 250px;
 }
 
 .mapping-block {

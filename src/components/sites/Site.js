@@ -1,27 +1,28 @@
-import { Alert, Button, Spinner } from "react-bootstrap";
-import React, { useState } from "react";
-import Device from "./Device";
-import { AiOutlineDelete } from "react-icons/ai";
-import { deleteDevice } from "../../services/services";
-import { noSite } from "./SiteManagement";
-import SiteAttributes from "./SiteAttributes";
-import { sortDevices } from "../../utils/Utils";
+import { useState } from 'react';
+import { Alert, Button, Spinner } from 'react-bootstrap';
+import { AiOutlineDelete } from 'react-icons/ai';
+
+import { deleteDevice } from '../../services/services';
+import { sortDevices } from '../../utils/Utils';
+import Device from './Device';
+import SiteAttributes from './SiteAttributes';
+import { noSite } from './SiteManagement';
 
 const Site = ({ data, devices, setDevices, setActiveSite }) => {
   const [site] = useState(data);
   const [deleteSiteWarning, setDeleteSiteWarning] = useState(false);
   const removeSite = () => {
-    let button = document.getElementById("delete" + site.id);
-    button.classList.add("disabled");
+    let button = document.getElementById('delete' + site.id);
+    button.classList.add('disabled');
     deleteDevice(site.id)
-      .then((data) => {
+      .then(() => {
         setDevices((d) => d.filter((device) => device.id !== site.id));
         setActiveSite(noSite);
-        button.classList.remove("disabled");
+        button.classList.remove('disabled');
       })
       .catch((e) => {
         console.log(e);
-        button.classList.remove("disabled");
+        button.classList.remove('disabled');
       });
   };
   return (
@@ -32,10 +33,10 @@ const Site = ({ data, devices, setDevices, setActiveSite }) => {
         .map((device) => {
           return (
             <SiteAttributes
-              key={device.id}
               data={device}
-              setDevices={setDevices}
+              key={device.id}
               setActiveSite={setActiveSite}
+              setDevices={setDevices}
             />
           );
         })}
@@ -46,50 +47,50 @@ const Site = ({ data, devices, setDevices, setActiveSite }) => {
         .map((device) => {
           return (
             <Device
-              key={device.id + device.site}
               data={device}
               devices={devices}
+              key={device.id + device.site}
               setDevices={setDevices}
             />
           );
         })}
       {site.id === noSite ? (
-        ""
+        ''
       ) : (
         <Button
+          className='ms-2 mt-3'
+          id={'delete' + site.id}
           onClick={() => setDeleteSiteWarning(true)}
-          variant="danger"
-          className={"ms-2 mt-3"}
-          id={"delete" + site.id}
+          variant='danger'
         >
           <Spinner
-            as="span"
-            animation="border"
-            size="sm"
-            role="status"
-            className={"me-2 d-none"}
+            animation='border'
+            as='span'
+            className='d-none me-2'
+            role='status'
+            size='sm'
           />
-          <AiOutlineDelete className={"button-icon"} />
+          <AiOutlineDelete className='button-icon' />
           Delete Site
         </Button>
       )}
-      <Alert className={"mt-3"} show={deleteSiteWarning} variant="danger">
+      <Alert className='mt-3' show={deleteSiteWarning} variant='danger'>
         <p>Are you sure you want to delete this site?</p>
         <hr />
-        <div className="d-flex justify-content-end">
+        <div className='d-flex justify-content-end'>
           <Button
             onClick={() => setDeleteSiteWarning(false)}
-            variant="outline-secondary"
+            variant='outline-secondary'
           >
             Cancel
           </Button>
           <Button
+            className='ms-2'
             onClick={() => {
               setDeleteSiteWarning(false);
               removeSite();
             }}
-            variant="outline-danger"
-            className={"ms-2"}
+            variant='outline-danger'
           >
             Delete Site
           </Button>

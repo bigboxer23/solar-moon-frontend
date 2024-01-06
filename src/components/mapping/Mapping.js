@@ -1,13 +1,14 @@
-import { Button, Card, CardBody, ListGroup, Modal } from "react-bootstrap";
-import MappingBlock from "./MappingBlock";
-import { attributeMappings } from "./MappingConstants";
-import React, { useEffect, useState } from "react";
-import { deleteMapping, getMappings } from "../../services/services";
-import AddMapping from "./AddMapping";
-import HelpButton from "../HelpButton";
-import { MdSettingsInputComposite } from "react-icons/md";
+import { useEffect, useState } from 'react';
+import { Button, Card, CardBody, ListGroup, Modal } from 'react-bootstrap';
+import { MdSettingsInputComposite } from 'react-icons/md';
 
-export default function Mapping({}) {
+import { deleteMapping, getMappings } from '../../services/services';
+import HelpButton from '../HelpButton';
+import AddMapping from './AddMapping';
+import MappingBlock from './MappingBlock';
+import { attributeMappings } from './MappingConstants';
+
+export default function Mapping() {
   const [showMapping, setShowMapping] = useState(false);
   const [mappings, setMappings] = useState([]);
 
@@ -18,7 +19,7 @@ export default function Mapping({}) {
   }, []);
 
   const delMapping = (mappingName) => {
-    deleteMapping(mappingName).then(({ data }) => {
+    deleteMapping(mappingName).then(() => {
       getMappings().then(({ data }) => {
         setMappings(data);
       });
@@ -28,33 +29,33 @@ export default function Mapping({}) {
   return (
     <div>
       <Button
-        className={"ms-3"}
-        variant={"outline-light"}
+        className='ms-3'
         onClick={() => setShowMapping(true)}
+        variant='outline-light'
       >
-        <MdSettingsInputComposite className={"button-icon"} />
+        <MdSettingsInputComposite className='button-icon' />
         Mappings
       </Button>
       <Modal
-        data-bs-theme="dark"
-        show={showMapping}
-        size={"xl"}
+        data-bs-theme='dark'
         onHide={() => setShowMapping(false)}
+        show={showMapping}
+        size='xl'
       >
         <Modal.Header closeButton>
-          <Modal.Title className={"d-flex"}>
-            <div className={"pe-3"}>Attribute Mappings</div>
+          <Modal.Title className='d-flex'>
+            <div className='pe-3'>Attribute Mappings</div>
             <HelpButton
               text={
-                "Mappings provide a way to translate names of data points from your devices to the fields Solar Moon needs" +
-                " to generate graphs, analytics and alerts. There are a number of mappings provided by default, but if you are " +
-                "unable to change your device settings to match them, the platform can map to existing config instead."
+                'Mappings provide a way to translate names of data points from your devices to the fields Solar Moon needs' +
+                ' to generate graphs, analytics and alerts. There are a number of mappings provided by default, but if you are ' +
+                'unable to change your device settings to match them, the platform can map to existing config instead.'
               }
             />
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <div className={" container d-flex flex-column min-vh-95"}>
+          <div className=' d-flex flex-column min-vh-95 container'>
             <Card>
               {/*<CardHeader className={"fw-bold d-flex align-items-center"}>
           Attribute Mappings
@@ -82,17 +83,17 @@ export default function Mapping({}) {
                   ]
                     .sort((d1, d2) =>
                       d1.attribute.localeCompare(d2.attribute, undefined, {
-                        sensitivity: "accent",
+                        sensitivity: 'accent',
                       }),
                     )
                     .map((m) => {
                       return (
                         <MappingBlock
-                          key={m.mappingName}
                           attribute={m.attribute}
+                          deleteMapping={delMapping}
+                          key={m.mappingName}
                           mappingName={m.mappingName}
                           showDelete={!m.readOnly}
-                          deleteMapping={delMapping}
                         />
                       );
                     })}
