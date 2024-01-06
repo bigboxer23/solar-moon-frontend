@@ -99,7 +99,7 @@ export default function SiteDevicesOverview({
                     </span>
                     <span className='text-lg font-bold'>
                       Average:{' '}
-                      <FormattedNumber value={deviceAvgTotal[i]?.avg} /> kWH
+                      <FormattedNumber value={deviceAvgTotal[i]?.avg} /> kW
                     </span>
                   </div>
                 </div>

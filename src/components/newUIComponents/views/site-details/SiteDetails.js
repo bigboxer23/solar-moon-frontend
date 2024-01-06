@@ -147,7 +147,7 @@ export default function SiteDetails() {
               Total: <FormattedNumber value={totalOutput} /> kWH
             </span>
             <span className='text-lg font-bold'>
-              Average: <FormattedNumber value={avgOutput} /> kWH
+              Average: <FormattedNumber value={avgOutput} /> kW
             </span>
           </div>
         </div>

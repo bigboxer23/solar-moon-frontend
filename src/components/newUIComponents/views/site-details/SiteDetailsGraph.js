@@ -55,7 +55,7 @@ export default function SiteDetailsGraph({ graphData, deviceNames }) {
             const siteLabel = context.dataset.label;
             let label = context.formattedValue || '';
             if (label) {
-              label += ' kWh';
+              label += ' kW';
             }
             return `${siteLabel} ${label}`;
           },

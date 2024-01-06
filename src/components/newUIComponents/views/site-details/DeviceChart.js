@@ -59,7 +59,7 @@ export default function DeviceChart({ graphData }) {
           label: (context) => {
             let label = context.formattedValue || '';
             if (label) {
-              label += ' kWh';
+              label += ' kW';
             }
             return label;
           },
