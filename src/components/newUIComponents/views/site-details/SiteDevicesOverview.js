@@ -12,6 +12,7 @@ import {
   getListAvgTotal,
   getListTimeSeriesData,
 } from '../../../../services/services';
+import { getDisplayName } from '../../../../utils/Utils';
 import StatBlock from '../../common/StatBlock';
 import DeviceChart from './DeviceChart';
 
@@ -49,7 +50,7 @@ export default function SiteDevicesOverview({
         {devices.map((device, i) => (
           <div
             className='flex flex-col rounded-lg px-4 py-3 transition-colors hover:bg-neutral-50'
-            key={device.deviceName}
+            key={device.id}
           >
             <button
               onClick={() =>
@@ -61,7 +62,9 @@ export default function SiteDevicesOverview({
               <div className='flex flex-col'>
                 <div className='flex w-full items-center justify-between text-sm'>
                   <div className='flex flex-col items-start'>
-                    <div className='text-base font-bold'>{device.name}</div>
+                    <div className='text-base font-bold'>
+                      {getDisplayName(device)}
+                    </div>
                     <div className='text-xs text-text-secondary'>
                       {device.deviceName}
                     </div>
@@ -74,9 +77,8 @@ export default function SiteDevicesOverview({
                       onClick={() => navigate(`/alerts?device=${device.id}`)}
                       title='active alerts'
                       value={
-                        activeSiteAlerts.filter(
-                          (d) => d.deviceName === device.deviceName,
-                        ).length
+                        activeSiteAlerts.filter((d) => d.deviceId === device.id)
+                          .length
                       }
                     />
                     <StatBlock
@@ -85,7 +87,7 @@ export default function SiteDevicesOverview({
                       title='resolved alerts'
                       value={
                         resolvedSiteAlerts.filter(
-                          (d) => d.deviceName === device.deviceName,
+                          (d) => d.deviceId === device.id,
                         ).length
                       }
                     />

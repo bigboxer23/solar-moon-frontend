@@ -75,12 +75,14 @@ export const getFormattedTime = (date) => {
   return d3.timeFormat('%b %d, %y %I:%M %p')(date);
 };
 
+export const getDisplayName = (device) => {
+  return device.name == null ? device.deviceName : device.name;
+};
+
 export const sortDevices = (d1, d2) =>
-  (d1.name == null ? d1.deviceName : d1.name).localeCompare(
-    d2.name == null ? d2.deviceName : d2.name,
-    undefined,
-    { sensitivity: 'accent' },
-  );
+  getDisplayName(d1).localeCompare(getDisplayName(d2), undefined, {
+    sensitivity: 'accent',
+  });
 
 export const sortSelectAlphabetically = (d1, d2) =>
   d1.label.localeCompare(d2.label, undefined, { sensitivity: 'accent' });

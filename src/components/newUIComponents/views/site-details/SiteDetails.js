@@ -15,6 +15,7 @@ import {
   getStackedTimeSeriesData,
 } from '../../../../services/services';
 import {
+  getDisplayName,
   getRoundedTimeFromOffset,
   parseStackedTimeSeriesData,
   sortDevices,
@@ -118,7 +119,7 @@ export default function SiteDetails() {
         </NavLink>
         <div className='mb-2 flex justify-between'>
           <div className='flex flex-col'>
-            <span className='text-lg font-bold'>{site.deviceName}</span>
+            <span className='text-lg font-bold'>{getDisplayName(site)}</span>
             {/*<span className='text-xs text-text-secondary'>
               id: {site.clientId}
             </span>*/}
@@ -154,7 +155,7 @@ export default function SiteDetails() {
           </div>
         </div>
         <SiteDetailsGraph
-          deviceNames={devices.map((d) => d.deviceName)}
+          deviceNames={devices.map((d) => getDisplayName(d))}
           graphData={graphData}
         />
         <SiteDevicesOverview
