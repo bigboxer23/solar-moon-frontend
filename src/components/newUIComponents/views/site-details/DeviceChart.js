@@ -78,7 +78,7 @@ export default function DeviceChart({ graphData }) {
         stacked: true,
         title: {
           display: true,
-          text: 'kWH',
+          text: 'kW',
         },
       },
     },

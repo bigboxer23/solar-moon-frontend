@@ -74,7 +74,7 @@ export default function SiteDetailsGraph({ graphData, deviceNames }) {
         stacked: true,
         title: {
           display: true,
-          text: 'kWH',
+          text: 'kW',
         },
       },
     },
