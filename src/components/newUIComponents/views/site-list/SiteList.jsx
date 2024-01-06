@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { getDevices } from '../../../../services/services';
+import { sortDevices } from '../../../../utils/Utils';
 import Loader from '../../common/Loader';
 import SiteRow from './SiteRow';
 
@@ -12,7 +13,7 @@ export default function SiteList() {
     getDevices()
       .then(({ data }) => {
         setLoading(false);
-        const sites = data.filter((d) => d.virtual);
+        const sites = data.filter((d) => d.virtual).sort(sortDevices);
 
         data
           .filter((d) => !d.virtual)

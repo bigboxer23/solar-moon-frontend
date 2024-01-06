@@ -17,6 +17,7 @@ import {
 import {
   getRoundedTimeFromOffset,
   parseStackedTimeSeriesData,
+  sortDevices,
   useStickyState,
 } from '../../../../utils/Utils';
 import Loader from '../../common/Loader';
@@ -89,7 +90,8 @@ export default function SiteDetails() {
 
       const devices = data
         .filter((device) => !device.virtual)
-        .filter((device) => device.site === site.name);
+        .filter((device) => device.site === site.name)
+        .sort(sortDevices);
 
       setDevices(devices);
       setLoading(false);
