@@ -61,11 +61,9 @@ export default function SiteDevicesOverview({
               <div className='flex flex-col'>
                 <div className='flex w-full items-center justify-between text-sm'>
                   <div className='flex flex-col items-start'>
-                    <div className='text-base font-bold'>
-                      {device.deviceName}
-                    </div>
+                    <div className='text-base font-bold'>{device.name}</div>
                     <div className='text-xs text-text-secondary'>
-                      id: {device.id}
+                      {device.deviceName}
                     </div>
                   </div>
                   {i === expandedDevice ? <FaChevronUp /> : <FaChevronDown />}

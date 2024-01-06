@@ -119,9 +119,9 @@ export default function SiteDetails() {
         <div className='mb-2 flex justify-between'>
           <div className='flex flex-col'>
             <span className='text-lg font-bold'>{site.deviceName}</span>
-            <span className='text-xs text-text-secondary'>
+            {/*<span className='text-xs text-text-secondary'>
               id: {site.clientId}
-            </span>
+            </span>*/}
             <span className='text-sm text-neutral-500'>
               {site.city && site.country && `${site.city}, ${site.country}`}
             </span>
