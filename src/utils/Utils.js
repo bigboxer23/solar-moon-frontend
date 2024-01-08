@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { IoIosSnow } from 'react-icons/io';
 import { IoPartlySunnyOutline } from 'react-icons/io5';
 import { MdFoggy, MdOutlineWbCloudy, MdOutlineWbSunny } from 'react-icons/md';
+import { RiWindyFill } from 'react-icons/ri';
 
 import {
   AVG,
@@ -158,6 +159,8 @@ export const getWeatherIcon = (weatherSummary) => {
     return <MdOutlineWbSunny className='align-self-center' />;
   } else if (weatherSummary === 'Snow') {
     return <IoIosSnow className='align-self-center' />;
+  } else if (weatherSummary === 'Windy') {
+    return <RiWindyFill className='align-self-center' />;
   }
   return weatherSummary;
 };
