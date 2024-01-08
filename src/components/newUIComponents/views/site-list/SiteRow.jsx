@@ -76,7 +76,7 @@ export default function SiteRow({ site }) {
         </span>
         <span>
           <span className='font-bold'>
-            <FormattedNumber value={avgOutput} /> kWH
+            <FormattedNumber value={avgOutput} /> kW
           </span>{' '}
           avg. output today
         </span>
