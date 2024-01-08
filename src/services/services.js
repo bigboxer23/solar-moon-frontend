@@ -47,7 +47,10 @@ export function getDevices() {
 }
 
 export function getSitesOverview() {
-  return api.post('sites');
+  return api.post(
+    'sites',
+    getAvgTotalBody(null, getRoundedTime(false, 0), new Date()),
+  );
 }
 
 export function getDevice(deviceId) {

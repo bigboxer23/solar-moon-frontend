@@ -1,22 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { FaChevronRight } from 'react-icons/fa';
 import { FormattedNumber } from 'react-intl';
 import { NavLink } from 'react-router-dom';
 
 import {
   AVG_AGGREGATION,
-  DAY,
+  getAggregationValue,
   TOTAL_AGGREGATION,
   TOTAL_REAL_POWER,
 } from '../../../../services/search';
-import { getTileContent } from '../../../../services/services';
 import { getGaugeValue } from '../../../../utils/Utils';
 import StatBlock from '../../common/StatBlock';
 import WeatherBlock from '../../common/WeatherBlock';
 
 export default function SiteRow({ site }) {
-  const [avgOutput, setAvgOutput] = useState(0);
-  const [totalOutput, setTotalOutput] = useState(0);
   const [maxPercent, setMaxPercent] = useState(
     getGaugeValue(
       site.siteData.weeklyMaxPower.aggregations['max#max'].value,
@@ -25,19 +22,6 @@ export default function SiteRow({ site }) {
         : 0,
     ),
   );
-
-  useEffect(() => {
-    getTileContent(site, DAY).then(({ data }) => {
-      // console.log('data', data);
-
-      setAvgOutput(data[0].aggregations[AVG_AGGREGATION].value);
-      setTotalOutput(data[0].aggregations[TOTAL_AGGREGATION].value);
-
-      console.log('avgOutput', avgOutput);
-      console.log('totalOutput', totalOutput);
-      console.log('maxPower ' + site.name, maxPercent);
-    });
-  }, []);
 
   return (
     <NavLink
@@ -59,13 +43,25 @@ export default function SiteRow({ site }) {
       <div className='ml-4 flex w-[35%] flex-col justify-center text-sm'>
         <span>
           <span className='font-bold'>
-            <FormattedNumber value={totalOutput} /> kWH
+            <FormattedNumber
+              value={getAggregationValue(
+                site.siteData.avgTotal,
+                TOTAL_AGGREGATION,
+              )}
+            />{' '}
+            kWH
           </span>{' '}
           generated today
         </span>
         <span>
           <span className='font-bold'>
-            <FormattedNumber value={avgOutput} /> kW
+            <FormattedNumber
+              value={getAggregationValue(
+                site.siteData.avgTotal,
+                AVG_AGGREGATION,
+              )}
+            />{' '}
+            kW
           </span>{' '}
           avg. output today
         </span>
