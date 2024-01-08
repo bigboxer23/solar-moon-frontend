@@ -16,6 +16,7 @@ export default function SiteList() {
         const sites = data.devices
           .filter((d) => d.virtual)
           .map((site) => {
+            site.deviceCount = 0;
             site.siteData = data.sites[site.id];
             return site;
           })

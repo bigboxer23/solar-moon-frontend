@@ -17,28 +17,25 @@ import WeatherBlock from '../../common/WeatherBlock';
 export default function SiteRow({ site }) {
   const [avgOutput, setAvgOutput] = useState(0);
   const [totalOutput, setTotalOutput] = useState(0);
-  const [maxPercent, setMaxPercent] = useState(0);
+  const [maxPercent, setMaxPercent] = useState(
+    getGaugeValue(
+      site.siteData.weeklyMaxPower.aggregations['max#max'].value,
+      site.siteData.weeklyMaxPower.hits.hits.length > 0
+        ? site.siteData.weeklyMaxPower.hits.hits[0].fields[TOTAL_REAL_POWER][0]
+        : 0,
+    ),
+  );
 
   useEffect(() => {
     getTileContent(site, DAY).then(({ data }) => {
-      console.log('data', data);
+      // console.log('data', data);
 
       setAvgOutput(data[0].aggregations[AVG_AGGREGATION].value);
       setTotalOutput(data[0].aggregations[TOTAL_AGGREGATION].value);
 
-      setMaxPercent(
-        getGaugeValue(
-          data[1].aggregations['max#max'].value,
-          data[1].hits.hits.length > 0
-            ? data[1].hits.hits[0].fields[TOTAL_REAL_POWER][0]
-            : 0,
-        ),
-      );
-
-      setMaxPercent(20);
-
       console.log('avgOutput', avgOutput);
       console.log('totalOutput', totalOutput);
+      console.log('maxPower ' + site.name, maxPercent);
     });
   }, []);
 
