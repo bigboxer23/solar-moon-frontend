@@ -1,6 +1,7 @@
 import * as d3 from 'd3';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
+import { IoIosSnow } from 'react-icons/io';
 import { IoPartlySunnyOutline } from 'react-icons/io5';
 import { MdFoggy, MdOutlineWbCloudy, MdOutlineWbSunny } from 'react-icons/md';
 
@@ -155,6 +156,8 @@ export const getWeatherIcon = (weatherSummary) => {
     return <MdFoggy className='align-self-center' />;
   } else if (weatherSummary === 'Clear') {
     return <MdOutlineWbSunny className='align-self-center' />;
+  } else if (weatherSummary === 'Snow') {
+    return <IoIosSnow className='align-self-center' />;
   }
   return weatherSummary;
 };
