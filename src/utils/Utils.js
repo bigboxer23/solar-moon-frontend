@@ -145,6 +145,7 @@ export const getFormattedDaysHoursMinutes = (time) => {
   return formattedTime + minutes + 'm';
 };
 
+// TODO: Expand to include more weather types/night weather, use consistent icons
 export const getWeatherIcon = (weatherSummary) => {
   if (weatherSummary === 'Cloudy') {
     return <MdOutlineWbCloudy className='align-self-center' />;
@@ -156,6 +157,12 @@ export const getWeatherIcon = (weatherSummary) => {
     return <MdOutlineWbSunny className='align-self-center' />;
   }
   return weatherSummary;
+};
+
+export const getGaugeValue = (max, avg) => {
+  max = max === null ? 0 : max;
+  let scale = 200 / max;
+  return Math.round(Math.round(scale * avg));
 };
 
 export const timeIncrementToText = (timeIncrement, short) => {

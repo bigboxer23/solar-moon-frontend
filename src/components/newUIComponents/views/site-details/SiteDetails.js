@@ -10,9 +10,9 @@ import {
 } from '../../../../services/search';
 import {
   getAlarmData,
-  getAvgTotal,
   getDevices,
   getStackedTimeSeriesData,
+  getTileContent,
 } from '../../../../services/services';
 import {
   getDisplayName,
@@ -23,6 +23,7 @@ import {
 } from '../../../../utils/Utils';
 import Loader from '../../common/Loader';
 import StatBlock from '../../common/StatBlock';
+import WeatherBlock from '../../common/WeatherBlock';
 import TimeIncrementSelector from '../dashboard/TimeIncrementSelector';
 import SiteDetailsGraph from './SiteDetailsGraph';
 import SiteDevicesOverview from './SiteDevicesOverview';
@@ -31,6 +32,8 @@ export default function SiteDetails() {
   // TODO: Should all be one loading from the single site overview endpoint
   const [loading, setLoading] = useState(true);
   const [graphLoading, setGraphLoading] = useState(true);
+  const [weather, setWeather] = useState();
+  const [temperature, setTemperature] = useState();
   const [devices, setDevices] = useState([]);
   const [graphData, setGraphData] = useState();
   const [timeIncrement, setTimeIncrement] = useStickyState(
@@ -64,9 +67,13 @@ export default function SiteDetails() {
         setGraphLoading(false);
       })
       .catch((e) => console.log(e));
-    getAvgTotal(site, timeIncrement).then(({ data }) => {
-      setAvgOutput(data.aggregations[AVG_AGGREGATION].value);
-      setTotalOutput(data.aggregations[TOTAL_AGGREGATION].value);
+    getTileContent(site, timeIncrement).then(({ data }) => {
+      setAvgOutput(data[0].aggregations[AVG_AGGREGATION].value);
+      setTotalOutput(data[0].aggregations[TOTAL_AGGREGATION].value);
+
+      // TODO: Can we get UV index?
+      setWeather(data[2].hits.hits[0]._source['weatherSummary']);
+      setTemperature(data[2].hits.hits[0]._source['temperature'] || -1);
     });
     getAlarmData().then(({ data }) => {
       const timeFilteredAlerts = data.filter((alert) => {
@@ -132,20 +139,29 @@ export default function SiteDetails() {
             timeIncrement={timeIncrement}
           />
         </div>
-        <div className='mb-4 flex space-x-4'>
-          <StatBlock title='devices' value={devices.length} />
-          <StatBlock
-            onClick={() => navigate(`/alerts?site=${siteId}`)}
-            title='active alerts'
-            value={activeSiteAlerts.length}
-          />
-          <StatBlock
-            className='text-text-secondary'
-            onClick={() => navigate(`/alerts?site=${siteId}`)}
-            title='resolved alerts'
-            value={resolvedSiteAlerts.length}
-          />
-          <div className='ml-auto flex w-full flex-col items-end'>
+        <div className='mb-4 flex'>
+          <div className='flex space-x-4'>
+            {temperature && weather && (
+              <WeatherBlock
+                className='pr-2'
+                temperature={temperature}
+                weather={weather}
+              />
+            )}
+            <StatBlock title='devices' value={devices.length} />
+            <StatBlock
+              onClick={() => navigate(`/alerts?site=${siteId}`)}
+              title='active alerts'
+              value={activeSiteAlerts.length}
+            />
+            <StatBlock
+              className='text-text-secondary'
+              onClick={() => navigate(`/alerts?site=${siteId}`)}
+              title='resolved alerts'
+              value={resolvedSiteAlerts.length}
+            />
+          </div>
+          <div className='ml-auto flex flex-col items-end'>
             <span className='text-base'>
               Total: <FormattedNumber value={totalOutput} /> kWH
             </span>
