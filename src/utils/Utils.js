@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import * as d3 from "d3";
 import { MdFoggy, MdOutlineWbCloudy, MdOutlineWbSunny } from "react-icons/md";
 import { IoPartlySunnyOutline } from "react-icons/io5";
+import { RiWindyFill } from "react-icons/ri";
+import { IoIosSnow } from "react-icons/io";
 
 export function preventSubmit(event) {
   if (event.key === "Enter") {
@@ -105,13 +107,17 @@ export const getFormattedDaysHoursMinutes = (time) => {
 
 export const getWeatherIcon = (weatherSummary) => {
   if (weatherSummary === "Cloudy") {
-    return <MdOutlineWbCloudy className={"align-self-center"} />;
+    return <MdOutlineWbCloudy className="align-self-center" />;
   } else if (weatherSummary === "Partly Cloudy") {
-    return <IoPartlySunnyOutline className={"align-self-center"} />;
+    return <IoPartlySunnyOutline className="align-self-center" />;
   } else if (weatherSummary === "Fog") {
-    return <MdFoggy className={"align-self-center"} />;
+    return <MdFoggy className="align-self-center" />;
   } else if (weatherSummary === "Clear") {
-    return <MdOutlineWbSunny className={"align-self-center"} />;
+    return <MdOutlineWbSunny className="align-self-center" />;
+  } else if (weatherSummary === "Snow") {
+    return <IoIosSnow className="align-self-center" />;
+  } else if (weatherSummary === "Windy") {
+    return <RiWindyFill className="align-self-center" />;
   }
   return weatherSummary;
 };
