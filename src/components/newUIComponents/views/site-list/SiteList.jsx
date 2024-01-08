@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { getDevices } from '../../../../services/services';
+import { getDevices, getSitesOverview } from '../../../../services/services';
 import { sortDevices } from '../../../../utils/Utils';
 import Loader from '../../common/Loader';
 import SiteRow from './SiteRow';
@@ -10,12 +10,18 @@ export default function SiteList() {
   const [sites, setSites] = useState([]);
 
   useEffect(() => {
-    getDevices()
+    getSitesOverview()
       .then(({ data }) => {
         setLoading(false);
-        const sites = data.filter((d) => d.virtual).sort(sortDevices);
+        const sites = data.devices
+          .filter((d) => d.virtual)
+          .map((site) => {
+            site.siteData = data.sites[site.id];
+            return site;
+          })
+          .sort(sortDevices);
 
-        data
+        data.devices
           .filter((d) => !d.virtual)
           .forEach((d) => {
             const site = sites.find((s) => s.name === d.site);

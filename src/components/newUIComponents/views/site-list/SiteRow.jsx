@@ -17,8 +17,6 @@ import WeatherBlock from '../../common/WeatherBlock';
 export default function SiteRow({ site }) {
   const [avgOutput, setAvgOutput] = useState(0);
   const [totalOutput, setTotalOutput] = useState(0);
-  const [weather, setWeather] = useState('');
-  const [temperature, setTemperature] = useState(0);
   const [maxPercent, setMaxPercent] = useState(0);
 
   useEffect(() => {
@@ -39,14 +37,8 @@ export default function SiteRow({ site }) {
 
       setMaxPercent(20);
 
-      // TODO: Can we get UV index?
-      setWeather(data[2].hits.hits[0]._source['weatherSummary']);
-      setTemperature(data[2].hits.hits[0]._source['temperature'] || -1);
-
       console.log('avgOutput', avgOutput);
       console.log('totalOutput', totalOutput);
-      console.log('weather', weather);
-      console.log('temperature', temperature);
     });
   }, []);
 
@@ -81,8 +73,8 @@ export default function SiteRow({ site }) {
           avg. output today
         </span>
       </div>
-      {weather && temperature && (
-        <WeatherBlock temperature={temperature} weatherSummary={weather} />
+      {site.siteData?.weather && (
+        <WeatherBlock weather={site.siteData?.weather} />
       )}
       <div className='ml-auto flex flex-row items-center justify-center'>
         <FaChevronRight

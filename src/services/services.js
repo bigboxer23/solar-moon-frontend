@@ -46,6 +46,10 @@ export function getDevices() {
   return api.get('devices');
 }
 
+export function getSitesOverview() {
+  return api.post('sites');
+}
+
 export function getDevice(deviceId) {
   return api.get('devices/' + deviceId);
 }
