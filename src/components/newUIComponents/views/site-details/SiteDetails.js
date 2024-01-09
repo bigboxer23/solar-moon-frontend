@@ -6,17 +6,12 @@ import { NavLink, redirect, useMatch, useNavigate } from 'react-router-dom';
 import {
   AVG_AGGREGATION,
   DAY,
+  getAggregationValue,
   TOTAL_AGGREGATION,
 } from '../../../../services/search';
-import {
-  getAlarmData,
-  getDevices,
-  getStackedTimeSeriesData,
-  getTileContent,
-} from '../../../../services/services';
+import { getSiteOverview } from '../../../../services/services';
 import {
   getDisplayName,
-  getRoundedTimeFromOffset,
   parseStackedTimeSeriesData,
   sortDevices,
   useStickyState,
@@ -29,20 +24,14 @@ import SiteDetailsGraph from './SiteDetailsGraph';
 import SiteDevicesOverview from './SiteDevicesOverview';
 
 export default function SiteDetails() {
-  // TODO: Should all be one loading from the single site overview endpoint
+  const [siteData, setSiteData] = useState({});
   const [loading, setLoading] = useState(true);
-  const [graphLoading, setGraphLoading] = useState(true);
-  const [weather, setWeather] = useState();
-  const [temperature, setTemperature] = useState();
   const [devices, setDevices] = useState([]);
   const [graphData, setGraphData] = useState();
   const [timeIncrement, setTimeIncrement] = useStickyState(
     DAY,
     'dashboard.time',
   );
-  const [site, setSite] = useState({});
-  const [avgOutput, setAvgOutput] = useState(0);
-  const [totalOutput, setTotalOutput] = useState(0);
   const match = useMatch('/sites/:siteId');
   const siteId = match?.params?.siteId;
   const [activeSiteAlerts, setActiveSiteAlerts] = useState([]);
@@ -53,60 +42,23 @@ export default function SiteDetails() {
     return redirect('/sites');
   }
 
-  // TODO: This data should all come from a single site overview endpoint
-
   useEffect(() => {
-    getStackedTimeSeriesData(
-      siteId,
-      getRoundedTimeFromOffset(timeIncrement),
-      new Date(),
-    )
-      .then(({ data }) => {
-        const parsedData = parseStackedTimeSeriesData(data);
-        setGraphData(parsedData);
-        setGraphLoading(false);
-      })
-      .catch((e) => console.log(e));
-    getTileContent(site, timeIncrement).then(({ data }) => {
-      setAvgOutput(data[0].aggregations[AVG_AGGREGATION].value);
-      setTotalOutput(data[0].aggregations[TOTAL_AGGREGATION].value);
-
-      // TODO: Can we get UV index?
-      setWeather(data[2].hits.hits[0]._source['weatherSummary']);
-      setTemperature(data[2].hits.hits[0]._source['temperature'] || -1);
-    });
-    getAlarmData().then(({ data }) => {
-      const timeFilteredAlerts = data.filter((alert) => {
-        return (
-          new Date(alert.startDate) >
-          new Date(new Date().getTime() - timeIncrement)
-        );
-      });
-      const siteAlerts = timeFilteredAlerts.filter(
-        (alert) => alert.deviceSite === site.name,
+    getSiteOverview(siteId, timeIncrement).then(({ data }) => {
+      setSiteData(data);
+      setDevices(
+        data.devices
+          .filter((device) => !device.virtual)
+          .filter((device) => device.site === data.site.name)
+          .sort(sortDevices),
       );
-
-      setActiveSiteAlerts(siteAlerts.filter((d) => d.state > 0));
-      setResolvedSiteAlerts(siteAlerts.filter((d) => d.state === 0));
+      setActiveSiteAlerts(data.alarms.filter((d) => d.state > 0));
+      setResolvedSiteAlerts(data.alarms.filter((d) => d.state === 0));
+      setGraphData(parseStackedTimeSeriesData(data.timeSeries));
+      setLoading(false);
     });
   }, [timeIncrement]);
 
-  useEffect(() => {
-    getDevices().then(({ data }) => {
-      const site = data.find((d) => d.id === siteId);
-      setSite(site);
-
-      const devices = data
-        .filter((device) => !device.virtual)
-        .filter((device) => device.site === site.name)
-        .sort(sortDevices);
-
-      setDevices(devices);
-      setLoading(false);
-    });
-  }, []);
-
-  if (loading || graphLoading) {
+  if (loading) {
     return (
       <div className='flex w-full items-center justify-center p-6'>
         <Loader />
@@ -126,12 +78,13 @@ export default function SiteDetails() {
         </NavLink>
         <div className='mb-2 flex justify-between'>
           <div className='flex flex-col'>
-            <span className='text-lg font-bold'>{getDisplayName(site)}</span>
-            {/*<span className='text-xs text-text-secondary'>
-              id: {site.clientId}
-            </span>*/}
+            <span className='text-lg font-bold'>
+              {getDisplayName(siteData.site)}
+            </span>
             <span className='text-sm text-neutral-500'>
-              {site.city && site.country && `${site.city}, ${site.country}`}
+              {siteData?.site?.city &&
+                siteData?.site?.country &&
+                `${siteData.site.city}, ${siteData.site.country}`}
             </span>
           </div>
           <TimeIncrementSelector
@@ -141,12 +94,8 @@ export default function SiteDetails() {
         </div>
         <div className='mb-4 flex'>
           <div className='flex space-x-4'>
-            {temperature && weather && (
-              <WeatherBlock
-                className='pr-2'
-                temperature={temperature}
-                weather={weather}
-              />
+            {siteData?.weather && (
+              <WeatherBlock className='pr-2' weather={siteData?.weather} />
             )}
             <StatBlock title='devices' value={devices.length} />
             <StatBlock
@@ -163,10 +112,21 @@ export default function SiteDetails() {
           </div>
           <div className='ml-auto flex flex-col items-end'>
             <span className='text-base'>
-              Total: <FormattedNumber value={totalOutput} /> kWH
+              Total:{' '}
+              <FormattedNumber
+                value={getAggregationValue(
+                  siteData.avgTotal,
+                  TOTAL_AGGREGATION,
+                )}
+              />{' '}
+              kWH
             </span>
             <span className='text-lg font-bold'>
-              Average: <FormattedNumber value={avgOutput} /> kW
+              Average:{' '}
+              <FormattedNumber
+                value={getAggregationValue(siteData.avgTotal, AVG_AGGREGATION)}
+              />{' '}
+              kW
             </span>
           </div>
         </div>

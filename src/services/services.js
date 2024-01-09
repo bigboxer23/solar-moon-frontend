@@ -53,6 +53,13 @@ export function getSitesOverview() {
   );
 }
 
+export function getSiteOverview(siteId, offset) {
+  return api.post(
+    'sites/' + siteId,
+    getAvgTotalBody(null, getRoundedTimeFromOffset(offset), new Date()),
+  );
+}
+
 export function getDevice(deviceId) {
   return api.get('devices/' + deviceId);
 }
@@ -141,13 +148,7 @@ export function getMaxCurrent(device) {
 
 export function getTileContent(device, offset) {
   return api.post('search', [
-    getAvgTotalBody(
-      device,
-      offset === HOUR
-        ? new Date(new Date().getTime() - offset)
-        : getRoundedTime(false, offset === DAY ? 0 : offset),
-      new Date(),
-    ),
+    getAvgTotalBody(device, getRoundedTimeFromOffset(offset), new Date()),
     getMaxCurrentBody(device),
     getDataPageBody(
       device.site,

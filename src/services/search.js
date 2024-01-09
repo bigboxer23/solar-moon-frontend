@@ -22,8 +22,8 @@ function getBucketSize(start, end, type) {
   let grouped = type === 'groupedBarGraph';
   if (difference <= HOUR) return '1m';
   if (difference <= DAY) return grouped ? '3h' : '30m';
-  if (difference <= WEEK) return grouped ? '1d' : '3h';
-  if (difference <= MONTH) return grouped ? '4d' : '12h';
+  if (difference <= WEEK + DAY) return grouped ? '1d' : '3h';
+  if (difference <= MONTH + DAY) return grouped ? '4d' : '12h';
   return grouped ? '21d' : '1d';
 }
 
