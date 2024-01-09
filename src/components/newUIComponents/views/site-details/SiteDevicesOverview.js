@@ -17,7 +17,8 @@ export default function SiteDevicesOverview({
   devices,
   activeSiteAlerts,
   resolvedSiteAlerts,
-  avgTotalData,
+  avgData,
+  totalData,
   timeSeriesData,
 }) {
   const [expandedDevice, setExpandedDevice] = useState(-1);
@@ -77,7 +78,7 @@ export default function SiteDevicesOverview({
                       Total:{' '}
                       <FormattedNumber
                         value={getAggregationValue(
-                          avgTotalData[device.id],
+                          totalData[device.id],
                           TOTAL_AGGREGATION,
                         )}
                       />{' '}
@@ -87,7 +88,7 @@ export default function SiteDevicesOverview({
                       Average:{' '}
                       <FormattedNumber
                         value={getAggregationValue(
-                          avgTotalData[device.id],
+                          avgData[device.id],
                           AVG_AGGREGATION,
                         )}
                       />{' '}

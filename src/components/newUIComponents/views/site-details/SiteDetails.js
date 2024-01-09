@@ -114,17 +114,14 @@ export default function SiteDetails() {
             <span className='text-base'>
               Total:{' '}
               <FormattedNumber
-                value={getAggregationValue(
-                  siteData.avgTotal,
-                  TOTAL_AGGREGATION,
-                )}
+                value={getAggregationValue(siteData.total, TOTAL_AGGREGATION)}
               />{' '}
               kWH
             </span>
             <span className='text-lg font-bold'>
               Average:{' '}
               <FormattedNumber
-                value={getAggregationValue(siteData.avgTotal, AVG_AGGREGATION)}
+                value={getAggregationValue(siteData.avg, AVG_AGGREGATION)}
               />{' '}
               kW
             </span>
@@ -136,10 +133,11 @@ export default function SiteDetails() {
         />
         <SiteDevicesOverview
           activeSiteAlerts={activeSiteAlerts}
-          avgTotalData={siteData?.deviceAvgTotals}
+          avgData={siteData?.deviceAvg}
           devices={devices}
           resolvedSiteAlerts={resolvedSiteAlerts}
           timeSeriesData={siteData?.deviceTimeSeries}
+          totalData={siteData?.deviceTotals}
         />
       </div>
     </main>
