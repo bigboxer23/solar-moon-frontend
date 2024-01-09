@@ -75,5 +75,7 @@ export function parseSearchReturn(data) {
 }
 
 export function getAggregationValue(data, label) {
-  return Math.round(data.aggregations[label].value * 10) / 10;
+  return data !== undefined
+    ? Math.round(data.aggregations[label].value * 10) / 10
+    : 0;
 }

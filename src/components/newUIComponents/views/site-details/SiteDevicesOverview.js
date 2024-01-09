@@ -1,47 +1,27 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { FormattedNumber } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
 import {
   AVG_AGGREGATION,
+  getAggregationValue,
   parseSearchReturn,
   TOTAL_AGGREGATION,
 } from '../../../../services/search';
-import {
-  getListAvgTotal,
-  getListTimeSeriesData,
-} from '../../../../services/services';
 import { getDisplayName } from '../../../../utils/Utils';
 import StatBlock from '../../common/StatBlock';
 import DeviceChart from './DeviceChart';
 
 export default function SiteDevicesOverview({
   devices,
-  timeIncrement,
   activeSiteAlerts,
   resolvedSiteAlerts,
+  avgTotalData,
+  timeSeriesData,
 }) {
-  const [deviceGraphData, setDeviceGraphData] = useState([]);
-  const [deviceAvgTotal, setDeviceAvgTotal] = useState([]);
   const [expandedDevice, setExpandedDevice] = useState(-1);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    getListTimeSeriesData(devices, timeIncrement).then(({ data }) => {
-      const parsedData = data.map((d) => parseSearchReturn(d));
-      setDeviceGraphData(parsedData);
-    });
-    getListAvgTotal(devices, timeIncrement).then(({ data }) => {
-      const parsedData = data.map((d) => {
-        return {
-          avg: d.aggregations[AVG_AGGREGATION].value,
-          total: d.aggregations[TOTAL_AGGREGATION].value,
-        };
-      });
-      setDeviceAvgTotal(parsedData);
-    });
-  }, [devices, timeIncrement]);
 
   return (
     <div className='SiteDevicesOverview w-full'>
@@ -95,11 +75,23 @@ export default function SiteDevicesOverview({
                   <div className='flex w-full flex-col items-end'>
                     <span className='text-base'>
                       Total:{' '}
-                      <FormattedNumber value={deviceAvgTotal[i]?.total} /> kWH
+                      <FormattedNumber
+                        value={getAggregationValue(
+                          avgTotalData[device.id],
+                          TOTAL_AGGREGATION,
+                        )}
+                      />{' '}
+                      kWH
                     </span>
                     <span className='text-lg font-bold'>
                       Average:{' '}
-                      <FormattedNumber value={deviceAvgTotal[i]?.avg} /> kW
+                      <FormattedNumber
+                        value={getAggregationValue(
+                          avgTotalData[device.id],
+                          AVG_AGGREGATION,
+                        )}
+                      />{' '}
+                      kW
                     </span>
                   </div>
                 </div>
@@ -110,7 +102,9 @@ export default function SiteDevicesOverview({
                 i === expandedDevice ? 'mt-2 max-h-64' : 'mt-0 max-h-0'
               }`}
             >
-              <DeviceChart graphData={deviceGraphData[i]} />
+              <DeviceChart
+                graphData={parseSearchReturn(timeSeriesData[device.id])}
+              />
             </div>
           </div>
         ))}

@@ -136,9 +136,10 @@ export default function SiteDetails() {
         />
         <SiteDevicesOverview
           activeSiteAlerts={activeSiteAlerts}
+          avgTotalData={siteData?.deviceAvgTotals}
           devices={devices}
           resolvedSiteAlerts={resolvedSiteAlerts}
-          timeIncrement={timeIncrement}
+          timeSeriesData={siteData?.deviceTimeSeries}
         />
       </div>
     </main>
