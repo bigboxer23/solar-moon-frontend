@@ -6,17 +6,31 @@ import { getWeatherIcon } from '../../../utils/Utils';
 
 export default function WeatherBlock({ weather, className = '' }) {
   const style = classNames(
-    'WeatherBlock flex items-center self-end text-5xl font-bold',
+    'WeatherBlock flex items-center font-bold mt-1',
     className,
   );
 
   return (
     <div className={style} title={weather.weatherSummary}>
-      <span>{weather.uvIndex}</span>
-      <span className='self-start text-lg'>UV Index</span>
-      <span>{Math.round(weather.temperature)}</span>
-      <span className='self-start text-lg'>°F</span>
-      <span className='text-4xl'>{getWeatherIcon(weather.weatherSummary)}</span>
+      <div className='flex flex-col justify-end'>
+        <span className='flex h-5 justify-end text-lg font-bold leading-5'>
+          {Math.round(weather.temperature)}
+        </span>
+        <span className='flex h-5 justify-end text-lg font-bold leading-5'>
+          {weather.uvIndex}
+        </span>
+      </div>
+      <div className='ml-1 flex flex-col items-start justify-end'>
+        <span className='flex h-5 justify-start text-xs font-normal leading-5'>
+          °F
+        </span>
+        <span className='flex h-5 justify-start text-xs font-normal leading-5'>
+          UVI
+        </span>
+      </div>
+      <span className='ml-2.5 text-[2.5rem]'>
+        {getWeatherIcon(weather.weatherSummary)}
+      </span>
     </div>
   );
 }

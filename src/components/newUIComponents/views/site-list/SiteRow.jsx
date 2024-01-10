@@ -23,9 +23,11 @@ export default function SiteRow({ site }) {
     ),
   );
 
+  const degree = Math.round(((maxPercent / 100) * 180 - 45) * 10) / 10;
+
   return (
     <NavLink
-      className='group flex items-center rounded p-4 transition-all duration-150 hover:bg-neutral-100'
+      className='group flex items-center rounded-lg p-4 transition-all duration-150 hover:bg-neutral-100'
       to={`/sites/${site.id}`}
     >
       <div className='flex w-[20%] flex-col justify-center'>
@@ -36,11 +38,29 @@ export default function SiteRow({ site }) {
       </div>
 
       <StatBlock
-        className='flex w-[15%] items-center'
+        className='flex w-[15%] justify-center'
         title='devices'
         value={site.deviceCount}
       />
-      <div className='ml-4 flex w-[35%] flex-col justify-center text-sm'>
+
+      <div className='flex w-[20%] justify-center'>
+        {site.siteData?.weather && (
+          <WeatherBlock weather={site.siteData?.weather} />
+        )}
+      </div>
+      <div className='flex w-[15%] justify-center'>
+        <div className='relative flex aspect-[2] h-8 items-center justify-center overflow-hidden rounded-t-full bg-brand-primary'>
+          <div
+            className='absolute top-0 aspect-square w-full bg-gradient-to-tr from-transparent from-50% to-neutral-300 to-50% transition-transform duration-500'
+            style={{ transform: `rotate(${degree}deg)` }}
+          ></div>
+          <div className='absolute top-1/4 flex aspect-square w-3/4 justify-center rounded-full bg-white' />
+          <div className='absolute bottom-0 w-full truncate text-center text-sm font-bold leading-none'>
+            {maxPercent}%
+          </div>
+        </div>
+      </div>
+      <div className='ml-4 flex w-[20%] flex-col justify-center text-sm'>
         <span>
           <span className='font-bold'>
             <FormattedNumber
@@ -66,9 +86,6 @@ export default function SiteRow({ site }) {
           avg. output today
         </span>
       </div>
-      {site.siteData?.weather && (
-        <WeatherBlock weather={site.siteData?.weather} />
-      )}
       <div className='ml-auto flex flex-row items-center justify-center'>
         <FaChevronRight
           className='text-neutral-300 transition-all duration-150 group-hover:text-neutral-600'
