@@ -54,7 +54,7 @@ export default function SiteRow({ site }) {
             className='absolute top-0 aspect-square w-full bg-gradient-to-tr from-transparent from-50% to-neutral-300 to-50% transition-transform duration-500'
             style={{ transform: `rotate(${degree}deg)` }}
           ></div>
-          <div className='absolute top-1/4 flex aspect-square w-3/4 justify-center rounded-full bg-white' />
+          <div className='absolute top-1/4 flex aspect-square w-3/4 justify-center rounded-full bg-white transition-all duration-150 group-hover:bg-neutral-100' />
           <div className='absolute bottom-0 w-full truncate text-center text-sm font-bold leading-none'>
             {maxPercent}%
           </div>
