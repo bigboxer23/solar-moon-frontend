@@ -9,7 +9,7 @@ import {
   TOTAL_AGGREGATION,
 } from '../../../../services/search';
 import { getOverviewData } from '../../../../services/services';
-import { useStickyState } from '../../../../utils/Utils';
+import { sortDevices, useStickyState } from '../../../../utils/Utils';
 import Loader from '../../common/Loader';
 import StatBlock from '../../common/StatBlock';
 import OverviewSiteList from './dashboard-site-list/OverviewSiteList';
@@ -73,7 +73,7 @@ export default function Overview() {
     setActiveAlerts(active);
   };
   const handleDevices = (data) => {
-    const sites = data.filter((d) => d.virtual);
+    const sites = data.filter((d) => d.virtual).sort(sortDevices);
     const devices = data.filter((d) => !d.virtual);
 
     const mappedSites = sites.map((s) => {
