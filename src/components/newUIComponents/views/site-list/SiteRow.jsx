@@ -31,10 +31,10 @@ export default function SiteRow({ site }) {
   const degree =
     Math.round(((Math.min(100, maxPercent) / 100) * 180 - 45) * 10) / 10;
 
-  const getGaugeColor = (degree) => {
-    if (degree < 15) return 'bg-red-500';
-    if (degree < 25) return 'bg-yellow-300';
-    if (degree > 110) return 'bg-green-500';
+  const getGaugeColor = (percent) => {
+    if (percent < 15) return 'bg-red-500';
+    if (percent < 25) return 'bg-yellow-300';
+    if (percent > 110) return 'bg-green-500';
     return 'bg-brand-primary';
   };
 
@@ -65,7 +65,7 @@ export default function SiteRow({ site }) {
         <div
           className={
             'relative flex aspect-[2] h-8 items-center justify-center overflow-hidden rounded-t-full ' +
-            getGaugeColor(degree)
+            getGaugeColor(maxPercent)
           }
         >
           <div
