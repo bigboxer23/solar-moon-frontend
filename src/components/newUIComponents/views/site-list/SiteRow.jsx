@@ -9,11 +9,16 @@ import {
   TOTAL_AGGREGATION,
   TOTAL_REAL_POWER,
 } from '../../../../services/search';
-import { getGaugeValue } from '../../../../utils/Utils';
 import StatBlock from '../../common/StatBlock';
 import WeatherBlock from '../../common/WeatherBlock';
 
 export default function SiteRow({ site }) {
+  const getGaugeValue = (max, avg) => {
+    max = max === null ? 0 : max;
+    let scale = 100 / max;
+    return avg === 0 ? avg : Math.round(Math.round(scale * avg));
+  };
+
   const [maxPercent, setMaxPercent] = useState(
     getGaugeValue(
       site.siteData.weeklyMaxPower.aggregations['max#max'].value,
@@ -23,7 +28,15 @@ export default function SiteRow({ site }) {
     ),
   );
 
-  const degree = Math.round(((maxPercent / 100) * 180 - 45) * 10) / 10;
+  const degree =
+    Math.round(((Math.min(100, maxPercent) / 100) * 180 - 45) * 10) / 10;
+
+  const getGaugeColor = (degree) => {
+    if (degree < 15) return 'bg-red-500';
+    if (degree < 25) return 'bg-yellow-300';
+    if (degree > 110) return 'bg-green-500';
+    return 'bg-brand-primary';
+  };
 
   return (
     <NavLink
@@ -49,7 +62,12 @@ export default function SiteRow({ site }) {
         )}
       </div>
       <div className='flex w-[15%] justify-center'>
-        <div className='relative flex aspect-[2] h-8 items-center justify-center overflow-hidden rounded-t-full bg-brand-primary'>
+        <div
+          className={
+            'relative flex aspect-[2] h-8 items-center justify-center overflow-hidden rounded-t-full ' +
+            getGaugeColor(degree)
+          }
+        >
           <div
             className='absolute top-0 aspect-square w-full bg-gradient-to-tr from-transparent from-50% to-neutral-300 to-50% transition-transform duration-500'
             style={{ transform: `rotate(${degree}deg)` }}
@@ -61,11 +79,11 @@ export default function SiteRow({ site }) {
         </div>
       </div>
       <div className='ml-4 flex w-[20%] flex-col justify-center text-sm'>
-        <span>
+        <span className='whitespace-nowrap'>
           <span className='font-bold'>
             <FormattedNumber
               value={getAggregationValue(
-                site.siteData.avgTotal,
+                site.siteData.total,
                 TOTAL_AGGREGATION,
               )}
             />{' '}
@@ -73,13 +91,10 @@ export default function SiteRow({ site }) {
           </span>{' '}
           generated today
         </span>
-        <span>
+        <span className='whitespace-nowrap'>
           <span className='font-bold'>
             <FormattedNumber
-              value={getAggregationValue(
-                site.siteData.avgTotal,
-                AVG_AGGREGATION,
-              )}
+              value={getAggregationValue(site.siteData.avg, AVG_AGGREGATION)}
             />{' '}
             kW
           </span>{' '}

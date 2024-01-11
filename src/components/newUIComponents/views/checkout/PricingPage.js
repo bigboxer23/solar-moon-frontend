@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { createSearchParams, useNavigate } from 'react-router-dom';
 
-import logo from '../../../../assets/logo.svg';
 import HeaderBar from '../../nav/HeaderBar';
 import PriceTile from './PriceTile';
 

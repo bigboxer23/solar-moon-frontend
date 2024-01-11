@@ -165,12 +165,6 @@ export const getWeatherIcon = (weatherSummary) => {
   return weatherSummary;
 };
 
-export const getGaugeValue = (max, avg) => {
-  max = max === null ? 0 : max;
-  let scale = 200 / max;
-  return avg === 0 ? avg : Math.round(Math.round(scale * avg));
-};
-
 export const timeIncrementToText = (timeIncrement, short) => {
   switch (timeIncrement) {
     case HOUR:
