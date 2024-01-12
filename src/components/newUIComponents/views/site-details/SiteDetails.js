@@ -7,6 +7,7 @@ import {
   AVG_AGGREGATION,
   DAY,
   getAggregationValue,
+  parseSearchReturn,
   TOTAL_AGGREGATION,
 } from '../../../../services/search';
 import { getSiteOverview } from '../../../../services/services';
@@ -20,6 +21,7 @@ import Loader from '../../common/Loader';
 import StatBlock from '../../common/StatBlock';
 import WeatherBlock from '../../common/WeatherBlock';
 import TimeIncrementSelector from '../dashboard/TimeIncrementSelector';
+import DeviceChart from './DeviceChart';
 import SiteDetailsGraph from './SiteDetailsGraph';
 import SiteDevicesOverview from './SiteDevicesOverview';
 
@@ -53,7 +55,11 @@ export default function SiteDetails() {
       );
       setActiveSiteAlerts(data.alarms.filter((d) => d.state > 0));
       setResolvedSiteAlerts(data.alarms.filter((d) => d.state === 0));
-      setGraphData(parseStackedTimeSeriesData(data.timeSeries));
+      setGraphData(
+        data.site.subtraction
+          ? parseSearchReturn(data.timeSeries)
+          : parseStackedTimeSeriesData(data.timeSeries),
+      );
       setLoading(false);
     });
   }, [timeIncrement]);
@@ -127,10 +133,13 @@ export default function SiteDetails() {
             </span>
           </div>
         </div>
-        <SiteDetailsGraph
-          deviceNames={devices.map((d) => getDisplayName(d))}
-          graphData={graphData}
-        />
+        {siteData.site.subtraction && <DeviceChart graphData={graphData} />}
+        {!siteData.site.subtraction && (
+          <SiteDetailsGraph
+            deviceNames={devices.map((d) => getDisplayName(d))}
+            graphData={graphData}
+          />
+        )}
         <SiteDevicesOverview
           activeSiteAlerts={activeSiteAlerts}
           avgData={siteData?.deviceAvg}
