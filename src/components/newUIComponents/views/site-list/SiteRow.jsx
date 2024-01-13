@@ -40,68 +40,70 @@ export default function SiteRow({ site }) {
 
   return (
     <NavLink
-      className='group flex items-center rounded-lg p-4 transition-all duration-150 hover:bg-neutral-100'
+      className='group flex items-center rounded-lg p-0 transition-all duration-150 hover:bg-neutral-100 sm:p-4'
       to={`/sites/${site.id}`}
     >
-      <div className='flex w-[20%] flex-col justify-center'>
-        <div className='text-base font-bold'>{site.deviceName}</div>
-        <div className='text-xs text-neutral-500'>
-          {site.city && site.country && `${site.city}, ${site.country}`}
+      <div className='flex flex-col space-y-4'>
+        <div className='flex items-center justify-start space-x-1'>
+          <div className='text-base font-bold'>{site.deviceName}</div>
+          <div className='text-xs italic text-neutral-500'>
+            - {site.city && site.country && `${site.city}, ${site.country}`}
+          </div>
         </div>
-      </div>
 
-      <StatBlock
-        className='flex w-[15%] justify-center'
-        title='devices'
-        value={site.deviceCount}
-      />
-
-      <div className='flex w-[20%] justify-center'>
-        {site.siteData?.weather && (
-          <WeatherBlock weather={site.siteData?.weather} />
-        )}
-      </div>
-      <div className='flex w-[15%] justify-center'>
-        <div
-          className={
-            'relative flex aspect-[2] h-8 items-center justify-center overflow-hidden rounded-t-full ' +
-            getGaugeColor(maxPercent)
-          }
-        >
-          <div
-            className='absolute top-0 aspect-square w-full bg-gradient-to-tr from-transparent from-50% to-neutral-300 to-50% transition-transform duration-500'
-            style={{ transform: `rotate(${degree}deg)` }}
-          ></div>
-          <div className='absolute top-1/4 flex aspect-square w-3/4 justify-center rounded-full bg-white transition-all duration-150 group-hover:bg-neutral-100' />
-          <div className='absolute bottom-0 w-full truncate text-center text-sm font-bold leading-none'>
-            {maxPercent}%
+        <div className='mr-8 grid w-full grid-cols-3 gap-2 sm:grid-cols-5 sm:gap-4'>
+          <StatBlock className='' title='devices' value={site.deviceCount} />
+          <div className=''>
+            {site.siteData?.weather && (
+              <WeatherBlock weather={site.siteData?.weather} />
+            )}
+          </div>
+          <div className='mb-2 flex items-end justify-center'>
+            <div
+              className={
+                'relative flex aspect-[2] h-8 items-center justify-center overflow-hidden rounded-t-full ' +
+                getGaugeColor(maxPercent)
+              }
+            >
+              <div
+                className='absolute top-0 aspect-square w-full bg-gradient-to-tr from-transparent from-50% to-neutral-300 to-50% transition-transform duration-500'
+                style={{ transform: `rotate(${degree}deg)` }}
+              ></div>
+              <div className='absolute top-1/4 flex aspect-square w-3/4 justify-center rounded-full bg-white transition-all duration-150 group-hover:bg-neutral-100' />
+              <div className='absolute bottom-0 w-full truncate text-center text-sm font-bold leading-none'>
+                {maxPercent}%
+              </div>
+            </div>
+          </div>
+          <div className='col-span-2 ml-4 hidden flex-col justify-center text-sm sm:flex'>
+            <span className='whitespace-nowrap'>
+              <span className='font-bold'>
+                <FormattedNumber
+                  value={getAggregationValue(
+                    site.siteData.total,
+                    TOTAL_AGGREGATION,
+                  )}
+                />{' '}
+                kWH
+              </span>{' '}
+              generated today
+            </span>
+            <span className='whitespace-nowrap'>
+              <span className='font-bold'>
+                <FormattedNumber
+                  value={getAggregationValue(
+                    site.siteData.avg,
+                    AVG_AGGREGATION,
+                  )}
+                />{' '}
+                kW
+              </span>{' '}
+              avg. output today
+            </span>
           </div>
         </div>
       </div>
-      <div className='ml-4 flex w-[20%] flex-col justify-center text-sm'>
-        <span className='whitespace-nowrap'>
-          <span className='font-bold'>
-            <FormattedNumber
-              value={getAggregationValue(
-                site.siteData.total,
-                TOTAL_AGGREGATION,
-              )}
-            />{' '}
-            kWH
-          </span>{' '}
-          generated today
-        </span>
-        <span className='whitespace-nowrap'>
-          <span className='font-bold'>
-            <FormattedNumber
-              value={getAggregationValue(site.siteData.avg, AVG_AGGREGATION)}
-            />{' '}
-            kW
-          </span>{' '}
-          avg. output today
-        </span>
-      </div>
-      <div className='ml-auto flex flex-row items-center justify-center'>
+      <div className='ml-auto flex flex-row items-start justify-center pl-4'>
         <FaChevronRight
           className='text-neutral-300 transition-all duration-150 group-hover:text-neutral-600'
           size={20}

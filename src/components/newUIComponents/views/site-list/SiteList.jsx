@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { getDevices, getSitesOverview } from '../../../../services/services';
+import { getSitesOverview } from '../../../../services/services';
 import { sortDevices } from '../../../../utils/Utils';
 import Loader from '../../common/Loader';
 import SiteRow from './SiteRow';
@@ -49,7 +49,7 @@ export default function SiteList() {
     <main className='SiteList flex flex-col items-center bg-brand-primary-light'>
       <div className='fade-in my-8 w-[55rem] max-w-full space-y-4 rounded-lg bg-white p-6 shadow-panel sm:p-8'>
         <div className='text-base font-bold'>Sites</div>
-        <div className='flex flex-col justify-center space-y-2'>
+        <div className='flex flex-col justify-center space-y-4 sm:space-y-2'>
           {sites.map((site) => (
             <SiteRow key={site.id} site={site} />
           ))}
