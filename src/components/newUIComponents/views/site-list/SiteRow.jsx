@@ -43,11 +43,19 @@ export default function SiteRow({ site }) {
       className='group flex items-center rounded-lg p-0 transition-all duration-150 hover:bg-neutral-100 sm:p-4'
       to={`/sites/${site.id}`}
     >
-      <div className='flex flex-col space-y-4'>
-        <div className='flex items-center justify-start space-x-1'>
-          <div className='text-base font-bold'>{site.deviceName}</div>
-          <div className='text-xs italic text-neutral-500'>
-            - {site.city && site.country && `${site.city}, ${site.country}`}
+      <div className='flex w-full flex-col space-y-4'>
+        <div className='flex w-full items-center justify-between'>
+          <div className='flex items-center space-x-1'>
+            <div className='text-base font-bold'>{site.deviceName}</div>
+            <div className='text-xs italic text-neutral-500'>
+              - {site.city && site.country && `${site.city}, ${site.country}`}
+            </div>
+          </div>
+          <div className='ml-auto flex flex-row items-start justify-center pl-4'>
+            <FaChevronRight
+              className='text-neutral-300 transition-all duration-150 group-hover:text-neutral-600'
+              size={20}
+            />
           </div>
         </div>
 
@@ -102,12 +110,6 @@ export default function SiteRow({ site }) {
             </span>
           </div>
         </div>
-      </div>
-      <div className='ml-auto flex flex-row items-start justify-center pl-4'>
-        <FaChevronRight
-          className='text-neutral-300 transition-all duration-150 group-hover:text-neutral-600'
-          size={20}
-        />
       </div>
     </NavLink>
   );
