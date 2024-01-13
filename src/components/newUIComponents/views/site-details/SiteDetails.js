@@ -99,7 +99,7 @@ export default function SiteDetails() {
           />
         </div>
         <div className='mb-4 flex'>
-          <div className='flex space-x-4'>
+          <div className='grid grid-cols-2 gap-2 sm:grid-cols-4'>
             {siteData?.weather && (
               <WeatherBlock className='pr-2' weather={siteData?.weather} />
             )}
@@ -117,20 +117,24 @@ export default function SiteDetails() {
             />
           </div>
           <div className='ml-auto flex flex-col items-end'>
-            <span className='text-base'>
-              Total:{' '}
-              <FormattedNumber
-                value={getAggregationValue(siteData.total, TOTAL_AGGREGATION)}
-              />{' '}
-              kWH
-            </span>
-            <span className='text-lg font-bold'>
-              Average:{' '}
-              <FormattedNumber
-                value={getAggregationValue(siteData.avg, AVG_AGGREGATION)}
-              />{' '}
-              kW
-            </span>
+            <div className='flex flex-col space-x-1 text-end text-base sm:flex-row'>
+              <div>Total:</div>
+              <div>
+                <FormattedNumber
+                  value={getAggregationValue(siteData.total, TOTAL_AGGREGATION)}
+                />{' '}
+                kWH
+              </div>
+            </div>
+            <div className='average-output flex flex-col space-x-1 text-end text-xl font-bold sm:flex-row'>
+              <div>Average:</div>
+              <div>
+                <FormattedNumber
+                  value={getAggregationValue(siteData.avg, AVG_AGGREGATION)}
+                />{' '}
+                kW
+              </div>
+            </div>
           </div>
         </div>
         {siteData.site.subtraction && <DeviceChart graphData={graphData} />}

@@ -52,8 +52,8 @@ export default function SiteDevicesOverview({
                   </div>
                   {i === expandedDevice ? <FaChevronUp /> : <FaChevronDown />}
                 </div>
-                <div className='mt-2 flex w-full items-center'>
-                  <div className='flex space-x-4'>
+                <div className='mt-2 flex w-full items-center justify-between'>
+                  <div className='grid grid-cols-1 gap-2 sm:grid-cols-2'>
                     <StatBlock
                       onClick={() => navigate(`/alerts?device=${device.id}`)}
                       title='active alerts'
@@ -73,34 +73,38 @@ export default function SiteDevicesOverview({
                       }
                     />
                   </div>
-                  <div className='flex w-full flex-col items-end'>
-                    <span className='text-base'>
-                      Total:{' '}
-                      <FormattedNumber
-                        value={getAggregationValue(
-                          totalData[device.id],
-                          TOTAL_AGGREGATION,
-                        )}
-                      />{' '}
-                      kWH
-                    </span>
-                    <span className='text-lg font-bold'>
-                      Average:{' '}
-                      <FormattedNumber
-                        value={getAggregationValue(
-                          avgData[device.id],
-                          AVG_AGGREGATION,
-                        )}
-                      />{' '}
-                      kW
-                    </span>
+                  <div className='flex flex-col items-end'>
+                    <div className='flex flex-col space-x-1 text-end text-base sm:flex-row'>
+                      <div>Total:</div>
+                      <div>
+                        <FormattedNumber
+                          value={getAggregationValue(
+                            totalData[device.id],
+                            TOTAL_AGGREGATION,
+                          )}
+                        />{' '}
+                        kWH
+                      </div>
+                    </div>
+                    <div className='average-output flex flex-col space-x-1 text-end text-xl font-bold sm:flex-row'>
+                      <div>Average:</div>
+                      <div>
+                        <FormattedNumber
+                          value={getAggregationValue(
+                            avgData[device.id],
+                            AVG_AGGREGATION,
+                          )}
+                        />{' '}
+                        kW
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </button>
             <div
               className={`duration-250 overflow-hidden transition-all ${
-                i === expandedDevice ? 'mt-2 max-h-64' : 'mt-0 max-h-0'
+                i === expandedDevice ? 'mt-4 max-h-64' : 'mt-0 max-h-0'
               }`}
             >
               <DeviceChart

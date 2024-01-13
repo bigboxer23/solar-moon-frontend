@@ -104,7 +104,7 @@ export default function Overview() {
           />
         </div>
         <div className='mb-6 flex justify-between'>
-          <div className='grid grid-cols-2 gap-2.5 sm:grid-cols-4'>
+          <div className='grid grid-cols-2 gap-2 sm:grid-cols-4'>
             <StatBlock title='sites' value={sites.length} />
             <StatBlock title='devices' value={devices.length} />
             <StatBlock

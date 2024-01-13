@@ -89,7 +89,7 @@ export default function SiteDetailsGraph({ graphData, deviceNames }) {
   }
 
   return (
-    <div className='SiteDetailsGraph mb-6 h-72 w-full rounded-lg bg-brand-primary-light p-3'>
+    <div className='SiteDetailsGraph mb-6 h-64 w-full rounded-lg bg-brand-primary-light p-3 sm:h-72'>
       <Line data={data} options={options} plugins={[tooltipPlugin]} />
     </div>
   );
