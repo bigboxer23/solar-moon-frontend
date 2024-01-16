@@ -2,10 +2,10 @@ import { useController } from 'react-hook-form';
 import { v4 } from 'uuid';
 
 function buildStyles(
-  inputClassName,
-  wrapperClassName,
-  labelClassName,
-  errorClassName,
+  inputClassName = '',
+  wrapperClassName = '',
+  labelClassName = '',
+  errorClassName = '',
   extendVariantStyles = true,
 ) {
   const { inputStyle, wrapperStyle, labelStyle, errorStyle } = {
@@ -18,7 +18,7 @@ function buildStyles(
   if (extendVariantStyles) {
     return {
       inputStyle: `${inputStyle} ${inputClassName}`,
-      wrapperStyle: `${wrapperStyle} ${wrapperClassName}`,
+      inputWrapperStyle: `${wrapperStyle} ${wrapperClassName}`,
       labelStyle: `${labelStyle} ${labelClassName}`,
       errorStyle: `${errorStyle} ${errorClassName}`,
     };
@@ -26,7 +26,7 @@ function buildStyles(
 
   return {
     inputStyle: inputClassName || inputStyle,
-    wrapperStyle: wrapperClassName || wrapperStyle,
+    inputWrapperStyle: wrapperClassName || wrapperStyle,
     labelStyle: labelClassName || labelStyle,
     errorStyle: errorClassName || errorStyle,
   };
@@ -37,7 +37,8 @@ export function Check({
   inputProps,
   prefix,
   suffix,
-  wrapperClassName,
+  className,
+  inputWrapperClassName,
   inputClassName,
   label,
   labelClassName,
@@ -45,16 +46,16 @@ export function Check({
   errorMessage,
   extendVariantStyles = true,
 }) {
-  const { inputStyle, wrapperStyle, labelStyle, errorStyle } = buildStyles(
+  const { inputStyle, inputWrapperStyle, labelStyle, errorStyle } = buildStyles(
     inputClassName,
-    wrapperClassName,
+    inputWrapperClassName,
     labelClassName,
     errorClassName,
     extendVariantStyles,
   );
   return (
     <>
-      <div className={`Input ${wrapperStyle}`}>
+      <div className={`Input ${inputWrapperStyle} ${className}`}>
         {label && <div className={labelStyle}>{label}</div>}
         <input
           checked={inputProps.value ? 'checked' : ''}
