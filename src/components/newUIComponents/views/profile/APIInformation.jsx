@@ -25,11 +25,12 @@ export default function APIInformation({ customerData, setCustomerData }) {
 
   return (
     <div className='fade-in my-8 w-[40rem] max-w-full rounded-lg bg-white p-6 shadow-panel sm:p-8'>
-      <div className='mb-10 flex w-full justify-between'>
+      <div className='mb-8 flex w-full justify-between'>
         <span className='text-lg font-bold'>API Information</span>
       </div>
       <div>
         <Input
+          className='mb-6'
           inputProps={{
             readOnly: true,
             value: customerData?.accessKey || '',
@@ -43,10 +44,9 @@ export default function APIInformation({ customerData, setCustomerData }) {
           }
           type='text'
           variant='underline'
-          wrapperClassName='mb-6'
         />
         <Button
-          className='ml-auto'
+          className='ml-auto mt-4'
           id='revokeAccessKey'
           onClick={() => setAccessKeyWarning(true)}
           type='button'

@@ -27,7 +27,7 @@ const Site = ({ data, devices, setDevices, setActiveSite }) => {
       });
   };
   return (
-    <div>
+    <div className='space-y-6'>
       {devices
         .filter((device) => device.virtual)
         .filter((device) => device.site === site.name)

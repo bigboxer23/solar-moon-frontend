@@ -106,7 +106,11 @@ export default function Overview() {
         <div className='mb-6 flex justify-between'>
           <div className='grid grid-cols-2 gap-2 sm:grid-cols-4'>
             <StatBlock title='sites' value={sites.length} />
-            <StatBlock title='devices' value={devices.length} />
+            <StatBlock
+              className='mr-2'
+              title='devices'
+              value={devices.length}
+            />
             <StatBlock
               className={
                 'cursor-pointer' + (activeAlerts > 0 ? ' text-danger' : '')

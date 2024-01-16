@@ -65,47 +65,47 @@ const SiteAttributes = ({ data, setDevices, setActiveSite }) => {
   };
 
   return (
-    <div className='site-attributes mb-4 flex items-center rounded-md border-2 p-4'>
+    <div className='SiteAttributes mb-4 flex items-center rounded-md border-2 p-6'>
       <form className='w-full' onSubmit={handleSubmit(update)}>
         <ControlledInput
+          className='mb-6'
           control={control}
           errorMessage={errors.name?.message}
           label='Display Name'
           name='name'
           type='text'
           variant='underline'
-          wrapperClassName='mb-6'
         />
         <div className='flex'>
           <div className='grow'>
             <ControlledInput
+              className='grow-1 mb-6'
               control={control}
               errorMessage={errors.city?.message}
               label='City'
               name='city'
               type='text'
               variant='underline'
-              wrapperClassName='mb-6 grow-1'
             />
           </div>
           <ControlledInput
+            className='mb-6 ms-6'
             control={control}
             errorMessage={errors.state?.message}
             label='State, Province, or Region'
             name='state'
             type='text'
             variant='underline'
-            wrapperClassName='mb-6 ms-6'
           />
         </div>
         <ControlledInput
+          className='mb-6'
           control={control}
           errorMessage={errors.country?.message}
           label='Country'
           name='country'
           type='text'
           variant='underline'
-          wrapperClassName='mb-6'
         />
         <div className='flex items-center'>
           <div

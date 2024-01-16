@@ -16,7 +16,7 @@ export default function DeleteAccount({ customerData }) {
 
   return (
     <div className='fade-in my-8 w-[40rem] max-w-full rounded-lg bg-white p-6 shadow-panel sm:p-8'>
-      <div className='mb-10 flex w-full justify-between'>
+      <div className='mb-8 flex w-full justify-between'>
         <span className='text-lg font-bold'>Delete Account</span>
       </div>
       <Button

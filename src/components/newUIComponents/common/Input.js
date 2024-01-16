@@ -9,7 +9,7 @@ const boxStylePreset = {
 };
 
 const underlineStylePreset = {
-  inputStyle: 'appearance-none grow-1 w-full outline-none',
+  inputStyle: 'appearance-none grow-1 w-full outline-none bg-transparent',
   wrapperStyle:
     'flex flex-col border-b border-gray-300 focus-within:border-brand-primary pb-1',
   labelStyle: 'text-sm text-gray-700',
@@ -34,7 +34,7 @@ function buildStyles(
   if (extendVariantStyles) {
     return {
       inputStyle: `${inputStyle} ${inputClassName}`,
-      wrapperStyle: `${wrapperStyle} ${wrapperClassName}`,
+      inputWrapperStyle: `${wrapperStyle} ${wrapperClassName}`,
       labelStyle: `${labelStyle} ${labelClassName}`,
       errorStyle: `${errorStyle} ${errorClassName}`,
     };
@@ -42,7 +42,7 @@ function buildStyles(
 
   return {
     inputStyle: inputClassName || inputStyle,
-    wrapperStyle: wrapperClassName || wrapperStyle,
+    inputWrapperStyle: wrapperClassName || wrapperStyle,
     labelStyle: labelClassName || labelStyle,
     errorStyle: errorClassName || errorStyle,
   };
@@ -52,7 +52,8 @@ export function Input({
   inputProps,
   prefix,
   suffix,
-  wrapperClassName,
+  className,
+  inputWrapperClassName,
   inputClassName,
   label,
   labelClassName,
@@ -61,10 +62,10 @@ export function Input({
   errorMessage,
   extendVariantStyles = true,
 }) {
-  const { inputStyle, wrapperStyle, labelStyle, errorStyle } = buildStyles(
+  const { inputStyle, inputWrapperStyle, labelStyle, errorStyle } = buildStyles(
     variant,
     inputClassName,
-    wrapperClassName,
+    inputWrapperClassName,
     labelClassName,
     errorClassName,
     extendVariantStyles,
@@ -72,8 +73,8 @@ export function Input({
 
   return (
     <>
-      <div>
-        <label className={`Input ${wrapperStyle}`}>
+      <div className={`Input ${className}`}>
+        <label className={inputWrapperStyle}>
           {label && <div className={labelStyle}>{label}</div>}
           <div className='flex space-x-2'>
             {prefix}

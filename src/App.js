@@ -91,7 +91,7 @@ function App() {
                 <Route element={<CheckoutForm />} path='/checkout' />
                 <Route element={<Return />} path='/return' />
                 <Route element={<PricingPage />} path='/pricing' />
-                <Route element={<SiteManagement />} path='/siteManagement' />
+                <Route element={<SiteManagement />} path='/manage' />
                 <Route element={<LockPage />} path='/lock' />
                 <Route element={<Mapping />} path='/mapping' />
                 <Route element={<Navigate to='/' />} path='*' />

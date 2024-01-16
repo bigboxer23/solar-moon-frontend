@@ -83,12 +83,13 @@ const ChangePassword = () => {
 
   return (
     <div className='fade-in my-8 w-[40rem] max-w-full rounded-lg bg-white p-6 shadow-panel sm:p-8'>
-      <div className='mb-10 flex w-full justify-between'>
+      <div className='mb-8 flex w-full justify-between'>
         <span className='text-lg font-bold'>Change Password</span>
       </div>
       <div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <ControlledInput
+            className='mb-6'
             control={control}
             errorMessage={errors.oldPassword?.message}
             inputProps={{
@@ -98,9 +99,9 @@ const ChangePassword = () => {
             label='Old Password'
             name='oldPassword'
             variant='underline'
-            wrapperClassName='mb-6'
           />
           <ControlledInput
+            className='mb-6'
             control={control}
             errorMessage={errors.newPassword?.message}
             inputProps={{
@@ -110,9 +111,9 @@ const ChangePassword = () => {
             label='New Password'
             name='newPassword'
             variant='underline'
-            wrapperClassName='mb-6'
           />
           <ControlledInput
+            className='mb-6'
             control={control}
             errorMessage={errors.confirmNewPassword?.message}
             inputProps={{
@@ -122,10 +123,9 @@ const ChangePassword = () => {
             label='Confirm New Password'
             name='confirmNewPassword'
             variant='underline'
-            wrapperClassName='mb-6'
           />
           <Button
-            className='ml-auto mt-3'
+            className='ml-auto mt-4'
             disabled={loading}
             type='submit'
             variant='primary'

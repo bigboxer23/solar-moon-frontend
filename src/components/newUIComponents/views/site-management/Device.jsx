@@ -65,7 +65,7 @@ const Device = ({ data, devices, setDevices }) => {
   };
 
   return (
-    <div className='device mb-6 flex w-full flex-col items-center overflow-hidden rounded-md bg-[#f5f5f5] p-4'>
+    <div className='Device mb-6 flex w-full flex-col items-center overflow-hidden rounded-md bg-[#f5f5f5] p-6'>
       <div className='mb-10 flex w-full justify-between'>
         <span
           className={(data.disabled ? 'opacity-50 ' : '') + 'text-lg font-bold'}
@@ -75,11 +75,11 @@ const Device = ({ data, devices, setDevices }) => {
         <div className='grow' />
         <div title='Disable this device. Alerting will not trigger and device will not be included in site roll up.'>
           <ControlledCheck
+            className='hidden-without-hover'
             control={control}
             errorMessage={errors.enabled?.message}
             id={v4()}
             name='enabled'
-            wrapperClassName='hidden-without-hover'
           />
         </div>
       </div>
@@ -89,22 +89,22 @@ const Device = ({ data, devices, setDevices }) => {
           onSubmit={handleSubmit(update)}
         >
           <ControlledInput
+            className='mb-6'
             control={control}
             errorMessage={errors.deviceName?.message}
             label='Device Name'
             name='deviceName'
             type='text'
             variant='underline'
-            wrapperClassName='mb-6'
           />
           <ControlledInput
+            className='mb-6'
             control={control}
             errorMessage={errors.name?.message}
             label='Display Name'
             name='name'
             type='text'
             variant='underline'
-            wrapperClassName='mb-6'
           />
           <ControlledSelect
             attributes={devices
@@ -132,7 +132,7 @@ const Device = ({ data, devices, setDevices }) => {
         </form>
         <div className='flex justify-end'>
           <Button
-            className='hidden-without-hover'
+            className='hidden-without-hover flex items-center'
             disabled={loading}
             onClick={handleSubmit(update)}
             type='button'
@@ -147,9 +147,12 @@ const Device = ({ data, devices, setDevices }) => {
             onClick={() => setDeleteDeviceWarning(true)}
             title='Delete Device'
             type='button'
-            variant='outline-danger'
+            variant='danger'
           >
-            <AiOutlineDelete style={{ marginBottom: '2px' }} />
+            <AiOutlineDelete
+              className='h-4 w-4'
+              style={{ marginBottom: '2px', fontWeight: 'bold' }}
+            />
           </Button>
         </div>
         <AlertSection

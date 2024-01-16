@@ -13,7 +13,6 @@ export default function AlertSection({
         <div className='mb-2 flex w-full justify-between text-danger'>
           <span className='text-lg font-bold'>{title}</span>
         </div>
-        <hr />
         <div className='mt-8 flex content-end'>
           <Button
             className='ml-auto'

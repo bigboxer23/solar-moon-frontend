@@ -10,7 +10,7 @@ function buildStyles(
 ) {
   const { inputStyle, wrapperStyle, labelStyle, errorStyle } = {
     inputStyle: 'outline-none switch-checkbox invisible h-0 w-0',
-    wrapperStyle: 'flex flex-col focus-within:border-brand-primary pb-1',
+    wrapperStyle: 'flex focus-within:border-brand-primary pb-1 space-x-4',
     labelStyle: 'text-sm text-gray-700',
     errorStyle: 'text-sm text-danger mt-1',
   };

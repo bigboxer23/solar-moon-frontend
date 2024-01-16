@@ -9,7 +9,7 @@ const boxStylePreset = {
 };
 
 const underlineStylePreset = {
-  inputStyle: 'grow outline-none',
+  inputStyle: 'grow outline-none bg-transparent',
   wrapperStyle:
     'flex flex-col border-b border-gray-300 focus-within:border-brand-primary pb-1',
   labelStyle: 'text-sm text-gray-700',

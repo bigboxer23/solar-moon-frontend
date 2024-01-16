@@ -30,7 +30,7 @@ export default function Modal({ children, size = 'md', isOpen = false }) {
 
 export function ModalHeader({ label, onCloseClick }) {
   return (
-    <div className='ModalHeader flex items-center justify-between border-b border-gray-200 px-5 py-3'>
+    <div className='ModalHeader flex items-center justify-between border-b border-gray-200 px-6 py-4'>
       <h2 className='ModalHeader text-lg font-bold'>{label}</h2>
       {onCloseClick && (
         <Button onClick={onCloseClick} variant='icon'>
@@ -42,6 +42,6 @@ export function ModalHeader({ label, onCloseClick }) {
 }
 
 export function ModalFooter({ children, className }) {
-  const footerClass = `ModalFooter justify-end w-full flex border-t border-gray-200 px-5 py-3 ${className}`;
+  const footerClass = `ModalFooter justify-end w-full flex px-6 pb-4 pt-2 ${className}`;
   return <div className={footerClass}>{children}</div>;
 }

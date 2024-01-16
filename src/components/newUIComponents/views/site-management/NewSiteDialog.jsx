@@ -61,54 +61,56 @@ const NewSiteDialog = ({
       });
   };
   return (
-    <Modal isOpen={show}>
+    <Modal className='NewSiteDialog' isOpen={show}>
       <ModalHeader
         label='Create New Site'
         onCloseClick={() => setShow(false)}
       />
-      <form className='p-5' onSubmit={handleSubmit(createNewSite)}>
-        <ControlledInput
-          control={control}
-          errorMessage={errors.name?.message}
-          label='Name'
-          name='name'
-          type='text'
-          variant='underline'
-          wrapperClassName='mb-6'
-        />
-        <div className='flex'>
-          <div className='grow'>
+      <form onSubmit={handleSubmit(createNewSite)}>
+        <div className='px-6 pt-5'>
+          <ControlledInput
+            className='mb-6'
+            control={control}
+            errorMessage={errors.name?.message}
+            label='Name'
+            name='name'
+            type='text'
+            variant='underline'
+          />
+          <div className='flex space-x-6'>
+            <div className='grow'>
+              <ControlledInput
+                className='grow-1 mb-6'
+                control={control}
+                errorMessage={errors.city?.message}
+                label='City'
+                name='city'
+                type='text'
+                variant='underline'
+              />
+            </div>
             <ControlledInput
+              className='mb-6'
               control={control}
-              errorMessage={errors.city?.message}
-              label='City'
-              name='city'
+              errorMessage={errors.state?.message}
+              label='State, Province, or Region'
+              name='state'
               type='text'
               variant='underline'
-              wrapperClassName='mb-6 grow-1'
             />
           </div>
           <ControlledInput
+            className='mb-6'
             control={control}
-            errorMessage={errors.state?.message}
-            label='State, Province, or Region'
-            name='state'
+            errorMessage={errors.country?.message}
+            label='Country'
+            name='country'
             type='text'
             variant='underline'
-            wrapperClassName='mb-6'
           />
+          {/*Needed so pressing enter to submit works*/}
+          <Button className='hidden' type='submit' variant='primary'></Button>
         </div>
-        <ControlledInput
-          control={control}
-          errorMessage={errors.country?.message}
-          label='Country'
-          name='country'
-          type='text'
-          variant='underline'
-          wrapperClassName='mb-6'
-        />
-        {/*Needed so pressing enter to submit works*/}
-        <Button className='hidden' type='submit' variant='primary'></Button>
         <ModalFooter className='space-x-2'>
           <Button
             disabled={loading}

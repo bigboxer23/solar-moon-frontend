@@ -58,38 +58,40 @@ export default function NewDeviceDialog({
         label='Create New Device'
         onCloseClick={() => setShow(false)}
       />
-      <form className='p-5' onSubmit={handleSubmit(createNewDevice)}>
-        <ControlledInput
-          control={control}
-          errorMessage={errors.deviceName?.message}
-          label='Device Name'
-          name='deviceName'
-          type='text'
-          variant='underline'
-          wrapperClassName='mb-6'
-        />
-        <ControlledInput
-          control={control}
-          errorMessage={errors.name?.message}
-          label='Display Name'
-          name='name'
-          type='text'
-          variant='underline'
-          wrapperClassName='mb-6 grow-1'
-        />
-        <ControlledSelect
-          attributes={devices
-            .filter((d) => d.virtual)
-            .map((site) => {
-              return site.name;
-            })}
-          control={control}
-          errorMessage={errors.site?.message}
-          label='Site'
-          name='site'
-          type='text'
-          variant='underline'
-        />
+      <form onSubmit={handleSubmit(createNewDevice)}>
+        <div className='px-6 py-4'>
+          <ControlledInput
+            className='mb-6'
+            control={control}
+            errorMessage={errors.deviceName?.message}
+            label='Device Name'
+            name='deviceName'
+            type='text'
+            variant='underline'
+          />
+          <ControlledInput
+            className='grow-1 mb-6'
+            control={control}
+            errorMessage={errors.name?.message}
+            label='Display Name'
+            name='name'
+            type='text'
+            variant='underline'
+          />
+          <ControlledSelect
+            attributes={devices
+              .filter((d) => d.virtual)
+              .map((site) => {
+                return site.name;
+              })}
+            control={control}
+            errorMessage={errors.site?.message}
+            label='Site'
+            name='site'
+            type='text'
+            variant='underline'
+          />
+        </div>
         {/*Needed so pressing enter to submit works*/}
         <Button className='hidden' type='submit' variant='primary'></Button>
         <ModalFooter className='space-x-2'>
