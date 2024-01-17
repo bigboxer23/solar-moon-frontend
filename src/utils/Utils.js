@@ -61,7 +61,7 @@ export function debounce(fn, ms) {
 }
 
 export const getFormattedTime = (date) => {
-  return d3.timeFormat('%b %d, %y %I:%M %p')(date);
+  return moment(date).format('MMM D, YY hh:mm A');
 };
 
 export const getDisplayName = (device) => {
