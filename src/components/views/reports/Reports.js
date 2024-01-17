@@ -235,7 +235,7 @@ const Reports = () => {
           <div className='w-full' id='data-grid'>
             {(!loading || subLoad) && (
               <DataGrid
-                className='min-vh-70 rdg-light grow'
+                className='rdg-light min-h-[70vh] grow'
                 columns={columns}
                 onScroll={handleScroll}
                 ref={gridRef}
