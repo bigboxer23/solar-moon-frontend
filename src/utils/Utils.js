@@ -1,4 +1,3 @@
-import * as d3 from 'd3';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { IoIosSnow } from 'react-icons/io';
