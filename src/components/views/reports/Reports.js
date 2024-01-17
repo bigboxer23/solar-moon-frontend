@@ -204,8 +204,8 @@ const Reports = () => {
   };
 
   return (
-    <main className='Reports flex w-full flex-col'>
-      <div className='fade-in grow-1 my-8 me-2 ms-2 flex flex-col rounded-lg bg-white shadow-panel sm:me-5 sm:ms-5'>
+    <main className='Reports flex w-full flex-col items-center px-2 sm:px-5'>
+      <div className='fade-in  my-8 flex w-[75rem] max-w-full flex-col rounded-lg bg-white shadow-panel '>
         <div className='flex w-full items-center justify-between p-2 pb-4 pt-8 sm:p-8'>
           <span className='hidden text-lg font-bold sm:block'>Reports</span>
           <SearchBar
