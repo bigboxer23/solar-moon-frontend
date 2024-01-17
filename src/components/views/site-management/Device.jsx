@@ -149,7 +149,7 @@ const Device = ({ data, devices, setDevices }) => {
             type='button'
             variant='danger'
           >
-            <AiOutlineDelete className='mb-[2px] h-4 w-4 font-bold' />
+            <AiOutlineDelete className='mb-[2px] size-4 font-bold' />
           </Button>
         </div>
         <AlertSection

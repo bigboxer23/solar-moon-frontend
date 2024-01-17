@@ -67,7 +67,7 @@ export default function Navbar() {
         <NavLink className='flex items-center justify-center' to='/'>
           <img
             alt='brand'
-            className='ml-6 h-10 w-10 sm:ml-8 sm:h-12 sm:w-12'
+            className='ml-6 size-10 sm:ml-8 sm:size-12'
             src={logo}
           />
         </NavLink>

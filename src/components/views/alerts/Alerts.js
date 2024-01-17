@@ -120,7 +120,7 @@ export default function Alerts() {
           </div>
           <div className='space-y-4'>
             {filteredActiveAlerts.length === 0 && (
-              <div className='mb-8 flex h-full w-full items-center justify-center px-6 text-center text-base text-text-secondary'>
+              <div className='mb-8 flex size-full items-center justify-center px-6 text-center text-base text-text-secondary'>
                 All clear! You have no active device alerts.
               </div>
             )}
