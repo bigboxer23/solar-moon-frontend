@@ -16,19 +16,6 @@ import {
   YEAR,
 } from '../services/search';
 
-export function preventSubmit(event) {
-  if (event.key === 'Enter') {
-    //Don't submit the form
-    event.preventDefault();
-    event.stopPropagation();
-  }
-}
-export const onEnterPressed = (event, functionToRun) => {
-  if (event.key === 'Enter') {
-    functionToRun();
-  }
-};
-
 export function defaultIfEmpty(defaultValue, value) {
   return value === null || value === undefined || value === ''
     ? defaultValue

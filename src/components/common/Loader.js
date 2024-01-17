@@ -1,12 +1,12 @@
-const Loader = ({ loading, deviceCount, content }) => {
-  return loading ? (
-    <div className='w-100 loading'></div>
-  ) : deviceCount === 0 && content !== '' ? (
-    <div className='d-flex justify-content-start grow-1 flex-wrap'>
-      {content}
+export default function Loader({ className = '' }) {
+  return (
+    <div className={className + ' Loader'}>
+      <div className='loader-ellipsis'>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
     </div>
-  ) : (
-    ''
   );
-};
-export default Loader;
+}
