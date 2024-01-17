@@ -1,5 +1,6 @@
 import { Line } from 'react-chartjs-2';
 
+import { formatXAxisLabels } from '../../../utils/Utils';
 import { tooltipPlugin } from '../../common/graphPlugins';
 
 export default function DeviceChart({ graphData }) {
@@ -72,6 +73,7 @@ export default function DeviceChart({ graphData }) {
         type: 'time',
         ticks: {
           stepSize: 6,
+          callback: formatXAxisLabels,
         },
       },
       y: {

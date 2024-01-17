@@ -1,8 +1,13 @@
+import { Chart } from 'chart.js';
+import moment from 'moment/moment';
 import { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 
 import { DAY, parseSearchReturn } from '../../../services/search';
-import { splitDayAndNightDataSets } from '../../../utils/Utils';
+import {
+  formatXAxisLabels,
+  splitDayAndNightDataSets,
+} from '../../../utils/Utils';
 import { tooltipPlugin } from '../../common/graphPlugins';
 
 export default function OverviewChart({ timeIncrement, siteData }) {
@@ -57,6 +62,7 @@ export default function OverviewChart({ timeIncrement, siteData }) {
         type: 'time',
         ticks: {
           stepSize: 6,
+          callback: formatXAxisLabels,
         },
         grid: {
           display: false,
@@ -66,11 +72,21 @@ export default function OverviewChart({ timeIncrement, siteData }) {
         },
       },
       y: {
+        axis: 'y',
         grid: {
           display: false,
         },
+        position: { y: 75 },
+        padding: 5,
+        z: 10,
         ticks: {
-          display: false,
+          clip: false,
+          labelOffset: 10,
+          z: 10,
+          display: true,
+          callback: function (value, index, ticks) {
+            return index === ticks.length - 1 ? value + ' kW Max' : '';
+          },
         },
         border: {
           display: false,

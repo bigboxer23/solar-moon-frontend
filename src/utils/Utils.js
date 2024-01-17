@@ -63,6 +63,14 @@ export const getFormattedTime = (date) => {
   return moment(date).format('MMM D, YY hh:mm A');
 };
 
+export const formatXAxisLabels = (value, index, ticks) => {
+  const d = new Date(value);
+  if (d.getHours() % 6 !== 0 || d.getMinutes() !== 0) {
+    return '';
+  }
+  return moment(d).format(d.getHours() === 0 ? 'MMM D' : 'hA');
+};
+
 export const getDisplayName = (device) => {
   return device.name == null ? device.deviceName : device.name;
 };
