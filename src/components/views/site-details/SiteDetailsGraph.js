@@ -7,20 +7,31 @@ import {
   MdStackedLineChart,
 } from 'react-icons/md';
 
-import { formatXAxisLabels, useStickyState } from '../../../utils/Utils';
+import { GROUPED_BAR } from '../../../services/search';
+import { formatXAxisLabels } from '../../../utils/Utils';
 import { tooltipPlugin } from '../../common/graphPlugins';
 
-export default function SiteDetailsGraph({ graphData, deviceNames }) {
-  const [graphType, setGraphType] = useStickyState('bar', 'graph.type');
-
+export default function SiteDetailsGraph({
+  graphData,
+  deviceNames,
+  graphType,
+  setGraphType,
+}) {
   const datasets = deviceNames.map((name) => {
     const data = graphData.filter((d) => d.name === name);
-
-    return {
+    const dataSet = {
       label: name,
       data: data,
       fill: true,
+      categoryPercentage: 0.76,
+      barThickness: 'flex',
+      barPercentage: 1,
     };
+    if (graphType === GROUPED_BAR) {
+      dataSet.skipNull = true;
+      dataSet.clip = { left: 50, top: 0, right: 50, bottom: 0 };
+    }
+    return dataSet;
   });
 
   const data = {
@@ -73,7 +84,7 @@ export default function SiteDetailsGraph({ graphData, deviceNames }) {
     },
     scales: {
       x: {
-        stacked: graphType !== 'grouped-bar',
+        stacked: graphType !== GROUPED_BAR,
         type: 'time',
         ticks: {
           stepSize: 6,
@@ -81,7 +92,7 @@ export default function SiteDetailsGraph({ graphData, deviceNames }) {
         },
       },
       y: {
-        stacked: graphType !== 'grouped-bar',
+        stacked: graphType !== GROUPED_BAR,
         title: {
           display: true,
           text: 'kW',
@@ -93,6 +104,16 @@ export default function SiteDetailsGraph({ graphData, deviceNames }) {
       yAxisKey: 'avg',
     },
   };
+  if (graphType === GROUPED_BAR) {
+    options.layout = {
+      padding: {
+        left: 0,
+        right: 25,
+        top: 0,
+        bottom: 0,
+      },
+    };
+  }
 
   if (!graphData) {
     return <div className='SiteDetailsGraph h-40 w-full'></div>;
@@ -104,9 +125,9 @@ export default function SiteDetailsGraph({ graphData, deviceNames }) {
         <div className='relative right-2 top-2 mb-4 ml-auto flex w-fit rounded border bg-white duration-150 sm:absolute sm:mb-0 sm:opacity-25 sm:transition-opacity sm:group-hover:opacity-100'>
           <button
             className={classNames('border-r p-2 hover:bg-neutral-200', {
-              'bg-neutral-300': graphType === 'grouped-bar',
+              'bg-neutral-300': graphType === GROUPED_BAR,
             })}
-            onClick={() => setGraphType('grouped-bar')}
+            onClick={() => setGraphType(GROUPED_BAR)}
           >
             <MdBarChart className='text-brand-primary-dark text-xl' />
           </button>

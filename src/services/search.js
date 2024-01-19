@@ -17,11 +17,13 @@ export const AVG_AGGREGATION = 'avg#avg';
 
 export const TOTAL_AGGREGATION = 'sum#total';
 
-function getBucketSize(start, end, type) {
+export const GROUPED_BAR = 'groupedBarGraph';
+
+export function getBucketSize(start, end, type) {
   const difference = end.getTime() - start.getTime();
-  const grouped = type === 'groupedBarGraph';
+  const grouped = type === GROUPED_BAR;
   if (difference <= HOUR) return '1m';
-  if (difference <= DAY) return grouped ? '3h' : '30m';
+  if (difference <= DAY) return grouped ? '1h' : '30m';
   if (difference <= WEEK + DAY) return grouped ? '1d' : '3h';
   if (difference <= MONTH + DAY) return grouped ? '4d' : '6h';
   return grouped ? '21d' : '1d';

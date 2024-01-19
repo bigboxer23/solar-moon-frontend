@@ -3,10 +3,12 @@ import { api } from './apiClient';
 import {
   DAY,
   getAvgTotalBody,
+  getBucketSize,
   getDataPageBody,
   getMaxCurrentBody,
   getStackedTimeSeriesBody,
   getTimeSeriesBody,
+  GROUPED_BAR,
   HOUR,
 } from './search';
 
@@ -53,11 +55,20 @@ export function getSitesOverview() {
   );
 }
 
-export function getSiteOverview(siteId, offset) {
-  return api.post(
-    'sites/' + siteId,
-    getAvgTotalBody(null, getRoundedTimeFromOffset(offset), new Date()),
+export function getSiteOverview(siteId, offset, graphType) {
+  const body = getAvgTotalBody(
+    null,
+    getRoundedTimeFromOffset(offset),
+    new Date(),
   );
+  if (graphType === GROUPED_BAR) {
+    body.bucketSize = getBucketSize(
+      getRoundedTimeFromOffset(offset),
+      new Date(),
+      GROUPED_BAR,
+    );
+  }
+  return api.post('sites/' + siteId, body);
 }
 
 export function getDevice(deviceId) {
@@ -120,7 +131,7 @@ export function getStackedTimeSeriesData(device, start, end) {
 export function getGroupedTimeSeriesData(device, start, end) {
   return api.post(
     'search',
-    getStackedTimeSeriesBody(device, start, end, 'groupedBarGraph'),
+    getStackedTimeSeriesBody(device, start, end, GROUPED_BAR),
   );
 }
 

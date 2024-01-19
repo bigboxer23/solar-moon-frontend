@@ -34,6 +34,7 @@ export default function SiteDetails() {
     DAY,
     'dashboard.time',
   );
+  const [graphType, setGraphType] = useStickyState('bar', 'graph.type');
   const match = useMatch('/sites/:siteId');
   const siteId = match?.params?.siteId;
   const [activeSiteAlerts, setActiveSiteAlerts] = useState([]);
@@ -45,7 +46,7 @@ export default function SiteDetails() {
   }
 
   useEffect(() => {
-    getSiteOverview(siteId, timeIncrement).then(({ data }) => {
+    getSiteOverview(siteId, timeIncrement, graphType).then(({ data }) => {
       setSiteData(data);
       setDevices(
         data.devices
@@ -62,7 +63,7 @@ export default function SiteDetails() {
       );
       setLoading(false);
     });
-  }, [timeIncrement]);
+  }, [timeIncrement, graphType]);
 
   if (loading) {
     return (
@@ -143,6 +144,8 @@ export default function SiteDetails() {
           <SiteDetailsGraph
             deviceNames={devices.map((d) => getDisplayName(d))}
             graphData={graphData}
+            graphType={graphType}
+            setGraphType={setGraphType}
           />
         )}
         <SiteDevicesOverview
