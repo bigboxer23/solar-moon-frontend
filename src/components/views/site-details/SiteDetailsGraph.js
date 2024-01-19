@@ -1,9 +1,18 @@
-import { Line } from 'react-chartjs-2';
+import classNames from 'classnames';
+import { useState } from 'react';
+import { Bar, Line } from 'react-chartjs-2';
+import {
+  MdBarChart,
+  MdStackedBarChart,
+  MdStackedLineChart,
+} from 'react-icons/md';
 
 import { formatXAxisLabels } from '../../../utils/Utils';
 import { tooltipPlugin } from '../../common/graphPlugins';
 
 export default function SiteDetailsGraph({ graphData, deviceNames }) {
+  const [graphType, setGraphType] = useState('bar');
+
   const datasets = deviceNames.map((name) => {
     const data = graphData.filter((d) => d.name === name);
 
@@ -35,7 +44,6 @@ export default function SiteDetailsGraph({ graphData, deviceNames }) {
         backgroundColor: '#fff',
         titleColor: '#000',
         bodyColor: '#000',
-        displayColors: false,
         boxPadding: 8,
         titleAlign: 'center',
         bodyAlign: 'center',
@@ -65,7 +73,7 @@ export default function SiteDetailsGraph({ graphData, deviceNames }) {
     },
     scales: {
       x: {
-        //display: false,
+        stacked: graphType !== 'grouped-bar',
         type: 'time',
         ticks: {
           stepSize: 6,
@@ -73,7 +81,7 @@ export default function SiteDetailsGraph({ graphData, deviceNames }) {
         },
       },
       y: {
-        stacked: true,
+        stacked: graphType !== 'grouped-bar',
         title: {
           display: true,
           text: 'kW',
@@ -91,8 +99,43 @@ export default function SiteDetailsGraph({ graphData, deviceNames }) {
   }
 
   return (
-    <div className='SiteDetailsGraph mb-6 h-64 w-full rounded-lg bg-brand-primary-light p-3 sm:h-72'>
-      <Line data={data} options={options} plugins={[tooltipPlugin]} />
-    </div>
+    <>
+      <div className='SiteDetailsGraph group relative mb-6 w-full rounded-lg bg-brand-primary-light p-3 sm:h-72'>
+        <div className='relative right-2 top-2 mb-4 ml-auto flex w-fit rounded border bg-white duration-150 sm:absolute sm:mb-0 sm:opacity-25 sm:transition-opacity sm:group-hover:opacity-100'>
+          <button
+            className={classNames('border-r p-2 hover:bg-neutral-200', {
+              'bg-neutral-300': graphType === 'grouped-bar',
+            })}
+            onClick={() => setGraphType('grouped-bar')}
+          >
+            <MdBarChart className='text-brand-primary-dark text-xl' />
+          </button>
+          <button
+            className={classNames('p-2 hover:bg-neutral-200', {
+              'bg-neutral-300': graphType === 'bar',
+            })}
+            onClick={() => setGraphType('bar')}
+          >
+            <MdStackedBarChart className='text-brand-primary-dark text-xl' />
+          </button>
+          <button
+            className={classNames('border-l p-2 hover:bg-neutral-200', {
+              'bg-neutral-300': graphType === 'line',
+            })}
+            onClick={() => setGraphType('line')}
+          >
+            <MdStackedLineChart className='text-brand-primary-dark text-xl' />
+          </button>
+        </div>
+        <div className='h-72'>
+          {graphType === 'line' && (
+            <Line data={data} options={options} plugins={[tooltipPlugin]} />
+          )}
+          {graphType !== 'line' && (
+            <Bar data={data} options={options} plugins={[tooltipPlugin]} />
+          )}
+        </div>
+      </div>
+    </>
   );
 }

@@ -4,6 +4,7 @@ import 'chartjs-adapter-moment';
 import { Authenticator } from '@aws-amplify/ui-react';
 import { Amplify } from 'aws-amplify';
 import {
+  BarElement,
   CategoryScale,
   Chart as ChartJS,
   Colors,
@@ -48,6 +49,7 @@ ChartJS.register(
   PointElement,
   Colors,
   LineElement,
+  BarElement,
   Title,
   Tooltip,
   Legend,
