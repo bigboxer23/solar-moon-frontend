@@ -7,11 +7,11 @@ import {
   MdStackedLineChart,
 } from 'react-icons/md';
 
-import { formatXAxisLabels } from '../../../utils/Utils';
+import { formatXAxisLabels, useStickyState } from '../../../utils/Utils';
 import { tooltipPlugin } from '../../common/graphPlugins';
 
 export default function SiteDetailsGraph({ graphData, deviceNames }) {
-  const [graphType, setGraphType] = useState('bar');
+  const [graphType, setGraphType] = useStickyState('bar', 'graph.type');
 
   const datasets = deviceNames.map((name) => {
     const data = graphData.filter((d) => d.name === name);
