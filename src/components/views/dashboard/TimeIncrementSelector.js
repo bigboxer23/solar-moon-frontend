@@ -20,7 +20,7 @@ export default function TimeIncrementSelector({
             <FaChevronDown className='ml-2' />
           </MenuButton>
         }
-        menuClassName='py-2 pl-0 w-[6.25rem] rounded-lg flex flex-col list-none bg-white shadow-panel'
+        menuClassName='py-2 pl-0 w-[6.25rem] rounded-lg flex flex-col list-none bg-white shadow-panel z-10'
         onItemClick={({ value }) => setTimeIncrement(value)}
       >
         <MenuItem className={menuItemClass} value={DAY}>
