@@ -100,7 +100,7 @@ export default function SiteDetailsGraph({ graphData, deviceNames }) {
 
   return (
     <>
-      <div className='SiteDetailsGraph group relative mb-6 w-full rounded-lg bg-brand-primary-light p-3 sm:h-72'>
+      <div className='SiteDetailsGraph group relative mb-6 w-full rounded-lg bg-brand-primary-light p-3'>
         <div className='relative right-2 top-2 mb-4 ml-auto flex w-fit rounded border bg-white duration-150 sm:absolute sm:mb-0 sm:opacity-25 sm:transition-opacity sm:group-hover:opacity-100'>
           <button
             className={classNames('border-r p-2 hover:bg-neutral-200', {
