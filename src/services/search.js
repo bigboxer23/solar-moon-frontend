@@ -18,12 +18,12 @@ export const AVG_AGGREGATION = 'avg#avg';
 export const TOTAL_AGGREGATION = 'sum#total';
 
 function getBucketSize(start, end, type) {
-  let difference = end.getTime() - start.getTime();
-  let grouped = type === 'groupedBarGraph';
+  const difference = end.getTime() - start.getTime();
+  const grouped = type === 'groupedBarGraph';
   if (difference <= HOUR) return '1m';
   if (difference <= DAY) return grouped ? '3h' : '30m';
   if (difference <= WEEK + DAY) return grouped ? '1d' : '3h';
-  if (difference <= MONTH + DAY) return grouped ? '4d' : '12h';
+  if (difference <= MONTH + DAY) return grouped ? '4d' : '6h';
   return grouped ? '21d' : '1d';
 }
 
