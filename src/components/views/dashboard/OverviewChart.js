@@ -1,9 +1,10 @@
-import { Chart } from 'chart.js';
-import moment from 'moment/moment';
 import { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 
-import { DAY, GROUPED_BAR, parseSearchReturn } from '../../../services/search';
+import {
+  DAY,
+  parseAndCondenseStackedTimeSeriesData,
+} from '../../../services/search';
 import {
   formatXAxisLabels,
   splitDayAndNightDataSets,
@@ -20,7 +21,8 @@ export default function OverviewChart({ timeIncrement, siteData }) {
       return;
     }
     setLoading(false);
-    const parsedData = parseSearchReturn(siteData);
+    const parsedData = parseAndCondenseStackedTimeSeriesData(siteData);
+
     if (timeIncrement === DAY) {
       const [dayData, nightData] = splitDayAndNightDataSets(parsedData);
       setDayData(dayData);

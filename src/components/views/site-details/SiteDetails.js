@@ -9,12 +9,12 @@ import {
   getAggregationValue,
   GROUPED_BAR,
   parseSearchReturn,
+  parseStackedTimeSeriesData,
   TOTAL_AGGREGATION,
 } from '../../../services/search';
 import { getSiteOverview } from '../../../services/services';
 import {
   getDisplayName,
-  parseStackedTimeSeriesData,
   sortDevices,
   useStickyState,
 } from '../../../utils/Utils';

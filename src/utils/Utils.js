@@ -188,18 +188,3 @@ export const formatMessage = function (message) {
   //Replace timestamp w/local time
   return message.replaceAll(finalMatch, getFormattedTime(new Date(timestamp)));
 };
-
-export const parseStackedTimeSeriesData = function (data) {
-  let formattedData = [];
-  data.aggregations[DATE_HISTO].buckets.forEach((d) => {
-    let date = new Date(Number(d.key));
-    d['sterms#terms'].buckets.forEach((v) => {
-      formattedData.push({
-        date: date.toISOString(),
-        name: v.key,
-        avg: v[AVG] ? v[AVG].value : v['1'].value,
-      });
-    });
-  });
-  return formattedData;
-};
