@@ -34,7 +34,9 @@ export function getAvgTotalBody(device, start, end) {
 }
 
 export function getStackedTimeSeriesBody(site, start, end, type) {
-  return getJSONSearch(null, null, site.name, start, end, type);
+  const body = getJSONSearch(null, null, site.name, start, end, type);
+  body.noVirtual = true;
+  return body;
 }
 
 export function getTimeSeriesBody(device, start, end) {
