@@ -22,7 +22,7 @@ export default function SiteDetailsGraph({
     const dataSet = {
       label: name,
       data: data,
-      fill: true,
+      fill: false,
       categoryPercentage: 0.76,
       barThickness: 'flex',
       barPercentage: 1,

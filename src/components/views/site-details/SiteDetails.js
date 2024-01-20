@@ -7,6 +7,7 @@ import {
   AVG_AGGREGATION,
   DAY,
   getAggregationValue,
+  GROUPED_BAR,
   parseSearchReturn,
   TOTAL_AGGREGATION,
 } from '../../../services/search';
@@ -46,7 +47,27 @@ export default function SiteDetails() {
   }
 
   useEffect(() => {
-    getSiteOverview(siteId, timeIncrement, graphType).then(({ data }) => {
+    loadSiteOverview(siteId, timeIncrement, graphType, null);
+  }, [timeIncrement]);
+
+  /**
+   * Switching between graph types doesn't need to re-fetch data from server unless we're moving to or from
+   * the grouped bar type (b/c there's different bucket sizes used).
+   *
+   * If that type of change is detected, do the load, then set graph type
+   */
+  const setGraphTypeWrapper = (graphTypeToSet) => {
+    if (graphTypeToSet === GROUPED_BAR || graphType === GROUPED_BAR) {
+      loadSiteOverview(siteId, timeIncrement, graphTypeToSet, () =>
+        setGraphType(graphTypeToSet),
+      );
+      return;
+    }
+    setGraphType(graphTypeToSet);
+  };
+
+  const loadSiteOverview = (site, time, type, callback) => {
+    getSiteOverview(site, time, type).then(({ data }) => {
       setSiteData(data);
       setDevices(
         data.devices
@@ -62,8 +83,11 @@ export default function SiteDetails() {
           : parseStackedTimeSeriesData(data.timeSeries),
       );
       setLoading(false);
+      if (callback) {
+        callback();
+      }
     });
-  }, [timeIncrement, graphType]);
+  };
 
   if (loading) {
     return (
@@ -145,7 +169,7 @@ export default function SiteDetails() {
             deviceNames={devices.map((d) => getDisplayName(d))}
             graphData={graphData}
             graphType={graphType}
-            setGraphType={setGraphType}
+            setGraphType={setGraphTypeWrapper}
           />
         )}
         <SiteDevicesOverview
