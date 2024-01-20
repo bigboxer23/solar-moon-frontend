@@ -7,7 +7,7 @@ import {
   MdStackedLineChart,
 } from 'react-icons/md';
 
-import { GROUPED_BAR } from '../../../services/search';
+import { DAY, GROUPED_BAR } from '../../../services/search';
 import { formatXAxisLabels } from '../../../utils/Utils';
 import { tooltipPlugin } from '../../common/graphPlugins';
 
@@ -16,6 +16,7 @@ export default function SiteDetailsGraph({
   deviceNames,
   graphType,
   setGraphType,
+  timeIncrement,
 }) {
   const datasets = deviceNames.map((name) => {
     const data = graphData.filter((d) => d.name === name);
@@ -88,7 +89,7 @@ export default function SiteDetailsGraph({
         type: 'time',
         ticks: {
           stepSize: 6,
-          callback: formatXAxisLabels,
+          callback: timeIncrement === DAY ? null : formatXAxisLabels,
         },
       },
       y: {
@@ -104,7 +105,7 @@ export default function SiteDetailsGraph({
       yAxisKey: 'avg',
     },
   };
-  if (graphType === GROUPED_BAR) {
+  /*if (graphType === GROUPED_BAR) {
     options.layout = {
       padding: {
         left: 0,
@@ -113,7 +114,7 @@ export default function SiteDetailsGraph({
         bottom: 0,
       },
     };
-  }
+  }*/
 
   if (!graphData) {
     return <div className='SiteDetailsGraph h-40 w-full'></div>;

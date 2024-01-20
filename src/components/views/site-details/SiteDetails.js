@@ -170,6 +170,7 @@ export default function SiteDetails() {
             graphData={graphData}
             graphType={graphType}
             setGraphType={setGraphTypeWrapper}
+            timeIncrement={timeIncrement}
           />
         )}
         <SiteDevicesOverview
