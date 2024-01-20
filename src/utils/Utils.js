@@ -191,19 +191,15 @@ export const formatMessage = function (message) {
 
 export const parseStackedTimeSeriesData = function (data) {
   let formattedData = [];
-  let deviceCount = 0;
   data.aggregations[DATE_HISTO].buckets.forEach((d) => {
     let date = new Date(Number(d.key));
-    deviceCount = Math.max(deviceCount, d['sterms#terms'].buckets.length);
-    if (d['sterms#terms'].buckets.length >= deviceCount) {
-      d['sterms#terms'].buckets.forEach((v) => {
-        formattedData.push({
-          date: date.toISOString(),
-          name: v.key,
-          avg: v[AVG] ? v[AVG].value : v['1'].value,
-        });
+    d['sterms#terms'].buckets.forEach((v) => {
+      formattedData.push({
+        date: date.toISOString(),
+        name: v.key,
+        avg: v[AVG] ? v[AVG].value : v['1'].value,
       });
-    }
+    });
   });
   return formattedData;
 };
