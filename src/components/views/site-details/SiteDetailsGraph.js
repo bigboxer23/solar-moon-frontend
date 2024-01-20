@@ -93,6 +93,7 @@ export default function SiteDetailsGraph({
         },
       },
       y: {
+        min: 0,
         stacked: graphType !== GROUPED_BAR,
         title: {
           display: true,

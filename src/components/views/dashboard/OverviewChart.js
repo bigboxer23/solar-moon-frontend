@@ -3,7 +3,7 @@ import moment from 'moment/moment';
 import { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 
-import { DAY, parseSearchReturn } from '../../../services/search';
+import { DAY, GROUPED_BAR, parseSearchReturn } from '../../../services/search';
 import {
   formatXAxisLabels,
   splitDayAndNightDataSets,
@@ -59,40 +59,58 @@ export default function OverviewChart({ timeIncrement, siteData }) {
     },
     scales: {
       x: {
+        //stacked: graphType !== GROUPED_BAR,
         type: 'time',
         ticks: {
           stepSize: 6,
-          callback: formatXAxisLabels,
-        },
-        grid: {
-          display: false,
-        },
-        border: {
-          display: false,
+          callback: timeIncrement === DAY ? null : formatXAxisLabels,
         },
       },
       y: {
-        axis: 'y',
-        grid: {
-          display: false,
-        },
-        position: { y: 75 },
-        padding: 5,
-        z: 10,
-        ticks: {
-          clip: false,
-          labelOffset: 10,
-          z: 10,
+        min: 0,
+        //stacked: graphType !== GROUPED_BAR,
+        title: {
           display: true,
-          callback: function (value, index, ticks) {
-            return index === ticks.length - 1 ? value + ' kW Max' : '';
-          },
-        },
-        border: {
-          display: false,
+          text: 'kW',
         },
       },
     },
+    // scales: {
+    //   x: {
+    //     type: 'time',
+    //     ticks: {
+    //       stepSize: 6,
+    //       callback: formatXAxisLabels,
+    //     },
+    //     grid: {
+    //       display: false,
+    //     },
+    //     border: {
+    //       display: false,
+    //     },
+    //   },
+    //   y: {
+    //     axis: 'y',
+    //     grid: {
+    //       display: false,
+    //     },
+    //     position: { y: 75 },
+    //     padding: 5,
+    //     z: 10,
+    //     ticks: {
+    //       clip: false,
+    //       labelOffset: 10,
+    //       z: 10,
+    //       display: true,
+    //       callback: function (value, index, ticks) {
+    //         return index === ticks.length - 1 ? value + ' kW Max' : '';
+    //       },
+    //     },
+    //     border: {
+    //       display: false,
+    //     },
+    //   },
+    // },
     elements: {
       point: {
         radius: 2,
@@ -141,7 +159,7 @@ export default function OverviewChart({ timeIncrement, siteData }) {
   if (loading) return null;
 
   return (
-    <div className='OverviewChart mb-6 h-40 w-full rounded-lg bg-brand-primary-light px-2 pb-1'>
+    <div className='OverviewChart mb-6 h-72 w-full rounded-lg bg-brand-primary-light p-3'>
       <Line data={data} options={options} plugins={[tooltipPlugin]} />
     </div>
   );
