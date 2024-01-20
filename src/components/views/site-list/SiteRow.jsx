@@ -49,9 +49,8 @@ export default function SiteRow({ site }) {
             <div className='text-base font-bold'>{site.deviceName}</div>
             <div className='text-xs italic text-neutral-500'>
               {site.city &&
-                site.country &&
                 site.state &&
-                `- ${site.city}, ${site.state}, ${site.country}`}
+                `- ${site.city}, ${site.state} ${site.siteData.localTime}`}
             </div>
           </div>
           <div className='ml-auto flex flex-row items-start justify-center pl-4'>

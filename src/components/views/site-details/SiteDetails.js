@@ -114,9 +114,8 @@ export default function SiteDetails() {
             </span>
             <span className='text-sm text-neutral-500'>
               {siteData?.site?.city &&
-                siteData?.site?.country &&
                 siteData?.site?.state &&
-                `${siteData.site.city}, ${siteData.site.state}, ${siteData.site.country}`}
+                `${siteData.site.city}, ${siteData.site.state} ${siteData.localTime}`}
             </span>
           </div>
           <TimeIncrementSelector
