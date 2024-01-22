@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { useEffect, useState } from 'react';
-import { IoIosSnow } from 'react-icons/io';
+import { IoIosSnow, IoMdRainy } from 'react-icons/io';
 import { IoPartlySunnyOutline } from 'react-icons/io5';
 import { MdFoggy, MdOutlineWbCloudy, MdOutlineWbSunny } from 'react-icons/md';
 import { RiWindyFill } from 'react-icons/ri';
@@ -155,6 +155,8 @@ export const getWeatherIcon = (weatherSummary) => {
     return <IoIosSnow className='align-self-center' />;
   } else if (weatherSummary === 'Windy') {
     return <RiWindyFill className='align-self-center' />;
+  } else if (weatherSummary === 'Rain') {
+    return <IoMdRainy className='align-self-center' />;
   }
   return weatherSummary;
 };
