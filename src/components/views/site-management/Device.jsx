@@ -142,10 +142,13 @@ const Device = ({ data, devices, setDevices }) => {
             Update Device
           </Button>
           <Button
+            buttonProps={{
+              title: 'Delete Device',
+              'aria-label': 'Delete Device',
+            }}
             className='position-relative hidden-without-hover ms-2 w-auto'
             disabled={loading}
             onClick={() => setDeleteDeviceWarning(true)}
-            title='Delete Device'
             type='button'
             variant='danger'
           >

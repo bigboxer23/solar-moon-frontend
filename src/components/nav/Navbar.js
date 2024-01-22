@@ -141,7 +141,10 @@ export default function Navbar() {
         ref={menuRef}
       >
         <div className='mb-4 flex w-full items-center justify-end'>
-          <button onClick={() => setSlideMenuOpen(false)}>
+          <button
+            aria-label='close menu'
+            onClick={() => setSlideMenuOpen(false)}
+          >
             <FaXmark className='text-3xl' />
           </button>
         </div>

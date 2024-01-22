@@ -126,6 +126,7 @@ export default function SiteDetailsGraph({
       <div className='SiteDetailsGraph group relative mb-6 w-full rounded-lg bg-brand-primary-light p-3'>
         <div className='relative right-2 top-2 mb-4 ml-auto flex w-fit rounded border bg-white duration-150 sm:absolute sm:mb-0 sm:opacity-25 sm:transition-opacity sm:group-hover:opacity-100'>
           <button
+            aria-label='grouped bar graph'
             className={classNames('border-r p-2 hover:bg-neutral-200', {
               'bg-neutral-300': graphType === GROUPED_BAR,
             })}
@@ -134,6 +135,7 @@ export default function SiteDetailsGraph({
             <MdBarChart className='text-brand-primary-dark text-xl' />
           </button>
           <button
+            aria-label='bar graph'
             className={classNames('p-2 hover:bg-neutral-200', {
               'bg-neutral-300': graphType === 'bar',
             })}
@@ -142,6 +144,7 @@ export default function SiteDetailsGraph({
             <MdStackedBarChart className='text-brand-primary-dark text-xl' />
           </button>
           <button
+            aria-label='line graph'
             className={classNames('border-l p-2 hover:bg-neutral-200', {
               'bg-neutral-300': graphType === 'line',
             })}

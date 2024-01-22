@@ -110,7 +110,7 @@ const SearchBar = ({
             calendarIcon={null}
             calendarType='gregory'
             className='mr-6 sm:mr-0'
-            clearIcon={<MdClear />}
+            clearIcon={<MdClear aria-label='clear date search' />}
             next2Label={
               <MdOutlineKeyboardDoubleArrowRight className='w-full text-lg' />
             }
@@ -142,8 +142,11 @@ const SearchBar = ({
             value={deviceOptions.find((option) => option.label === device)}
           />
           <Button
+            buttonProps={{
+              title: 'Refresh Data',
+              'aria-label': 'Refresh Data',
+            }}
             disabled={refreshSearch}
-            id='report-download-button'
             onClick={() => setRefreshSearch(true)}
             title='Refresh Data'
             variant='icon'
@@ -154,6 +157,7 @@ const SearchBar = ({
           <Button
             buttonProps={{
               title: 'Reset Search',
+              'aria-label': 'Refresh Search',
             }}
             className='ml-auto mr-4'
             onClick={() => resetSearch()}
