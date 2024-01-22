@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:wght@500&display=swap');
+
+body {
+  margin: 0;
+  font-family: 'Roboto', serif !important;
+  -webkit-font-smoothing: subpixel-antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import 'EllipsisLoader';
+@import 'Switch';
+@import 'restyles/DatePicker';
+@import 'restyles/Grid';
+@import 'restyles/QuantityPicker';
+@import 'restyles/Amplify';
+@import 'restyles/Device';
+@import 'restyles/Button';
+
+@import 'tippy.js/dist/tippy.css';

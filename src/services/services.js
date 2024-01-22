@@ -1,34 +1,35 @@
-import { api } from "./apiClient";
-
+import { getRoundedTime, getRoundedTimeFromOffset } from '../utils/Utils';
+import { api } from './apiClient';
 import {
   DAY,
   getAvgTotalBody,
+  getBucketSize,
   getDataPageBody,
   getMaxCurrentBody,
   getStackedTimeSeriesBody,
   getTimeSeriesBody,
+  GROUPED_BAR,
   HOUR,
-} from "./search";
-import { getRoundedTime } from "../utils/Utils";
+} from './search';
 
 export function getCustomer() {
-  return api.get("customer");
+  return api.get('customer');
 }
 
 export function updateCustomer(customerData) {
-  return api.post("customer", customerData);
+  return api.post('customer', customerData);
 }
 
-export const deleteCustomer = (customerId) => {
-  return api.delete("customer/" + customerId);
+export const deleteCustomer = () => {
+  return api.delete('customer/');
 };
 
 export function getUserPortalSession() {
-  return api.post("billing/portal");
+  return api.post('billing/portal');
 }
 
 export function checkout(item, count) {
-  return api.post("billing/checkout", { id: item, count: count });
+  return api.post('billing/checkout', { id: item, count: count });
 }
 
 export function checkoutStatus(sessionId) {
@@ -36,72 +37,129 @@ export function checkoutStatus(sessionId) {
 }
 
 export function getSeatCount() {
-  return api.get("subscription");
+  return api.get('subscription');
 }
 
 export function getSubscriptions() {
-  return api.get("billing/subscriptions");
+  return api.get('billing/subscriptions');
 }
 
 export function getDevices() {
-  return api.get("devices");
+  return api.get('devices');
+}
+
+export function getSitesOverview() {
+  return api.post(
+    'sites',
+    getAvgTotalBody(null, getRoundedTime(false, 0), new Date()),
+  );
+}
+
+export function getSiteOverview(siteId, offset, graphType) {
+  const body = getAvgTotalBody(
+    null,
+    getRoundedTimeFromOffset(offset),
+    new Date(),
+  );
+  if (graphType === GROUPED_BAR) {
+    body.bucketSize = getBucketSize(
+      getRoundedTimeFromOffset(offset),
+      new Date(),
+      GROUPED_BAR,
+    );
+  }
+  return api.post('sites/' + siteId, body);
 }
 
 export function getDevice(deviceId) {
-  return api.get("devices/" + deviceId);
+  return api.get('devices/' + deviceId);
 }
 
 export function deleteDevice(deviceId) {
-  return api.delete("devices/" + deviceId);
+  return api.delete('devices/' + deviceId);
 }
 
 export function updateDevice(device) {
-  return api.post("devices", device);
+  return api.post('devices', device);
 }
 
 export function addDevice(device) {
-  return api.put("devices", device);
+  return api.put('devices', device);
 }
 
 export function getAlarmData() {
-  return api.post("alarms", {});
+  return api.post('alarms', {});
 }
 
-export function getTimeSeriesData(device, start, end) {
-  return api.post("search", getTimeSeriesBody(device, start, end));
+export function getOverviewData(offset) {
+  return api.post(
+    'overview',
+    getAvgTotalBody(null, getRoundedTimeFromOffset(offset), new Date()),
+  );
+}
+
+export function getTimeSeriesData(device, offset, virtual) {
+  const body = getTimeSeriesBody(
+    device,
+    getRoundedTimeFromOffset(offset),
+    new Date(),
+  );
+  if (virtual) {
+    body.virtual = true;
+  }
+  return api.post('search', body);
+}
+
+export function getListTimeSeriesData(devices, offset) {
+  const end = new Date();
+  const start = getRoundedTimeFromOffset(offset);
+
+  const timeSeriesBodies = devices.map((device) =>
+    getTimeSeriesBody(device, start, end),
+  );
+
+  return api.post('search', timeSeriesBodies);
 }
 
 export function getStackedTimeSeriesData(device, start, end) {
   return api.post(
-    "search",
-    getStackedTimeSeriesBody(device, start, end, "stackedTimeSeries"),
+    'search',
+    getStackedTimeSeriesBody(device, start, end, 'stackedTimeSeries'),
   );
 }
 
 export function getGroupedTimeSeriesData(device, start, end) {
   return api.post(
-    "search",
-    getStackedTimeSeriesBody(device, start, end, "groupedBarGraph"),
+    'search',
+    getStackedTimeSeriesBody(device, start, end, GROUPED_BAR),
   );
 }
 
-export function getAvgTotal(device, start, end) {
-  return api.post("search", getAvgTotalBody(device, start, end));
+export function getListAvgTotal(devices, offset) {
+  const end = new Date();
+  const start = getRoundedTimeFromOffset(offset);
+
+  const avgTotalBodies = devices.map((device) =>
+    getAvgTotalBody(device, start, end),
+  );
+
+  return api.post('search', avgTotalBodies);
+}
+
+export function getAvgTotal(device, offset) {
+  return api.post(
+    'search',
+    getAvgTotalBody(device, getRoundedTimeFromOffset(offset), new Date()),
+  );
 }
 
 export function getMaxCurrent(device) {
-  return api.post("search", getMaxCurrentBody(device));
+  return api.post('search', getMaxCurrentBody(device));
 }
 
 export function getTileContent(device, offset) {
-  return api.post("search", [
-    getAvgTotalBody(
-      device,
-      offset === HOUR
-        ? new Date(new Date().getTime() - offset)
-        : getRoundedTime(false, offset === DAY ? 0 : offset),
-      new Date(),
-    ),
+  return api.post('search', [
+    getAvgTotalBody(device, getRoundedTimeFromOffset(offset), new Date()),
     getMaxCurrentBody(device),
     getDataPageBody(
       device.site,
@@ -114,9 +172,19 @@ export function getTileContent(device, offset) {
   ]);
 }
 
+export function getOverviewTotal(offset) {
+  const body = getAvgTotalBody(
+    null,
+    getRoundedTimeFromOffset(offset),
+    new Date(),
+  );
+  body.virtual = true;
+  return api.post('search', body);
+}
+
 export function getDataPage(site, device, start, end, offset, size) {
   return api.post(
-    "search",
+    'search',
     getDataPageBody(
       site,
       device,
@@ -129,16 +197,16 @@ export function getDataPage(site, device, start, end, offset, size) {
 }
 
 export function addMapping(attribute, mappingName) {
-  return api.put("mappings", {
+  return api.put('mappings', {
     attribute: attribute,
     mappingName: mappingName,
   });
 }
 
 export function getMappings() {
-  return api.get("mappings");
+  return api.get('mappings');
 }
 
 export function deleteMapping(mappingName) {
-  return api.delete("mappings/" + mappingName);
+  return api.delete('mappings/' + mappingName);
 }

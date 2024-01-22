@@ -1,0 +1,83 @@
+[data-amplify-router] {
+  border: 0 !important;
+}
+
+[data-amplify-form] .amplify-button {
+  border-radius: theme('borderRadius.full');
+}
+.amplify-field-group__outer-end .amplify-button {
+  border-radius: 0 theme('borderRadius.full') theme('borderRadius.full') 0;
+}
+
+.amplify-link {
+  text-decoration: underline !important;
+  color: theme('colors.brand-primary') !important;
+  font-size: theme('fontSize.sm') !important;
+}
+
+.amplify-tabs-item[data-state='active'] {
+  color: theme('colors.brand-primary') !important;
+  border-color: theme('colors.brand-primary') !important;
+}
+
+.amplify-button--primary {
+  background-color: theme('colors.brand-primary') !important;
+}
+
+.amplify-button--primary:hover {
+  filter: brightness(theme('brightness.110'));
+}
+
+.amplify-button--primary.amplify-button--disabled,
+.amplify-button--primary.amplify-button--disabled:hover {
+  color: theme('colors.white') !important;
+}
+
+.amplify-button--link {
+  background-color: theme('backgroundColor.neutral.200') !important;
+  color: theme('colors.black') !important;
+  font-weight: theme('fontWeight.bold');
+}
+
+.amplify-button--link:hover {
+  filter: brightness(theme('brightness.105'));
+}
+
+.amplify-label {
+  font-size: theme('fontSize.sm') !important;
+  line-height: theme('lineHeight.5') !important;
+}
+
+.amplify-input {
+  border: 0 !important;
+  border-bottom: 1px solid theme('borderColor.gray.300') !important;
+  border-radius: 0 !important;
+  padding-left: 0 !important;
+  box-shadow: none !important;
+}
+
+.amplify-input:focus {
+  border-color: theme('borderColor.brand-primary') !important;
+}
+
+.amplify-field-group__outer-end .amplify-button {
+  display: none !important;
+}
+
+.amplify-alert {
+  border-radius: theme('borderRadius.lg') !important;
+}
+
+.amplify-alert .amplify-button {
+  display: none;
+}
+
+.amplify-alert--error {
+  color: theme('colors.danger') !important;
+  background-color: transparent !important;
+  border: 1px solid theme('colors.danger') !important;
+}
+
+.amplify-text--error {
+  color: theme('colors.danger') !important;
+}

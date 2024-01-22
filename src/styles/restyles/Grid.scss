@@ -1,0 +1,27 @@
+.rdg-header-row {
+  background-color: theme('colors.grid-background-alt');
+}
+
+.rdg-row,
+.rdg {
+  background-color: transparent;
+}
+
+.rdg {
+  border-right: 0;
+  border-left: 0;
+  border-top: 0;
+}
+
+.rdg-holder {
+  padding: 0 !important;
+}
+
+.rdg-row-odd {
+  background-color: theme('colors.grid-background-alt');
+}
+
+.rdg-header-secondary {
+  font-size: 0.675rem;
+  line-height: 37px;
+}

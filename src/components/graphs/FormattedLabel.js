@@ -1,8 +1,8 @@
-import { FormattedNumber } from "react-intl";
+import { FormattedNumber } from 'react-intl';
 
 const FormattedLabel = ({ value, label, unit, separator, className }) => {
   return value === -1 ? (
-    "Loading"
+    'Loading'
   ) : (
     <span className={className}>
       {label} <FormattedNumber value={value} />
