@@ -3,7 +3,7 @@ name: Deploy to S3
 on:
   push:
     branches:
-      - new-ui-first-pass-dashboard
+      - master
 jobs:
   build:
     runs-on: ubuntu-latest
