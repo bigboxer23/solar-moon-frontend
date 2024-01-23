@@ -121,6 +121,7 @@ export default function Overview() {
             />
             <StatBlock
               className='text-text-secondary'
+              onClick={() => navigate('/alerts')}
               title='resolved alerts'
               value={resolvedAlerts.length}
             />
