@@ -12,6 +12,7 @@ import { ControlledCheck } from '../../common/Check';
 import { ControlledInput } from '../../common/Input';
 import { ControlledSelect } from '../../common/Select';
 import Spinner from '../../common/Spinner';
+import { noSite } from './SiteManagement';
 
 const Device = ({ data, devices, setDevices }) => {
   const yupSchema = yup
@@ -107,11 +108,14 @@ const Device = ({ data, devices, setDevices }) => {
             variant='underline'
           />
           <ControlledSelect
-            attributes={devices
-              .filter((d) => d.virtual)
-              .map((site) => {
-                return site.name;
-              })}
+            attributes={[
+              ...devices
+                .filter((d) => d.virtual)
+                .map((site) => {
+                  return site.name;
+                }),
+              noSite,
+            ]}
             control={control}
             errorMessage={errors.site?.message}
             label='Site'
