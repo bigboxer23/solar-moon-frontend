@@ -46,8 +46,8 @@ const NewSiteDialog = ({
     setLoading(true);
     addDevice({
       ...site,
-      deviceName: name,
-      site: name,
+      deviceName: site.name,
+      site: site.name,
     })
       .then(({ data }) => {
         setDevices((devices) => [...devices, data]);
