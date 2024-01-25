@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import { useState } from 'react';
 import { Bar, Line } from 'react-chartjs-2';
 import {
   MdBarChart,
@@ -88,7 +87,6 @@ export default function SiteDetailsGraph({
         stacked: graphType !== GROUPED_BAR,
         type: 'time',
         ticks: {
-          stepSize: 6,
           callback: timeIncrement === DAY ? null : formatXAxisLabels,
         },
       },
@@ -106,17 +104,6 @@ export default function SiteDetailsGraph({
       yAxisKey: 'avg',
     },
   };
-  /*if (graphType === GROUPED_BAR) {
-    options.layout = {
-      padding: {
-        left: 0,
-        right: 25,
-        top: 0,
-        bottom: 0,
-      },
-    };
-  }*/
-
   if (!graphData) {
     return <div className='SiteDetailsGraph h-40 w-full'></div>;
   }
