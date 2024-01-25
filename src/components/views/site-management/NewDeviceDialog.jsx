@@ -80,7 +80,7 @@ export default function NewDeviceDialog({
           />
           <ControlledSelect
             attributes={devices
-              .filter((d) => d.virtual)
+              .filter((d) => d.isSite)
               .map((site) => {
                 return site.name;
               })}

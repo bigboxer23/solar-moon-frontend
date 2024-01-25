@@ -34,6 +34,7 @@ const NewSiteDialog = ({
     defaultValues: {
       virtual: true,
       virtualIndex: 'true',
+      isSite: '1',
       name: '',
       city: '',
       state: '',

@@ -75,7 +75,7 @@ const SearchBar = ({
   const allOption = { value: ALL, label: ALL };
 
   const siteOptions = devices
-    .filter((device) => device.virtual)
+    .filter((device) => device.isSite)
     .sort(sortDevices)
     .map((d) => {
       return {

@@ -48,7 +48,7 @@ const SiteManagement = () => {
         setDevices(data);
         setLoading(false);
         if (activeSite === '') {
-          setActiveSite(data.find((device) => device.virtual)?.name || noSite);
+          setActiveSite(data.find((device) => device.isSite)?.name || noSite);
         }
       })
       .catch((e) => {
@@ -62,7 +62,7 @@ const SiteManagement = () => {
   const getSiteSelectItems = () => {
     return [
       ...devices
-        .filter((device) => device.virtual)
+        .filter((device) => device.isSite)
         .sort(sortDevices)
         .map((site) => {
           return { label: site.name, value: site.name };
@@ -129,8 +129,8 @@ const SiteManagement = () => {
           )}
         </div>
         {loading && <Loader className='self-center' />}
-        {[...devices, { id: noSite, name: noSite, virtual: true }]
-          .filter((device) => device.virtual)
+        {[...devices, { id: noSite, name: noSite, isSite: '1', virtual: true }]
+          .filter((device) => device.isSite)
           .filter((site) => site.name === activeSite)
           .map((site) => {
             return (

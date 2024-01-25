@@ -98,14 +98,14 @@ export function getOverviewData(offset) {
   );
 }
 
-export function getTimeSeriesData(device, offset, virtual) {
+export function getTimeSeriesData(device, offset, isSite) {
   const body = getTimeSeriesBody(
     device,
     getRoundedTimeFromOffset(offset),
     new Date(),
   );
-  if (virtual) {
-    body.virtual = true;
+  if (isSite) {
+    body.isSite = true;
   }
   return api.post('search', body);
 }
@@ -178,7 +178,7 @@ export function getOverviewTotal(offset) {
     getRoundedTimeFromOffset(offset),
     new Date(),
   );
-  body.virtual = true;
+  body.isSite = true;
   return api.post('search', body);
 }
 

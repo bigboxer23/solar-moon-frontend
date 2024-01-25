@@ -29,7 +29,7 @@ const Site = ({ data, devices, setDevices, setActiveSite }) => {
   return (
     <div className='space-y-6'>
       {devices
-        .filter((device) => device.virtual)
+        .filter((device) => device.isSite)
         .filter((device) => device.site === site.name)
         .map((device) => {
           return (
@@ -43,7 +43,7 @@ const Site = ({ data, devices, setDevices, setActiveSite }) => {
         })}
       {devices
         .filter((device) => device.site === site.name)
-        .filter((device) => !device.virtual)
+        .filter((device) => !device.isSite)
         .sort(sortDevices)
         .map((device) => {
           return (
