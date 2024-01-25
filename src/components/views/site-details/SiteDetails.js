@@ -162,16 +162,13 @@ export default function SiteDetails() {
             </div>
           </div>
         </div>
-        {siteData.site.subtraction && <DeviceChart graphData={graphData} />}
-        {!siteData.site.subtraction && (
-          <SiteDetailsGraph
-            deviceNames={devices.map((d) => getDisplayName(d))}
-            graphData={graphData}
-            graphType={graphType}
-            setGraphType={setGraphTypeWrapper}
-            timeIncrement={timeIncrement}
-          />
-        )}
+        <SiteDetailsGraph
+          deviceNames={devices.map((d) => getDisplayName(d))}
+          graphData={graphData}
+          graphType={graphType}
+          setGraphType={setGraphTypeWrapper}
+          timeIncrement={timeIncrement}
+        />
         <SiteDevicesOverview
           activeSiteAlerts={activeSiteAlerts}
           avgData={siteData?.deviceAvg}
