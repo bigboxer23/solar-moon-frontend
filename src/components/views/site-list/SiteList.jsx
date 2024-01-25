@@ -14,7 +14,7 @@ export default function SiteList() {
       .then(({ data }) => {
         setLoading(false);
         const sites = data.devices
-          .filter((d) => d.virtual)
+          .filter((d) => d.isSite)
           .map((site) => {
             site.deviceCount = 0;
             site.siteData = data.sites[site.id];
@@ -23,7 +23,7 @@ export default function SiteList() {
           .sort(sortDevices);
 
         data.devices
-          .filter((d) => !d.virtual)
+          .filter((d) => !d.isSite)
           .forEach((d) => {
             const site = sites.find((s) => s.name === d.site);
             if (site) {

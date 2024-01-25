@@ -110,7 +110,7 @@ const Device = ({ data, devices, setDevices }) => {
           <ControlledSelect
             attributes={[
               ...devices
-                .filter((d) => d.virtual)
+                .filter((d) => d.isSite)
                 .map((site) => {
                   return site.name;
                 }),

@@ -73,8 +73,8 @@ export default function Overview() {
     setActiveAlerts(active);
   };
   const handleDevices = (data) => {
-    const sites = data.filter((d) => d.virtual).sort(sortDevices);
-    const devices = data.filter((d) => !d.virtual);
+    const sites = data.filter((d) => d.isSite).sort(sortDevices);
+    const devices = data.filter((d) => !d.isSite);
 
     const mappedSites = sites.map((s) => {
       return {

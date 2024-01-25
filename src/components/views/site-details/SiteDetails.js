@@ -71,7 +71,7 @@ export default function SiteDetails() {
       setSiteData(data);
       setDevices(
         data.devices
-          .filter((device) => !device.virtual)
+          .filter((device) => !device.isSite)
           .filter((device) => device.site === data.site.name)
           .sort(sortDevices),
       );
