@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { getSitesOverview } from '../../../services/services';
+import { getAlarmData, getSitesOverview } from '../../../services/services';
 import { sortDevices } from '../../../utils/Utils';
 import Loader from '../../common/Loader';
 import SiteRow from './SiteRow';
@@ -31,7 +31,15 @@ export default function SiteList() {
             }
           });
 
-        setSites(sites);
+        getAlarmData().then(({ data }) => {
+          const activeAlerts = data.filter((d) => d.state !== 0);
+          sites.forEach((site) => {
+            site.activeAlertCount = activeAlerts.filter(
+              (alert) => alert.deviceSite === site.name,
+            ).length;
+          });
+          setSites(sites);
+        });
       })
       .catch((e) => {
         setLoading(false);
