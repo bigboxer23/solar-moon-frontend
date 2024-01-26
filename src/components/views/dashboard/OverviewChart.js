@@ -1,9 +1,16 @@
+import classNames from 'classnames';
 import { useEffect, useState } from 'react';
-import { Line } from 'react-chartjs-2';
+import { Bar, Line } from 'react-chartjs-2';
+import {
+  MdShowChart,
+  MdStackedBarChart,
+  MdStackedLineChart,
+} from 'react-icons/md';
 
 import {
   DAY,
   parseAndCondenseStackedTimeSeriesData,
+  parseSearchReturn,
 } from '../../../services/search';
 import {
   formatXAxisLabels,
@@ -11,17 +18,32 @@ import {
 } from '../../../utils/Utils';
 import { tooltipPlugin } from '../../common/graphPlugins';
 
-export default function OverviewChart({ timeIncrement, siteData }) {
+export default function OverviewChart({
+  timeIncrement,
+  startDate,
+  endDate,
+  overviewData,
+  sitesData,
+}) {
   const [loading, setLoading] = useState(true);
   const [dayData, setDayData] = useState([]);
   const [nightData, setNightData] = useState([]);
+  const [graphType, setGraphType] = useState('overview');
+
+  const dateFormat = {
+    year: '2-digit',
+    month: 'numeric',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  };
 
   useEffect(() => {
-    if (siteData == null) {
+    if (overviewData == null) {
       return;
     }
     setLoading(false);
-    const parsedData = parseAndCondenseStackedTimeSeriesData(siteData);
+    const parsedData = parseAndCondenseStackedTimeSeriesData(overviewData);
 
     if (timeIncrement === DAY) {
       const [dayData, nightData] = splitDayAndNightDataSets(parsedData);
@@ -31,9 +53,9 @@ export default function OverviewChart({ timeIncrement, siteData }) {
       setDayData(parsedData);
       setNightData([]);
     }
-  }, [siteData]);
+  }, [overviewData]);
 
-  const data = {
+  const overallDataset = {
     datasets: [
       {
         data: dayData,
@@ -52,7 +74,16 @@ export default function OverviewChart({ timeIncrement, siteData }) {
     ],
   };
 
-  const options = {
+  const sitesDataset = {
+    datasets: Object.entries(sitesData).map(([siteName, data]) => {
+      return {
+        label: siteName,
+        data: parseSearchReturn(data.timeSeries),
+      };
+    }),
+  };
+
+  const overallOptions = {
     responsive: true,
     maintainAspectRatio: false,
     interaction: {
@@ -61,7 +92,6 @@ export default function OverviewChart({ timeIncrement, siteData }) {
     },
     scales: {
       x: {
-        //stacked: graphType !== GROUPED_BAR,
         type: 'time',
         ticks: {
           stepSize: 6,
@@ -70,49 +100,11 @@ export default function OverviewChart({ timeIncrement, siteData }) {
       },
       y: {
         min: 0,
-        //stacked: graphType !== GROUPED_BAR,
         title: {
-          display: true,
-          text: 'kW',
+          display: false,
         },
       },
     },
-    // scales: {
-    //   x: {
-    //     type: 'time',
-    //     ticks: {
-    //       stepSize: 6,
-    //       callback: formatXAxisLabels,
-    //     },
-    //     grid: {
-    //       display: false,
-    //     },
-    //     border: {
-    //       display: false,
-    //     },
-    //   },
-    //   y: {
-    //     axis: 'y',
-    //     grid: {
-    //       display: false,
-    //     },
-    //     position: { y: 75 },
-    //     padding: 5,
-    //     z: 10,
-    //     ticks: {
-    //       clip: false,
-    //       labelOffset: 10,
-    //       z: 10,
-    //       display: true,
-    //       callback: function (value, index, ticks) {
-    //         return index === ticks.length - 1 ? value + ' kW Max' : '';
-    //       },
-    //     },
-    //     border: {
-    //       display: false,
-    //     },
-    //   },
-    // },
     elements: {
       point: {
         radius: 2,
@@ -133,7 +125,75 @@ export default function OverviewChart({ timeIncrement, siteData }) {
         callbacks: {
           title: (context) => {
             const { dataIndex } = context[0];
-            const { date } = data.datasets[0].data[dataIndex];
+            const { date } = overallDataset.datasets[0].data[dataIndex];
+            return date.toLocaleDateString('en-US', {
+              month: 'short',
+              day: 'numeric',
+              year: 'numeric',
+              hour: 'numeric',
+              minute: 'numeric',
+            });
+          },
+          label: (context) => {
+            let label = context.formattedValue || '';
+            if (label) {
+              label += ' kW';
+            }
+            return label;
+          },
+        },
+      },
+    },
+    parsing: {
+      xAxisKey: 'date',
+      yAxisKey: 'values',
+    },
+  };
+
+  const sitesOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    interaction: {
+      mode: 'index',
+      intersect: false,
+    },
+    scales: {
+      x: {
+        type: 'time',
+        stacked: true,
+        ticks: {
+          stepSize: 6,
+          callback: timeIncrement === DAY ? null : formatXAxisLabels,
+        },
+      },
+      y: {
+        min: 0,
+        stacked: true,
+        title: {
+          display: false,
+        },
+      },
+    },
+    elements: {
+      point: {
+        radius: 2,
+      },
+    },
+    plugins: {
+      legend: {
+        position: 'bottom',
+      },
+      tooltip: {
+        backgroundColor: '#fff',
+        titleColor: '#000',
+        bodyColor: '#000',
+        boxPadding: 8,
+        titleAlign: 'center',
+        //bodyAlign: 'center',
+        callbacks: {
+          title: (context) => {
+            const { dataIndex } = context[0];
+            const { date } = overallDataset.datasets[0].data[dataIndex];
             return date.toLocaleDateString('en-US', {
               month: 'short',
               day: 'numeric',
@@ -161,8 +221,65 @@ export default function OverviewChart({ timeIncrement, siteData }) {
   if (loading) return null;
 
   return (
-    <div className='OverviewChart mb-6 h-72 w-full rounded-lg bg-brand-primary-light p-3'>
-      <Line data={data} options={options} plugins={[tooltipPlugin]} />
+    <div className='OverviewChart mb-6 w-full rounded-lg bg-brand-primary-light p-3'>
+      <div className='mb-2 flex items-center justify-between'>
+        <div className='text-xs'>
+          {startDate.toLocaleString([], dateFormat)} -{' '}
+          {endDate.toLocaleString([], dateFormat)}
+        </div>
+        <div className='flex items-center rounded border bg-white'>
+          <button
+            aria-label='grouped bar graph'
+            className={classNames('border-r px-2 py-1 hover:bg-neutral-200', {
+              'bg-neutral-300': graphType === 'overview',
+            })}
+            onClick={() => setGraphType('overview')}
+          >
+            <MdShowChart className='text-brand-primary-dark text-xl' />
+          </button>
+          <button
+            aria-label='line graph'
+            className={classNames('px-2 py-1 hover:bg-neutral-200', {
+              'bg-neutral-300': graphType === 'stacked-line',
+            })}
+            onClick={() => setGraphType('stacked-line')}
+          >
+            <MdStackedLineChart className='text-brand-primary-dark text-xl' />
+          </button>
+          <button
+            aria-label='bar graph'
+            className={classNames('border-l px-2 py-1 hover:bg-neutral-200', {
+              'bg-neutral-300': graphType === 'stacked-bar',
+            })}
+            onClick={() => setGraphType('stacked-bar')}
+          >
+            <MdStackedBarChart className='text-brand-primary-dark text-xl' />
+          </button>
+        </div>
+      </div>
+      <div className='h-64 w-full'>
+        {graphType === 'overview' && (
+          <Line
+            data={overallDataset}
+            options={overallOptions}
+            plugins={[tooltipPlugin]}
+          />
+        )}
+        {graphType === 'stacked-line' && (
+          <Line
+            data={sitesDataset}
+            options={sitesOptions}
+            plugins={[tooltipPlugin]}
+          />
+        )}
+        {graphType === 'stacked-bar' && (
+          <Bar
+            data={sitesDataset}
+            options={sitesOptions}
+            plugins={[tooltipPlugin]}
+          />
+        )}
+      </div>
     </div>
   );
 }

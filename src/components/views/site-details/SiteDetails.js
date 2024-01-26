@@ -164,9 +164,11 @@ export default function SiteDetails() {
         </div>
         <SiteDetailsGraph
           deviceNames={devices.map((d) => getDisplayName(d))}
+          endDate={new Date()}
           graphData={graphData}
           graphType={graphType}
           setGraphType={setGraphTypeWrapper}
+          startDate={new Date(new Date().getTime() - timeIncrement)}
           timeIncrement={timeIncrement}
         />
         <SiteDevicesOverview
