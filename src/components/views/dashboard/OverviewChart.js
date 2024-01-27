@@ -16,6 +16,7 @@ import {
   formatXAxisLabels,
   getFormattedTime,
   splitDayAndNightDataSets,
+  useStickyState,
 } from '../../../utils/Utils';
 import { tooltipPlugin } from '../../common/graphPlugins';
 
@@ -29,7 +30,10 @@ export default function OverviewChart({
   const [loading, setLoading] = useState(true);
   const [dayData, setDayData] = useState([]);
   const [nightData, setNightData] = useState([]);
-  const [graphType, setGraphType] = useState('overview');
+  const [graphType, setGraphType] = useStickyState(
+    'overview',
+    'overview.graph',
+  );
 
   useEffect(() => {
     if (overviewData == null) {
