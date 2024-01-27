@@ -14,6 +14,7 @@ import {
 } from '../../../services/search';
 import {
   formatXAxisLabels,
+  getFormattedTime,
   splitDayAndNightDataSets,
 } from '../../../utils/Utils';
 import { tooltipPlugin } from '../../common/graphPlugins';
@@ -29,14 +30,6 @@ export default function OverviewChart({
   const [dayData, setDayData] = useState([]);
   const [nightData, setNightData] = useState([]);
   const [graphType, setGraphType] = useState('overview');
-
-  const dateFormat = {
-    year: '2-digit',
-    month: 'numeric',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  };
 
   useEffect(() => {
     if (overviewData == null) {
@@ -224,8 +217,7 @@ export default function OverviewChart({
     <div className='OverviewChart mb-6 w-full rounded-lg bg-brand-primary-light p-3'>
       <div className='mb-2 flex items-center justify-between'>
         <div className='text-xs'>
-          {startDate.toLocaleString([], dateFormat)} -{' '}
-          {endDate.toLocaleString([], dateFormat)}
+          {getFormattedTime(startDate)} - {getFormattedTime(endDate)}
         </div>
         <div className='flex items-center rounded border bg-white'>
           <button

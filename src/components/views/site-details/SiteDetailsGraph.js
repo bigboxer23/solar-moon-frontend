@@ -7,7 +7,11 @@ import {
 } from 'react-icons/md';
 
 import { DAY, GROUPED_BAR } from '../../../services/search';
-import { formatXAxisLabels } from '../../../utils/Utils';
+import {
+  formatXAxisLabels,
+  getFormattedDaysHoursMinutes,
+  getFormattedTime,
+} from '../../../utils/Utils';
 import { tooltipPlugin } from '../../common/graphPlugins';
 
 export default function SiteDetailsGraph({
@@ -19,13 +23,13 @@ export default function SiteDetailsGraph({
   startDate,
   endDate,
 }) {
-  const dateFormat = {
-    year: '2-digit',
-    month: 'numeric',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  };
+  // const dateFormat = {
+  //   year: '2-digit',
+  //   month: 'numeric',
+  //   day: 'numeric',
+  //   hour: '2-digit',
+  //   minute: '2-digit',
+  // };
 
   const datasets = deviceNames.map((name) => {
     const data = graphData.filter((d) => d.name === name);
@@ -125,8 +129,7 @@ export default function SiteDetailsGraph({
       <div className='SiteDetailsGraph group relative mb-6 w-full rounded-lg bg-brand-primary-light p-3'>
         <div className='flex items-center justify-between'>
           <div className='text-xs'>
-            {startDate.toLocaleString([], dateFormat)} -{' '}
-            {endDate.toLocaleString([], dateFormat)}
+            {getFormattedTime(startDate)} - {getFormattedTime(endDate)}
           </div>
           <div className='flex w-fit rounded border bg-white duration-150'>
             <button
