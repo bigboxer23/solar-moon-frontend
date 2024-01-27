@@ -23,14 +23,6 @@ export default function SiteDetailsGraph({
   startDate,
   endDate,
 }) {
-  // const dateFormat = {
-  //   year: '2-digit',
-  //   month: 'numeric',
-  //   day: 'numeric',
-  //   hour: '2-digit',
-  //   minute: '2-digit',
-  // };
-
   const datasets = deviceNames.map((name) => {
     const data = graphData.filter((d) => d.name === name);
     const dataSet = {
@@ -79,14 +71,7 @@ export default function SiteDetailsGraph({
           title: (context) => {
             const { dataIndex } = context[0];
             const { date } = data.datasets[0].data[dataIndex];
-            const date2 = new Date(date);
-            return date2.toLocaleDateString('en-US', {
-              month: 'short',
-              day: 'numeric',
-              year: 'numeric',
-              hour: 'numeric',
-              minute: 'numeric',
-            });
+            return getFormattedTime(date);
           },
           label: (context) => {
             const siteLabel = context.dataset.label;

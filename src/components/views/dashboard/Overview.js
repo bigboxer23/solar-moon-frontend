@@ -9,7 +9,11 @@ import {
   TOTAL_AGGREGATION,
 } from '../../../services/search';
 import { getOverviewData } from '../../../services/services';
-import { sortDevices, useStickyState } from '../../../utils/Utils';
+import {
+  getRoundedTimeFromOffset,
+  sortDevices,
+  useStickyState,
+} from '../../../utils/Utils';
 import Loader from '../../common/Loader';
 import StatBlock from '../../common/StatBlock';
 import OverviewSiteList from './dashboard-site-list/OverviewSiteList';
@@ -146,7 +150,7 @@ export default function Overview() {
           overviewData={overallTimeSeries}
           sites={sites}
           sitesData={sitesGraphData}
-          startDate={new Date(new Date().getTime() - timeIncrement)}
+          startDate={getRoundedTimeFromOffset(timeIncrement)}
           timeIncrement={timeIncrement}
         />
         <OverviewSiteList

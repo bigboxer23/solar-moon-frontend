@@ -60,7 +60,7 @@ export function debounce(fn, ms) {
 }
 
 export const getFormattedTime = (date) => {
-  return moment(date).format('MMM D, YY hh:mm A');
+  return moment(date).format('MMM D, YY h:mm A');
 };
 
 export const formatXAxisLabels = (value, index, ticks) => {

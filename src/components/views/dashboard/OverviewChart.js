@@ -123,13 +123,7 @@ export default function OverviewChart({
           title: (context) => {
             const { dataIndex } = context[0];
             const { date } = overallDataset.datasets[0].data[dataIndex];
-            return date.toLocaleDateString('en-US', {
-              month: 'short',
-              day: 'numeric',
-              year: 'numeric',
-              hour: 'numeric',
-              minute: 'numeric',
-            });
+            return getFormattedTime(date);
           },
           label: (context) => {
             let label = context.formattedValue || '';
@@ -191,13 +185,7 @@ export default function OverviewChart({
           title: (context) => {
             const { dataIndex } = context[0];
             const { date } = overallDataset.datasets[0].data[dataIndex];
-            return date.toLocaleDateString('en-US', {
-              month: 'short',
-              day: 'numeric',
-              year: 'numeric',
-              hour: 'numeric',
-              minute: 'numeric',
-            });
+            return getFormattedTime(date);
           },
           label: (context) => {
             let label = context.formattedValue || '';

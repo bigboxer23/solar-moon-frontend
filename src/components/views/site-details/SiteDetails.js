@@ -15,6 +15,7 @@ import {
 import { getSiteOverview } from '../../../services/services';
 import {
   getDisplayName,
+  getRoundedTimeFromOffset,
   sortDevices,
   useStickyState,
 } from '../../../utils/Utils';
@@ -168,7 +169,7 @@ export default function SiteDetails() {
           graphData={graphData}
           graphType={graphType}
           setGraphType={setGraphTypeWrapper}
-          startDate={new Date(new Date().getTime() - timeIncrement)}
+          startDate={getRoundedTimeFromOffset(timeIncrement)}
           timeIncrement={timeIncrement}
         />
         <SiteDevicesOverview
