@@ -43,10 +43,18 @@ export default function SiteRow({ site }) {
       className='group flex items-center rounded-lg p-0 transition-all duration-150 hover:bg-neutral-100 sm:p-4'
       to={`/sites/${site.id}`}
     >
-      <div className='flex w-full flex-col space-y-4'>
+      <div className='flex w-full flex-col space-y-3'>
         <div className='flex w-full items-center justify-between'>
           <div className='flex items-center space-x-1'>
             <div className='text-base font-bold'>{site.deviceName}</div>
+            {site?.activeAlertCount > 0 && (
+              <NavLink
+                className='rounded-full bg-danger px-2 py-0.5 text-xs text-white'
+                to='/alerts'
+              >
+                {site.activeAlertCount} alerts
+              </NavLink>
+            )}
             <div className='text-xs italic text-neutral-500'>
               {site.city &&
                 site.state &&
