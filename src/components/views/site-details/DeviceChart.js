@@ -1,6 +1,6 @@
 import { Line } from 'react-chartjs-2';
 
-import { formatXAxisLabels } from '../../../utils/Utils';
+import { formatXAxisLabels, getFormattedTime } from '../../../utils/Utils';
 import { tooltipPlugin } from '../../common/graphPlugins';
 
 export default function DeviceChart({ graphData }) {
@@ -48,14 +48,7 @@ export default function DeviceChart({ graphData }) {
           title: (context) => {
             const { dataIndex } = context[0];
             const { date } = data.datasets[0].data[dataIndex];
-            const date2 = new Date(date);
-            return date2.toLocaleDateString('en-US', {
-              month: 'short',
-              day: 'numeric',
-              year: 'numeric',
-              hour: 'numeric',
-              minute: 'numeric',
-            });
+            return getFormattedTime(date);
           },
           label: (context) => {
             let label = context.formattedValue || '';
