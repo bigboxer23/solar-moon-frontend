@@ -7,7 +7,11 @@ import {
 } from 'react-icons/md';
 
 import { DAY, GROUPED_BAR } from '../../../services/search';
-import { formatXAxisLabels } from '../../../utils/Utils';
+import {
+  formatXAxisLabels,
+  getFormattedDaysHoursMinutes,
+  getFormattedTime,
+} from '../../../utils/Utils';
 import { tooltipPlugin } from '../../common/graphPlugins';
 
 export default function SiteDetailsGraph({
@@ -16,7 +20,17 @@ export default function SiteDetailsGraph({
   graphType,
   setGraphType,
   timeIncrement,
+  startDate,
+  endDate,
 }) {
+  // const dateFormat = {
+  //   year: '2-digit',
+  //   month: 'numeric',
+  //   day: 'numeric',
+  //   hour: '2-digit',
+  //   minute: '2-digit',
+  // };
+
   const datasets = deviceNames.map((name) => {
     const data = graphData.filter((d) => d.name === name);
     const dataSet = {
@@ -51,6 +65,9 @@ export default function SiteDetailsGraph({
       },
     },
     plugins: {
+      legend: {
+        position: 'bottom',
+      },
       tooltip: {
         backgroundColor: '#fff',
         titleColor: '#000',
@@ -94,8 +111,7 @@ export default function SiteDetailsGraph({
         min: 0,
         stacked: graphType !== GROUPED_BAR,
         title: {
-          display: true,
-          text: 'kW',
+          display: false,
         },
       },
     },
@@ -111,34 +127,39 @@ export default function SiteDetailsGraph({
   return (
     <>
       <div className='SiteDetailsGraph group relative mb-6 w-full rounded-lg bg-brand-primary-light p-3'>
-        <div className='relative right-2 top-2 mb-4 ml-auto flex w-fit rounded border bg-white duration-150 sm:absolute sm:mb-0 sm:opacity-25 sm:transition-opacity sm:group-hover:opacity-100'>
-          <button
-            aria-label='grouped bar graph'
-            className={classNames('border-r p-2 hover:bg-neutral-200', {
-              'bg-neutral-300': graphType === GROUPED_BAR,
-            })}
-            onClick={() => setGraphType(GROUPED_BAR)}
-          >
-            <MdBarChart className='text-brand-primary-dark text-xl' />
-          </button>
-          <button
-            aria-label='bar graph'
-            className={classNames('p-2 hover:bg-neutral-200', {
-              'bg-neutral-300': graphType === 'bar',
-            })}
-            onClick={() => setGraphType('bar')}
-          >
-            <MdStackedBarChart className='text-brand-primary-dark text-xl' />
-          </button>
-          <button
-            aria-label='line graph'
-            className={classNames('border-l p-2 hover:bg-neutral-200', {
-              'bg-neutral-300': graphType === 'line',
-            })}
-            onClick={() => setGraphType('line')}
-          >
-            <MdStackedLineChart className='text-brand-primary-dark text-xl' />
-          </button>
+        <div className='flex items-center justify-between'>
+          <div className='text-xs'>
+            {getFormattedTime(startDate)} - {getFormattedTime(endDate)}
+          </div>
+          <div className='flex w-fit rounded border bg-white duration-150'>
+            <button
+              aria-label='site stacked line graph'
+              className={classNames('border-r px-2 py-1 hover:bg-neutral-200', {
+                'bg-neutral-300': graphType === GROUPED_BAR,
+              })}
+              onClick={() => setGraphType(GROUPED_BAR)}
+            >
+              <MdBarChart className='text-brand-primary-dark text-xl' />
+            </button>
+            <button
+              aria-label='site stacked bar graph'
+              className={classNames('px-2 py-1 hover:bg-neutral-200', {
+                'bg-neutral-300': graphType === 'bar',
+              })}
+              onClick={() => setGraphType('bar')}
+            >
+              <MdStackedBarChart className='text-brand-primary-dark text-xl' />
+            </button>
+            <button
+              aria-label='overview graph'
+              className={classNames('border-l px-2 py-1 hover:bg-neutral-200', {
+                'bg-neutral-300': graphType === 'line',
+              })}
+              onClick={() => setGraphType('line')}
+            >
+              <MdStackedLineChart className='text-brand-primary-dark text-xl' />
+            </button>
+          </div>
         </div>
         <div className='h-72'>
           {graphType === 'line' && (

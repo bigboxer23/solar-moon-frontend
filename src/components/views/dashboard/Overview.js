@@ -142,8 +142,11 @@ export default function Overview() {
           </div>
         </div>
         <OverviewChart
-          siteData={overallTimeSeries}
+          endDate={new Date()}
+          overviewData={overallTimeSeries}
           sites={sites}
+          sitesData={sitesGraphData}
+          startDate={new Date(new Date().getTime() - timeIncrement)}
           timeIncrement={timeIncrement}
         />
         <OverviewSiteList
