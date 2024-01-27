@@ -19,12 +19,12 @@ export default function OverviewSiteList({
     const mappedSiteData = sites.map((site) => {
       const siteInfo = {
         ...site,
-        deviceCount: devices.filter((d) => d.site === site.deviceName).length,
+        deviceCount: devices.filter((d) => d.site === site.name).length,
         alertCount: alerts.filter((d) => d.siteId === site.id).length,
       };
       return {
         info: siteInfo,
-        graphData: sitesGraphData[site.deviceName],
+        graphData: sitesGraphData[site.name],
       };
     });
     setSiteData(mappedSiteData);

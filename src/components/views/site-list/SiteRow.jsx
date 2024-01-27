@@ -46,7 +46,7 @@ export default function SiteRow({ site }) {
       <div className='flex w-full flex-col space-y-3'>
         <div className='flex w-full items-center justify-between'>
           <div className='flex items-center space-x-1'>
-            <div className='text-base font-bold'>{site.deviceName}</div>
+            <div className='text-base font-bold'>{site.name}</div>
             {site?.activeAlertCount > 0 && (
               <NavLink
                 className='rounded-full bg-danger px-2 py-0.5 text-xs text-white'
