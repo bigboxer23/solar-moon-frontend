@@ -111,12 +111,12 @@ export default function SiteDetailsGraph({
 
   return (
     <>
-      <div className='SiteDetailsGraph group relative mb-6 w-full rounded-lg bg-brand-primary-light p-3'>
+      <div className='SiteDetailsGraph group relative mb-6 w-full rounded-lg bg-brand-primary-light p-3 dark:bg-neutral-700'>
         <div className='flex items-center justify-between'>
-          <div className='text-xs'>
+          <div className='text-xs text-black dark:text-white'>
             {getFormattedTime(startDate)} - {getFormattedTime(endDate)}
           </div>
-          <div className='flex w-fit rounded border bg-white duration-150'>
+          <div className='flex w-fit rounded border bg-white duration-150 dark:bg-neutral-700'>
             <button
               aria-label='site stacked line graph'
               className={classNames('border-r px-2 py-1 hover:bg-neutral-200', {

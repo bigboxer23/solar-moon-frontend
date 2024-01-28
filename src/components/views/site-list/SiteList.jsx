@@ -54,9 +54,11 @@ export default function SiteList() {
     );
 
   return (
-    <main className='SiteList flex flex-col items-center bg-brand-primary-light'>
-      <div className='fade-in my-8 w-[55rem] max-w-full space-y-4 rounded-lg bg-white p-6 shadow-panel sm:p-8'>
-        <div className='text-base font-bold'>Sites</div>
+    <main className='SiteList flex flex-col items-center bg-brand-primary-light dark:bg-neutral-900'>
+      <div className='fade-in my-8 w-[55rem] max-w-full space-y-4 rounded-lg bg-white p-6 shadow-panel sm:p-8 dark:bg-neutral-700'>
+        <div className='text-base font-bold text-black dark:text-white'>
+          Sites
+        </div>
         <div className='flex flex-col justify-center space-y-4 sm:space-y-2'>
           {sites.map((site) => (
             <SiteRow key={site.id} site={site} />

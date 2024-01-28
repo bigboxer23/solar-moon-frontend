@@ -13,7 +13,7 @@ export default function Modal({ children, size = 'md', isOpen = false }) {
   function renderDialog() {
     return (
       <dialog
-        className={`Modal fixed !top-1/4 z-10 !mx-auto rounded-xl bg-white shadow-modal ${sizes[size]}`}
+        className={`Modal fixed !top-1/4 z-10 !mx-auto rounded-xl bg-white shadow-modal dark:bg-neutral-700 ${sizes[size]}`}
         open={isOpen}
       >
         {children}

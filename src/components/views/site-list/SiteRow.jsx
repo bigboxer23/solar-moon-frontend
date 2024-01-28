@@ -40,13 +40,15 @@ export default function SiteRow({ site }) {
 
   return (
     <NavLink
-      className='group flex items-center rounded-lg p-0 transition-all duration-150 hover:bg-neutral-100 sm:p-4'
+      className='group flex items-center rounded-lg p-0 transition-all duration-150 hover:bg-neutral-100 sm:p-4 dark:bg-neutral-700 hover:dark:bg-neutral-600'
       to={`/sites/${site.id}`}
     >
       <div className='flex w-full flex-col space-y-3'>
         <div className='flex w-full items-center justify-between'>
           <div className='flex items-center space-x-1'>
-            <div className='text-base font-bold'>{site.name}</div>
+            <div className='text-base font-bold text-black dark:text-white'>
+              {site.name}
+            </div>
             {site?.activeAlertCount > 0 && (
               <NavLink
                 className='rounded-full bg-danger px-2 py-0.5 text-xs text-white'
@@ -55,7 +57,7 @@ export default function SiteRow({ site }) {
                 {site.activeAlertCount} alerts
               </NavLink>
             )}
-            <div className='text-xs italic text-neutral-500'>
+            <div className='text-xs italic text-neutral-500 dark:text-white'>
               {site.city &&
                 site.state &&
                 `- ${site.city}, ${site.state} ${site.siteData.localTime}`}
@@ -87,13 +89,13 @@ export default function SiteRow({ site }) {
                 className='absolute top-0 aspect-square w-full bg-gradient-to-tr from-transparent from-50% to-neutral-300 to-50% transition-transform duration-500'
                 style={{ transform: `rotate(${degree}deg)` }}
               ></div>
-              <div className='absolute top-1/4 flex aspect-square w-3/4 justify-center rounded-full bg-white transition-all duration-150 group-hover:bg-neutral-100' />
-              <div className='absolute bottom-0 w-full truncate text-center text-sm font-bold leading-none'>
+              <div className='absolute top-1/4 flex aspect-square w-3/4 justify-center rounded-full bg-white transition-all duration-150 group-hover:bg-neutral-100 dark:bg-neutral-700 dark:group-hover:bg-neutral-600' />
+              <div className='absolute bottom-0 w-full truncate text-center text-sm font-bold leading-none text-black dark:text-white'>
                 {maxPercent}%
               </div>
             </div>
           </div>
-          <div className='col-span-2 ml-4 hidden flex-col justify-center text-sm sm:flex'>
+          <div className='col-span-2 ml-4 hidden flex-col justify-center text-sm text-black sm:flex dark:text-white'>
             <span className='whitespace-nowrap'>
               <span className='font-bold'>
                 <FormattedNumber

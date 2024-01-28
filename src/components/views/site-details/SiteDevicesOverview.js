@@ -74,7 +74,7 @@ export default function SiteDevicesOverview({
                     />
                   </div>
                   <div className='flex flex-col items-end'>
-                    <div className='flex flex-col space-x-1 text-end text-base sm:flex-row'>
+                    <div className='flex flex-col space-x-1 text-end text-base text-black sm:flex-row dark:text-white'>
                       <div>Total:</div>
                       <div>
                         <FormattedNumber
@@ -86,7 +86,7 @@ export default function SiteDevicesOverview({
                         kWH
                       </div>
                     </div>
-                    <div className='average-output flex flex-col space-x-1 text-end text-xl font-bold sm:flex-row'>
+                    <div className='average-output flex flex-col space-x-1 text-end text-xl font-bold text-black sm:flex-row dark:text-white'>
                       <div>Average:</div>
                       <div>
                         <FormattedNumber

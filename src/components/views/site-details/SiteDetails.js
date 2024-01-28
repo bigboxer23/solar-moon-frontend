@@ -99,8 +99,8 @@ export default function SiteDetails() {
   }
 
   return (
-    <main className='SiteDetails flex flex-col items-center bg-brand-primary-light'>
-      <div className='fade-in my-8 w-[55rem] max-w-full rounded-lg bg-white p-6 shadow-panel sm:p-8'>
+    <main className='SiteDetails flex flex-col items-center bg-brand-primary-light dark:bg-neutral-900'>
+      <div className='fade-in my-8 w-[55rem] max-w-full rounded-lg bg-white p-6 shadow-panel sm:p-8 dark:bg-neutral-700'>
         <NavLink
           className='mb-4 flex items-center text-xs text-neutral-500 hover:underline'
           to='/sites'
@@ -143,7 +143,7 @@ export default function SiteDetails() {
             />
           </div>
           <div className='ml-auto flex flex-col items-end'>
-            <div className='flex flex-col space-x-1 text-end text-base sm:flex-row'>
+            <div className='flex flex-col space-x-1 text-end text-base text-black sm:flex-row dark:text-white'>
               <div>Total:</div>
               <div>
                 <FormattedNumber
@@ -152,7 +152,7 @@ export default function SiteDetails() {
                 kWH
               </div>
             </div>
-            <div className='average-output flex flex-col space-x-1 text-end text-xl font-bold sm:flex-row'>
+            <div className='average-output flex flex-col space-x-1 text-end text-xl font-bold text-black sm:flex-row dark:text-white'>
               <div>Average:</div>
               <div>
                 <FormattedNumber
