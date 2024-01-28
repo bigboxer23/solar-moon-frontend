@@ -46,7 +46,7 @@ export default function SiteRow({ site }) {
       <div className='flex w-full flex-col space-y-3'>
         <div className='flex w-full items-center justify-between'>
           <div className='flex items-center space-x-1'>
-            <div className='text-base font-bold text-black dark:text-white'>
+            <div className='text-base font-bold text-black dark:text-neutral-100'>
               {site.name}
             </div>
             {site?.activeAlertCount > 0 && (
@@ -57,7 +57,7 @@ export default function SiteRow({ site }) {
                 {site.activeAlertCount} alerts
               </NavLink>
             )}
-            <div className='text-xs italic text-neutral-500 dark:text-white'>
+            <div className='text-xs italic text-text-secondary'>
               {site.city &&
                 site.state &&
                 `- ${site.city}, ${site.state} ${site.siteData.localTime}`}
@@ -65,14 +65,18 @@ export default function SiteRow({ site }) {
           </div>
           <div className='ml-auto flex flex-row items-start justify-center pl-4'>
             <FaChevronRight
-              className='text-neutral-300 transition-all duration-150 group-hover:text-neutral-600'
+              className='text-neutral-300 transition-all duration-150 group-hover:text-neutral-600 dark:text-neutral-500 dark:group-hover:text-neutral-300'
               size={20}
             />
           </div>
         </div>
 
         <div className='mr-8 grid w-full grid-cols-3 gap-2 sm:grid-cols-5 sm:gap-4'>
-          <StatBlock className='' title='devices' value={site.deviceCount} />
+          <StatBlock
+            className='text-black dark:text-neutral-100'
+            title='devices'
+            value={site.deviceCount}
+          />
           <div className=''>
             {site.siteData?.weather && (
               <WeatherBlock weather={site.siteData?.weather} />
@@ -90,12 +94,12 @@ export default function SiteRow({ site }) {
                 style={{ transform: `rotate(${degree}deg)` }}
               ></div>
               <div className='absolute top-1/4 flex aspect-square w-3/4 justify-center rounded-full bg-white transition-all duration-150 group-hover:bg-neutral-100 dark:bg-neutral-700 dark:group-hover:bg-neutral-600' />
-              <div className='absolute bottom-0 w-full truncate text-center text-sm font-bold leading-none text-black dark:text-white'>
+              <div className='absolute bottom-0 w-full truncate text-center text-sm font-bold leading-none text-black dark:text-neutral-100'>
                 {maxPercent}%
               </div>
             </div>
           </div>
-          <div className='col-span-2 ml-4 hidden flex-col justify-center text-sm text-black sm:flex dark:text-white'>
+          <div className='col-span-2 ml-4 hidden flex-col justify-center text-sm text-black sm:flex dark:text-neutral-100'>
             <span className='whitespace-nowrap'>
               <span className='font-bold'>
                 <FormattedNumber

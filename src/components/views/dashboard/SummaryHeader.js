@@ -5,7 +5,7 @@ export default function SummaryHeader({ dailyOutput, dailyAverageOutput }) {
     return Math.round((total / average) * 100);
   };
   return (
-    <span className='SummaryHeader mx-6 flex flex-wrap items-baseline justify-center space-x-2 space-y-2 py-8 text-xl font-bold text-black dark:text-white'>
+    <span className='SummaryHeader mx-6 flex flex-wrap items-baseline justify-center space-x-2 space-y-2 py-8 text-xl font-bold text-black dark:text-neutral-100'>
       <span className='whitespace-nowrap text-center'>You have generated</span>
       <span className='whitespace-nowrap text-center'>
         <FormattedLabel

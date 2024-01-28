@@ -208,7 +208,7 @@ export default function OverviewChart({
   return (
     <div className='OverviewChart mb-6 w-full rounded-lg bg-brand-primary-light p-3 dark:bg-neutral-800'>
       <div className='mb-2 flex items-center justify-between'>
-        <div className='text-xs text-black dark:text-white'>
+        <div className='text-xs text-black dark:text-neutral-100'>
           {getFormattedTime(startDate)} - {getFormattedTime(endDate)}
         </div>
         <div className='flex items-center rounded border bg-white'>

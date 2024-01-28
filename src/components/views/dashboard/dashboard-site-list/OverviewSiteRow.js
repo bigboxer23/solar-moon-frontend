@@ -99,7 +99,7 @@ export default function OverviewSiteRow({ info, graphData, timeIncrement }) {
 
   return (
     <NavLink
-      className='SiteRow mb-3 flex w-full items-center rounded px-2 py-1 text-black transition-all duration-150 ease-in-out hover:bg-brand-primary-light dark:bg-neutral-700 dark:text-white dark:hover:bg-neutral-600'
+      className='SiteRow mb-3 flex w-full items-center rounded px-2 py-1 text-black transition-all duration-150 ease-in-out hover:bg-brand-primary-light dark:bg-neutral-700 dark:text-neutral-100 dark:hover:bg-neutral-600'
       to={`/sites/${id}`}
     >
       <div className='w-[25%] pr-1 sm:w-[15%]'>{name}</div>

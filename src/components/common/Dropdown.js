@@ -17,7 +17,7 @@ export default function Dropdown({
       <Menu
         gap={8}
         menuButton={
-          <MenuButton className='border-1 flex items-center rounded-full border-solid border-border-color bg-white text-black dark:bg-neutral-700 dark:text-white'>
+          <MenuButton className='border-1 flex items-center rounded-full border-solid border-border-color bg-white text-black dark:bg-neutral-700 dark:text-neutral-100'>
             {prefixLabel && (
               <span className='mr-2 font-bold'>{prefixLabel}:</span>
             )}
@@ -37,7 +37,7 @@ export default function Dropdown({
             );
           return (
             <MenuItem
-              className='flex cursor-pointer list-none items-center px-4 py-1.5 text-sm font-normal text-black hover:bg-[#eee] dark:text-white dark:hover:bg-neutral-500'
+              className='flex cursor-pointer list-none items-center px-4 py-1.5 text-sm font-normal text-black hover:bg-[#eee] dark:text-neutral-100 dark:hover:bg-neutral-500'
               key={option.value}
               onClick={(e) => onChange(option)}
             >

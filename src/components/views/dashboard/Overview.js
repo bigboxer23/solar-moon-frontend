@@ -100,7 +100,7 @@ export default function Overview() {
         dailyOutput={dailyOutputTotal}
       />
       <div className='Overview fade-in mb-8 w-[55rem] max-w-full bg-white p-6 shadow-panel sm:rounded-lg sm:p-8 dark:bg-neutral-700'>
-        <div className='mb-4 flex w-full items-center justify-between text-lg font-bold text-black dark:text-white'>
+        <div className='mb-4 flex w-full items-center justify-between text-lg font-bold text-black dark:text-neutral-100'>
           Overview
           <TimeIncrementSelector
             setTimeIncrement={setTimeIncrement}
@@ -110,12 +110,12 @@ export default function Overview() {
         <div className='mb-6 flex justify-between'>
           <div className='grid grid-cols-2 gap-2 sm:grid-cols-4'>
             <StatBlock
-              className='text-black dark:text-white'
+              className='text-black dark:text-neutral-100'
               title='sites'
               value={sites.length}
             />
             <StatBlock
-              className='mr-2 text-black dark:text-white'
+              className='mr-2 text-black dark:text-neutral-100'
               title='devices'
               value={devices.length}
             />
@@ -124,7 +124,7 @@ export default function Overview() {
                 'cursor-pointer' +
                 (activeAlerts > 0
                   ? ' text-danger'
-                  : 'text-black dark:text-white')
+                  : 'text-black dark:text-neutral-100')
               }
               onClick={() => navigate('/alerts')}
               title='active alerts'
@@ -138,13 +138,13 @@ export default function Overview() {
             />
           </div>
           <div className='flex flex-col items-end'>
-            <div className='flex flex-col space-x-1 text-end text-base text-black sm:flex-row dark:text-white'>
+            <div className='flex flex-col space-x-1 text-end text-base text-black sm:flex-row dark:text-neutral-100'>
               <div>Total:</div>
               <div>
                 <FormattedNumber value={totalOutput} /> kWH
               </div>
             </div>
-            <div className='average-output flex flex-col space-x-1 text-end text-xl font-bold text-black sm:flex-row dark:text-white'>
+            <div className='average-output flex flex-col space-x-1 text-end text-xl font-bold text-black sm:flex-row dark:text-neutral-100'>
               <div>Average:</div>
               <div>
                 <FormattedNumber value={averageOutput} /> kW

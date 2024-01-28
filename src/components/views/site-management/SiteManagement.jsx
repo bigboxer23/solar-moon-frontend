@@ -107,10 +107,12 @@ const SiteManagement = () => {
                   ? 'Increase the number of seats to add more devices'
                   : 'New Device'
               }
-              variant='outline-primary'
+              variant='primary'
             >
-              <MdAddCircle className='button-icon' />
-              Add Device
+              <div className='flex items-center'>
+                <MdAddCircle className='button-icon' />
+                Add Device
+              </div>
             </Button>
           </div>
           <div

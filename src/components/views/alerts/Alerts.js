@@ -110,7 +110,7 @@ export default function Alerts() {
       {!loading && (
         <div className='fade-in my-8 w-[55rem] max-w-full rounded-lg bg-white p-6 shadow-panel sm:p-8 dark:bg-neutral-700'>
           <div className='mb-10 flex w-full justify-between'>
-            <span className='text-lg font-bold text-black dark:text-white'>
+            <span className='text-lg font-bold text-black dark:text-neutral-100'>
               Alerts
             </span>
             <AlertsFilter
@@ -130,7 +130,7 @@ export default function Alerts() {
               <Alert active alert={alert} key={alert.alarmId} />
             ))}
           </div>
-          <div className='mb-6 flex w-full items-center justify-between text-lg font-bold text-black dark:text-white'>
+          <div className='mb-6 flex w-full items-center justify-between text-lg font-bold text-black dark:text-neutral-100'>
             Resolved Alerts
           </div>
           <div className='space-y-4'>

@@ -35,10 +35,10 @@ export default function OverviewSiteList({
 
   return (
     <div className='SiteList mt-5'>
-      <div className='mb-6 text-lg font-bold text-black dark:text-white'>
+      <div className='mb-6 text-lg font-bold text-black dark:text-neutral-100'>
         Sites
       </div>
-      <div className='mb-4 flex w-full items-center px-2 text-xs font-bold text-black dark:text-white'>
+      <div className='mb-4 flex w-full items-center px-2 text-xs font-bold text-black dark:text-neutral-100'>
         <div className='w-[25%] pr-1 sm:w-[15%]'>Site Name</div>
         <div className='hidden text-end sm:block sm:w-[15%]'>Device Count</div>
         <div className='hidden px-1 text-end sm:block sm:w-[15%]'>Alerts</div>

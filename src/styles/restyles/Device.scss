@@ -1,8 +1,0 @@
-.Device .hidden-without-hover {
-  opacity: 0;
-  transition: opacity 0.1s ease-out 0s !important;
-}
-
-.Device:hover .hidden-without-hover {
-  opacity: 1;
-}

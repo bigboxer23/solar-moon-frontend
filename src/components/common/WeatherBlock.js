@@ -6,7 +6,7 @@ import { getWeatherIcon } from '../../utils/Utils';
 
 export default function WeatherBlock({ weather, className = '' }) {
   const style = classNames(
-    'WeatherBlock text-black dark:text-white flex items-center font-bold mt-1',
+    'WeatherBlock text-black dark:text-neutral-100 flex items-center font-bold mt-1',
     className,
   );
 

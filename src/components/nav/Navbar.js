@@ -15,14 +15,14 @@ export default function Navbar() {
   const separatorStyle =
     'text-text-secondary text-lg text-decoration-none font-bold hidden lg:block dark:text-brand-secondary';
   const linkStyle =
-    'text-black dark:text-white dark:text-white font-bold text-lg text-decoration-none';
+    'text-black dark:text-neutral-100 dark:text-neutral-100 font-bold text-lg text-decoration-none';
   const activeLinkStyle =
-    'text-black dark:text-white dark:text-white font-bold text-lg border-b-2 border-text-primary text-decoration-none border-black dark:border-white';
+    'text-black dark:text-neutral-100 dark:text-neutral-100 font-bold text-lg border-b-2 border-text-primary text-decoration-none border-black dark:border-white';
 
   const slideMenuLinkStyle =
-    'text-start text-black dark:text-white font-bold text-2xl text-decoration-none w-fit';
+    'text-start text-black dark:text-neutral-100 font-bold text-2xl text-decoration-none w-fit';
   const slideMenuActiveLinkStyle =
-    'text-black dark:text-white font-bold text-2xl border-b-2 border-text-primary text-decoration-none border-black w-fit';
+    'text-black dark:text-neutral-100 font-bold text-2xl border-b-2 border-text-primary text-decoration-none border-black w-fit';
 
   const [slideMenuOpen, setSlideMenuOpen] = useState(false);
 
@@ -73,7 +73,7 @@ export default function Navbar() {
           />
         </NavLink>
         <div className='flex items-center justify-center sm:hidden'>
-          <span className='text-xl font-bold text-black dark:text-white'>
+          <span className='text-xl font-bold text-black dark:text-neutral-100'>
             {getPageName(location)}
           </span>
         </div>

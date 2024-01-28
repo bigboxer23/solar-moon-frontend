@@ -11,7 +11,7 @@ export default function ProfileMenu() {
     'flex items-center space-x-2 text-text-primary hover:bg-neutral-200 dark:bg-neutral-600 px-4 py-1 hover:dark:bg-neutral-500 cursor-pointer';
 
   return (
-    <div className='ProfileMenu text-black dark:text-white'>
+    <div className='ProfileMenu text-black dark:text-neutral-100'>
       <Menu
         boundingBoxPadding='12'
         gap={12}
