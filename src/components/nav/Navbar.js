@@ -13,15 +13,16 @@ import ProfileMenu from './ProfileMenu';
 // TODO: break this up, it's a mess (break out the slider menu at least)
 export default function Navbar() {
   const separatorStyle =
-    'text-text-secondary text-lg text-decoration-none font-bold hidden lg:block';
-  const linkStyle = 'text-black font-bold text-lg text-decoration-none';
+    'text-text-secondary text-lg text-decoration-none font-bold hidden lg:block dark:text-brand-secondary';
+  const linkStyle =
+    'text-black dark:text-neutral-100 dark:text-neutral-100 font-bold text-lg text-decoration-none';
   const activeLinkStyle =
-    'text-black font-bold text-lg border-b-2 border-text-primary text-decoration-none border-black';
+    'text-black dark:text-neutral-100 dark:text-neutral-100 font-bold text-lg border-b-2 border-text-primary text-decoration-none border-black dark:border-white';
 
   const slideMenuLinkStyle =
-    'text-start text-black font-bold text-2xl text-decoration-none w-fit';
+    'text-start text-black dark:text-neutral-100 font-bold text-2xl text-decoration-none w-fit';
   const slideMenuActiveLinkStyle =
-    'text-black font-bold text-2xl border-b-2 border-text-primary text-decoration-none border-black w-fit';
+    'text-black dark:text-neutral-100 font-bold text-2xl border-b-2 border-text-primary dark:border-neutral-100 text-decoration-none border-black w-fit';
 
   const [slideMenuOpen, setSlideMenuOpen] = useState(false);
 
@@ -63,7 +64,7 @@ export default function Navbar() {
 
   return (
     <>
-      <div className='Navbar2 flex h-[4.5rem] w-full items-center justify-between border-b border-text-secondary bg-brand-primary-light sm:h-[6.25rem]'>
+      <div className='Navbar2 flex h-[4.5rem] w-full items-center justify-between border-b border-text-secondary bg-brand-primary-light sm:h-[6.25rem] dark:border-b-0 dark:bg-neutral-900'>
         <NavLink className='flex items-center justify-center' to='/'>
           <img
             alt='brand'
@@ -72,7 +73,7 @@ export default function Navbar() {
           />
         </NavLink>
         <div className='flex items-center justify-center sm:hidden'>
-          <span className='text-xl font-bold text-black'>
+          <span className='text-xl font-bold text-black dark:text-neutral-100'>
             {getPageName(location)}
           </span>
         </div>
@@ -126,13 +127,13 @@ export default function Navbar() {
         <div className='mr-8 hidden items-center justify-center sm:flex'>
           <ProfileMenu />
         </div>
-        <div className='mr-6 flex items-center justify-center sm:hidden'>
+        <div className='mr-6 flex items-center justify-center text-black sm:hidden dark:text-neutral-100'>
           <FaBars className='text-2xl' onClick={() => setSlideMenuOpen(true)} />
         </div>
       </div>
       <div
         className={classNames(
-          'Navbar2SlideMenu fixed top-0 right-0 h-screen w-3/4 bg-white shadow-panel z-10 transition-all duration-300 ease-in-out pl-10 pt-6 pr-6',
+          'Navbar2SlideMenu fixed top-0 right-0 h-screen w-3/4 bg-white dark:bg-neutral-800 shadow-panel z-10 transition-all duration-300 ease-in-out pl-10 pt-6 pr-6',
           {
             'translate-x-0': slideMenuOpen,
             'translate-x-full': !slideMenuOpen,
@@ -143,6 +144,7 @@ export default function Navbar() {
         <div className='mb-4 flex w-full items-center justify-end'>
           <button
             aria-label='close menu'
+            className='text-black dark:text-neutral-100'
             onClick={() => setSlideMenuOpen(false)}
           >
             <FaXmark className='text-3xl' />

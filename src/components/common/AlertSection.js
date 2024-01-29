@@ -11,7 +11,9 @@ export default function AlertSection({
     show && (
       <div className='mt-8 rounded-lg border-2 border-danger p-4'>
         <div className='mb-2 flex w-full justify-between text-danger'>
-          <span className='text-lg font-bold'>{title}</span>
+          <span className='text-lg font-bold text-black dark:text-neutral-100'>
+            {title}
+          </span>
         </div>
         <div className='mt-8 flex content-end'>
           <Button
@@ -27,7 +29,7 @@ export default function AlertSection({
               setShow(false);
               onClick();
             }}
-            variant='outline-danger'
+            variant='danger'
           >
             {buttonTitle}
           </Button>

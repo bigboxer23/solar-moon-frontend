@@ -66,17 +66,19 @@ const Device = ({ data, devices, setDevices }) => {
   };
 
   return (
-    <div className='Device mb-6 flex w-full flex-col items-center overflow-hidden rounded-md bg-[#f5f5f5] p-6'>
+    <div className='Device mb-6 flex w-full flex-col items-center overflow-hidden rounded-md bg-[#f5f5f5] p-6 dark:bg-neutral-600'>
       <div className='mb-10 flex w-full justify-between'>
         <span
-          className={(data.disabled ? 'opacity-50 ' : '') + 'text-lg font-bold'}
+          className={
+            (data.disabled ? 'opacity-50 ' : '') +
+            'text-lg font-bold text-black dark:text-neutral-100'
+          }
         >
           {data.name}
         </span>
         <div className='grow' />
         <div title='Disable this device. Alerting will not trigger and device will not be included in site roll up.'>
           <ControlledCheck
-            className='hidden-without-hover'
             control={control}
             errorMessage={errors.enabled?.message}
             id={v4()}
@@ -134,9 +136,9 @@ const Device = ({ data, devices, setDevices }) => {
             wrapperClassName='mb-6'
           />
         </form>
-        <div className='flex justify-end'>
+        <div className='mt-2 flex justify-end'>
           <Button
-            className='hidden-without-hover flex items-center'
+            className=' flex items-center'
             disabled={loading}
             onClick={handleSubmit(update)}
             type='button'
@@ -150,11 +152,11 @@ const Device = ({ data, devices, setDevices }) => {
               title: 'Delete Device',
               'aria-label': 'Delete Device',
             }}
-            className='position-relative hidden-without-hover ms-2 w-auto'
+            className='position-relative  ms-2 w-auto'
             disabled={loading}
             onClick={() => setDeleteDeviceWarning(true)}
             type='button'
-            variant='danger'
+            variant='secondary'
           >
             <AiOutlineDelete className='mb-[2px] size-4 font-bold' />
           </Button>

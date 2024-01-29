@@ -66,9 +66,6 @@ function App() {
     Footer,
   };
 
-  // temp Hack for new theme bg color
-  document.getElementsByTagName('body')[0].style.backgroundColor = '#eef2f9';
-
   return (
     <IntlProvider locale={navigator.language}>
       <Authenticator components={components}>

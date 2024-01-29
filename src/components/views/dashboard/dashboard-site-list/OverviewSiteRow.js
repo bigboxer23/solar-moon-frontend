@@ -99,7 +99,7 @@ export default function OverviewSiteRow({ info, graphData, timeIncrement }) {
 
   return (
     <NavLink
-      className='SiteRow mb-3 flex w-full items-center rounded px-2 py-1 transition-all duration-150 ease-in-out hover:bg-brand-primary-light'
+      className='SiteRow mb-3 flex w-full items-center rounded px-2 py-1 text-black transition-all duration-150 ease-in-out hover:bg-brand-primary-light dark:bg-neutral-700 dark:text-neutral-100 dark:hover:bg-neutral-600'
       to={`/sites/${id}`}
     >
       <div className='w-[25%] pr-1 sm:w-[15%]'>{name}</div>
@@ -113,7 +113,7 @@ export default function OverviewSiteRow({ info, graphData, timeIncrement }) {
       <div className='w-[25%] overflow-hidden text-ellipsis px-2 text-end sm:w-[15%]'>
         <FormattedNumber value={total} />
       </div>
-      <div className='ml-auto h-[2.5rem] w-[30%] rounded bg-brand-primary-light sm:w-1/4'>
+      <div className='ml-auto h-[2.5rem] w-[30%] rounded bg-brand-primary-light sm:w-1/4 dark:bg-neutral-800'>
         <Line data={data} options={options} />
       </div>
     </NavLink>

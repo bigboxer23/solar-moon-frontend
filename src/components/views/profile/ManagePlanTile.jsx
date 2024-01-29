@@ -41,9 +41,11 @@ export default function ManagePlanTile() {
   };
 
   return (
-    <div className='price fade-in my-8 w-[40rem] max-w-full rounded-lg bg-white p-6 shadow-panel sm:p-8'>
+    <div className='price fade-in my-8 w-[40rem] max-w-full rounded-lg bg-white p-6 shadow-panel sm:p-8 dark:bg-neutral-700'>
       <div className='mb-8 flex w-full justify-between'>
-        <span className='text-lg font-bold'>Billing Information</span>
+        <span className='text-lg font-bold text-black dark:text-neutral-100'>
+          Billing Information
+        </span>
       </div>
       {loading && <Loader className='flex w-full justify-center' />}
       {!loading && (

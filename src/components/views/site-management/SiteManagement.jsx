@@ -83,7 +83,7 @@ const SiteManagement = () => {
 
   return (
     <main className='SiteManagement me-2 ms-2 flex max-w-full flex-col items-center justify-center '>
-      <div className='fade-in my-8 flex w-[45rem] max-w-full flex-col rounded-lg bg-white p-6 shadow-panel sm:p-8'>
+      <div className='fade-in my-8 flex w-[45rem] max-w-full flex-col rounded-lg bg-white p-6 shadow-panel sm:p-8 dark:bg-neutral-700'>
         <div className=''>
           <div className='mb-10 flex w-full items-center justify-between'>
             <Dropdown
@@ -107,10 +107,12 @@ const SiteManagement = () => {
                   ? 'Increase the number of seats to add more devices'
                   : 'New Device'
               }
-              variant='outline-primary'
+              variant='primary'
             >
-              <MdAddCircle className='button-icon' />
-              Add Device
+              <div className='flex items-center'>
+                <MdAddCircle className='button-icon' />
+                Add Device
+              </div>
             </Button>
           </div>
           <div

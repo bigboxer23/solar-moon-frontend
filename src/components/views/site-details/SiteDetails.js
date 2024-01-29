@@ -99,21 +99,21 @@ export default function SiteDetails() {
   }
 
   return (
-    <main className='SiteDetails flex flex-col items-center bg-brand-primary-light'>
-      <div className='fade-in my-8 w-[55rem] max-w-full rounded-lg bg-white p-6 shadow-panel sm:p-8'>
+    <main className='SiteDetails flex flex-col items-center bg-brand-primary-light dark:bg-neutral-900'>
+      <div className='fade-in my-8 w-[55rem] max-w-full rounded-lg bg-white p-6 shadow-panel sm:p-8 dark:bg-neutral-700'>
         <NavLink
-          className='mb-4 flex items-center text-xs text-neutral-500 hover:underline'
+          className='mb-4 flex items-center text-xs text-neutral-500 hover:underline dark:text-text-secondary'
           to='/sites'
         >
           <FaArrowLeft className='mr-2 inline-block' size='12' />
           <span>Back to all sites</span>
         </NavLink>
-        <div className='mb-2 flex justify-between'>
+        <div className='mb-4 flex justify-between'>
           <div className='flex flex-col'>
-            <span className='text-lg font-bold'>
+            <span className='text-lg font-bold text-black dark:text-neutral-100'>
               {getDisplayName(siteData.site)}
             </span>
-            <span className='text-sm text-neutral-500'>
+            <span className='text-sm text-neutral-500 dark:text-text-secondary'>
               {siteData?.site?.city &&
                 siteData?.site?.state &&
                 `${siteData.site.city}, ${siteData.site.state} ${siteData.localTime}`}
@@ -129,8 +129,13 @@ export default function SiteDetails() {
             {siteData?.weather && (
               <WeatherBlock className='pr-2' weather={siteData?.weather} />
             )}
-            <StatBlock title='devices' value={devices.length} />
             <StatBlock
+              className='text-black dark:text-neutral-100'
+              title='devices'
+              value={devices.length}
+            />
+            <StatBlock
+              className='text-black dark:text-neutral-100'
               onClick={() => navigate(`/alerts?site=${siteId}`)}
               title='active alerts'
               value={activeSiteAlerts.length}
@@ -143,7 +148,7 @@ export default function SiteDetails() {
             />
           </div>
           <div className='ml-auto flex flex-col items-end'>
-            <div className='flex flex-col space-x-1 text-end text-base sm:flex-row'>
+            <div className='flex flex-col space-x-1 text-end text-base text-black sm:flex-row dark:text-neutral-100'>
               <div>Total:</div>
               <div>
                 <FormattedNumber
@@ -152,7 +157,7 @@ export default function SiteDetails() {
                 kWH
               </div>
             </div>
-            <div className='average-output flex flex-col space-x-1 text-end text-xl font-bold sm:flex-row'>
+            <div className='average-output flex flex-col space-x-1 text-end text-xl font-bold text-black sm:flex-row dark:text-neutral-100'>
               <div>Average:</div>
               <div>
                 <FormattedNumber

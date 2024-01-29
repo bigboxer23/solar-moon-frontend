@@ -26,11 +26,13 @@ export default function SiteDevicesOverview({
 
   return (
     <div className='SiteDevicesOverview w-full'>
-      <div className='mb-4 text-lg font-bold'>Devices</div>
+      <div className='mb-4 text-lg font-bold text-black dark:text-neutral-100'>
+        Devices
+      </div>
       <div className='space-y-2'>
         {devices.map((device, i) => (
           <div
-            className='flex flex-col rounded-lg px-4 py-3 transition-colors hover:bg-neutral-50'
+            className='flex flex-col rounded-lg px-4 py-3 transition-colors hover:bg-neutral-50 dark:hover:bg-neutral-600'
             key={device.id}
           >
             <button
@@ -43,18 +45,21 @@ export default function SiteDevicesOverview({
               <div className='flex flex-col'>
                 <div className='flex w-full items-center justify-between text-sm'>
                   <div className='flex flex-col items-start'>
-                    <div className='text-base font-bold'>
+                    <div className='text-base font-bold text-black dark:text-neutral-100'>
                       {getDisplayName(device)}
                     </div>
                     <div className='text-xs text-text-secondary'>
                       {device.deviceName}
                     </div>
                   </div>
-                  {i === expandedDevice ? <FaChevronUp /> : <FaChevronDown />}
+                  <div className='text-black dark:text-neutral-100'>
+                    {i === expandedDevice ? <FaChevronUp /> : <FaChevronDown />}
+                  </div>
                 </div>
                 <div className='mt-2 flex w-full items-center justify-between'>
                   <div className='grid grid-cols-1 gap-2 sm:grid-cols-2'>
                     <StatBlock
+                      className='text-black dark:text-neutral-100'
                       onClick={() => navigate(`/alerts?device=${device.id}`)}
                       title='active alerts'
                       value={
@@ -74,7 +79,7 @@ export default function SiteDevicesOverview({
                     />
                   </div>
                   <div className='flex flex-col items-end'>
-                    <div className='flex flex-col space-x-1 text-end text-base sm:flex-row'>
+                    <div className='flex flex-col space-x-1 text-end text-base text-black sm:flex-row dark:text-neutral-100'>
                       <div>Total:</div>
                       <div>
                         <FormattedNumber
@@ -86,7 +91,7 @@ export default function SiteDevicesOverview({
                         kWH
                       </div>
                     </div>
-                    <div className='average-output flex flex-col space-x-1 text-end text-xl font-bold sm:flex-row'>
+                    <div className='average-output flex flex-col space-x-1 text-end text-xl font-bold text-black sm:flex-row dark:text-neutral-100'>
                       <div>Average:</div>
                       <div>
                         <FormattedNumber

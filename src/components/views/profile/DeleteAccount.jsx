@@ -15,9 +15,11 @@ export default function DeleteAccount({ customerData }) {
   const { signOut } = useAuthenticator((context) => [context.user]);
 
   return (
-    <div className='fade-in my-8 w-[40rem] max-w-full rounded-lg bg-white p-6 shadow-panel sm:p-8'>
+    <div className='fade-in my-8 w-[40rem] max-w-full rounded-lg bg-white p-6 shadow-panel sm:p-8 dark:bg-neutral-700'>
       <div className='mb-8 flex w-full justify-between'>
-        <span className='text-lg font-bold'>Delete Account</span>
+        <span className='text-lg font-bold text-black dark:text-neutral-100'>
+          Delete Account
+        </span>
       </div>
       <Button
         className='ml-auto '
