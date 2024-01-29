@@ -116,11 +116,11 @@ export default function SiteDetailsGraph({
           <div className='text-xs text-black dark:text-neutral-100'>
             {getFormattedTime(startDate)} - {getFormattedTime(endDate)}
           </div>
-          <div className='flex w-fit rounded border-2 bg-white dark:border-neutral-600 dark:bg-neutral-600 dark:text-neutral-100'>
+          <div className='flex w-fit rounded bg-white dark:bg-neutral-600 dark:text-neutral-100'>
             <button
               aria-label='site stacked line graph'
               className={classNames(
-                'border-r-2 dark:border-neutral-600 px-2 py-1 hover:bg-neutral-200 dark:hover:bg-neutral-500 dark:hover:text-neutral-100',
+                'rounded-l dark:border-neutral-600 px-2 py-1 hover:bg-neutral-200 dark:hover:bg-neutral-500 dark:hover:text-neutral-100',
                 {
                   'bg-neutral-300 dark:text-black': graphType === GROUPED_BAR,
                 },
@@ -144,7 +144,7 @@ export default function SiteDetailsGraph({
             <button
               aria-label='overview graph'
               className={classNames(
-                'border-l-2 dark:border-neutral-600 px-2 py-1 hover:bg-neutral-200 dark:hover:bg-neutral-500 dark:hover:text-neutral-100',
+                'rounded-r dark:border-neutral-600 px-2 py-1 hover:bg-neutral-200 dark:hover:bg-neutral-500 dark:hover:text-neutral-100',
                 {
                   'bg-neutral-300 dark:text-black': graphType === 'line',
                 },
