@@ -2,6 +2,29 @@
   border: 0 !important;
 }
 
+@media (prefers-color-scheme: dark) {
+  [data-amplify-router] {
+    background-color: theme('colors.neutral.700') !important;
+  }
+  .amplify-input {
+    background-color: theme('colors.neutral.700') !important;
+    color: theme('colors.white') !important;
+  }
+  .amplify-label {
+    color: theme('colors.text-secondary') !important;
+  }
+
+  .amplify-tabs-item[data-state='inactive'] {
+    background-color: theme('colors.neutral.600') !important;
+    color: theme('colors.text-secondary') !important;
+
+    &:hover {
+      //background-color: theme('colors.neutral.700') !important;
+      color: theme('colors.brand-primary') !important;
+    }
+  }
+}
+
 [data-amplify-form] .amplify-button {
   border-radius: theme('borderRadius.full');
 }
