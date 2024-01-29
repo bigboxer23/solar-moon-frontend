@@ -28,7 +28,7 @@ export default function MappingBlock({
             setLoading(true);
             deleteMapping(mappingName);
           }}
-          variant='outline-danger'
+          variant='secondary'
         >
           {!loading && <MdOutlineDelete />}
           {loading && <Spinner />}

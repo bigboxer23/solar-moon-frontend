@@ -26,7 +26,9 @@ export default function Mapping() {
     <main className='Mapping flex w-full flex-col items-center justify-center'>
       <div className='fade-in my-8 w-[55rem] max-w-full rounded-lg bg-white p-6 shadow-panel sm:p-8 dark:bg-neutral-700'>
         <div className='mb-10 flex w-full items-center space-x-1'>
-          <span className='text-lg font-bold'>Attribute Mappings</span>
+          <span className='text-lg font-bold dark:text-white'>
+            Attribute Mappings
+          </span>
           <Help content='Mappings provide a way to translate names of data points from your devices to the fields Solar Moon needs to generate graphs, analytics and alerts. There are a number of mappings provided by default, but if you are unable to change your device settings to match them, the platform can map to existing config instead.' />
         </div>
         <div>
