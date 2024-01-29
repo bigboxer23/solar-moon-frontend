@@ -156,7 +156,7 @@ const Device = ({ data, devices, setDevices }) => {
             disabled={loading}
             onClick={() => setDeleteDeviceWarning(true)}
             type='button'
-            variant='danger'
+            variant='secondary'
           >
             <AiOutlineDelete className='mb-[2px] size-4 font-bold' />
           </Button>

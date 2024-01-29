@@ -3,7 +3,7 @@ import classNames from 'classnames';
 const primaryButtonClass =
   'bg-brand-primary text-sm text-white rounded-full font-bold py-2 tracking-wide px-5 leading-4 transition-all hover:brightness-110';
 const secondaryButtonClass =
-  'bg-neutral-200 text-sm text-black dark:text-neutral-100 rounded-full font-bold py-2 px-5 tracking-wide leading-4 transition-all hover:brightness-105';
+  'bg-neutral-200 dark:bg-neutral-500 text-sm text-black dark:text-neutral-100 rounded-full font-bold py-2 px-5 tracking-wide leading-4 transition-all hover:brightness-105';
 const outlinePrimaryButtonClass =
   'bg-white dark:bg-neutral-700 text-sm text-brand-primary rounded-full font-bold py-2 px-5 tracking-wide leading-4 border border-brand-primary transition-all hover:brightness-110';
 const outlineSecondaryButtonClass =

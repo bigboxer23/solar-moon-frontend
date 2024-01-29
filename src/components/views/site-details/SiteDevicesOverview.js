@@ -32,7 +32,7 @@ export default function SiteDevicesOverview({
       <div className='space-y-2'>
         {devices.map((device, i) => (
           <div
-            className='flex flex-col rounded-lg px-4 py-3 transition-colors hover:bg-neutral-50 '
+            className='flex flex-col rounded-lg px-4 py-3 transition-colors hover:bg-neutral-50 dark:hover:bg-neutral-600'
             key={device.id}
           >
             <button

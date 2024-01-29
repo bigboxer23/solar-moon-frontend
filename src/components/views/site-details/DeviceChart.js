@@ -80,7 +80,7 @@ export default function DeviceChart({ graphData }) {
   };
 
   return (
-    <div className='DeviceChart mb-6 h-48 w-full rounded-lg bg-brand-primary-light p-3 sm:h-56 dark:bg-neutral-900'>
+    <div className='DeviceChart mb-6 h-48 w-full rounded-lg bg-brand-primary-light p-3 sm:h-56 dark:bg-neutral-800'>
       <Line data={data} options={options} plugins={[tooltipPlugin]} />
     </div>
   );

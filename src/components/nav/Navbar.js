@@ -22,7 +22,7 @@ export default function Navbar() {
   const slideMenuLinkStyle =
     'text-start text-black dark:text-neutral-100 font-bold text-2xl text-decoration-none w-fit';
   const slideMenuActiveLinkStyle =
-    'text-black dark:text-neutral-100 font-bold text-2xl border-b-2 border-text-primary text-decoration-none border-black w-fit';
+    'text-black dark:text-neutral-100 font-bold text-2xl border-b-2 border-text-primary dark:border-neutral-100 text-decoration-none border-black w-fit';
 
   const [slideMenuOpen, setSlideMenuOpen] = useState(false);
 
@@ -127,13 +127,13 @@ export default function Navbar() {
         <div className='mr-8 hidden items-center justify-center sm:flex'>
           <ProfileMenu />
         </div>
-        <div className='mr-6 flex items-center justify-center sm:hidden'>
+        <div className='mr-6 flex items-center justify-center text-black sm:hidden dark:text-neutral-100'>
           <FaBars className='text-2xl' onClick={() => setSlideMenuOpen(true)} />
         </div>
       </div>
       <div
         className={classNames(
-          'Navbar2SlideMenu fixed top-0 right-0 h-screen w-3/4 bg-white dark:bg-neutral-700 shadow-panel z-10 transition-all duration-300 ease-in-out pl-10 pt-6 pr-6',
+          'Navbar2SlideMenu fixed top-0 right-0 h-screen w-3/4 bg-white dark:bg-neutral-800 shadow-panel z-10 transition-all duration-300 ease-in-out pl-10 pt-6 pr-6',
           {
             'translate-x-0': slideMenuOpen,
             'translate-x-full': !slideMenuOpen,
@@ -144,6 +144,7 @@ export default function Navbar() {
         <div className='mb-4 flex w-full items-center justify-end'>
           <button
             aria-label='close menu'
+            className='text-black dark:text-neutral-100'
             onClick={() => setSlideMenuOpen(false)}
           >
             <FaXmark className='text-3xl' />
