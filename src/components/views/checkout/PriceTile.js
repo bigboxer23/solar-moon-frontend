@@ -18,7 +18,7 @@ function PriceTile({
           <div className='text-xl font-bold text-black dark:text-neutral-100'>
             {label}
           </div>
-          <div className='ps-2 text-gray-500 dark:text-text-secondary'>
+          <div className='ps-2 text-neutral-500 dark:text-text-secondary'>
             {label3}
           </div>
         </div>
@@ -26,7 +26,7 @@ function PriceTile({
           <div className='text-lg text-black dark:text-neutral-100'>
             {20 * count}
           </div>
-          <div className='ps-1 text-sm text-gray-500 dark:text-text-secondary'>
+          <div className='ps-1 text-sm text-neutral-500 dark:text-text-secondary'>
             {' '}
             devices
           </div>
@@ -35,18 +35,18 @@ function PriceTile({
           <div className='text-lg text-black dark:text-neutral-100'>
             ${price * count}
           </div>
-          <div className='ps-1 text-sm text-gray-500 dark:text-text-secondary'>
+          <div className='ps-1 text-sm text-neutral-500 dark:text-text-secondary'>
             {' '}
             per {label2}
           </div>
         </div>
         <div className='mb-3 flex'>
-          <div className='smaller-text text-sm text-gray-500 dark:text-text-secondary'>
+          <div className='smaller-text text-sm text-neutral-500 dark:text-text-secondary'>
             ${price} per seat per {label2}
           </div>
         </div>
         <div className='grow-1' />
-        <div className='mb-1 me-2 self-start text-sm text-gray-500 dark:text-text-secondary'>
+        <div className='mb-1 me-2 self-start text-sm text-neutral-500 dark:text-text-secondary'>
           Seats
         </div>
         <QuantityPicker
