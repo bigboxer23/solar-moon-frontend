@@ -42,16 +42,21 @@ function QuantityPicker({ min, max, setCount, className }) {
   return (
     <div className={className + ' quantity-picker flex self-end'}>
       <Button
-        className='left-modifier'
+        className='rounded-r-none dark:bg-neutral-500 dark:disabled:bg-neutral-800'
         disabled={disableDec}
         onClick={() => decrement()}
         variant='secondary'
       >
         &ndash;
       </Button>
-      <input className='quantity-display' readOnly type='text' value={value} />
+      <input
+        className='quantity-display min-h-full w-12 select-none border-0 text-center outline-none'
+        readOnly
+        type='text'
+        value={value}
+      />
       <Button
-        className='right-modifier'
+        className='rounded-l-none dark:bg-neutral-500 dark:disabled:bg-neutral-800'
         disabled={disableInc}
         onClick={() => increment()}
         variant='secondary'

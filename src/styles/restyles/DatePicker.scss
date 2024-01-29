@@ -1,3 +1,31 @@
+@media (prefers-color-scheme: dark) {
+  .react-daterange-picker {
+    .react-daterange-picker__wrapper {
+      color: theme('colors.neutral.100') !important;
+      border-color: theme('colors.neutral.400') !important;
+    }
+  }
+
+  .react-calendar {
+    background-color: theme('colors.neutral.600') !important;
+    color: theme('colors.neutral.100') !important;
+
+    .react-calendar__tile--active {
+      background-color: theme('colors.neutral.500') !important;
+      color: theme('colors.neutral.100') !important;
+    }
+
+    .react-calendar__tile--now {
+      color: theme('colors.brand-secondary') !important;
+    }
+
+    .react-calendar__navigation button:enabled:focus,
+    .react-calendar__tile:enabled:focus {
+      background-color: theme('colors.neutral.600') !important;
+    }
+  }
+}
+
 .react-calendar {
   z-index: 1;
   border: 0 !important;

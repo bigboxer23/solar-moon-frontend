@@ -14,6 +14,23 @@
     color: theme('colors.text-secondary') !important;
   }
 
+  .amplify-text {
+    color: theme('colors.neutral.300') !important;
+  }
+
+  .amplify-heading {
+    color: theme('colors.neutral.100') !important;
+  }
+
+  .amplify-button {
+    color: theme('colors.neutral.100') !important;
+
+    &:hover {
+      background-color: theme('colors.neutral.600') !important;
+      border-color: theme('colors.brand-primary') !important;
+    }
+  }
+
   .amplify-tabs-item[data-state='inactive'] {
     background-color: theme('colors.neutral.600') !important;
     color: theme('colors.text-secondary') !important;
