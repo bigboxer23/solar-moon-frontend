@@ -113,7 +113,7 @@ const SiteAttributes = ({ data, setDevices, setActiveSite }) => {
               (data.latitude !== -1 && data.longitude !== -1
                 ? ''
                 : 'opacity-0 ') +
-              'flex content-end smaller-text text-sm text-gray-500'
+              'flex content-end smaller-text text-sm text-neutral-500'
             }
           >
             {data.latitude + ',' + data.longitude}

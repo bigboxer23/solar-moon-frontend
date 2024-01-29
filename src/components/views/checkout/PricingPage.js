@@ -50,7 +50,7 @@ export default function PricingPage() {
             <div className='align-self-start mb-4 text-lg font-bold'>
               Plans include
             </div>
-            <div className='ms-4 text-gray-500'>
+            <div className='ms-4 text-neutral-500'>
               <ul className='list-disc'>
                 <li>Up to 20 devices per seat</li>
                 <li>Site level data via virtual devices</li>

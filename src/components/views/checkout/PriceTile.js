@@ -16,23 +16,25 @@ function PriceTile({
       <div className='flex flex-col'>
         <div className='mb-3 flex items-center'>
           <div className='text-xl font-bold'>{label}</div>
-          <div className='ps-2 text-gray-500'>{label3}</div>
+          <div className='ps-2 text-neutral-500'>{label3}</div>
         </div>
         <div className='mb-1 flex items-center'>
           <div className='text-lg'>{20 * count}</div>
-          <div className='ps-1 text-sm text-gray-500'> devices</div>
+          <div className='ps-1 text-sm text-neutral-500'> devices</div>
         </div>
         <div className='mb-1 flex items-center'>
           <div className='text-lg'>${price * count}</div>
-          <div className='ps-1 text-sm text-gray-500'> per {label2}</div>
+          <div className='ps-1 text-sm text-neutral-500'> per {label2}</div>
         </div>
         <div className='mb-3 flex'>
-          <div className='smaller-text  text-sm text-gray-500'>
+          <div className='smaller-text  text-sm text-neutral-500'>
             ${price} per seat per {label2}
           </div>
         </div>
         <div className='grow-1' />
-        <div className='mb-1 me-2 self-start text-sm text-gray-500'>Seats</div>
+        <div className='mb-1 me-2 self-start text-sm text-neutral-500'>
+          Seats
+        </div>
         <QuantityPicker
           className='mb-3 self-center'
           max={10}
