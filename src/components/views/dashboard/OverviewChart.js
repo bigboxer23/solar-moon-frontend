@@ -218,7 +218,7 @@ export default function OverviewChart({
         <div className='flex w-fit'>
           <div className='me-2 flex w-fit rounded bg-white sm:me-4 dark:bg-neutral-600 dark:text-neutral-100'>
             <button
-              aria-label='site stacked line graph'
+              aria-label='previous time period'
               className='rounded-l px-2 py-1 hover:bg-neutral-200 dark:border-neutral-600 dark:hover:bg-neutral-500 dark:hover:text-neutral-100'
               onClick={() =>
                 maybeSetTimeWindow(startDate, -timeIncrement, setStartDate)
@@ -227,7 +227,7 @@ export default function OverviewChart({
               <MdNavigateBefore className='text-brand-primary-dark text-xl' />
             </button>
             <button
-              aria-label='site stacked line graph'
+              aria-label='next time period'
               className='rounded-r px-2 py-1 hover:bg-neutral-200 dark:border-neutral-600 dark:hover:bg-neutral-500 dark:hover:text-neutral-100'
               onClick={() =>
                 maybeSetTimeWindow(startDate, timeIncrement, setStartDate)
