@@ -52,7 +52,9 @@ export default function SiteDevicesOverview({
                       {device.deviceName}
                     </div>
                   </div>
-                  {i === expandedDevice ? <FaChevronUp /> : <FaChevronDown />}
+                  <div className='text-black dark:text-neutral-100'>
+                    {i === expandedDevice ? <FaChevronUp /> : <FaChevronDown />}
+                  </div>
                 </div>
                 <div className='mt-2 flex w-full items-center justify-between'>
                   <div className='grid grid-cols-1 gap-2 sm:grid-cols-2'>
