@@ -77,17 +77,8 @@ export default function Overview() {
   };
 
   const handleAlarms = (data) => {
-    const active = data.filter((d) => d.state > 0);
-    const resolved = data.filter((d) => d.state === 0);
-
-    const resolvedInTimeIncrement = resolved.filter((d) => {
-      return (
-        new Date(d.startDate) > new Date(new Date().getTime() - timeIncrement)
-      );
-    });
-
-    setResolvedAlerts(resolvedInTimeIncrement);
-    setActiveAlerts(active);
+    setResolvedAlerts(data.filter((d) => d.state === 0));
+    setActiveAlerts(data.filter((d) => d.state > 0));
   };
   const handleDevices = (data) => {
     const sites = data.filter((d) => d.isSite).sort(sortDevices);
