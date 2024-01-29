@@ -190,3 +190,28 @@ export const formatMessage = function (message) {
   //Replace timestamp w/local time
   return message.replaceAll(finalMatch, getFormattedTime(new Date(timestamp)));
 };
+
+export const timeLabel = function (startDate, increment) {
+  return (
+    getFormattedTime(startDate) +
+    '-' +
+    getFormattedTime(
+      new Date(Math.min(startDate.getTime() + increment, new Date().getTime())),
+    )
+  );
+};
+
+/**
+ * Handle bounds checking for setting new start date.  DAY allows up to current time,
+ * other time periods need a full "offset" of time shown to change
+ * @param increment
+ */
+export const maybeSetTimeWindow = (startDate, increment, setStartDate) => {
+  const time = startDate.getTime() + increment;
+  if (
+    (increment === DAY && time < new Date().getTime()) ||
+    time + increment < new Date().getTime()
+  ) {
+    setStartDate(new Date(time));
+  }
+};

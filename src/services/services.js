@@ -87,10 +87,14 @@ export function getAlarmData() {
   return api.post('alarms', {});
 }
 
-export function getOverviewData(offset) {
+export function getOverviewData(start, offset) {
   return api.post(
     'overview',
-    getAvgTotalBody(null, getRoundedTimeFromOffset(offset), new Date()),
+    getAvgTotalBody(
+      null,
+      start,
+      new Date(Math.min(start.getTime() + offset, new Date().getTime())),
+    ),
   );
 }
 
