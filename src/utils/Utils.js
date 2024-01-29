@@ -63,6 +63,10 @@ export const getFormattedTime = (date) => {
   return moment(date).format('MMM D, YY h:mm A');
 };
 
+export const getFormattedDate = (date) => {
+  return moment(date).format('MMM D, YY');
+};
+
 export const formatXAxisLabels = (value, index, ticks) => {
   const d = new Date(value);
   if (d.getHours() % 6 !== 0 || d.getMinutes() !== 0) {
@@ -193,9 +197,9 @@ export const formatMessage = function (message) {
 
 export const timeLabel = function (startDate, increment) {
   return (
-    getFormattedTime(startDate) +
-    '-' +
-    getFormattedTime(
+    getFormattedDate(startDate) +
+    ' - ' +
+    getFormattedDate(
       new Date(Math.min(startDate.getTime() + increment, new Date().getTime())),
     )
   );

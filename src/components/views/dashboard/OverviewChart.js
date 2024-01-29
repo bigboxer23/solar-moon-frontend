@@ -212,10 +212,7 @@ export default function OverviewChart({
   return (
     <div className='OverviewChart mb-6 w-full rounded-lg bg-brand-primary-light p-3 dark:bg-neutral-800'>
       <div className='mb-2 flex items-center justify-between'>
-        <div className='text-xs text-black dark:text-neutral-100'>
-          {timeLabel(startDate, timeIncrement)}
-        </div>
-        <div className='flex w-fit'>
+        <div className='flex w-fit items-center'>
           <div className='me-2 flex w-fit rounded bg-white sm:me-4 dark:bg-neutral-600 dark:text-neutral-100'>
             <button
               aria-label='previous time period'
@@ -236,45 +233,47 @@ export default function OverviewChart({
               <MdNavigateNext className='text-brand-primary-dark text-xl' />
             </button>
           </div>
-          <div className='flex items-center rounded bg-white dark:border-neutral-600 dark:bg-neutral-600 dark:text-neutral-100'>
-            <button
-              aria-label='grouped bar graph'
-              className={classNames(
-                'rounded-l dark:border-neutral-600 px-2 py-1 hover:bg-neutral-200 dark:hover:bg-neutral-500 dark:hover:text-neutral-100',
-                {
-                  'bg-neutral-300 dark:text-black': graphType === 'overview',
-                },
-              )}
-              onClick={() => setGraphType('overview')}
-            >
-              <MdShowChart className='text-brand-primary-dark text-xl' />
-            </button>
-            <button
-              aria-label='line graph'
-              className={classNames(
-                'px-2 py-1 hover:bg-neutral-200 dark:hover:bg-neutral-500 dark:hover:text-neutral-100',
-                {
-                  'bg-neutral-300 dark:text-black':
-                    graphType === 'stacked-line',
-                },
-              )}
-              onClick={() => setGraphType('stacked-line')}
-            >
-              <MdStackedLineChart className='text-brand-primary-dark text-xl' />
-            </button>
-            <button
-              aria-label='bar graph'
-              className={classNames(
-                'rounded-r dark:border-neutral-600 px-2 py-1 hover:bg-neutral-200 dark:hover:bg-neutral-500 dark:hover:text-neutral-100',
-                {
-                  'bg-neutral-300 dark:text-black': graphType === 'stacked-bar',
-                },
-              )}
-              onClick={() => setGraphType('stacked-bar')}
-            >
-              <MdStackedBarChart className='text-brand-primary-dark text-xl' />
-            </button>
+          <div className='text-xs text-black dark:text-neutral-100'>
+            {timeLabel(startDate, timeIncrement)}
           </div>
+        </div>
+        <div className='flex items-center rounded bg-white dark:border-neutral-600 dark:bg-neutral-600 dark:text-neutral-100'>
+          <button
+            aria-label='grouped bar graph'
+            className={classNames(
+              'rounded-l dark:border-neutral-600 px-2 py-1 hover:bg-neutral-200 dark:hover:bg-neutral-500 dark:hover:text-neutral-100',
+              {
+                'bg-neutral-300 dark:text-black': graphType === 'overview',
+              },
+            )}
+            onClick={() => setGraphType('overview')}
+          >
+            <MdShowChart className='text-brand-primary-dark text-xl' />
+          </button>
+          <button
+            aria-label='line graph'
+            className={classNames(
+              'px-2 py-1 hover:bg-neutral-200 dark:hover:bg-neutral-500 dark:hover:text-neutral-100',
+              {
+                'bg-neutral-300 dark:text-black': graphType === 'stacked-line',
+              },
+            )}
+            onClick={() => setGraphType('stacked-line')}
+          >
+            <MdStackedLineChart className='text-brand-primary-dark text-xl' />
+          </button>
+          <button
+            aria-label='bar graph'
+            className={classNames(
+              'rounded-r dark:border-neutral-600 px-2 py-1 hover:bg-neutral-200 dark:hover:bg-neutral-500 dark:hover:text-neutral-100',
+              {
+                'bg-neutral-300 dark:text-black': graphType === 'stacked-bar',
+              },
+            )}
+            onClick={() => setGraphType('stacked-bar')}
+          >
+            <MdStackedBarChart className='text-brand-primary-dark text-xl' />
+          </button>
         </div>
       </div>
       <div className='h-64 w-full'>
