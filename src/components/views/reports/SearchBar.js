@@ -92,7 +92,9 @@ const SearchBar = ({
     .map((d) => {
       return {
         value: d.id,
-        label: d.name == null ? d.deviceName : d.name,
+        label:
+          (d.name == null ? d.deviceName : d.name) +
+          (d.isSite ? ' (site)' : ''),
       };
     });
 
@@ -136,7 +138,9 @@ const SearchBar = ({
             value={siteOptions.find((option) => option.label === site)}
           />
           <Dropdown
-            onChange={(option) => setDevice(option.label)}
+            onChange={(option) =>
+              setDevice(option.label.replace(' (site)', ''))
+            }
             options={[allOption, ...deviceOptions]}
             prefixLabel='Device'
             value={deviceOptions.find((option) => option.label === device)}
