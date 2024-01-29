@@ -124,6 +124,7 @@ export default function Overview() {
           <div className='grid grid-cols-2 gap-2 sm:grid-cols-4'>
             <StatBlock
               className='text-black dark:text-neutral-100'
+              onClick={() => navigate('/sites')}
               title='sites'
               value={sites.length}
             />
