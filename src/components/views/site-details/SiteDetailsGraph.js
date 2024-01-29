@@ -2,16 +2,14 @@ import classNames from 'classnames';
 import { Bar, Line } from 'react-chartjs-2';
 import {
   MdBarChart,
+  MdNavigateBefore,
+  MdNavigateNext,
   MdStackedBarChart,
   MdStackedLineChart,
 } from 'react-icons/md';
 
 import { DAY, GROUPED_BAR } from '../../../services/search';
-import {
-  formatXAxisLabels,
-  getFormattedDaysHoursMinutes,
-  getFormattedTime,
-} from '../../../utils/Utils';
+import { formatXAxisLabels, getFormattedTime } from '../../../utils/Utils';
 import { tooltipPlugin } from '../../common/graphPlugins';
 
 export default function SiteDetailsGraph({
@@ -20,8 +18,8 @@ export default function SiteDetailsGraph({
   graphType,
   setGraphType,
   timeIncrement,
+  setStartDate,
   startDate,
-  endDate,
 }) {
   const datasets = deviceNames.map((name) => {
     const data = graphData.filter((d) => d.name === name);
@@ -109,50 +107,90 @@ export default function SiteDetailsGraph({
     return <div className='SiteDetailsGraph h-40 w-full'></div>;
   }
 
+  /**
+   * Handle bounds checking for setting new start date.  DAY allows up to current time,
+   * other time periods need a full "offset" of time shown to change
+   * @param increment
+   */
+  const setStartByIncrement = (increment) => {
+    const time = startDate.getTime() + increment;
+    if (
+      (increment === DAY && time < new Date().getTime()) ||
+      time + increment < new Date().getTime()
+    ) {
+      setStartDate(new Date(time));
+    }
+  };
   return (
     <>
       <div className='SiteDetailsGraph group relative mb-6 w-full rounded-lg bg-brand-primary-light p-3 dark:bg-neutral-800'>
         <div className='flex items-center justify-between'>
           <div className='text-xs text-black dark:text-neutral-100'>
-            {getFormattedTime(startDate)} - {getFormattedTime(endDate)}
+            {getFormattedTime(startDate)} -{' '}
+            {getFormattedTime(
+              new Date(
+                Math.min(
+                  startDate.getTime() + timeIncrement,
+                  new Date().getTime(),
+                ),
+              ),
+            )}
           </div>
-          <div className='flex w-fit rounded bg-white dark:bg-neutral-600 dark:text-neutral-100'>
-            <button
-              aria-label='site stacked line graph'
-              className={classNames(
-                'rounded-l dark:border-neutral-600 px-2 py-1 hover:bg-neutral-200 dark:hover:bg-neutral-500 dark:hover:text-neutral-100',
-                {
-                  'bg-neutral-300 dark:text-black': graphType === GROUPED_BAR,
-                },
-              )}
-              onClick={() => setGraphType(GROUPED_BAR)}
-            >
-              <MdBarChart className='text-brand-primary-dark text-xl' />
-            </button>
-            <button
-              aria-label='site stacked bar graph'
-              className={classNames(
-                'px-2 py-1 hover:bg-neutral-200 dark:hover:bg-neutral-500 dark:hover:text-neutral-100',
-                {
-                  'bg-neutral-300 dark:text-black': graphType === 'bar',
-                },
-              )}
-              onClick={() => setGraphType('bar')}
-            >
-              <MdStackedBarChart className='text-brand-primary-dark text-xl' />
-            </button>
-            <button
-              aria-label='overview graph'
-              className={classNames(
-                'rounded-r dark:border-neutral-600 px-2 py-1 hover:bg-neutral-200 dark:hover:bg-neutral-500 dark:hover:text-neutral-100',
-                {
-                  'bg-neutral-300 dark:text-black': graphType === 'line',
-                },
-              )}
-              onClick={() => setGraphType('line')}
-            >
-              <MdStackedLineChart className='text-brand-primary-dark text-xl' />
-            </button>
+          <div className='flex w-fit'>
+            <div className='me-4 flex w-fit rounded bg-white dark:bg-neutral-600 dark:text-neutral-100'>
+              <button
+                aria-label='site stacked line graph'
+                className='rounded-l px-2 py-1 hover:bg-neutral-200 dark:border-neutral-600 dark:hover:bg-neutral-500 dark:hover:text-neutral-100'
+                onClick={() => setStartByIncrement(-timeIncrement)}
+              >
+                <MdNavigateBefore className='text-brand-primary-dark text-xl' />
+              </button>
+              <button
+                aria-label='site stacked line graph'
+                className='rounded-r px-2 py-1 hover:bg-neutral-200 dark:border-neutral-600 dark:hover:bg-neutral-500 dark:hover:text-neutral-100'
+                onClick={() => setStartByIncrement(timeIncrement)}
+              >
+                <MdNavigateNext className='text-brand-primary-dark text-xl' />
+              </button>
+            </div>
+            <div className='flex w-fit rounded bg-white dark:bg-neutral-600 dark:text-neutral-100'>
+              <button
+                aria-label='site stacked line graph'
+                className={classNames(
+                  'rounded-l dark:border-neutral-600 px-2 py-1 hover:bg-neutral-200 dark:hover:bg-neutral-500 dark:hover:text-neutral-100',
+                  {
+                    'bg-neutral-300 dark:text-black': graphType === GROUPED_BAR,
+                  },
+                )}
+                onClick={() => setGraphType(GROUPED_BAR)}
+              >
+                <MdBarChart className='text-brand-primary-dark text-xl' />
+              </button>
+              <button
+                aria-label='site stacked bar graph'
+                className={classNames(
+                  'px-2 py-1 hover:bg-neutral-200 dark:hover:bg-neutral-500 dark:hover:text-neutral-100',
+                  {
+                    'bg-neutral-300 dark:text-black': graphType === 'bar',
+                  },
+                )}
+                onClick={() => setGraphType('bar')}
+              >
+                <MdStackedBarChart className='text-brand-primary-dark text-xl' />
+              </button>
+              <button
+                aria-label='overview graph'
+                className={classNames(
+                  'rounded-r dark:border-neutral-600 px-2 py-1 hover:bg-neutral-200 dark:hover:bg-neutral-500 dark:hover:text-neutral-100',
+                  {
+                    'bg-neutral-300 dark:text-black': graphType === 'line',
+                  },
+                )}
+                onClick={() => setGraphType('line')}
+              >
+                <MdStackedLineChart className='text-brand-primary-dark text-xl' />
+              </button>
+            </div>
           </div>
         </div>
         <div className='h-72'>

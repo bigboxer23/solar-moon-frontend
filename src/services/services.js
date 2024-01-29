@@ -55,18 +55,14 @@ export function getSitesOverview() {
   );
 }
 
-export function getSiteOverview(siteId, offset, graphType) {
+export function getSiteOverview(siteId, start, offset, graphType) {
   const body = getAvgTotalBody(
     null,
-    getRoundedTimeFromOffset(offset),
-    new Date(),
+    start,
+    new Date(Math.min(start.getTime() + offset, new Date().getTime())),
   );
   if (graphType === GROUPED_BAR) {
-    body.bucketSize = getBucketSize(
-      getRoundedTimeFromOffset(offset),
-      new Date(),
-      GROUPED_BAR,
-    );
+    body.bucketSize = getBucketSize(offset, GROUPED_BAR);
   }
   return api.post('sites/' + siteId, body);
 }
