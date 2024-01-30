@@ -72,8 +72,8 @@ export default function SiteDetailsGraph({
         bodyAlign: 'center',
         callbacks: {
           title: (context) => {
-            const { dataIndex } = context[0];
-            const { date } = data.datasets[0].data[dataIndex];
+            const { dataIndex, datasetIndex } = context[0];
+            const { date } = data.datasets[datasetIndex].data[dataIndex];
             return getFormattedTime(date);
           },
           label: (context) => {
