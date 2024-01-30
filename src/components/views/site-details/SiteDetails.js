@@ -68,7 +68,7 @@ export default function SiteDetails() {
    */
   const setGraphTypeWrapper = (graphTypeToSet) => {
     if (graphTypeToSet === GROUPED_BAR || graphType === GROUPED_BAR) {
-      loadSiteOverview(siteId, timeIncrement, graphTypeToSet, () =>
+      loadSiteOverview(siteId, timeIncrement, startDate, graphTypeToSet, () =>
         setGraphType(graphTypeToSet),
       );
       return;
