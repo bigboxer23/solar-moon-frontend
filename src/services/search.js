@@ -22,13 +22,12 @@ export const TOTAL_AGGREGATION = 'sum#total';
 
 export const GROUPED_BAR = 'groupedBarGraph';
 
-export function getBucketSize(start, end, type) {
-  const difference = end.getTime() - start.getTime();
+export function getBucketSize(offset, type) {
   const grouped = type === GROUPED_BAR;
-  if (difference <= HOUR) return '1m';
-  if (difference <= DAY) return grouped ? '1h' : '30m';
-  if (difference <= WEEK + DAY) return grouped ? '1d' : '3h';
-  if (difference <= MONTH + DAY) return grouped ? '4d' : '6h';
+  if (offset <= HOUR) return '1m';
+  if (offset <= DAY) return grouped ? '1h' : '30m';
+  if (offset <= WEEK + DAY) return grouped ? '1d' : '3h';
+  if (offset <= MONTH + DAY) return grouped ? '4d' : '6h';
   return grouped ? '21d' : '1d';
 }
 
@@ -67,7 +66,7 @@ function getJSONSearch(deviceName, deviceId, site, start, end, type) {
     endDate: end.getTime(),
     startDate: start.getTime(),
     timeZone: getTimeZone(),
-    bucketSize: getBucketSize(start, end, type),
+    bucketSize: getBucketSize(end.getTime() - start.getTime(), type),
     type: type,
     site: site,
   };

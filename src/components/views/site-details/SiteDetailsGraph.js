@@ -2,6 +2,8 @@ import classNames from 'classnames';
 import { Bar, Line } from 'react-chartjs-2';
 import {
   MdBarChart,
+  MdNavigateBefore,
+  MdNavigateNext,
   MdStackedBarChart,
   MdStackedLineChart,
 } from 'react-icons/md';
@@ -9,8 +11,9 @@ import {
 import { DAY, GROUPED_BAR } from '../../../services/search';
 import {
   formatXAxisLabels,
-  getFormattedDaysHoursMinutes,
   getFormattedTime,
+  maybeSetTimeWindow,
+  timeLabel,
 } from '../../../utils/Utils';
 import { tooltipPlugin } from '../../common/graphPlugins';
 
@@ -20,8 +23,8 @@ export default function SiteDetailsGraph({
   graphType,
   setGraphType,
   timeIncrement,
+  setStartDate,
   startDate,
-  endDate,
 }) {
   const datasets = deviceNames.map((name) => {
     const data = graphData.filter((d) => d.name === name);
@@ -113,8 +116,30 @@ export default function SiteDetailsGraph({
     <>
       <div className='SiteDetailsGraph group relative mb-6 w-full rounded-lg bg-brand-primary-light p-3 dark:bg-neutral-800'>
         <div className='flex items-center justify-between'>
-          <div className='text-xs text-black dark:text-neutral-100'>
-            {getFormattedTime(startDate)} - {getFormattedTime(endDate)}
+          <div className='flex w-fit items-center'>
+            <div className='me-2 flex w-fit rounded bg-white sm:me-4 dark:bg-neutral-600 dark:text-neutral-100'>
+              <button
+                aria-label='previous time period'
+                className='rounded-l px-2 py-1 hover:bg-neutral-200 dark:border-neutral-600 dark:hover:bg-neutral-500 dark:hover:text-neutral-100'
+                onClick={() =>
+                  maybeSetTimeWindow(startDate, -timeIncrement, setStartDate)
+                }
+              >
+                <MdNavigateBefore className='text-brand-primary-dark text-xl' />
+              </button>
+              <button
+                aria-label='next time period'
+                className='rounded-r px-2 py-1 hover:bg-neutral-200 dark:border-neutral-600 dark:hover:bg-neutral-500 dark:hover:text-neutral-100'
+                onClick={() =>
+                  maybeSetTimeWindow(startDate, timeIncrement, setStartDate)
+                }
+              >
+                <MdNavigateNext className='text-brand-primary-dark text-xl' />
+              </button>
+            </div>
+            <div className='text-xs text-black dark:text-neutral-100'>
+              {timeLabel(startDate, timeIncrement)}
+            </div>
           </div>
           <div className='flex w-fit rounded bg-white dark:bg-neutral-600 dark:text-neutral-100'>
             <button
