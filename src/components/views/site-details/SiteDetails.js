@@ -36,6 +36,9 @@ export default function SiteDetails() {
     DAY,
     'dashboard.time',
   );
+  const [startDate, setStartDate] = useState(
+    new Date(getRoundedTimeFromOffset(timeIncrement)),
+  );
   const [graphType, setGraphType] = useStickyState('bar', 'graph.type');
   const match = useMatch('/sites/:siteId');
   const siteId = match?.params?.siteId;
@@ -48,8 +51,14 @@ export default function SiteDetails() {
   }
 
   useEffect(() => {
-    loadSiteOverview(siteId, timeIncrement, graphType, null);
+    const start = new Date(getRoundedTimeFromOffset(timeIncrement));
+    setStartDate(start);
+    loadSiteOverview(siteId, timeIncrement, start, graphType, null);
   }, [timeIncrement]);
+
+  useEffect(() => {
+    loadSiteOverview(siteId, timeIncrement, startDate, graphType, null);
+  }, [startDate]);
 
   /**
    * Switching between graph types doesn't need to re-fetch data from server unless we're moving to or from
@@ -67,8 +76,8 @@ export default function SiteDetails() {
     setGraphType(graphTypeToSet);
   };
 
-  const loadSiteOverview = (site, time, type, callback) => {
-    getSiteOverview(site, time, type).then(({ data }) => {
+  const loadSiteOverview = (site, time, start, type, callback) => {
+    getSiteOverview(site, start, time, type).then(({ data }) => {
       setSiteData(data);
       setDevices(
         data.devices
@@ -170,11 +179,11 @@ export default function SiteDetails() {
         </div>
         <SiteDetailsGraph
           deviceNames={devices.map((d) => getDisplayName(d))}
-          endDate={new Date()}
           graphData={graphData}
           graphType={graphType}
           setGraphType={setGraphTypeWrapper}
-          startDate={getRoundedTimeFromOffset(timeIncrement)}
+          setStartDate={setStartDate}
+          startDate={startDate}
           timeIncrement={timeIncrement}
         />
         <SiteDevicesOverview

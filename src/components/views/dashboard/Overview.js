@@ -30,6 +30,9 @@ export default function Overview() {
     DAY,
     'dashboard.time',
   );
+  const [startDate, setStartDate] = useState(
+    new Date(getRoundedTimeFromOffset(timeIncrement)),
+  );
   const [totalOutput, setTotalOutput] = useState(0);
   const [averageOutput, setAverageOutput] = useState(0);
   const [overallTimeSeries, setOverallTimeSeries] = useState(null);
@@ -40,7 +43,17 @@ export default function Overview() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    getOverviewData(timeIncrement).then(({ data }) => {
+    const start = new Date(getRoundedTimeFromOffset(timeIncrement));
+    setStartDate(start);
+    loadOverview(startDate, timeIncrement);
+  }, [timeIncrement]);
+
+  useEffect(() => {
+    loadOverview(startDate, timeIncrement);
+  }, [startDate]);
+
+  const loadOverview = (start, increment) => {
+    getOverviewData(start, increment).then(({ data }) => {
       handleDevices(data.devices);
       handleAlarms(data.alarms);
       handleOverviewTotal(data.overall.avg, data.overall.total);
@@ -49,7 +62,7 @@ export default function Overview() {
       handleSummaryHeader(data.overall);
       setLoading(false);
     });
-  }, [timeIncrement]);
+  };
 
   const handleSummaryHeader = (data) => {
     setDailyOutputTotal(
@@ -64,17 +77,8 @@ export default function Overview() {
   };
 
   const handleAlarms = (data) => {
-    const active = data.filter((d) => d.state > 0);
-    const resolved = data.filter((d) => d.state === 0);
-
-    const resolvedInTimeIncrement = resolved.filter((d) => {
-      return (
-        new Date(d.startDate) > new Date(new Date().getTime() - timeIncrement)
-      );
-    });
-
-    setResolvedAlerts(resolvedInTimeIncrement);
-    setActiveAlerts(active);
+    setResolvedAlerts(data.filter((d) => d.state === 0));
+    setActiveAlerts(data.filter((d) => d.state > 0));
   };
   const handleDevices = (data) => {
     const sites = data.filter((d) => d.isSite).sort(sortDevices);
@@ -154,11 +158,11 @@ export default function Overview() {
           </div>
         </div>
         <OverviewChart
-          endDate={new Date()}
           overviewData={overallTimeSeries}
+          setStartDate={setStartDate}
           sites={sites}
           sitesData={sitesGraphData}
-          startDate={getRoundedTimeFromOffset(timeIncrement)}
+          startDate={startDate}
           timeIncrement={timeIncrement}
         />
         <OverviewSiteList

@@ -55,18 +55,14 @@ export function getSitesOverview() {
   );
 }
 
-export function getSiteOverview(siteId, offset, graphType) {
+export function getSiteOverview(siteId, start, offset, graphType) {
   const body = getAvgTotalBody(
     null,
-    getRoundedTimeFromOffset(offset),
-    new Date(),
+    start,
+    new Date(Math.min(start.getTime() + offset, new Date().getTime())),
   );
   if (graphType === GROUPED_BAR) {
-    body.bucketSize = getBucketSize(
-      getRoundedTimeFromOffset(offset),
-      new Date(),
-      GROUPED_BAR,
-    );
+    body.bucketSize = getBucketSize(offset, GROUPED_BAR);
   }
   return api.post('sites/' + siteId, body);
 }
@@ -91,10 +87,14 @@ export function getAlarmData() {
   return api.post('alarms', {});
 }
 
-export function getOverviewData(offset) {
+export function getOverviewData(start, offset) {
   return api.post(
     'overview',
-    getAvgTotalBody(null, getRoundedTimeFromOffset(offset), new Date()),
+    getAvgTotalBody(
+      null,
+      start,
+      new Date(Math.min(start.getTime() + offset, new Date().getTime())),
+    ),
   );
 }
 
