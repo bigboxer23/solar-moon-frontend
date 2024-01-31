@@ -13,7 +13,12 @@ export default function PowerBlock({ className, max, currentPower }) {
   const [percent] = useState(getGaugeValue(max, currentPower));
 
   return (
-    <div className={classNames('PowerBlock flex space-x-2', className)}>
+    <div
+      className={classNames(
+        'PowerBlock dark:text-neutral-100 flex space-x-2',
+        className,
+      )}
+    >
       <PowerIcon max={max} percent={percent} />
       <div className='inline-block self-end text-5xl font-bold leading-[3rem]'>
         {Math.round(currentPower)}

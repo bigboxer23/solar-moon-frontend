@@ -47,7 +47,7 @@ export default function SiteRow({ site }) {
           </div>
         </div>
 
-        <div className='mr-8 grid w-full grid-cols-3 gap-2 sm:grid-cols-5 sm:gap-4'>
+        <div className='mr-8 grid w-full grid-cols-2 gap-2 sm:grid-cols-5 sm:gap-4'>
           <StatBlock
             className='text-black dark:text-neutral-100'
             title='devices'
@@ -58,7 +58,7 @@ export default function SiteRow({ site }) {
               <WeatherBlock weather={site.siteData?.weather} />
             )}
           </div>
-          <div className='mb-2 flex items-end justify-center'>
+          <div className='mb-2 flex items-end sm:justify-center'>
             <PowerBlock
               currentPower={
                 site.siteData.weeklyMaxPower.hits.hits.length > 0
@@ -70,7 +70,7 @@ export default function SiteRow({ site }) {
               max={site.siteData.weeklyMaxPower.aggregations['max#max'].value}
             />
           </div>
-          <div className='col-span-2 ml-4 hidden flex-col justify-center text-sm text-black sm:flex dark:text-neutral-100'>
+          <div className='ml-4 flex flex-col justify-center text-sm text-black sm:col-span-2 dark:text-neutral-100'>
             <span className='whitespace-nowrap'>
               <span className='font-bold'>
                 <FormattedNumber

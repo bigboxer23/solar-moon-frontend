@@ -1,9 +1,11 @@
 import classNames from 'classnames';
 
 export default function PowerIcon({ percent, max }) {
+  percent = 14;
   const getFillColor = (percent) => {
     if (percent < 15) return 'red';
     if (percent > 95) return 'green';
+    /*return 'default';*/ //TODO: non-black fill looks terrible
     return '';
   };
 
@@ -25,7 +27,7 @@ export default function PowerIcon({ percent, max }) {
         >
           <path
             d='M12.6566 50H9.98989L12.6566 31.3333H3.32322C1.77655 31.3333 1.80322 30.48 2.30989 29.5733C2.81655 28.6667 2.44322 29.36 2.49655 29.2533C5.93655 23.1733 11.1099 14.1067 17.9899 2H20.6566L17.9899 20.6667H27.3232C28.6299 20.6667 28.8166 21.5467 28.5766 22.0267L28.3899 22.4267C17.8832 40.8 12.6566 50 12.6566 50Z'
-            stroke='black'
+            stroke='currentColor'
             strokeWidth='3'
           />
         </svg>
@@ -41,11 +43,11 @@ export default function PowerIcon({ percent, max }) {
         >
           <path
             d='M12.6566 50H9.98989L12.6566 31.3333H3.32322C1.77655 31.3333 1.80322 30.48 2.30989 29.5733C2.81655 28.6667 2.44322 29.36 2.49655 29.2533C5.93655 23.1733 11.1099 14.1067 17.9899 2H20.6566L17.9899 20.6667H27.3232C28.6299 20.6667 28.8166 21.5467 28.5766 22.0267L28.3899 22.4267C17.8832 40.8 12.6566 50 12.6566 50Z'
-            stroke='black'
+            stroke='currentColor'
             strokeWidth='3'
           />
           <line
-            stroke='black'
+            stroke='currentColor'
             strokeWidth='3'
             x1='18'
             x2='11'
@@ -53,7 +55,7 @@ export default function PowerIcon({ percent, max }) {
             y2='40.5'
           />
           <line
-            stroke='black'
+            stroke='currentColor'
             strokeWidth='3'
             x1='16'
             x2='12'
@@ -61,7 +63,7 @@ export default function PowerIcon({ percent, max }) {
             y2='43.5'
           />
           <line
-            stroke='black'
+            stroke='currentColor'
             strokeWidth='3'
             x1='14'
             x2='10'
@@ -69,7 +71,7 @@ export default function PowerIcon({ percent, max }) {
             y2='47.5'
           />
           <line
-            stroke='black'
+            stroke='currentColor'
             strokeWidth='3'
             x1='15'
             x2='11'
@@ -89,11 +91,11 @@ export default function PowerIcon({ percent, max }) {
         >
           <path
             d='M12.6566 50H9.98989L12.6566 31.3333H3.32322C1.77655 31.3333 1.80322 30.48 2.30989 29.5733C2.81655 28.6667 2.44322 29.36 2.49655 29.2533C5.93655 23.1733 11.1099 14.1067 17.9899 2H20.6566L17.9899 20.6667H27.3232C28.6299 20.6667 28.8166 21.5467 28.5766 22.0267L28.3899 22.4267C17.8832 40.8 12.6566 50 12.6566 50Z'
-            stroke='black'
+            stroke='currentColor'
             strokeWidth='3'
           />
           <line
-            stroke='black'
+            stroke='currentColor'
             strokeWidth='3'
             x1='4'
             x2='27'
@@ -101,7 +103,7 @@ export default function PowerIcon({ percent, max }) {
             y2='26.5'
           />
           <line
-            stroke='black'
+            stroke='currentColor'
             strokeWidth='3'
             x1='2'
             x2='25'
@@ -109,7 +111,7 @@ export default function PowerIcon({ percent, max }) {
             y2='28.5'
           />
           <line
-            stroke='black'
+            stroke='currentColor'
             strokeWidth='3'
             x1='13'
             x2='23'
@@ -117,7 +119,7 @@ export default function PowerIcon({ percent, max }) {
             y2='31.5'
           />
           <line
-            stroke='black'
+            stroke='currentColor'
             strokeWidth='3'
             x1='12'
             x2='22'
@@ -125,7 +127,7 @@ export default function PowerIcon({ percent, max }) {
             y2='34.5'
           />
           <line
-            stroke='black'
+            stroke='currentColor'
             strokeWidth='3'
             x1='11'
             x2='20'
@@ -133,7 +135,7 @@ export default function PowerIcon({ percent, max }) {
             y2='37.5'
           />
           <line
-            stroke='black'
+            stroke='currentColor'
             strokeWidth='3'
             x1='10'
             x2='19'
@@ -141,7 +143,7 @@ export default function PowerIcon({ percent, max }) {
             y2='40.5'
           />
           <line
-            stroke='black'
+            stroke='currentColor'
             strokeWidth='3'
             x1='10'
             x2='17'
@@ -149,7 +151,7 @@ export default function PowerIcon({ percent, max }) {
             y2='43.5'
           />
           <line
-            stroke='black'
+            stroke='currentColor'
             strokeWidth='3'
             x1='10'
             x2='14'
@@ -157,7 +159,7 @@ export default function PowerIcon({ percent, max }) {
             y2='46.5'
           />
           <line
-            stroke='black'
+            stroke='currentColor'
             strokeWidth='3'
             x1='10'
             x2='14'
@@ -177,11 +179,11 @@ export default function PowerIcon({ percent, max }) {
         >
           <path
             d='M12.6566 50H9.98989L12.6566 31.3333H3.32322C1.77655 31.3333 1.80322 30.48 2.30989 29.5733C2.81655 28.6667 2.44322 29.36 2.49655 29.2533C5.93655 23.1733 11.1099 14.1067 17.9899 2H20.6566L17.9899 20.6667H27.3232C28.6299 20.6667 28.8166 21.5467 28.5766 22.0267L28.3899 22.4267C17.8832 40.8 12.6566 50 12.6566 50Z'
-            stroke='black'
+            stroke='currentColor'
             strokeWidth='3'
           />
           <line
-            stroke='black'
+            stroke='currentColor'
             strokeWidth='3'
             x1='18'
             x2='11'
@@ -189,7 +191,7 @@ export default function PowerIcon({ percent, max }) {
             y2='14.5'
           />
           <line
-            stroke='black'
+            stroke='currentColor'
             strokeWidth='3'
             x1='18'
             x2='9'
@@ -197,7 +199,7 @@ export default function PowerIcon({ percent, max }) {
             y2='17.5'
           />
           <line
-            stroke='black'
+            stroke='currentColor'
             strokeWidth='3'
             x1='18'
             x2='8'
@@ -205,7 +207,7 @@ export default function PowerIcon({ percent, max }) {
             y2='20.5'
           />
           <line
-            stroke='black'
+            stroke='currentColor'
             strokeWidth='3'
             x1='27'
             x2='5'
@@ -213,7 +215,7 @@ export default function PowerIcon({ percent, max }) {
             y2='23.5'
           />
           <line
-            stroke='black'
+            stroke='currentColor'
             strokeWidth='3'
             x1='26'
             x2='5'
@@ -221,7 +223,7 @@ export default function PowerIcon({ percent, max }) {
             y2='25.5'
           />
           <line
-            stroke='black'
+            stroke='currentColor'
             strokeWidth='3'
             x1='25'
             x2='3'
@@ -229,7 +231,7 @@ export default function PowerIcon({ percent, max }) {
             y2='27.5'
           />
           <line
-            stroke='black'
+            stroke='currentColor'
             strokeWidth='3'
             x1='24'
             x2='2'
@@ -237,7 +239,7 @@ export default function PowerIcon({ percent, max }) {
             y2='29.5'
           />
           <line
-            stroke='black'
+            stroke='currentColor'
             strokeWidth='3'
             x1='23'
             x2='12'
@@ -245,7 +247,7 @@ export default function PowerIcon({ percent, max }) {
             y2='31.5'
           />
           <line
-            stroke='black'
+            stroke='currentColor'
             strokeWidth='3'
             x1='22'
             x2='11'
@@ -253,7 +255,7 @@ export default function PowerIcon({ percent, max }) {
             y2='33.5'
           />
           <line
-            stroke='black'
+            stroke='currentColor'
             strokeWidth='3'
             x1='20'
             x2='11'
@@ -261,7 +263,7 @@ export default function PowerIcon({ percent, max }) {
             y2='35.5'
           />
           <line
-            stroke='black'
+            stroke='currentColor'
             strokeWidth='3'
             x1='20'
             x2='11'
@@ -269,7 +271,7 @@ export default function PowerIcon({ percent, max }) {
             y2='38.5'
           />
           <line
-            stroke='black'
+            stroke='currentColor'
             strokeWidth='3'
             x1='18'
             x2='11'
@@ -277,7 +279,7 @@ export default function PowerIcon({ percent, max }) {
             y2='41.5'
           />
           <line
-            stroke='black'
+            stroke='currentColor'
             strokeWidth='3'
             x1='16'
             x2='11'
@@ -285,7 +287,7 @@ export default function PowerIcon({ percent, max }) {
             y2='44.5'
           />
           <line
-            stroke='black'
+            stroke='currentColor'
             strokeWidth='3'
             x1='15'
             x2='11'
@@ -305,8 +307,8 @@ export default function PowerIcon({ percent, max }) {
         >
           <path
             d='M12.6566 50H9.98989L12.6566 31.3333H3.32322C1.77655 31.3333 1.80322 30.48 2.30989 29.5733C2.81655 28.6667 2.44322 29.36 2.49655 29.2533C5.93655 23.1733 11.1099 14.1067 17.9899 2H20.6566L17.9899 20.6667H27.3232C28.6299 20.6667 28.8166 21.5467 28.5766 22.0267L28.3899 22.4267C17.8832 40.8 12.6566 50 12.6566 50Z'
-            fill='black'
-            stroke='black'
+            fill='currentColor'
+            stroke='currentColor'
             strokeWidth='3'
           />
         </svg>
