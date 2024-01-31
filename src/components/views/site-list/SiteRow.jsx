@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { FaChevronRight } from 'react-icons/fa';
 import { FormattedNumber } from 'react-intl';
 import { NavLink } from 'react-router-dom';
@@ -58,7 +57,7 @@ export default function SiteRow({ site }) {
               <WeatherBlock weather={site.siteData?.weather} />
             )}
           </div>
-          <div className='mb-2 flex items-end sm:justify-center'>
+          <div className='mb-2 flex items-end sm:justify-end'>
             <PowerBlock
               currentPower={
                 site.siteData.weeklyMaxPower.hits.hits.length > 0
