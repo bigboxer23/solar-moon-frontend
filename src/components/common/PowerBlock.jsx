@@ -15,12 +15,14 @@ export default function PowerBlock({ className, max, currentPower }) {
   return (
     <div
       className={classNames(
-        'PowerBlock dark:text-neutral-100 flex space-x-2 items-center',
+        'PowerBlock dark:text-neutral-100 flex space-x-2 items-center h-full',
         className,
       )}
       title={percent + '% of ' + Math.round(max) + 'kW'}
     >
-      <PowerIcon max={max} percent={percent} />
+      <div className='h-[3rem] self-end py-1.5'>
+        <PowerIcon max={max} percent={percent} />
+      </div>
       <div className='inline-block self-end text-5xl font-bold leading-[3rem]'>
         {Math.round(currentPower)}
       </div>

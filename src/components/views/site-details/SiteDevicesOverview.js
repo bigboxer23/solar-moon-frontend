@@ -1,6 +1,4 @@
 import { useState } from 'react';
-import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
-import { FormattedNumber } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
 import {
@@ -9,6 +7,7 @@ import {
   parseSearchReturn,
   TOTAL_AGGREGATION,
 } from '../../../services/search';
+import PowerBlock from '../../common/PowerBlock';
 import StatBlock from '../../common/StatBlock';
 import DeviceBlock from '../../device-block/DeviceBlock';
 import StackedTotAvg from '../../device-block/StackedTotAvg';
@@ -42,7 +41,7 @@ export default function SiteDevicesOverview({
               }
               key={device.id}
               statBlocks={[
-                <div key={0} />, // Power gauge here
+                <PowerBlock currentPower={0} key={0} max={0} />, // Power gauge here
                 <StackedTotAvg
                   avg={getAggregationValue(avgData[device.id], AVG_AGGREGATION)}
                   key={1}

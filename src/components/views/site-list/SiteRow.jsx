@@ -57,7 +57,7 @@ export default function SiteRow({ site }) {
               <WeatherBlock weather={site.siteData?.weather} />
             )}
           </div>
-          <div className='mb-2 flex items-end sm:justify-end'>
+          <div className='flex items-end sm:justify-end'>
             <PowerBlock
               currentPower={
                 site.siteData.weeklyMaxPower.hits.hits.length > 0
