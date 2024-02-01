@@ -105,6 +105,16 @@ export const parseStackedTimeSeriesData = function (data) {
   return formattedData;
 };
 
+export const parseMaxData = function (data) {
+  return data.aggregations['max#max'].value;
+};
+
+export const parseCurrentPower = function (data) {
+  return data.hits.hits.length > 0
+    ? data.hits.hits[0].fields[TOTAL_REAL_POWER][0]
+    : 0;
+};
+
 export const parseAndCondenseStackedTimeSeriesData = function (data) {
   const formattedData = [];
   data.aggregations[DATE_HISTO].buckets.forEach((d) => {

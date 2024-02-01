@@ -175,6 +175,7 @@ export default function SiteDetails() {
           activeSiteAlerts={activeSiteAlerts}
           avgData={siteData?.deviceAvg}
           devices={devices}
+          maxData={siteData?.deviceWeeklyMaxPower}
           resolvedSiteAlerts={resolvedSiteAlerts}
           timeSeriesData={siteData?.deviceTimeSeries}
           totalData={siteData?.deviceTotals}

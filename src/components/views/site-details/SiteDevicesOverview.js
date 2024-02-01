@@ -4,8 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import {
   AVG_AGGREGATION,
   getAggregationValue,
+  parseCurrentPower,
+  parseMaxData,
   parseSearchReturn,
   TOTAL_AGGREGATION,
+  TOTAL_REAL_POWER,
 } from '../../../services/search';
 import PowerBlock from '../../common/PowerBlock';
 import StatBlock from '../../common/StatBlock';
@@ -20,6 +23,7 @@ export default function SiteDevicesOverview({
   avgData,
   totalData,
   timeSeriesData,
+  maxData,
 }) {
   const [expandedDevice, setExpandedDevice] = useState(-1);
   const navigate = useNavigate();
@@ -41,7 +45,11 @@ export default function SiteDevicesOverview({
               }
               key={device.id}
               statBlocks={[
-                <PowerBlock currentPower={0} key={0} max={0} />, // Power gauge here
+                <PowerBlock
+                  currentPower={parseCurrentPower(maxData[device.id])}
+                  key={0}
+                  max={parseMaxData(maxData[device.id])}
+                />, // Power gauge here
                 <StackedTotAvg
                   avg={getAggregationValue(avgData[device.id], AVG_AGGREGATION)}
                   key={1}

@@ -5,6 +5,8 @@ import { NavLink } from 'react-router-dom';
 import {
   AVG_AGGREGATION,
   getAggregationValue,
+  parseCurrentPower,
+  parseMaxData,
   TOTAL_AGGREGATION,
   TOTAL_REAL_POWER,
 } from '../../../services/search';
@@ -59,14 +61,8 @@ export default function SiteRow({ site }) {
           </div>
           <div className='flex items-end sm:justify-end'>
             <PowerBlock
-              currentPower={
-                site.siteData.weeklyMaxPower.hits.hits.length > 0
-                  ? site.siteData.weeklyMaxPower.hits.hits[0].fields[
-                      TOTAL_REAL_POWER
-                    ][0]
-                  : 0
-              }
-              max={site.siteData.weeklyMaxPower.aggregations['max#max'].value}
+              currentPower={parseCurrentPower(site.siteData.weeklyMaxPower)}
+              max={parseMaxData(site.siteData.weeklyMaxPower)}
             />
           </div>
           <div className='ml-4 flex flex-col justify-center text-sm text-black sm:col-span-2 dark:text-neutral-100'>
