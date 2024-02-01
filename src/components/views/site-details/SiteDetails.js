@@ -51,14 +51,8 @@ export default function SiteDetails() {
   }
 
   useEffect(() => {
-    const start = new Date(getRoundedTimeFromOffset(timeIncrement));
-    setStartDate(start);
-    loadSiteOverview(siteId, timeIncrement, start, graphType, null);
-  }, [timeIncrement]);
-
-  useEffect(() => {
     loadSiteOverview(siteId, timeIncrement, startDate, graphType, null);
-  }, [startDate]);
+  }, [timeIncrement, startDate]);
 
   /**
    * Switching between graph types doesn't need to re-fetch data from server unless we're moving to or from
@@ -99,6 +93,11 @@ export default function SiteDetails() {
     });
   };
 
+  const setTimeIncrementWrapper = (timeIncrement) => {
+    setTimeIncrement(timeIncrement);
+    setStartDate(new Date(getRoundedTimeFromOffset(timeIncrement)));
+  };
+
   if (loading) {
     return (
       <div className='flex w-full items-center justify-center p-6'>
@@ -129,7 +128,7 @@ export default function SiteDetails() {
             </span>
           </div>
           <TimeIncrementSelector
-            setTimeIncrement={setTimeIncrement}
+            setTimeIncrement={setTimeIncrementWrapper}
             timeIncrement={timeIncrement}
           />
         </div>

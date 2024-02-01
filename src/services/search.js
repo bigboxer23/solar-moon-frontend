@@ -85,9 +85,7 @@ export function parseMaxSearchReturn(data) {
 }
 
 export function getAggregationValue(data, label) {
-  return data !== undefined
-    ? Math.round(data.aggregations[label].value * 10) / 10
-    : 0;
+  return data !== undefined ? Math.round(data.aggregations[label].value) : 0;
 }
 
 export const parseStackedTimeSeriesData = function (data) {
