@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { FaArrowLeft } from 'react-icons/fa';
+import { NavLink } from 'react-router-dom';
 
 import { deleteMapping, getMappings } from '../../../services/services';
 import Help from '../../common/Help';
@@ -25,6 +27,13 @@ export default function Mapping() {
   return (
     <main className='Mapping flex w-full flex-col items-center justify-center'>
       <div className='fade-in my-8 w-[55rem] max-w-full rounded-lg bg-white p-6 shadow-panel sm:p-8 dark:bg-neutral-700'>
+        <NavLink
+          className='mb-4 flex items-center text-xs text-neutral-500 hover:underline dark:text-text-secondary'
+          to='/manage'
+        >
+          <FaArrowLeft className='mr-2 inline-block' size='12' />
+          <span>Back to manage</span>
+        </NavLink>
         <div className='mb-10 flex w-full items-center space-x-1'>
           <span className='text-lg font-bold dark:text-white'>
             Attribute Mappings
