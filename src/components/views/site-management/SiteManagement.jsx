@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
-import { MdAddCircle, MdOutlineAdd } from 'react-icons/md';
-import { useSearchParams } from 'react-router-dom';
+import {
+  MdAddCircle,
+  MdOutlineAdd,
+  MdSettingsInputComposite,
+} from 'react-icons/md';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import {
   getDevice,
@@ -26,6 +30,7 @@ const SiteManagement = () => {
   const [newSiteFormVersion, setNewSiteFormVersion] = useState(0);
   const [subscriptionAvailable, setSubscriptionAvailable] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const disableNotifications = searchParams.get('disable');
@@ -112,6 +117,19 @@ const SiteManagement = () => {
               <div className='flex items-center'>
                 <MdAddCircle className='button-icon' />
                 Add Device
+              </div>
+            </Button>
+            <Button
+              buttonProps={{
+                title: 'Configure mappings for data retrieved from devices',
+              }}
+              className='ms-3'
+              onClick={() => navigate('/mapping')}
+              variant='secondary'
+            >
+              <div className='flex items-center'>
+                <MdSettingsInputComposite className='button-icon' />
+                Mappings
               </div>
             </Button>
           </div>
