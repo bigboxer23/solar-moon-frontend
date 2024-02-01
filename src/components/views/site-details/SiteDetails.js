@@ -22,8 +22,8 @@ import {
 import Loader from '../../common/Loader';
 import StatBlock from '../../common/StatBlock';
 import WeatherBlock from '../../common/WeatherBlock';
+import StackedTotAvg from '../../device-block/StackedTotAvg';
 import TimeIncrementSelector from '../dashboard/TimeIncrementSelector';
-import DeviceChart from './DeviceChart';
 import SiteDetailsGraph from './SiteDetailsGraph';
 import SiteDevicesOverview from './SiteDevicesOverview';
 
@@ -156,26 +156,11 @@ export default function SiteDetails() {
               value={resolvedSiteAlerts.length}
             />
           </div>
-          <div className='ml-auto flex flex-col items-end'>
-            <div className='flex flex-col space-x-1 text-end text-base text-black sm:flex-row dark:text-neutral-100'>
-              <div>Total:</div>
-              <div>
-                <FormattedNumber
-                  value={getAggregationValue(siteData.total, TOTAL_AGGREGATION)}
-                />{' '}
-                kWH
-              </div>
-            </div>
-            <div className='average-output flex flex-col space-x-1 text-end text-xl font-bold text-black sm:flex-row dark:text-neutral-100'>
-              <div>Average:</div>
-              <div>
-                <FormattedNumber
-                  value={getAggregationValue(siteData.avg, AVG_AGGREGATION)}
-                />{' '}
-                kW
-              </div>
-            </div>
-          </div>
+          <StackedTotAvg
+            avg={getAggregationValue(siteData.avg, AVG_AGGREGATION)}
+            className='ml-auto items-end'
+            total={getAggregationValue(siteData.total, TOTAL_AGGREGATION)}
+          />
         </div>
         <SiteDetailsGraph
           deviceNames={devices.map((d) => getDisplayName(d))}

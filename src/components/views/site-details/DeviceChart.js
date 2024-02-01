@@ -62,7 +62,6 @@ export default function DeviceChart({ graphData }) {
     },
     scales: {
       x: {
-        //display: false,
         type: 'time',
         ticks: {
           stepSize: 6,
@@ -72,15 +71,14 @@ export default function DeviceChart({ graphData }) {
       y: {
         stacked: true,
         title: {
-          display: true,
-          text: 'kW',
+          display: false,
         },
       },
     },
   };
 
   return (
-    <div className='DeviceChart mb-6 h-48 w-full rounded-lg bg-brand-primary-light p-3 sm:h-56 dark:bg-neutral-800'>
+    <div className='DeviceChart h-40 w-full rounded-lg bg-brand-primary-light p-3 dark:bg-neutral-800'>
       <Line data={data} options={options} plugins={[tooltipPlugin]} />
     </div>
   );

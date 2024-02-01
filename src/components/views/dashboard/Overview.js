@@ -16,6 +16,7 @@ import {
 } from '../../../utils/Utils';
 import Loader from '../../common/Loader';
 import StatBlock from '../../common/StatBlock';
+import StackedTotAvg from '../../device-block/StackedTotAvg';
 import OverviewSiteList from './dashboard-site-list/OverviewSiteList';
 import OverviewChart from './OverviewChart';
 import SummaryHeader from './SummaryHeader';
@@ -142,20 +143,11 @@ export default function Overview() {
               value={resolvedAlerts.length}
             />
           </div>
-          <div className='flex flex-col items-end'>
-            <div className='flex flex-col space-x-1 text-end text-base text-black sm:flex-row dark:text-neutral-100'>
-              <div>Total:</div>
-              <div>
-                <FormattedNumber value={totalOutput} /> kWH
-              </div>
-            </div>
-            <div className='average-output flex flex-col space-x-1 text-end text-xl font-bold text-black sm:flex-row dark:text-neutral-100'>
-              <div>Average:</div>
-              <div>
-                <FormattedNumber value={averageOutput} /> kW
-              </div>
-            </div>
-          </div>
+          <StackedTotAvg
+            avg={averageOutput}
+            className='ml-auto items-end'
+            total={totalOutput}
+          />
         </div>
         <OverviewChart
           overviewData={overallTimeSeries}
