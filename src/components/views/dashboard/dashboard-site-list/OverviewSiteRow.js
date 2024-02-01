@@ -7,6 +7,8 @@ import {
   AVG_AGGREGATION,
   DAY,
   getAggregationValue,
+  parseCurrentPower,
+  parseMaxData,
   parseSearchReturn,
   TOTAL_AGGREGATION,
 } from '../../../../services/search';
@@ -17,10 +19,14 @@ export default function OverviewSiteRow({ info, graphData, timeIncrement }) {
   const [average, setAverage] = useState(0);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [max, setMax] = useState(0);
+  const [current, setCurrent] = useState(0);
 
   useEffect(() => {
     setTotal(getAggregationValue(graphData.total, TOTAL_AGGREGATION));
     setAverage(getAggregationValue(graphData.avg, AVG_AGGREGATION));
+    setCurrent(parseCurrentPower(graphData.weeklyMaxPower)); //TODO: use these to display with PowerBlock
+    setMax(parseMaxData(graphData.weeklyMaxPower));
     setLoading(false);
   }, [graphData]);
 
