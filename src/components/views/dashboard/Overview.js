@@ -43,17 +43,7 @@ export default function Overview() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const start = new Date(getRoundedTimeFromOffset(timeIncrement));
-    setStartDate(start);
-    loadOverview(startDate, timeIncrement);
-  }, [timeIncrement]);
-
-  useEffect(() => {
-    loadOverview(startDate, timeIncrement);
-  }, [startDate]);
-
-  const loadOverview = (start, increment) => {
-    getOverviewData(start, increment).then(({ data }) => {
+    getOverviewData(startDate, timeIncrement).then(({ data }) => {
       handleDevices(data.devices);
       handleAlarms(data.alarms);
       handleOverviewTotal(data.overall.avg, data.overall.total);
@@ -62,7 +52,7 @@ export default function Overview() {
       handleSummaryHeader(data.overall);
       setLoading(false);
     });
-  };
+  }, [timeIncrement, startDate]);
 
   const handleSummaryHeader = (data) => {
     setDailyOutputTotal(
@@ -95,6 +85,11 @@ export default function Overview() {
     setSites(mappedSites);
   };
 
+  const setTimeIncrementWrapper = (timeIncrement) => {
+    setTimeIncrement(timeIncrement);
+    setStartDate(new Date(getRoundedTimeFromOffset(timeIncrement)));
+  };
+
   if (loading) return <Loader />;
 
   return (
@@ -107,7 +102,7 @@ export default function Overview() {
         <div className='mb-4 flex w-full items-center justify-between text-lg font-bold text-black dark:text-neutral-100'>
           Overview
           <TimeIncrementSelector
-            setTimeIncrement={setTimeIncrement}
+            setTimeIncrement={setTimeIncrementWrapper}
             timeIncrement={timeIncrement}
           />
         </div>
