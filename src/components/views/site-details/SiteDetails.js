@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { FaArrowLeft } from 'react-icons/fa';
-import { FormattedNumber } from 'react-intl';
 import { NavLink, redirect, useMatch, useNavigate } from 'react-router-dom';
 
 import {
@@ -111,10 +110,10 @@ export default function SiteDetails() {
       <div className='fade-in my-8 w-[55rem] max-w-full rounded-lg bg-white p-6 shadow-panel sm:p-8 dark:bg-neutral-700'>
         <NavLink
           className='mb-4 flex items-center text-xs text-neutral-500 hover:underline dark:text-text-secondary'
-          to='/sites'
+          to='/'
         >
           <FaArrowLeft className='mr-2 inline-block' size='12' />
-          <span>Back to all sites</span>
+          <span>Back to dashboard</span>
         </NavLink>
         <div className='mb-4 flex justify-between'>
           <div className='flex flex-col'>

@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { FormattedNumber } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
 import {
@@ -17,8 +16,8 @@ import {
 import Loader from '../../common/Loader';
 import StatBlock from '../../common/StatBlock';
 import StackedTotAvg from '../../device-block/StackedTotAvg';
-import OverviewSiteList from './dashboard-site-list/OverviewSiteList';
 import OverviewChart from './OverviewChart';
+import OverviewSiteList from './OverviewSiteList';
 import SummaryHeader from './SummaryHeader';
 import TimeIncrementSelector from './TimeIncrementSelector';
 

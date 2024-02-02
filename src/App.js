@@ -80,7 +80,6 @@ function App() {
             <Routes>
               <Route element={<Dashboard />} path='/' />
               <Route element={<Reports />} path='/reports' />
-              <Route element={<SiteList />} path='/sites' />
               <Route element={<SiteDetails />} path='/sites/:siteId' />
               <Route element={<Alerts />} path='/alerts' />
               <Route element={<Profile />} path='/profile' />

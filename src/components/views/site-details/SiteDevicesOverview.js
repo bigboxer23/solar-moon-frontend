@@ -10,6 +10,7 @@ import {
   TOTAL_AGGREGATION,
   TOTAL_REAL_POWER,
 } from '../../../services/search';
+import { getDisplayName } from '../../../utils/Utils';
 import PowerBlock from '../../common/PowerBlock';
 import StatBlock from '../../common/StatBlock';
 import DeviceBlock from '../../device-block/DeviceBlock';
@@ -37,8 +38,7 @@ export default function SiteDevicesOverview({
         <div className='grid grid-cols-2 gap-4'>
           {devices.map((device, i) => (
             <DeviceBlock
-              device={device}
-              graph={
+              expandableBody={
                 <DeviceChart
                   graphData={parseSearchReturn(timeSeriesData[device.id])}
                 />
@@ -49,7 +49,7 @@ export default function SiteDevicesOverview({
                   currentPower={parseCurrentPower(maxData[device.id])}
                   key={0}
                   max={parseMaxData(maxData[device.id])}
-                />, // Power gauge here
+                />,
                 <StackedTotAvg
                   avg={getAggregationValue(avgData[device.id], AVG_AGGREGATION)}
                   key={1}
@@ -79,6 +79,8 @@ export default function SiteDevicesOverview({
                   }
                 />,
               ]}
+              subtitle={device.deviceName}
+              title={getDisplayName(device)}
             />
           ))}
         </div>

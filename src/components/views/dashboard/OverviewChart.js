@@ -184,7 +184,6 @@ export default function OverviewChart({
         bodyColor: '#000',
         boxPadding: 8,
         titleAlign: 'center',
-        //bodyAlign: 'center',
         callbacks: {
           title: (context) => {
             const { dataIndex } = context[0];
