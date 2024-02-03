@@ -46,7 +46,7 @@ export default function SiteDetails() {
   const navigate = useNavigate();
 
   if (!siteId) {
-    return redirect('/sites');
+    return redirect('/');
   }
 
   useEffect(() => {
@@ -71,6 +71,10 @@ export default function SiteDetails() {
 
   const loadSiteOverview = (site, time, start, type, callback) => {
     getSiteOverview(site, start, time, type).then(({ data }) => {
+      if (data === null) {
+        navigate('/');
+        return;
+      }
       setSiteData(data);
       setDevices(
         data.devices
