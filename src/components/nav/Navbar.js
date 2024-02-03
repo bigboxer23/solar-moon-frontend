@@ -164,15 +164,6 @@ export default function Navbar() {
             className={({ isActive }) =>
               isActive ? slideMenuActiveLinkStyle : slideMenuLinkStyle
             }
-            to='/sites'
-          >
-            Sites
-          </NavLink>
-          <LuSun className={separatorStyle} />
-          <NavLink
-            className={({ isActive }) =>
-              isActive ? slideMenuActiveLinkStyle : slideMenuLinkStyle
-            }
             to='/reports'
           >
             Reports
