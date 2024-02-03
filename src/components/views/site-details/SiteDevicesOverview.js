@@ -35,7 +35,7 @@ export default function SiteDevicesOverview({
         <div className='mb-4 text-lg font-bold text-black dark:text-neutral-100'>
           {devices.length} Devices
         </div>
-        <div className='grid grid-cols-2 gap-4'>
+        <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
           {devices.map((device, i) => (
             <DeviceBlock
               expandableBody={

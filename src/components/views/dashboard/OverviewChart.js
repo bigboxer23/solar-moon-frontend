@@ -212,7 +212,7 @@ export default function OverviewChart({
     <div className='OverviewChart mb-6 w-full rounded-lg bg-brand-primary-light p-3 dark:bg-neutral-800'>
       <div className='mb-2 flex items-center justify-between'>
         <div className='flex w-fit items-center'>
-          <div className='me-2 flex w-fit rounded bg-white sm:me-4 dark:bg-neutral-600 dark:text-neutral-100'>
+          <div className='mr-1 flex w-fit rounded bg-white sm:me-4 dark:bg-neutral-600 dark:text-neutral-100'>
             <button
               aria-label='previous time period'
               className='rounded-l px-2 py-1 hover:bg-neutral-200 dark:border-neutral-600 dark:hover:bg-neutral-500 dark:hover:text-neutral-100'

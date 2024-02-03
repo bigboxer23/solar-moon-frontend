@@ -49,15 +49,12 @@ export default function OverviewSiteList({
 
   console.log('siteData', siteData);
 
-  //   setCurrent(parseCurrentPower(graphData.weeklyMaxPower)); //TODO: use these to display with PowerBlock
-  //   setMax(parseMaxData(graphData.weeklyMaxPower));
-
   return (
     <div className='SiteList mt-5'>
       <div className='mb-6 text-lg font-bold text-black dark:text-neutral-100'>
         {sites.length} Sites
       </div>
-      <div className='grid grid-cols-2 gap-4'>
+      <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
         {siteData.map((site) => (
           <NavLink key={site.info.id} to={`/sites/${site.info.id}`}>
             <DeviceBlock

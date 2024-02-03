@@ -15,7 +15,7 @@ export default function PowerBlock({ className, max, currentPower }) {
   return (
     <div
       className={classNames(
-        'PowerBlock dark:text-neutral-100 flex space-x-2 items-center h-full',
+        'PowerBlock dark:text-neutral-100 flex space-x-2 items-end h-full',
         className,
       )}
       title={percent + '% of ' + Math.round(max) + 'kW'}
