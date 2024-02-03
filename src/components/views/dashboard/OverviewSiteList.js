@@ -9,6 +9,7 @@ import {
   TOTAL_AGGREGATION,
 } from '../../../services/search';
 import PowerBlock from '../../common/PowerBlock';
+import WeatherBlock from '../../common/WeatherBlock';
 import DeviceBlock from '../../device-block/DeviceBlock';
 import StackedAlertsInfo from '../../device-block/StackedAlertsInfo';
 import StackedTotAvg from '../../device-block/StackedTotAvg';
@@ -85,7 +86,11 @@ export default function OverviewSiteList({
                     TOTAL_AGGREGATION,
                   )}
                 />,
-                <div key={2} />, // Weather block
+                <WeatherBlock
+                  className='pr-2'
+                  key={2}
+                  weather={site.weather}
+                />,
                 <StackedAlertsInfo
                   activeAlerts={site.info.alertCount}
                   key={3}
