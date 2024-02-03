@@ -107,7 +107,7 @@ export default function SiteDetails() {
 
   return (
     <main className='SiteDetails flex flex-col items-center bg-brand-primary-light dark:bg-neutral-900'>
-      <div className='fade-in my-8 w-[55rem] max-w-full rounded-lg bg-white p-6 shadow-panel sm:p-8 dark:bg-neutral-700'>
+      <div className='fade-in my-8 w-[55rem] max-w-full rounded-lg bg-white p-4 shadow-panel sm:p-8 dark:bg-neutral-700'>
         <NavLink
           className='mb-4 flex items-center text-xs text-neutral-500 hover:underline dark:text-text-secondary'
           to='/'

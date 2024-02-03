@@ -98,7 +98,7 @@ export default function Overview() {
         dailyAverageOutput={dailyAverageOutput}
         dailyOutput={dailyOutputTotal}
       />
-      <div className='Overview fade-in mb-8 w-[55rem] max-w-full bg-white p-6 shadow-panel sm:rounded-lg sm:p-8 dark:bg-neutral-700'>
+      <div className='Overview fade-in mb-8 w-[55rem] max-w-full bg-white p-4 shadow-panel sm:rounded-lg sm:p-8 dark:bg-neutral-700'>
         <div className='mb-4 flex w-full items-center justify-between text-lg font-bold text-black dark:text-neutral-100'>
           Overview
           <TimeIncrementSelector
@@ -107,7 +107,7 @@ export default function Overview() {
           />
         </div>
         <div className='mb-6 flex justify-between'>
-          <div className='grid grid-cols-2 gap-2 sm:grid-cols-4'>
+          <div className='grid grid-cols-2 gap-1 sm:grid-cols-4 sm:gap-2'>
             <StatBlock
               className='text-black dark:text-neutral-100'
               onClick={() => navigate('/sites')}
