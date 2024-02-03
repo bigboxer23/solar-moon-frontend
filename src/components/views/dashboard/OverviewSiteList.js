@@ -52,8 +52,6 @@ export default function OverviewSiteList({
 
   if (loading) return null;
 
-  console.log('siteData', siteData);
-
   return (
     <div className='SiteList mt-5'>
       <div className='mb-6 text-lg font-bold text-black dark:text-neutral-100'>
