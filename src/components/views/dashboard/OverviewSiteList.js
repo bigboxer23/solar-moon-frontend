@@ -9,8 +9,8 @@ import {
   TOTAL_AGGREGATION,
 } from '../../../services/search';
 import PowerBlock from '../../common/PowerBlock';
-import StatBlock from '../../common/StatBlock';
 import DeviceBlock from '../../device-block/DeviceBlock';
+import StackedAlertsInfo from '../../device-block/StackedAlertsInfo';
 import StackedTotAvg from '../../device-block/StackedTotAvg';
 import MiniGraph from '../../graphs/MiniGraph';
 
@@ -85,19 +85,11 @@ export default function OverviewSiteList({
                     TOTAL_AGGREGATION,
                   )}
                 />,
-                <StatBlock
-                  className='text-black dark:text-neutral-100'
-                  key={2}
-                  onClick={() => navigate(`/alerts?device=${site.id}`)}
-                  title='active alerts'
-                  value={site.info.alertCount}
-                />,
-                <StatBlock
-                  className='text-text-secondary'
+                <div key={2} />, // Weather block
+                <StackedAlertsInfo
+                  activeAlerts={site.info.alertCount}
                   key={3}
-                  onClick={() => navigate(`/alerts?device=${site.id}`)}
-                  title='resolved alerts'
-                  value={site.info.alertCount}
+                  resolvedAlerts={site.info.alertCount}
                 />,
               ]}
               subtitle={`- ${site.info.city}, ${site.info.state}`}

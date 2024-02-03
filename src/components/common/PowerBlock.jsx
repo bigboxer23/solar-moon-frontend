@@ -26,7 +26,7 @@ export default function PowerBlock({ className, max, currentPower }) {
       <div className='inline-block self-end text-5xl font-bold leading-[3rem]'>
         {Math.round(currentPower)}
       </div>
-      <div className='mb-1 flex max-w-[3.3rem] flex-col items-start text-base font-bold leading-[1.125rem]'>
+      <div className='mb-1 flex max-w-[3.3rem] flex-col items-start justify-end text-base font-bold leading-[1.125rem]'>
         <div className='text-text-secondary'>kW</div>
         <div>now</div>
       </div>
