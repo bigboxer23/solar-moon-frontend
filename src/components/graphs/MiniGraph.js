@@ -6,7 +6,7 @@ import { splitDayAndNightDataSets } from '../../utils/Utils';
 
 export default function MiniGraph({ className, timeIncrement, graphData }) {
   const style = classNames(
-    'MiniGraph h-20 w-full rounded bg-brand-primary-light dark:bg-neutral-800',
+    'MiniGraph h-20 py-1.5 w-full rounded bg-brand-primary-light dark:bg-neutral-800',
     className,
   );
   const timeSeriesData = parseSearchReturn(graphData.timeSeries);
