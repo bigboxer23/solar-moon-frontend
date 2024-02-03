@@ -31,8 +31,8 @@ export default function DeviceBlock({
       onClick={() => setExpandedDevice(!expandedDevice)}
     >
       <span className='flex items-center text-base font-bold text-black dark:text-neutral-100'>
-        {title}
-        <div className='ml-2 text-xs text-text-secondary'>{subtitle}</div>
+        <div>{title}</div>
+        <div className='ml-2 text-sm text-text-secondary'>{subtitle}</div>
         {expandableBody && (
           <div className='ml-auto'>
             {expandedDevice ? <FaChevronUp /> : <FaChevronDown />}
