@@ -86,7 +86,7 @@ export default function OverviewSiteList({
                 <WeatherBlock
                   className='pr-2'
                   key={2}
-                  weather={site.weather}
+                  weather={site.graphData.weather}
                 />,
                 <StackedAlertsInfo
                   activeAlerts={site.info.alertCount}
