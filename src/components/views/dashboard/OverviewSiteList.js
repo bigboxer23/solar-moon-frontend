@@ -34,7 +34,12 @@ export default function OverviewSiteList({
       const siteInfo = {
         ...site,
         deviceCount: devices.filter((d) => d.site === site.name).length,
-        alertCount: alerts.filter((d) => d.siteId === site.id).length,
+        resolvedAlertCount: alerts
+          .filter((d) => d.siteId === site.id)
+          .filter((d) => d.state === 0).length,
+        activeAlertCount: alerts
+          .filter((d) => d.siteId === site.id)
+          .filter((d) => d.state > 0).length,
       };
       return {
         info: siteInfo,
@@ -89,9 +94,9 @@ export default function OverviewSiteList({
                   weather={site.graphData.weather}
                 />,
                 <StackedAlertsInfo
-                  activeAlerts={site.info.alertCount}
+                  activeAlerts={site.info.activeAlertCount}
                   key={3}
-                  resolvedAlerts={site.info.alertCount}
+                  resolvedAlerts={site.info.resolvedAlertCount}
                 />,
               ]}
               subtitle={`- ${site.info.city}, ${site.info.state}`}
