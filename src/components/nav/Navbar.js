@@ -86,15 +86,6 @@ export default function Navbar() {
           >
             Dashboard
           </NavLink>
-          {/*<LuSun className={separatorStyle} />*/}
-          {/*<NavLink*/}
-          {/*  className={({ isActive }) =>*/}
-          {/*    isActive ? activeLinkStyle : linkStyle*/}
-          {/*  }*/}
-          {/*  to='/sites'*/}
-          {/*>*/}
-          {/*  Sites*/}
-          {/*</NavLink>*/}
           <LuSun className={separatorStyle} />
           <NavLink
             className={({ isActive }) =>
