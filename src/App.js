@@ -40,7 +40,6 @@ import Mapping from './components/views/mapping/Mapping';
 import Profile from './components/views/profile/Profile';
 import Reports from './components/views/reports/Reports';
 import SiteDetails from './components/views/site-details/SiteDetails';
-import SiteList from './components/views/site-list/SiteList';
 import SiteManagement from './components/views/site-management/SiteManagement';
 
 ChartJS.register(
@@ -80,7 +79,6 @@ function App() {
             <Routes>
               <Route element={<Dashboard />} path='/' />
               <Route element={<Reports />} path='/reports' />
-              <Route element={<SiteList />} path='/sites' />
               <Route element={<SiteDetails />} path='/sites/:siteId' />
               <Route element={<Alerts />} path='/alerts' />
               <Route element={<Profile />} path='/profile' />

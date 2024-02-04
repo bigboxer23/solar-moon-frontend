@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { FaArrowLeft } from 'react-icons/fa';
-import { FormattedNumber } from 'react-intl';
 import { NavLink, redirect, useMatch, useNavigate } from 'react-router-dom';
 
 import {
@@ -22,8 +21,8 @@ import {
 import Loader from '../../common/Loader';
 import StatBlock from '../../common/StatBlock';
 import WeatherBlock from '../../common/WeatherBlock';
+import StackedTotAvg from '../../device-block/StackedTotAvg';
 import TimeIncrementSelector from '../dashboard/TimeIncrementSelector';
-import DeviceChart from './DeviceChart';
 import SiteDetailsGraph from './SiteDetailsGraph';
 import SiteDevicesOverview from './SiteDevicesOverview';
 
@@ -47,7 +46,7 @@ export default function SiteDetails() {
   const navigate = useNavigate();
 
   if (!siteId) {
-    return redirect('/sites');
+    return redirect('/');
   }
 
   useEffect(() => {
@@ -72,6 +71,10 @@ export default function SiteDetails() {
 
   const loadSiteOverview = (site, time, start, type, callback) => {
     getSiteOverview(site, start, time, type).then(({ data }) => {
+      if (data === null) {
+        navigate('/');
+        return;
+      }
       setSiteData(data);
       setDevices(
         data.devices
@@ -108,13 +111,13 @@ export default function SiteDetails() {
 
   return (
     <main className='SiteDetails flex flex-col items-center bg-brand-primary-light dark:bg-neutral-900'>
-      <div className='fade-in my-8 w-[55rem] max-w-full rounded-lg bg-white p-6 shadow-panel sm:p-8 dark:bg-neutral-700'>
+      <div className='fade-in my-8 w-[55rem] max-w-full rounded-lg bg-white p-4 shadow-panel sm:p-8 dark:bg-neutral-700'>
         <NavLink
           className='mb-4 flex items-center text-xs text-neutral-500 hover:underline dark:text-text-secondary'
-          to='/sites'
+          to='/'
         >
           <FaArrowLeft className='mr-2 inline-block' size='12' />
-          <span>Back to all sites</span>
+          <span>Back to dashboard</span>
         </NavLink>
         <div className='mb-4 flex justify-between'>
           <div className='flex flex-col'>
@@ -155,26 +158,11 @@ export default function SiteDetails() {
               value={resolvedSiteAlerts.length}
             />
           </div>
-          <div className='ml-auto flex flex-col items-end'>
-            <div className='flex flex-col space-x-1 text-end text-base text-black sm:flex-row dark:text-neutral-100'>
-              <div>Total:</div>
-              <div>
-                <FormattedNumber
-                  value={getAggregationValue(siteData.total, TOTAL_AGGREGATION)}
-                />{' '}
-                kWH
-              </div>
-            </div>
-            <div className='average-output flex flex-col space-x-1 text-end text-xl font-bold text-black sm:flex-row dark:text-neutral-100'>
-              <div>Average:</div>
-              <div>
-                <FormattedNumber
-                  value={getAggregationValue(siteData.avg, AVG_AGGREGATION)}
-                />{' '}
-                kW
-              </div>
-            </div>
-          </div>
+          <StackedTotAvg
+            avg={getAggregationValue(siteData.avg, AVG_AGGREGATION)}
+            className='ml-auto items-end'
+            total={getAggregationValue(siteData.total, TOTAL_AGGREGATION)}
+          />
         </div>
         <SiteDetailsGraph
           deviceNames={devices.map((d) => getDisplayName(d))}
@@ -189,6 +177,7 @@ export default function SiteDetails() {
           activeSiteAlerts={activeSiteAlerts}
           avgData={siteData?.deviceAvg}
           devices={devices}
+          maxData={siteData?.deviceWeeklyMaxPower}
           resolvedSiteAlerts={resolvedSiteAlerts}
           timeSeriesData={siteData?.deviceTimeSeries}
           totalData={siteData?.deviceTotals}

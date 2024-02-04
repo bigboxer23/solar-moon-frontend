@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { FormattedNumber } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
 import {
@@ -16,8 +15,9 @@ import {
 } from '../../../utils/Utils';
 import Loader from '../../common/Loader';
 import StatBlock from '../../common/StatBlock';
-import OverviewSiteList from './dashboard-site-list/OverviewSiteList';
+import StackedTotAvg from '../../device-block/StackedTotAvg';
 import OverviewChart from './OverviewChart';
+import OverviewSiteList from './OverviewSiteList';
 import SummaryHeader from './SummaryHeader';
 import TimeIncrementSelector from './TimeIncrementSelector';
 
@@ -98,7 +98,7 @@ export default function Overview() {
         dailyAverageOutput={dailyAverageOutput}
         dailyOutput={dailyOutputTotal}
       />
-      <div className='Overview fade-in mb-8 w-[55rem] max-w-full bg-white p-6 shadow-panel sm:rounded-lg sm:p-8 dark:bg-neutral-700'>
+      <div className='Overview fade-in mb-8 w-[55rem] max-w-full bg-white p-4 shadow-panel sm:rounded-lg sm:p-8 dark:bg-neutral-700'>
         <div className='mb-4 flex w-full items-center justify-between text-lg font-bold text-black dark:text-neutral-100'>
           Overview
           <TimeIncrementSelector
@@ -107,7 +107,7 @@ export default function Overview() {
           />
         </div>
         <div className='mb-6 flex justify-between'>
-          <div className='grid grid-cols-2 gap-2 sm:grid-cols-4'>
+          <div className='grid grid-cols-2 gap-1 sm:grid-cols-4 sm:gap-2'>
             <StatBlock
               className='text-black dark:text-neutral-100'
               onClick={() => navigate('/sites')}
@@ -137,20 +137,11 @@ export default function Overview() {
               value={resolvedAlerts.length}
             />
           </div>
-          <div className='flex flex-col items-end'>
-            <div className='flex flex-col space-x-1 text-end text-base text-black sm:flex-row dark:text-neutral-100'>
-              <div>Total:</div>
-              <div>
-                <FormattedNumber value={totalOutput} /> kWH
-              </div>
-            </div>
-            <div className='average-output flex flex-col space-x-1 text-end text-xl font-bold text-black sm:flex-row dark:text-neutral-100'>
-              <div>Average:</div>
-              <div>
-                <FormattedNumber value={averageOutput} /> kW
-              </div>
-            </div>
-          </div>
+          <StackedTotAvg
+            avg={averageOutput}
+            className='ml-auto items-end'
+            total={totalOutput}
+          />
         </div>
         <OverviewChart
           overviewData={overallTimeSeries}
