@@ -138,8 +138,8 @@ export default function SiteDetails() {
             timeIncrement={timeIncrement}
           />
         </div>
-        <div className='mb-4 flex'>
-          <div className='grid grid-cols-2 place-items-center gap-2  sm:grid-cols-4'>
+        <div className='mb-4 flex justify-between'>
+          <div className='flex flex-col sm:flex-row sm:items-center sm:space-x-6'>
             <PowerBlock
               currentPower={parseCurrentPower(siteData?.weeklyMaxPower)}
               max={parseMaxData(siteData?.weeklyMaxPower)}
@@ -149,16 +149,24 @@ export default function SiteDetails() {
             )}
             <StackedAlertsInfo
               activeAlerts={activeSiteAlerts.length}
-              key={3}
+              className='hidden sm:flex'
               onClick={() => navigate(`/alerts?site=${siteId}`)}
               resolvedAlerts={resolvedSiteAlerts.length}
             />
           </div>
-          <StackedTotAvg
-            avg={getAggregationValue(siteData.avg, AVG_AGGREGATION)}
-            className='ml-auto items-end'
-            total={getAggregationValue(siteData.total, TOTAL_AGGREGATION)}
-          />
+          <div className='flex flex-col'>
+            <StackedTotAvg
+              avg={getAggregationValue(siteData.avg, AVG_AGGREGATION)}
+              className='ml-auto items-end'
+              total={getAggregationValue(siteData.total, TOTAL_AGGREGATION)}
+            />
+            <StackedAlertsInfo
+              activeAlerts={activeSiteAlerts.length}
+              className='flex items-end sm:hidden'
+              onClick={() => navigate(`/alerts?site=${siteId}`)}
+              resolvedAlerts={resolvedSiteAlerts.length}
+            />
+          </div>
         </div>
         <SiteDetailsGraph
           deviceNames={devices.map((d) => getDisplayName(d))}

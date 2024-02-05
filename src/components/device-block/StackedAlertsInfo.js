@@ -4,11 +4,12 @@ export default function StackedAlertsInfo({
   activeAlerts,
   resolvedAlerts,
   onClick,
+  className,
 }) {
   const activeAlertsStyle =
     activeAlerts > 0 ? 'text-red-500' : 'text-text-secondary';
 
-  const style = classNames('flex flex-col items-start text-base', {
+  const style = classNames('flex flex-col items-start text-base', className, {
     'cursor-pointer': onClick,
   });
 
