@@ -129,7 +129,6 @@ export default function Overview() {
           <div className='flex flex-col sm:flex-row sm:items-center sm:space-x-6'>
             <PowerBlock currentPower={currentPower} max={maxPower} />
             <StackedStatBlock
-              className='hidden sm:flex'
               lowerTitle='devices'
               lowerValue={devices.length}
               upperTitle='sites'
