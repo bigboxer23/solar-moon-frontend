@@ -4,14 +4,18 @@ import { getWeatherIcon } from '../../utils/Utils';
 
 // TODO: Pretty UV Index
 
-export default function WeatherBlock({ weather, className = '' }) {
+export default function WeatherBlock({
+  weather,
+  className = '',
+  wrapperClassName = '',
+}) {
   const style = classNames(
     'WeatherBlock text-black dark:text-neutral-100 flex items-center font-bold mt-1',
     className,
   );
 
   return (
-    <div>
+    <div className={wrapperClassName}>
       {weather && (
         <div className={style} title={weather?.weatherSummary}>
           <div className='flex flex-col justify-end'>
