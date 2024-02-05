@@ -1,10 +1,10 @@
 import classNames from 'classnames';
 
-export default function PowerIcon({ percent, max }) {
+export default function PowerIcon({ percent }) {
   const getColor = (percent) => {
     if (percent < 15) return 'bg-red-500';
     if (percent > 95) return 'bg-green-500';
-    return 'bg-black dark:bg-neutral-100';
+    return 'bg-brand-primary';
   };
 
   return (
