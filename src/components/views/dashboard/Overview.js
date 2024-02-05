@@ -5,6 +5,8 @@ import {
   AVG_AGGREGATION,
   DAY,
   getAggregationValue,
+  parseCurrentPower,
+  parseMaxData,
   TOTAL_AGGREGATION,
 } from '../../../services/search';
 import { getOverviewData } from '../../../services/services';
@@ -14,7 +16,9 @@ import {
   useStickyState,
 } from '../../../utils/Utils';
 import Loader from '../../common/Loader';
-import StatBlock from '../../common/StatBlock';
+import PowerBlock from '../../common/PowerBlock';
+import StackedStatBlock from '../../common/StackedStatBlock';
+import StackedAlertsInfo from '../../device-block/StackedAlertsInfo';
 import StackedTotAvg from '../../device-block/StackedTotAvg';
 import OverviewChart from './OverviewChart';
 import OverviewSiteList from './OverviewSiteList';
@@ -39,6 +43,9 @@ export default function Overview() {
   const [sitesGraphData, setSitesGraphData] = useState(null);
   const [dailyOutputTotal, setDailyOutputTotal] = useState(0);
   const [dailyAverageOutput, setDailyAverageOutput] = useState(0);
+  const [maxPower, setMaxPower] = useState(0);
+  const [currentPower, setCurrentPower] = useState(0);
+
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -47,6 +54,7 @@ export default function Overview() {
       handleDevices(data.devices);
       handleAlarms(data.alarms);
       handleOverviewTotal(data.overall.avg, data.overall.total);
+      handleMax(data.sitesOverviewData);
       setOverallTimeSeries(data.overall.timeSeries);
       setSitesGraphData(data.sitesOverviewData);
       handleSummaryHeader(data.overall);
@@ -69,6 +77,17 @@ export default function Overview() {
   const handleAlarms = (data) => {
     setResolvedAlerts(data.filter((d) => d.state === 0));
     setActiveAlerts(data.filter((d) => d.state > 0));
+  };
+
+  const handleMax = (data) => {
+    let max = 0;
+    let currentPower = 0;
+    Object.entries(data).forEach(([siteName, data]) => {
+      max += parseMaxData(data?.weeklyMaxPower);
+      currentPower += parseCurrentPower(data?.weeklyMaxPower);
+    });
+    setMaxPower(max);
+    setCurrentPower(currentPower);
   };
   const handleDevices = (data) => {
     const sites = data.filter((d) => d.isSite).sort(sortDevices);
@@ -107,41 +126,35 @@ export default function Overview() {
           />
         </div>
         <div className='mb-6 flex justify-between'>
-          <div className='grid grid-cols-2 gap-1 sm:grid-cols-4 sm:gap-2'>
-            <StatBlock
-              className='text-black dark:text-neutral-100'
-              onClick={() => navigate('/sites')}
-              title='sites'
-              value={sites.length}
+          <div className='flex flex-col sm:flex-row sm:items-center sm:space-x-6'>
+            <PowerBlock currentPower={currentPower} max={maxPower} />
+            <StackedStatBlock
+              className='hidden sm:flex'
+              lowerTitle='devices'
+              lowerValue={devices.length}
+              upperTitle='sites'
+              upperValue={sites.length}
             />
-            <StatBlock
-              className='mr-2 text-black dark:text-neutral-100'
-              title='devices'
-              value={devices.length}
-            />
-            <StatBlock
-              className={
-                'cursor-pointer' +
-                (activeAlerts > 0
-                  ? ' text-danger'
-                  : 'text-black dark:text-neutral-100')
-              }
+            <StackedAlertsInfo
+              activeAlerts={activeAlerts.length}
+              className='hidden sm:flex'
               onClick={() => navigate('/alerts')}
-              title='active alerts'
-              value={activeAlerts.length}
-            />
-            <StatBlock
-              className='text-text-secondary'
-              onClick={() => navigate('/alerts')}
-              title='resolved alerts'
-              value={resolvedAlerts.length}
+              resolvedAlerts={resolvedAlerts.length}
             />
           </div>
-          <StackedTotAvg
-            avg={averageOutput}
-            className='ml-auto items-end'
-            total={totalOutput}
-          />
+          <div className='flex flex-col'>
+            <StackedTotAvg
+              avg={averageOutput}
+              className='ml-auto items-end'
+              total={totalOutput}
+            />
+            <StackedAlertsInfo
+              activeAlerts={activeAlerts.length}
+              className='flex items-end sm:hidden'
+              onClick={() => navigate('/alerts')}
+              resolvedAlerts={resolvedAlerts.length}
+            />
+          </div>
         </div>
         <OverviewChart
           overviewData={overallTimeSeries}
