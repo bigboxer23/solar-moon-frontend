@@ -7,6 +7,8 @@ import {
   DAY,
   getAggregationValue,
   GROUPED_BAR,
+  parseCurrentPower,
+  parseMaxData,
   parseSearchReturn,
   parseStackedTimeSeriesData,
   TOTAL_AGGREGATION,
@@ -19,8 +21,9 @@ import {
   useStickyState,
 } from '../../../utils/Utils';
 import Loader from '../../common/Loader';
-import StatBlock from '../../common/StatBlock';
+import PowerBlock from '../../common/PowerBlock';
 import WeatherBlock from '../../common/WeatherBlock';
+import StackedAlertsInfo from '../../device-block/StackedAlertsInfo';
 import StackedTotAvg from '../../device-block/StackedTotAvg';
 import TimeIncrementSelector from '../dashboard/TimeIncrementSelector';
 import SiteDetailsGraph from './SiteDetailsGraph';
@@ -136,26 +139,19 @@ export default function SiteDetails() {
           />
         </div>
         <div className='mb-4 flex'>
-          <div className='grid grid-cols-2 gap-2 sm:grid-cols-4'>
+          <div className='grid grid-cols-2 place-items-center gap-2  sm:grid-cols-4'>
+            <PowerBlock
+              currentPower={parseCurrentPower(siteData?.weeklyMaxPower)}
+              max={parseMaxData(siteData?.weeklyMaxPower)}
+            />
             {siteData?.weather && (
               <WeatherBlock className='pr-2' weather={siteData?.weather} />
             )}
-            <StatBlock
-              className='text-black dark:text-neutral-100'
-              title='devices'
-              value={devices.length}
-            />
-            <StatBlock
-              className='text-black dark:text-neutral-100'
+            <StackedAlertsInfo
+              activeAlerts={activeSiteAlerts.length}
+              key={3}
               onClick={() => navigate(`/alerts?site=${siteId}`)}
-              title='active alerts'
-              value={activeSiteAlerts.length}
-            />
-            <StatBlock
-              className='text-text-secondary'
-              onClick={() => navigate(`/alerts?site=${siteId}`)}
-              title='resolved alerts'
-              value={resolvedSiteAlerts.length}
+              resolvedAlerts={resolvedSiteAlerts.length}
             />
           </div>
           <StackedTotAvg
