@@ -9,7 +9,7 @@ export default function StackedStatBlock({
   lowerTitle,
 }) {
   const style = classNames(
-    'flex flex-col items-start text-base font-bold text-lg',
+    'flex flex-col items-start font-bold text-lg text-black dark:text-neutral-100',
     className,
     {
       'cursor-pointer': onClick,
