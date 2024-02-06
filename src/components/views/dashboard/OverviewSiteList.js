@@ -70,7 +70,11 @@ export default function OverviewSiteList({
               }
               className='w-full'
               key={site.info.deviceName}
-              secondaryTitle={`${site.info.city}, ${site.info.state}`}
+              secondaryTitle={
+                site.info?.city && site.info?.state
+                  ? `${site.info.city}, ${site.info.state}`
+                  : ' '
+              }
               statBlocks={[
                 <CurrentPowerBlock
                   currentPower={parseCurrentPower(
@@ -87,15 +91,12 @@ export default function OverviewSiteList({
                     TOTAL_AGGREGATION,
                   )}
                 />,
-                site.graphData.weather ? (
-                  <WeatherBlock
-                    className='pr-2'
-                    key={2}
-                    weather={site.graphData.weather}
-                  />
-                ) : (
-                  <div key={2} />
-                ),
+                <WeatherBlock
+                  className='pr-2'
+                  key={2}
+                  weather={site.graphData.weather}
+                  wrapperClassName='min-h-[44px]'
+                />,
                 <StackedAlertsInfo
                   activeAlerts={site.info.activeAlertCount}
                   key={3}
