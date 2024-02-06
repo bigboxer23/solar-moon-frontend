@@ -142,7 +142,7 @@ export default function SiteDetails() {
           />
         </div>
         <div className='mb-4 flex justify-between'>
-          <div className='flex items-center space-x-6'>
+          <div className='flex flex-col sm:flex-row sm:items-center sm:space-x-6'>
             <CurrentPowerBlock
               currentPower={parseCurrentPower(siteData?.weeklyMaxPower)}
               max={parseMaxData(siteData?.weeklyMaxPower)}
@@ -151,12 +151,6 @@ export default function SiteDetails() {
               className='pr-2'
               weather={siteData?.weather}
               wrapperClassName='size-full sm:size-auto'
-            />
-            <StackedAlertsInfo
-              activeAlerts={activeSiteAlerts.length}
-              className='flex md:hidden'
-              onClick={() => navigate('/alerts')}
-              resolvedAlerts={resolvedSiteAlerts.length}
             />
             <StatBlock
               className={classNames('hidden md:flex', {
@@ -172,7 +166,7 @@ export default function SiteDetails() {
               value={resolvedSiteAlerts.length}
             />
           </div>
-          <div className='flex space-x-6'>
+          <div className='flex flex-col space-x-6 md:flex-row'>
             <PowerBlock
               className='hidden md:flex'
               power={getAggregationValue(siteData.total, TOTAL_AGGREGATION)}
@@ -187,6 +181,12 @@ export default function SiteDetails() {
               avg={getAggregationValue(siteData.avg, AVG_AGGREGATION)}
               className='ml-auto block items-end md:hidden'
               total={getAggregationValue(siteData.total, TOTAL_AGGREGATION)}
+            />
+            <StackedAlertsInfo
+              activeAlerts={activeSiteAlerts.length}
+              className='mt-2 flex items-end md:hidden'
+              onClick={() => navigate('/alerts')}
+              resolvedAlerts={resolvedSiteAlerts.length}
             />
           </div>
         </div>
