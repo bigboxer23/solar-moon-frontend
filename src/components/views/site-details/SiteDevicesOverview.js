@@ -59,7 +59,6 @@ export default function SiteDevicesOverview({
                   )}
                 />,
                 <StatBlock
-                  className='text-black dark:text-neutral-100'
                   key={2}
                   onClick={() => navigate(`/alerts?device=${device.id}`)}
                   title='active alerts'
@@ -69,7 +68,7 @@ export default function SiteDevicesOverview({
                   }
                 />,
                 <StatBlock
-                  className='text-text-secondary'
+                  className='text-text-secondary dark:text-text-secondary'
                   key={3}
                   onClick={() => navigate(`/alerts?device=${device.id}`)}
                   title='resolved alerts'

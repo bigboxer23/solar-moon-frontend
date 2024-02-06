@@ -144,9 +144,11 @@ export default function SiteDetails() {
               currentPower={parseCurrentPower(siteData?.weeklyMaxPower)}
               max={parseMaxData(siteData?.weeklyMaxPower)}
             />
-            {siteData?.weather && (
-              <WeatherBlock className='pr-2' weather={siteData?.weather} />
-            )}
+            <WeatherBlock
+              className='pr-2'
+              weather={siteData?.weather}
+              wrapperClassName='size-full sm:size-auto'
+            />
             <StackedAlertsInfo
               activeAlerts={activeSiteAlerts.length}
               className='hidden sm:flex'

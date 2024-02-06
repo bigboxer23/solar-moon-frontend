@@ -7,7 +7,7 @@ export default function StackedAlertsInfo({
   className,
 }) {
   const activeAlertsStyle =
-    activeAlerts > 0 ? 'text-red-500' : 'text-text-secondary';
+    activeAlerts > 0 ? 'text-red-500' : 'text-black dark:text-neutral-100';
 
   const style = classNames('flex flex-col items-start text-base', className, {
     'cursor-pointer': onClick,
