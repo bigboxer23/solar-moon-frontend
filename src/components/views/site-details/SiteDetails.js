@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import { FaArrowLeft } from 'react-icons/fa';
 import { NavLink, redirect, useMatch, useNavigate } from 'react-router-dom';
@@ -20,8 +21,10 @@ import {
   sortDevices,
   useStickyState,
 } from '../../../utils/Utils';
+import CurrentPowerBlock from '../../common/CurrentPowerBlock';
 import Loader from '../../common/Loader';
 import PowerBlock from '../../common/PowerBlock';
+import StatBlock from '../../common/StatBlock';
 import WeatherBlock from '../../common/WeatherBlock';
 import StackedAlertsInfo from '../../device-block/StackedAlertsInfo';
 import StackedTotAvg from '../../device-block/StackedTotAvg';
@@ -139,8 +142,8 @@ export default function SiteDetails() {
           />
         </div>
         <div className='mb-4 flex justify-between'>
-          <div className='flex flex-col sm:flex-row sm:items-center sm:space-x-6'>
-            <PowerBlock
+          <div className='flex items-center space-x-6'>
+            <CurrentPowerBlock
               currentPower={parseCurrentPower(siteData?.weeklyMaxPower)}
               max={parseMaxData(siteData?.weeklyMaxPower)}
             />
@@ -151,22 +154,39 @@ export default function SiteDetails() {
             />
             <StackedAlertsInfo
               activeAlerts={activeSiteAlerts.length}
-              className='hidden sm:flex'
-              onClick={() => navigate(`/alerts?site=${siteId}`)}
+              className='flex md:hidden'
+              onClick={() => navigate('/alerts')}
               resolvedAlerts={resolvedSiteAlerts.length}
+            />
+            <StatBlock
+              className={classNames('hidden md:flex', {
+                'text-danger': activeSiteAlerts.length > 0,
+                'text-text-secondary': activeSiteAlerts.length === 0,
+              })}
+              title='active alerts'
+              value={activeSiteAlerts.length}
+            />
+            <StatBlock
+              className='hidden text-text-secondary md:flex'
+              title='resolved alerts'
+              value={resolvedSiteAlerts.length}
             />
           </div>
-          <div className='flex flex-col'>
+          <div className='flex space-x-6'>
+            <PowerBlock
+              className='hidden md:flex'
+              power={getAggregationValue(siteData.total, TOTAL_AGGREGATION)}
+              title='total'
+            />
+            <PowerBlock
+              className='hidden md:flex'
+              power={getAggregationValue(siteData.avg, AVG_AGGREGATION)}
+              title='average'
+            />
             <StackedTotAvg
               avg={getAggregationValue(siteData.avg, AVG_AGGREGATION)}
-              className='ml-auto items-end'
+              className='ml-auto block items-end md:hidden'
               total={getAggregationValue(siteData.total, TOTAL_AGGREGATION)}
-            />
-            <StackedAlertsInfo
-              activeAlerts={activeSiteAlerts.length}
-              className='flex items-end sm:hidden'
-              onClick={() => navigate(`/alerts?site=${siteId}`)}
-              resolvedAlerts={resolvedSiteAlerts.length}
             />
           </div>
         </div>

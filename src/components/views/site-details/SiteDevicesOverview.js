@@ -11,7 +11,7 @@ import {
   TOTAL_REAL_POWER,
 } from '../../../services/search';
 import { getDisplayName } from '../../../utils/Utils';
-import PowerBlock from '../../common/PowerBlock';
+import CurrentPowerBlock from '../../common/CurrentPowerBlock';
 import StatBlock from '../../common/StatBlock';
 import DeviceBlock from '../../device-block/DeviceBlock';
 import StackedTotAvg from '../../device-block/StackedTotAvg';
@@ -45,7 +45,7 @@ export default function SiteDevicesOverview({
               }
               key={device.id}
               statBlocks={[
-                <PowerBlock
+                <CurrentPowerBlock
                   currentPower={parseCurrentPower(maxData[device.id])}
                   key={0}
                   max={parseMaxData(maxData[device.id])}
@@ -59,6 +59,7 @@ export default function SiteDevicesOverview({
                   )}
                 />,
                 <StatBlock
+                  className='ml-[18px]'
                   key={2}
                   onClick={() => navigate(`/alerts?device=${device.id}`)}
                   title='active alerts'

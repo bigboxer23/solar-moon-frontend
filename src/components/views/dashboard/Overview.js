@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -15,9 +16,10 @@ import {
   sortDevices,
   useStickyState,
 } from '../../../utils/Utils';
+import CurrentPowerBlock from '../../common/CurrentPowerBlock';
 import Loader from '../../common/Loader';
 import PowerBlock from '../../common/PowerBlock';
-import StackedStatBlock from '../../common/StackedStatBlock';
+import StatBlock from '../../common/StatBlock';
 import StackedAlertsInfo from '../../device-block/StackedAlertsInfo';
 import StackedTotAvg from '../../device-block/StackedTotAvg';
 import OverviewChart from './OverviewChart';
@@ -126,32 +128,43 @@ export default function Overview() {
           />
         </div>
         <div className='mb-6 flex justify-between'>
-          <div className='flex flex-col sm:flex-row sm:items-center sm:space-x-6'>
-            <PowerBlock currentPower={currentPower} max={maxPower} />
-            <StackedStatBlock
-              lowerTitle='devices'
-              lowerValue={devices.length}
-              upperTitle='sites'
-              upperValue={sites.length}
-            />
+          <div className='flex flex-row items-center space-x-6'>
+            <CurrentPowerBlock currentPower={currentPower} max={maxPower} />
             <StackedAlertsInfo
               activeAlerts={activeAlerts.length}
-              className='hidden sm:flex'
+              className='flex md:hidden'
               onClick={() => navigate('/alerts')}
               resolvedAlerts={resolvedAlerts.length}
+            />
+            <StatBlock
+              className={classNames('hidden md:flex', {
+                'text-danger': activeAlerts.length > 0,
+                'text-text-secondary': activeAlerts.length === 0,
+              })}
+              title='active alerts'
+              value={activeAlerts.length}
+            />
+            <StatBlock
+              className='hidden text-text-secondary md:flex'
+              title='resolved alerts'
+              value={resolvedAlerts.length}
             />
           </div>
-          <div className='flex flex-col'>
+          <div className='flex space-x-2 sm:space-x-6'>
+            <PowerBlock
+              className='hidden md:flex'
+              power={totalOutput}
+              title='total'
+            />
+            <PowerBlock
+              className='hidden md:flex'
+              power={averageOutput}
+              title='average'
+            />
             <StackedTotAvg
               avg={averageOutput}
-              className='ml-auto items-end'
+              className='ml-auto block items-end md:hidden'
               total={totalOutput}
-            />
-            <StackedAlertsInfo
-              activeAlerts={activeAlerts.length}
-              className='flex items-end sm:hidden'
-              onClick={() => navigate('/alerts')}
-              resolvedAlerts={resolvedAlerts.length}
             />
           </div>
         </div>
