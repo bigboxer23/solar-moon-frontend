@@ -128,7 +128,7 @@ export default function Overview() {
           />
         </div>
         <div className='mb-6 flex justify-between'>
-          <div className='flex flex-row items-center space-x-6'>
+          <div className='flex flex-row items-start space-x-6 sm:items-center'>
             <CurrentPowerBlock currentPower={currentPower} max={maxPower} />
             <StackedAlertsInfo
               activeAlerts={activeAlerts.length}
