@@ -8,7 +8,7 @@ export default function ProfileMenu() {
   const { user, signOut } = useAuthenticator((context) => [context.user]);
 
   const menuItemClassName =
-    'flex items-center space-x-2 text-text-primary hover:bg-gray-200 dark:bg-gray-600 px-4 py-1 hover:dark:bg-gray-500 cursor-pointer';
+    'flex items-center space-x-2 text-text-primary hover:bg-gray-200 dark:bg-gray-700 px-4 py-1 hover:dark:bg-gray-500 cursor-pointer';
 
   return (
     <div className='ProfileMenu text-black dark:text-gray-100'>
@@ -20,7 +20,7 @@ export default function ProfileMenu() {
             <Avatar user={user} />
           </MenuButton>
         }
-        menuClassName='bg-white dark:bg-gray-600 shadow-panel rounded-md py-2 w-36'
+        menuClassName='bg-white dark:bg-gray-700 shadow-panel rounded-md py-2 w-36'
       >
         <MenuItem className={menuItemClassName}>
           <NavLink to='/profile'>Profile</NavLink>

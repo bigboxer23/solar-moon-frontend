@@ -62,12 +62,16 @@ export default function DeviceChart({ graphData }) {
       x: {
         type: 'time',
         ticks: {
+          color: '#9ca3af',
           stepSize: 6,
           callback: formatXAxisLabels,
         },
       },
       y: {
         stacked: true,
+        ticks: {
+          color: '#9ca3af',
+        },
         title: {
           display: false,
         },
@@ -76,7 +80,7 @@ export default function DeviceChart({ graphData }) {
   };
 
   return (
-    <div className='DeviceChart h-40 w-full rounded-lg bg-brand-primary-light p-2 dark:bg-gray-800'>
+    <div className='DeviceChart h-40 w-full rounded-lg bg-brand-primary-light p-2 dark:bg-gray-900'>
       <Line data={data} options={options} plugins={[tooltipPlugin]} />
     </div>
   );

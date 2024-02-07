@@ -62,6 +62,9 @@ export default function SiteDetailsGraph({
     plugins: {
       legend: {
         position: 'bottom',
+        labels: {
+          color: '#9ca3af',
+        },
       },
       tooltip: {
         backgroundColor: '#fff',
@@ -92,12 +95,17 @@ export default function SiteDetailsGraph({
         stacked: graphType !== GROUPED_BAR,
         type: 'time',
         ticks: {
+          color: '#9ca3af',
           callback: timeIncrement === DAY ? null : formatXAxisLabels,
         },
       },
       y: {
+        color: '#9ca3af',
         min: 0,
         stacked: graphType !== GROUPED_BAR,
+        ticks: {
+          color: '#9ca3af',
+        },
         title: {
           display: false,
         },
@@ -114,10 +122,10 @@ export default function SiteDetailsGraph({
 
   return (
     <>
-      <div className='SiteDetailsGraph group relative mb-6 w-full rounded-lg bg-brand-primary-light p-3 dark:bg-gray-800'>
+      <div className='SiteDetailsGraph group relative mb-6 w-full rounded-lg bg-brand-primary-light p-3 dark:bg-gray-900'>
         <div className='mb-2 flex items-center justify-between'>
           <div className='flex w-fit items-center'>
-            <div className='mr-1 flex w-fit rounded bg-white dark:bg-gray-600 dark:text-gray-100'>
+            <div className='mr-1 flex w-fit rounded bg-white dark:bg-gray-700 dark:text-gray-100'>
               <button
                 aria-label='previous time period'
                 className='rounded-l px-2 py-1 hover:bg-gray-200 dark:border-gray-600 dark:hover:bg-gray-500 dark:hover:text-gray-100'
@@ -141,7 +149,7 @@ export default function SiteDetailsGraph({
               {timeLabel(startDate, timeIncrement)}
             </div>
           </div>
-          <div className='flex w-fit rounded bg-white dark:bg-gray-600 dark:text-gray-100'>
+          <div className='flex w-fit rounded bg-white dark:bg-gray-700 dark:text-gray-100'>
             <button
               aria-label='site stacked line graph'
               className={classNames(

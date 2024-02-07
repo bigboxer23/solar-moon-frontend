@@ -14,7 +14,7 @@ export default function DeviceBlock({
   const [expandedDevice, setExpandedDevice] = useState(false);
 
   const style = classNames(
-    'DeviceBlock rounded-lg p-4 sm:p-6 bg-gray-50 dark:bg-gray-600 h-fit',
+    'DeviceBlock rounded-lg p-4 sm:p-6 bg-gray-50 dark:bg-gray-700 h-fit',
     className,
   );
 

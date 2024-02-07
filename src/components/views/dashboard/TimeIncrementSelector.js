@@ -15,12 +15,12 @@ export default function TimeIncrementSelector({
     <div className='TimeIncrementSelector'>
       <Menu
         menuButton={
-          <MenuButton className='flex items-center border-0 bg-white p-2 text-sm text-black dark:bg-gray-700 dark:text-gray-100'>
+          <MenuButton className='flex items-center border-0 bg-white p-2 text-sm text-black dark:bg-gray-800 dark:text-gray-100'>
             {timeIncrementToText(timeIncrement, false)}
             <FaChevronDown className='ml-2' />
           </MenuButton>
         }
-        menuClassName='py-2 pl-0 w-[6.25rem] rounded-lg flex flex-col list-none bg-white dark:bg-gray-600 shadow-panel z-10'
+        menuClassName='py-2 pl-0 w-[6.25rem] rounded-lg flex flex-col list-none bg-white dark:bg-gray-700 shadow-panel z-10'
         onItemClick={({ value }) => setTimeIncrement(value)}
       >
         <MenuItem className={menuItemClass} value={DAY}>

@@ -105,10 +105,10 @@ export default function Alerts() {
   }
 
   return (
-    <main className='Alerts flex w-full flex-col items-center justify-center bg-brand-primary-light dark:bg-gray-900'>
+    <main className='Alerts flex w-full flex-col items-center justify-center bg-brand-primary-light dark:bg-gray-950'>
       {loading && <Loader />}
       {!loading && (
-        <div className='fade-in my-8 w-[55rem] max-w-full rounded-lg bg-white p-6 shadow-panel sm:p-8 dark:bg-gray-700'>
+        <div className='fade-in my-8 w-[55rem] max-w-full rounded-lg bg-white p-6 shadow-panel sm:p-8 dark:bg-gray-800'>
           <div className='mb-10 flex w-full justify-between'>
             <span className='text-lg font-bold text-black dark:text-gray-100'>
               Alerts

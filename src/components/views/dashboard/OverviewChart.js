@@ -158,10 +158,14 @@ export default function OverviewChart({
         stacked: true,
         ticks: {
           stepSize: 6,
+          color: '#9ca3af',
           callback: timeIncrement === DAY ? null : formatXAxisLabels,
         },
       },
       y: {
+        ticks: {
+          color: '#9ca3af',
+        },
         min: 0,
         stacked: true,
         title: {
@@ -177,6 +181,9 @@ export default function OverviewChart({
     plugins: {
       legend: {
         position: 'bottom',
+        labels: {
+          color: '#9ca3af',
+        },
       },
       tooltip: {
         backgroundColor: '#fff',
@@ -209,10 +216,10 @@ export default function OverviewChart({
   if (loading) return null;
 
   return (
-    <div className='OverviewChart mb-6 w-full rounded-lg bg-brand-primary-light p-3 dark:bg-gray-800'>
+    <div className='OverviewChart mb-6 w-full rounded-lg bg-brand-primary-light p-3 dark:bg-gray-900'>
       <div className='mb-2 flex items-center justify-between'>
         <div className='flex w-fit items-center'>
-          <div className='mr-1 flex w-fit rounded bg-white sm:me-4 dark:bg-gray-600 dark:text-gray-100'>
+          <div className='mr-1 flex w-fit rounded bg-white sm:me-4 dark:bg-gray-700 dark:text-gray-100'>
             <button
               aria-label='previous time period'
               className='rounded-l px-2 py-1 hover:bg-gray-200 dark:border-gray-600 dark:hover:bg-gray-500 dark:hover:text-gray-100'
@@ -236,7 +243,7 @@ export default function OverviewChart({
             {timeLabel(startDate, timeIncrement)}
           </div>
         </div>
-        <div className='flex items-center rounded bg-white dark:border-gray-600 dark:bg-gray-600 dark:text-gray-100'>
+        <div className='flex items-center rounded bg-white dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100'>
           <button
             aria-label='grouped bar graph'
             className={classNames(

@@ -22,7 +22,7 @@ export default function Dashboard() {
     maybeRedirect();
   }, []);
   return (
-    <main className='Home2 flex flex-col items-center bg-brand-primary-light dark:bg-gray-900'>
+    <main className='Home2 flex flex-col items-center bg-brand-primary-light dark:bg-gray-950'>
       <Overview />
     </main>
   );

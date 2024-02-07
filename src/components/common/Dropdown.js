@@ -17,7 +17,7 @@ export default function Dropdown({
       <Menu
         gap={8}
         menuButton={
-          <MenuButton className='border-1 flex items-center rounded-full border-solid border-border-color bg-white text-black dark:bg-gray-700 dark:text-gray-100'>
+          <MenuButton className='border-1 flex items-center rounded-full border-solid border-border-color bg-white text-black dark:bg-gray-800 dark:text-gray-100'>
             {prefixLabel && (
               <span className='mr-2 font-bold'>{prefixLabel}:</span>
             )}
@@ -25,7 +25,7 @@ export default function Dropdown({
             <FaChevronDown className='ml-2' size='14' />
           </MenuButton>
         }
-        menuClassName='pl-0 py-2 w-[9rem] rounded-lg flex flex-col list-none bg-white dark:bg-gray-600 shadow-panel z-10'
+        menuClassName='pl-0 py-2 w-[9rem] rounded-lg flex flex-col list-none bg-white dark:bg-gray-700 shadow-panel z-10'
       >
         {options.map((option) => {
           if (option.divider)
