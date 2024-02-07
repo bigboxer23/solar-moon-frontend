@@ -64,7 +64,7 @@ export default function Navbar() {
 
   return (
     <>
-      <div className='Navbar2 flex h-[4.5rem] w-full items-center justify-between border-b border-gray-400 bg-brand-primary-light sm:h-[6.25rem] dark:border-b-0 dark:bg-gray-950'>
+      <div className='Navbar2 flex h-[4.5rem] w-full items-center justify-between border-b border-gray-400 sm:h-[6.25rem] dark:border-b-0'>
         <NavLink className='flex items-center justify-center' to='/'>
           <img
             alt='brand'

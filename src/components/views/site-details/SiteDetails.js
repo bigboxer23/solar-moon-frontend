@@ -116,7 +116,7 @@ export default function SiteDetails() {
   }
 
   return (
-    <main className='SiteDetails flex flex-col items-center bg-brand-primary-light dark:bg-gray-950'>
+    <main className='SiteDetails flex flex-col items-center'>
       <div className='fade-in my-8 w-[55rem] max-w-full rounded-lg bg-white p-4 shadow-panel sm:p-8 dark:bg-gray-800'>
         <NavLink
           className='mb-4 flex items-center text-xs text-gray-500 hover:underline dark:text-gray-400'

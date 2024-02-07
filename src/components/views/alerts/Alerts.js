@@ -105,7 +105,7 @@ export default function Alerts() {
   }
 
   return (
-    <main className='Alerts flex w-full flex-col items-center justify-center bg-brand-primary-light dark:bg-gray-950'>
+    <main className='Alerts flex w-full flex-col items-center justify-center'>
       {loading && <Loader />}
       {!loading && (
         <div className='fade-in my-8 w-[55rem] max-w-full rounded-lg bg-white p-6 shadow-panel sm:p-8 dark:bg-gray-800'>
