@@ -7,7 +7,7 @@
     background-color: theme('colors.gray.800') !important;
   }
   .amplify-input {
-    background-color: theme('colors.gray.700') !important;
+    background-color: theme('colors.gray.800') !important;
     color: theme('colors.white') !important;
   }
   .amplify-label {
@@ -47,7 +47,7 @@
   }
 
   .amplify-tabs-item[data-state='inactive'] {
-    background-color: theme('colors.gray.600') !important;
+    background-color: theme('colors.gray.700') !important;
     color: theme('colors.gray.400') !important;
 
     &:hover {
