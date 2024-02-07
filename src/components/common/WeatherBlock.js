@@ -10,7 +10,7 @@ export default function WeatherBlock({
   wrapperClassName = '',
 }) {
   const style = classNames(
-    'WeatherBlock text-black dark:text-neutral-100 flex items-center font-bold mt-1',
+    'WeatherBlock text-black dark:text-gray-100 flex items-center font-bold mt-1',
     className,
   );
 

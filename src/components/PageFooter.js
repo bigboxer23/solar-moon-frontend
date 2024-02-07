@@ -1,8 +1,8 @@
 export default function PageFooter() {
   const year = new Date().getFullYear();
   return (
-    <div className='Footer2 flex justify-center bg-brand-primary-light pb-6 dark:bg-neutral-900'>
-      <p className='text-sm text-text-secondary'>
+    <div className='Footer2 flex justify-center bg-brand-primary-light pb-6 dark:bg-gray-900'>
+      <p className='text-sm text-gray-400'>
         Copyright © {year} Solar Moon Analytics, LLC
       </p>
     </div>

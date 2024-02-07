@@ -65,7 +65,7 @@ const SiteAttributes = ({ data, setDevices, setActiveSite }) => {
   };
 
   return (
-    <div className='SiteAttributes mb-4 flex items-center rounded-md bg-white p-6 dark:bg-neutral-600'>
+    <div className='SiteAttributes mb-4 flex items-center rounded-md bg-white p-6 dark:bg-gray-600'>
       <form className='w-full' onSubmit={handleSubmit(update)}>
         <ControlledInput
           className='mb-6'
@@ -113,7 +113,7 @@ const SiteAttributes = ({ data, setDevices, setActiveSite }) => {
               (data.latitude !== -1 && data.longitude !== -1
                 ? ''
                 : 'opacity-0 ') +
-              'flex content-end smaller-text text-sm text-text-secondary'
+              'flex content-end smaller-text text-sm text-gray-400'
             }
           >
             {data.latitude + ',' + data.longitude}
