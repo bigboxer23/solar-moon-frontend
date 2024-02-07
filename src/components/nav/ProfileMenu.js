@@ -1,6 +1,5 @@
 import { useAuthenticator } from '@aws-amplify/ui-react';
-import { Menu, MenuButton, MenuItem } from '@szhsin/react-menu';
-import { NavLink } from 'react-router-dom';
+import { Menu, MenuButton } from '@szhsin/react-menu';
 
 import Avatar from '../common/Avatar';
 
@@ -10,7 +9,8 @@ export default function ProfileMenu() {
   const menuItemClassName =
     'flex items-center space-x-2 text-text-primary hover:bg-gray-200 dark:bg-gray-600 px-4 py-1 hover:dark:bg-gray-500 cursor-pointer';
 
-  return (<div className='ProfileMenu text-black dark:text-gray-100'>
+  return (
+    <div className='ProfileMenu text-black dark:text-gray-100'>
       <Menu
         boundingBoxPadding='12'
         gap={12}
@@ -19,7 +19,7 @@ export default function ProfileMenu() {
             <Avatar user={user} />
           </MenuButton>
         }
-        menuClassN"me='bg-white dark:bg-gray-600 shadow-panel rounded-md py-2 "-36'
+        menuClass"ame='bg-white dark:bg-neutral-600 shadow-panel rounded-md py-2"w-36'
       >
         <MenuItem className={menuItemClassName}>
           <NavLink to='/profile'>Profile</NavLink>

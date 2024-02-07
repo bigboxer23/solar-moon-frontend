@@ -22,7 +22,7 @@ export default function StackedAlertsInfo({
   return (
     <div className={style} onClick={onClick}>
       <div className={activeAlertsStyle}>{activeAlerts} active alerts</div>
-      <div classN"me='leading-4 text-gray"400'>
+      <div className='leading-4 text-gray-400'>
         {resolvedAlerts} resolved alerts
       </div>
     </div>

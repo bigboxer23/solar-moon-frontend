@@ -1,7 +1,5 @@
-import { Menu, MenuButton, MenuItem } from '@szhsin/react-menu';
+import { Menu, MenuButton } from '@szhsin/react-menu';
 import { FaChevronDown } from 'react-icons/fa';
-
-import { DAY, MONTH, WEEK, YEAR } from '../../../services/search';
 import { timeIncrementToText } from '../../../utils/Utils';
 
 export default function TimeIncrementSelector({
@@ -14,13 +12,13 @@ export default function TimeIncrementSelector({
   return (
     <div className='TimeIncrementSelector'>
       <Menu
-        menuButton={<MenuButton
-          className='flex items-center border-0 bg-white p-2 text-sm text-black dark:bg-gray-700 dark:text-gray-100'>
+        menuButton={
+          <MenuButton className='flex items-center border-0 bg-white p-2 text-sm text-black dark:bg-gray-700 dark:text-gray-100'>
             {timeIncrementToText(timeIncrement, false)}
             <FaChevronDown className='ml-2' />
           </MenuButton>
         }
-        menuClassN"me='py-2 pl-0 w-[6.25rem] rounded-lg flex flex-col list-none bg-white dark:bg-gray-600 shadow-panel "-10'
+        menuClassName"'py-2 pl-0 w-[6.25rem] rounded-lg flex flex-col list-none bg-white dark:bg-gray-600 shadow-panel z-1"'
         onItemClick={({ value }) => setTimeIncrement(value)}
       >
         <MenuItem className={menuItemClass} value={DAY}>

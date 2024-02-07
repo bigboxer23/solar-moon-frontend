@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import { FaArrowLeft } from 'react-icons/fa';
 import { NavLink, redirect, useMatch, useNavigate } from 'react-router-dom';
@@ -24,7 +23,6 @@ import {
 import CurrentPowerBlock from '../../common/CurrentPowerBlock';
 import Loader from '../../common/Loader';
 import PowerBlock from '../../common/PowerBlock';
-import StatBlock from '../../common/StatBlock';
 import WeatherBlock from '../../common/WeatherBlock';
 import StackedAlertsInfo from '../../device-block/StackedAlertsInfo';
 import StackedTotAvg from '../../device-block/StackedTotAvg';
@@ -127,10 +125,10 @@ export default function SiteDetails() {
         </NavLink>
         <div className='mb-4 flex justify-between'>
           <div className='flex flex-col'>
-            <span class"ame='text-lg font-bold text-black dark:text-gra"-100'>
+            <span className='text-lg font-bold text-black dark:text-gray-100'>
               {getDisplayName(siteData.site)}
             </span>
-            <span className="text-sm text-gray-500 dark:text-gray-400">
+            <span className='text-sm text-gray-500 dark:text-gray-400'>
               {siteData?.site?.city &&
                 siteData?.site?.state &&
                 `${siteData.site.city}, ${siteData.site.state} ${siteData.localTime}`}

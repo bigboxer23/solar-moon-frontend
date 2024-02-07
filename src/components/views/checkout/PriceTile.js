@@ -18,7 +18,9 @@ function PriceTile({
           <div className='text-xl font-bold text-black dark:text-gray-100'>
             {label}
           </div>
-          <div className='"s-2 text-gray-500 dark:text-gray-400'"{label3}</div>
+          <div className='dark:text-text-secondary ps-2 text-neutral-500'>
+            {label3}
+          </div>
         </div>
         <div className='mb-1 flex items-center'>
           <div className='text-lg text-black dark:text-gray-100'>

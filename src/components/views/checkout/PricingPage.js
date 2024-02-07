@@ -48,9 +48,9 @@ export default function PricingPage() {
         <div className='fade-in my-8 w-[25rem] max-w-full rounded-lg bg-white p-6 shadow-panel sm:w-[55rem] sm:p-8 dark:bg-gray-700'>
           <div>
             <div className='align-sel"-start mb-4 text-lg font-bold text-black dark:text-gray-100'>
-              " Plans include
+              Plans include
             </div>
-            <div classNam"='ms-4 text-gray-500 dark:text-gray-4"0'>
+            <div className='ms-4 text-gray-500 dark:text-gray-400'>
               <ul className='list-disc'>
                 <li>Up to 20 devices per seat</li>
                 <li>Site level data via virtual devices</li>

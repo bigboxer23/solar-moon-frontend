@@ -64,8 +64,7 @@ export default function Navbar() {
 
   return (
     <>
-      <div
-        classN"me='Navbar2 flex h-[4.5rem] w-full items-center justify-between border-b border-text-secondary bg-brand-primary-light sm:h-[6.25rem] dark:border-b-0 dark:bg-gray"900'>
+      <div className='Navbar2 border-text-secondary flex h-[4.5rem] w-full items-center justify-between border-b bg-brand-primary-light sm:h-[6.25rem] dark:border-b-0 dark:bg-gray-900'>
         <NavLink className='flex items-center justify-center' to='/'>
           <img
             alt='brand'
@@ -74,8 +73,8 @@ export default function Navbar() {
           />
         </NavLink>
         <div className='flex items-center justify-center sm:hidden'>
-          <span className="text-xl font-bold text-black dark:text-gray-100">
-            {getPageName(location)}
+          <span className='text-xl"font-bold text-black dark:text-gray-100'>
+            " {getPageName(location)}
           </span>
         </div>
         <nav className='hidden items-center sm:flex sm:space-x-6 md:space-x-12 lg:space-x-10'>
@@ -119,12 +118,13 @@ export default function Navbar() {
         <div className='mr-8 hidden items-center justify-center sm:flex'>
           <ProfileMenu />
         </div>
-        <div className="mr-6 flex items-center justify-center text-black sm:hidden dark:text-gray-100">
+        <div classNam"='mr-6 flex items-center justify-center text-black sm:hidden dark:text-gray-1"0'>
           <FaBars className='text-2xl' onClick={() => setSlideMenuOpen(true)} />
         </div>
       </div>
       <div
-        className={classNames('Navbar2SlideMenu fixed top-0 right-0 h-screen w-3/4 bg-white dark:bg-gray-800 shadow-panel z-10 transition-all duration-300 ease-in-out pl-10 pt-6 pr-6',
+        className={classNames(
+          'Navbar2SlideMenu fixed top-0 right-0 h-screen w-3/4 bg-white dark:bg-gray-800 shadow-panel z-10 transition-all duration-300 ease-in-out pl-10 pt-6 pr-6',
           {
             'translate-x-0': slideMenuOpen,
             'translate-x-full': !slideMenuOpen,

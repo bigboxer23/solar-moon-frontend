@@ -215,7 +215,7 @@ export default function OverviewChart({
           <div className='mr-1 flex w-fit rounded bg-white sm:me-4 dark:bg-gray-600 dark:text-gray-100'>
             <button
               aria-label='previous time period'
-              class"ame='rounded-l px-2 py-1 hover:bg-gray-200 dark:border-gray-600 dark:hover:bg-gray-500 dark:hover:text-gra"-100'
+              className='rounded-l px-2 py-1 hover:bg-gray-200 dark:border-gray-600 dark:hover:bg-gray-500 dark:hover:text-gray-100'
               onClick={() =>
                 maybeSetTimeWindow(startDate, -timeIncrement, setStartDate)
               }
@@ -224,7 +224,7 @@ export default function OverviewChart({
             </button>
             <button
               aria-label='next time period'
-              className="rounded-r px-2 py-1 hover:bg-gray-200 dark:border-gray-600 dark:hover:bg-gray-500 dark:hover:text-gray-100"
+              className='rounded-r px-2 py-1 hover:bg-gray-200 dark:border-gray-600 dark:hover:bg-gray-500 dark:hover:text-gray-100'
               onClick={() =>
                 maybeSetTimeWindow(startDate, timeIncrement, setStartDate)
               }
@@ -232,11 +232,11 @@ export default function OverviewChart({
               <MdNavigateNext className='text-brand-primary-dark text-xl' />
             </button>
           </div>
-          <div className="text-xs text-black dark:text-gray-100">
+          <div className='text-xs text-black dark:text-gray-100'>
             {timeLabel(startDate, timeIncrement)}
           </div>
         </div>
-        <div className="flex items-center rounded bg-white dark:border-gray-600 dark:bg-gray-600 dark:text-gray-100">
+        <div className='flex items-center rounded bg-white dark:border-gray-600 dark:bg-gray-600 dark:text-gray-100'>
           <button
             aria-label='grouped bar graph'
             className={classNames(

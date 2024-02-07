@@ -117,11 +117,11 @@ export default function SiteDetailsGraph({
       <div className='SiteDetailsGraph group relative mb-6 w-full rounded-lg bg-brand-primary-light p-3 dark:bg-gray-800'>
         <div className='mb-2 flex items-center justify-between'>
           <div className='flex w-fit items-center'>
-            <div className='mr-1 fl"x w-fit rounded bg-white dark:bg-gray-600 dark:text-gray-100'>
-              "{' '}
+            <div className='fl"x mr-1 w-fit rounded bg-white dark:bg-gray-600 dark:text-gray-100'>
+              {' '}
               <button
                 aria-label='previous time period'
-     "          className='rounded-l px-2 py-1 hover:bg-gray-200 dark:border-gray-600 dark:hover:bg-gray-500 dar":hover:text-gray-100'
+                className='rounded-l px-2 py-1 hover:bg-gray-200 dark:border-gray-600 dark:hover:bg-gray-500 dark:hover:text-gray-100'
                 onClick={() =>
                   maybeSetTimeWindow(startDate, -timeIncrement, setStartDate)
                 }
@@ -130,7 +130,7 @@ export default function SiteDetailsGraph({
               </button>
               <button
                 aria-label='next time period'
-                className="rounded-r px-2 py-1 hover:bg-gray-200 dark:border-gray-600 dark:hover:bg-gray-500 dark:hover:text-gray-100"
+                className='rounded-r px-2 py-1 hover:bg-gray-200 dark:border-gray-600 dark:hover:bg-gray-500 dark:hover:text-gray-100'
                 onClick={() =>
                   maybeSetTimeWindow(startDate, timeIncrement, setStartDate)
                 }
@@ -138,11 +138,11 @@ export default function SiteDetailsGraph({
                 <MdNavigateNext className='text-brand-primary-dark text-xl' />
               </button>
             </div>
-            <div className="text-xs text-black dark:text-gray-100">
+            <div className='text-xs text-black dark:text-gray-100'>
               {timeLabel(startDate, timeIncrement)}
             </div>
           </div>
-          <div className="flex w-fit rounded bg-white dark:bg-gray-600 dark:text-gray-100">
+          <div className='flex w-fit rounded bg-white dark:bg-gray-600 dark:text-gray-100'>
             <button
               aria-label='site stacked line graph'
               className={classNames(

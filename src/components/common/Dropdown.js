@@ -37,7 +37,7 @@ export default function Dropdown({
             );
           return (
             <MenuItem
-              className"'flex cursor-pointer list-none items-center px-4 py-1.5 text-sm font-normal text-black hover:bg-[#eee] dark:text-gray-100 dark:hover:bg-gray-50"'
+              className='dark:hover:bg-gray-50" flex cursor-pointer list-none items-center px-4 py-1.5 text-sm font-normal text-black hover:bg-[#eee] dark:text-gray-100'
               key={option.value}
               onClick={(e) => onChange(option)}
             >

@@ -55,7 +55,7 @@ export default function ManagePlanTile() {
           </div>
           <div className='mb-2 flex items-center'>
             <div className='text-lg'>{20 * quantity}</div>
-            <div className='"s-1 text-sm text-gray-500'" devices</div>
+            <div className='ps-1 text-sm text-neutral-500'> devices</div>
           </div>
           <div className='mb-2 flex items-center'>
             <div className='text-lg'>${price * quantity}</div>
