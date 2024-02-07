@@ -13,6 +13,7 @@ module.exports = {
         'brand-primary': '#5178c2',
         'brand-primary-light': '#eef2f9',
         'brand-secondary': '#f6ce46',
+        'text-secondary': '#a9a9a9',
         danger: '#DB0000',
         'border-color': '#a9a9a9',
         'grid-background-alt': '#f5f5f5',

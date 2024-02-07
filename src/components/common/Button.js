@@ -3,19 +3,19 @@ import classNames from 'classnames';
 const primaryButtonClass =
   'bg-brand-primary text-sm text-white rounded-full font-bold py-2 tracking-wide px-5 leading-4 transition-all hover:brightness-110';
 const secondaryButtonClass =
-  'bg-gray-200 dark:bg-gray-500 text-sm text-black dark:text-gray-100 rounded-full font-bold py-2 px-5 tracking-wide leading-4 transition-all hover:brightness-105';
+  'bg-neutral-200 dark:bg-neutral-500 text-sm text-black dark:text-neutral-100 rounded-full font-bold py-2 px-5 tracking-wide leading-4 transition-all hover:brightness-105';
 const outlinePrimaryButtonClass =
-  'bg-white dark:bg-gray-700 text-sm text-brand-primary rounded-full font-bold py-2 px-5 tracking-wide leading-4 border border-brand-primary transition-all hover:brightness-110';
+  'bg-white dark:bg-neutral-700 text-sm text-brand-primary rounded-full font-bold py-2 px-5 tracking-wide leading-4 border border-brand-primary transition-all hover:brightness-110';
 const outlineSecondaryButtonClass =
-  'bg-white dark:bg-gray-700 text-sm text-black dark:text-gray-100 rounded-full font-bold py-2 px-5 tracking-wide leading-4 border border-gray-300 transition-all hover:border-gray-500';
+  'bg-white dark:bg-neutral-700 text-sm text-black dark:text-neutral-100 rounded-full font-bold py-2 px-5 tracking-wide leading-4 border border-neutral-300 transition-all hover:border-neutral-500';
 const dangerButtonClass =
   'bg-danger text-sm text-white rounded-full font-bold py-2 px-5 tracking-wide leading-4 transition-all hover:brightness-110';
 const outlineDangerButtonClass =
-  'bg-white dark:bg-gray-700 text-sm text-black dark:text-gray-100 rounded-full font-bold py-2 px-5 tracking-wide leading-4 border border-red-700 text-red-700 transition-all hover:brightness-110';
+  'bg-white dark:bg-neutral-700 text-sm text-black dark:text-neutral-100 rounded-full font-bold py-2 px-5 tracking-wide leading-4 border border-red-700 text-red-700 transition-all hover:brightness-110';
 const textButtonClass =
   'font-bold tracking-wide text-sm underline text-black dark:text-white';
 const iconButtonClass =
-  'text-gray-600 transition-all hover:text-black dark:text-gray-100';
+  'text-neutral-600 transition-all hover:text-black dark:text-neutral-100';
 
 export default function Button({
   children,

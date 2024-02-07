@@ -76,7 +76,7 @@ export default function DeviceChart({ graphData }) {
   };
 
   return (
-    <div className='DeviceChart h-40 w-full rounded-lg bg-brand-primary-light p-2 dark:bg-gray-800'>
+    <div className='DeviceChart h-40 w-full rounded-lg bg-brand-primary-light p-2 dark:bg-neutral-800'>
       <Line data={data} options={options} plugins={[tooltipPlugin]} />
     </div>
   );

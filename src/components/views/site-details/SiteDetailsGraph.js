@@ -1,9 +1,20 @@
 import classNames from 'classnames';
 import { Bar, Line } from 'react-chartjs-2';
-import { MdBarChart, MdNavigateBefore, MdNavigateNext, MdStackedBarChart, MdStackedLineChart } from 'react-icons/md';
+import {
+  MdBarChart,
+  MdNavigateBefore,
+  MdNavigateNext,
+  MdStackedBarChart,
+  MdStackedLineChart,
+} from 'react-icons/md';
 
 import { DAY, GROUPED_BAR } from '../../../services/search';
-import { formatXAxisLabels, getFormattedTime, maybeSetTimeWindow, timeLabel } from '../../../utils/Utils';
+import {
+  formatXAxisLabels,
+  getFormattedTime,
+  maybeSetTimeWindow,
+  timeLabel,
+} from '../../../utils/Utils';
 import { tooltipPlugin } from '../../common/graphPlugins';
 
 export default function SiteDetailsGraph({
@@ -103,14 +114,13 @@ export default function SiteDetailsGraph({
 
   return (
     <>
-      <div className='SiteDetailsGraph group relative mb-6 w-full rounded-lg bg-brand-primary-light p-3 dark:bg-gray-800'>
+      <div className='SiteDetailsGraph group relative mb-6 w-full rounded-lg bg-brand-primary-light p-3 dark:bg-neutral-800'>
         <div className='mb-2 flex items-center justify-between'>
           <div className='flex w-fit items-center'>
-            <div className='mr-1 fl"x w-fit rounded bg-white dark:bg-gray-600 dark:text-gray-100'>
-              "{' '}
+            <div className='mr-1 flex w-fit rounded bg-white dark:bg-neutral-600 dark:text-neutral-100'>
               <button
                 aria-label='previous time period'
-     "          className='rounded-l px-2 py-1 hover:bg-gray-200 dark:border-gray-600 dark:hover:bg-gray-500 dar":hover:text-gray-100'
+                className='rounded-l px-2 py-1 hover:bg-neutral-200 dark:border-neutral-600 dark:hover:bg-neutral-500 dark:hover:text-neutral-100'
                 onClick={() =>
                   maybeSetTimeWindow(startDate, -timeIncrement, setStartDate)
                 }
@@ -119,7 +129,7 @@ export default function SiteDetailsGraph({
               </button>
               <button
                 aria-label='next time period'
-                className="rounded-r px-2 py-1 hover:bg-gray-200 dark:border-gray-600 dark:hover:bg-gray-500 dark:hover:text-gray-100"
+                className='rounded-r px-2 py-1 hover:bg-neutral-200 dark:border-neutral-600 dark:hover:bg-neutral-500 dark:hover:text-neutral-100'
                 onClick={() =>
                   maybeSetTimeWindow(startDate, timeIncrement, setStartDate)
                 }
@@ -127,17 +137,17 @@ export default function SiteDetailsGraph({
                 <MdNavigateNext className='text-brand-primary-dark text-xl' />
               </button>
             </div>
-            <div className="text-xs text-black dark:text-gray-100">
+            <div className='text-xs text-black dark:text-neutral-100'>
               {timeLabel(startDate, timeIncrement)}
             </div>
           </div>
-          <div className="flex w-fit rounded bg-white dark:bg-gray-600 dark:text-gray-100">
+          <div className='flex w-fit rounded bg-white dark:bg-neutral-600 dark:text-neutral-100'>
             <button
               aria-label='site stacked line graph'
               className={classNames(
-                'rounded-l dark:border-gray-600 px-2 py-1 hover:bg-gray-200 dark:hover:bg-gray-500 dark:hover:text-gray-100',
+                'rounded-l dark:border-neutral-600 px-2 py-1 hover:bg-neutral-200 dark:hover:bg-neutral-500 dark:hover:text-neutral-100',
                 {
-                  'bg-gray-300 dark:text-black': graphType === GROUPED_BAR,
+                  'bg-neutral-300 dark:text-black': graphType === GROUPED_BAR,
                 },
               )}
               onClick={() => setGraphType(GROUPED_BAR)}
@@ -147,9 +157,9 @@ export default function SiteDetailsGraph({
             <button
               aria-label='site stacked bar graph'
               className={classNames(
-                'px-2 py-1 hover:bg-gray-200 dark:hover:bg-gray-500 dark:hover:text-gray-100',
+                'px-2 py-1 hover:bg-neutral-200 dark:hover:bg-neutral-500 dark:hover:text-neutral-100',
                 {
-                  'bg-gray-300 dark:text-black': graphType === 'bar',
+                  'bg-neutral-300 dark:text-black': graphType === 'bar',
                 },
               )}
               onClick={() => setGraphType('bar')}
@@ -159,9 +169,9 @@ export default function SiteDetailsGraph({
             <button
               aria-label='overview graph'
               className={classNames(
-                'rounded-r dark:border-gray-600 px-2 py-1 hover:bg-gray-200 dark:hover:bg-gray-500 dark:hover:text-gray-100',
+                'rounded-r dark:border-neutral-600 px-2 py-1 hover:bg-neutral-200 dark:hover:bg-neutral-500 dark:hover:text-neutral-100',
                 {
-                  'bg-gray-300 dark:text-black': graphType === 'line',
+                  'bg-neutral-300 dark:text-black': graphType === 'line',
                 },
               )}
               onClick={() => setGraphType('line')}

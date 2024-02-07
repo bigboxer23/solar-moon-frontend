@@ -8,7 +8,7 @@ export default function PowerIcon({ percent }) {
   };
 
   return (
-    <div className='PowerIcon flex h-full w-[10px] items-end rounded-sm border-2 border-black dark:border-gray-100'>
+    <div className='PowerIcon flex h-full w-[10px] items-end rounded-sm border-2 border-black dark:border-neutral-100'>
       <div
         className={classNames('w-full', getColor(percent))}
         style={{ height: Math.min(100, percent) + '%' }}

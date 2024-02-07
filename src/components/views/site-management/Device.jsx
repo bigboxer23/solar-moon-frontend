@@ -66,12 +66,12 @@ const Device = ({ data, devices, setDevices }) => {
   };
 
   return (
-    <div className='Device mb-6 flex w-full flex-col items-center overflow-hidden rounded-md bg-[#f5f5f5] p-6 dark:bg-gray-600'>
+    <div className='Device mb-6 flex w-full flex-col items-center overflow-hidden rounded-md bg-[#f5f5f5] p-6 dark:bg-neutral-600'>
       <div className='mb-10 flex w-full justify-between'>
         <span
           className={
             (data.disabled ? 'opacity-50 ' : '') +
-            'text-lg font-bold text-black dark:text-gray-100'
+            'text-lg font-bold text-black dark:text-neutral-100'
           }
         >
           {data.name}

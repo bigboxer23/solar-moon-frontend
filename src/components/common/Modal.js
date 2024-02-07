@@ -13,7 +13,7 @@ export default function Modal({ children, size = 'md', isOpen = false }) {
   function renderDialog() {
     return (
       <dialog
-        className={`Modal fixed !top-1/4 z-10 !mx-auto rounded-xl bg-white shadow-modal dark:bg-gray-700 ${sizes[size]}`}
+        className={`Modal fixed !top-1/4 z-10 !mx-auto rounded-xl bg-white shadow-modal dark:bg-neutral-700 ${sizes[size]}`}
         open={isOpen}
       >
         {children}
@@ -30,7 +30,7 @@ export default function Modal({ children, size = 'md', isOpen = false }) {
 
 export function ModalHeader({ label, onCloseClick }) {
   return (
-    <div className='ModalHeader flex items-center justify-between border-b border-gray-200 px-6 py-4'>
+    <div className='ModalHeader flex items-center justify-between border-b border-neutral-200 px-6 py-4'>
       <h2 className='ModalHeader text-lg font-bold'>{label}</h2>
       {onCloseClick && (
         <Button onClick={onCloseClick} variant='icon'>
