@@ -85,6 +85,7 @@ export default function OverviewSiteList({
                 />,
                 <StackedTotAvg
                   avg={getAggregationValue(site.graphData.avg, AVG_AGGREGATION)}
+                  className='items-end'
                   key={1}
                   total={getAggregationValue(
                     site.graphData.total,
@@ -99,6 +100,7 @@ export default function OverviewSiteList({
                 />,
                 <StackedAlertsInfo
                   activeAlerts={site.info.activeAlertCount}
+                  className='items-end'
                   key={3}
                   resolvedAlerts={site.info.resolvedAlertCount}
                 />,

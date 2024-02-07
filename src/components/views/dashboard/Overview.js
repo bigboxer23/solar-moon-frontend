@@ -132,7 +132,7 @@ export default function Overview() {
             <CurrentPowerBlock currentPower={currentPower} max={maxPower} />
             <StackedAlertsInfo
               activeAlerts={activeAlerts.length}
-              className='flex md:hidden'
+              className='hidden xs:flex md:hidden'
               onClick={() => navigate('/alerts')}
               resolvedAlerts={resolvedAlerts.length}
             />
@@ -150,7 +150,7 @@ export default function Overview() {
               value={resolvedAlerts.length}
             />
           </div>
-          <div className='flex space-x-2 sm:space-x-6'>
+          <div className='flex flex-col space-y-2 xs:flex-row xs:space-y-0 sm:space-x-6'>
             <PowerBlock
               className='hidden md:flex'
               power={totalOutput}
@@ -165,6 +165,12 @@ export default function Overview() {
               avg={averageOutput}
               className='ml-auto block items-end md:hidden'
               total={totalOutput}
+            />
+            <StackedAlertsInfo
+              activeAlerts={activeAlerts.length}
+              className='flex items-end xs:hidden'
+              onClick={() => navigate('/alerts')}
+              resolvedAlerts={resolvedAlerts.length}
             />
           </div>
         </div>
