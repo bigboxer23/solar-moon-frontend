@@ -1,18 +1,18 @@
 @media (prefers-color-scheme: dark) {
   .react-daterange-picker {
     .react-daterange-picker__wrapper {
-      color: theme('colors.neutral.100') !important;
-      border-color: theme('colors.neutral.400') !important;
+      color: theme('colors.gray.100') !important;
+      border-color: theme('colors.gray.400') !important;
     }
   }
 
   .react-calendar {
-    background-color: theme('colors.neutral.600') !important;
-    color: theme('colors.neutral.100') !important;
+    background-color: theme('colors.gray.600') !important;
+    color: theme('colors.gray.100') !important;
 
     .react-calendar__tile--active {
-      background-color: theme('colors.neutral.500') !important;
-      color: theme('colors.neutral.100') !important;
+      background-color: theme('colors.gray.500') !important;
+      color: theme('colors.gray.100') !important;
     }
 
     .react-calendar__tile--now {
@@ -21,7 +21,7 @@
 
     .react-calendar__navigation button:enabled:focus,
     .react-calendar__tile:enabled:focus {
-      background-color: theme('colors.neutral.600') !important;
+      background-color: theme('colors.gray.600') !important;
     }
   }
 }

@@ -2,19 +2,19 @@ import { useController } from 'react-hook-form';
 
 const boxStylePreset = {
   inputStyle:
-    'appearance-none grow-1 w-full outline-none text-black dark:text-neutral-100',
+    'appearance-none grow-1 w-full outline-none text-black dark:text-gray-100',
   wrapperStyle:
-    'flex flex-col border border-neutral-300 rounded-md focus-within:border-brand-primary py-2 px-4',
-  labelStyle: 'text-sm text-neutral-700 dark:text-neutral-300',
+    'flex flex-col border border-gray-300 rounded-md focus-within:border-brand-primary py-2 px-4',
+  labelStyle: 'text-sm text-gray-700 dark:text-gray-300',
   errorStyle: 'text-sm text-danger mt-1',
 };
 
 const underlineStylePreset = {
   inputStyle:
-    'appearance-none grow-1 w-full outline-none bg-transparent text-black dark:text-neutral-100',
+    'appearance-none grow-1 w-full outline-none bg-transparent text-black dark:text-gray-100',
   wrapperStyle:
-    'flex flex-col border-b border-neutral-300 focus-within:border-brand-primary pb-1',
-  labelStyle: 'text-sm text-neutral-700 dark:text-neutral-300',
+    'flex flex-col border-b border-gray-300 focus-within:border-brand-primary pb-1',
+  labelStyle: 'text-sm text-gray-700 dark:text-gray-300',
   errorStyle: 'text-sm text-danger mt-1',
 };
 
