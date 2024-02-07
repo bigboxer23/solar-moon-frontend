@@ -4,6 +4,7 @@ import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 
 export default function DeviceBlock({
   title,
+  secondaryTitle,
   subtitle,
   statBlocks = [],
   expandableBody,
@@ -39,6 +40,9 @@ export default function DeviceBlock({
           </div>
         )}
       </span>
+      {secondaryTitle && (
+        <div className='flex text-xs text-text-secondary'>{secondaryTitle}</div>
+      )}
       <div className='my-2 grid grid-cols-2 gap-1 sm:gap-2'>
         {statBlocks.map((block, i) => block)}
       </div>

@@ -8,7 +8,7 @@ import {
   parseMaxData,
   TOTAL_AGGREGATION,
 } from '../../../services/search';
-import PowerBlock from '../../common/PowerBlock';
+import CurrentPowerBlock from '../../common/CurrentPowerBlock';
 import WeatherBlock from '../../common/WeatherBlock';
 import DeviceBlock from '../../device-block/DeviceBlock';
 import StackedAlertsInfo from '../../device-block/StackedAlertsInfo';
@@ -70,8 +70,13 @@ export default function OverviewSiteList({
               }
               className='w-full'
               key={site.info.deviceName}
+              secondaryTitle={
+                site.info?.city && site.info?.state
+                  ? `${site.info.city}, ${site.info.state}`
+                  : ' '
+              }
               statBlocks={[
-                <PowerBlock
+                <CurrentPowerBlock
                   currentPower={parseCurrentPower(
                     site.graphData.weeklyMaxPower,
                   )}
@@ -80,6 +85,7 @@ export default function OverviewSiteList({
                 />,
                 <StackedTotAvg
                   avg={getAggregationValue(site.graphData.avg, AVG_AGGREGATION)}
+                  className='items-end'
                   key={1}
                   total={getAggregationValue(
                     site.graphData.total,
@@ -90,14 +96,16 @@ export default function OverviewSiteList({
                   className='pr-2'
                   key={2}
                   weather={site.graphData.weather}
+                  wrapperClassName='min-h-[44px]'
                 />,
                 <StackedAlertsInfo
                   activeAlerts={site.info.activeAlertCount}
+                  className='items-end'
                   key={3}
                   resolvedAlerts={site.info.resolvedAlertCount}
                 />,
               ]}
-              subtitle={`- ${site.info.city}, ${site.info.state}`}
+              subtitle={`${site.info.deviceCount} devices`}
               title={site.info.name}
             />
           </NavLink>

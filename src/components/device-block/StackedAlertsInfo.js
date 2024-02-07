@@ -6,17 +6,23 @@ export default function StackedAlertsInfo({
   onClick,
   className,
 }) {
-  const activeAlertsStyle =
-    activeAlerts > 0 ? 'text-red-500' : 'text-black dark:text-neutral-100';
-
-  const style = classNames('flex flex-col items-start text-base', className, {
-    'cursor-pointer': onClick,
+  const activeAlertsStyle = classNames('leading-4', {
+    'text-red-500': activeAlerts > 0,
+    'text-black dark:text-neutral-100': activeAlerts === 0,
   });
+
+  const style = classNames(
+    'StackedAlertsInfo flex flex-col items-start text-base space-y-1 justify-end text-sm xs:text-base',
+    className,
+    {
+      'cursor-pointer': onClick,
+    },
+  );
 
   return (
     <div className={style} onClick={onClick}>
       <div className={activeAlertsStyle}>{activeAlerts} active alerts</div>
-      <div className='text-text-secondary'>
+      <div className='leading-4 text-text-secondary'>
         {resolvedAlerts} resolved alerts
       </div>
     </div>
