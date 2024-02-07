@@ -105,12 +105,12 @@ export default function Alerts() {
   }
 
   return (
-    <main className='Alerts flex w-full flex-col items-center justify-center bg-brand-primary-light dark:bg-neutral-900'>
+    <main className='Alerts flex w-full flex-col items-center justify-center bg-brand-primary-light dark:bg-gray-900'>
       {loading && <Loader />}
       {!loading && (
-        <div className='fade-in my-8 w-[55rem] max-w-full rounded-lg bg-white p-6 shadow-panel sm:p-8 dark:bg-neutral-700'>
+        <div className='fade-in my-8 w-[55rem] max-w-full rounded-lg bg-white p-6 shadow-panel sm:p-8 dark:bg-gray-700'>
           <div className='mb-10 flex w-full justify-between'>
-            <span className='text-lg font-bold text-black dark:text-neutral-100'>
+            <span className='text-lg font-bold text-black dark:text-gray-100'>
               Alerts
             </span>
             <AlertsFilter
@@ -122,7 +122,7 @@ export default function Alerts() {
           </div>
           <div className='space-y-4'>
             {filteredActiveAlerts.length === 0 && (
-              <div className='mb-8 flex size-full items-center justify-center px-6 text-center text-base text-text-secondary'>
+              <div className='mb-8 flex size-full items-center justify-center px-6 text-center text-base text-gray-400'>
                 All clear! You have no active device alerts.
               </div>
             )}
@@ -130,7 +130,7 @@ export default function Alerts() {
               <Alert active alert={alert} key={alert.alarmId} />
             ))}
           </div>
-          <div className='mb-6 flex w-full items-center justify-between text-lg font-bold text-black dark:text-neutral-100'>
+          <div className='mb-6 flex w-full items-center justify-between text-lg font-bold text-black dark:text-gray-100'>
             Resolved Alerts
           </div>
           <div className='space-y-4'>

@@ -9,18 +9,18 @@ export default function TimeIncrementSelector({
   setTimeIncrement,
 }) {
   const menuItemClass =
-    'font-normal text-sm text-black dark:text-neutral-100 px-4 py-1.5 list-none cursor-pointer hover:bg-[#eee] dark:hover:bg-neutral-500';
+    'font-normal text-sm text-black dark:text-gray-100 px-4 py-1.5 list-none cursor-pointer hover:bg-[#eee] dark:hover:bg-gray-500';
 
   return (
     <div className='TimeIncrementSelector'>
       <Menu
-        menuButton={
-          <MenuButton className='flex items-center border-0 bg-white p-2 text-sm text-black dark:bg-neutral-700 dark:text-neutral-100'>
+        menuButton={<MenuButton
+          className='flex items-center border-0 bg-white p-2 text-sm text-black dark:bg-gray-700 dark:text-gray-100'>
             {timeIncrementToText(timeIncrement, false)}
             <FaChevronDown className='ml-2' />
           </MenuButton>
         }
-        menuClassName='py-2 pl-0 w-[6.25rem] rounded-lg flex flex-col list-none bg-white dark:bg-neutral-600 shadow-panel z-10'
+        menuClassN"me='py-2 pl-0 w-[6.25rem] rounded-lg flex flex-col list-none bg-white dark:bg-gray-600 shadow-panel "-10'
         onItemClick={({ value }) => setTimeIncrement(value)}
       >
         <MenuItem className={menuItemClass} value={DAY}>

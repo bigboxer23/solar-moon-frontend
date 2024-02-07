@@ -94,9 +94,7 @@ const Reports = () => {
       name: (
         <div className='flex'>
           Total Energy Cons.
-          <div className='rdg-header-secondary text-text-secondary'>
-            &nbsp; kWH
-          </div>
+          <div className='rdg-header-secondary text-gray-400'>&nbsp; kWH</div>
         </div>
       ),
     },
@@ -105,9 +103,7 @@ const Reports = () => {
       name: (
         <div className='flex'>
           Total Power
-          <div className='rdg-header-secondary text-text-secondary'>
-            &nbsp; kW
-          </div>
+          <div className='rdg-header-secondary text-gray-400'>&nbsp; kW</div>
         </div>
       ),
     },
@@ -116,9 +112,7 @@ const Reports = () => {
       name: (
         <div className='flex'>
           Energy Cons.{' '}
-          <div className='rdg-header-secondary text-text-secondary'>
-            &nbsp; kWH
-          </div>
+          <div className='rdg-header-secondary text-gray-400'>&nbsp; kWH</div>
         </div>
       ),
     },
@@ -205,10 +199,10 @@ const Reports = () => {
 
   return (
     <main className='Reports flex w-full flex-col items-center px-2 sm:px-5'>
-      <div className='fade-in  my-8 flex w-[75rem] max-w-full flex-col rounded-lg bg-white shadow-panel dark:bg-neutral-700 '>
+      <div className='fade-in  my-8 flex w-[75rem] max-w-full flex-col rounded-lg bg-white shadow-panel dark:bg-gray-700 '>
         <div className='flex w-full items-center justify-between p-2 pb-4 pt-8 sm:p-8'>
-          <span className='hidden text-lg font-bold text-black sm:block dark:text-neutral-100'>
-            Reports
+          <span className='"ext-lg hidden font-bold text-black sm:block dark:text-gray-100'>
+            " Reports
           </span>
           <SearchBar
             defaultSearchPeriod={DAY}

@@ -34,7 +34,7 @@ const Return = () => {
         <div>
           {loading && <Loader />}
           {status === 'complete' && (
-            <main className='fade-in my-8 w-[25rem] max-w-full rounded-lg bg-white p-6 shadow-panel sm:w-[55rem] sm:p-8 dark:bg-neutral-700'>
+            <main className='fade-in my-8 w-[25rem] max-w-full rounded-lg bg-white p-6 shadow-panel sm:w-[55rem] sm:p-8 dark:bg-gray-700'>
               <p>
                 Thank you, we appreciate your business!
                 <br />

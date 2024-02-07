@@ -1,6 +1,5 @@
 import { Menu, MenuButton, MenuDivider, MenuItem } from '@szhsin/react-menu';
 import classNames from 'classnames';
-import { useController } from 'react-hook-form';
 import { FaChevronDown } from 'react-icons/fa';
 
 export default function Dropdown({
@@ -17,7 +16,7 @@ export default function Dropdown({
       <Menu
         gap={8}
         menuButton={
-          <MenuButton className='border-1 flex items-center rounded-full border-solid border-border-color bg-white text-black dark:bg-neutral-700 dark:text-neutral-100'>
+          <MenuButton className='border-1 flex items-center rounded-full border-solid border-border-color bg-white text-black dark:bg-gray-700 dark:text-gray-100'>
             {prefixLabel && (
               <span className='mr-2 font-bold'>{prefixLabel}:</span>
             )}
@@ -25,7 +24,7 @@ export default function Dropdown({
             <FaChevronDown className='ml-2' size='14' />
           </MenuButton>
         }
-        menuClassName='pl-0 py-2 w-[9rem] rounded-lg flex flex-col list-none bg-white dark:bg-neutral-600 shadow-panel z-10'
+        menuClassName='pl-0 py-2 w-[9rem] rounded-lg flex flex-col list-none bg-white dark:bg-gray-600 shadow-panel z-10'
       >
         {options.map((option) => {
           if (option.divider)
@@ -37,7 +36,7 @@ export default function Dropdown({
             );
           return (
             <MenuItem
-              className='flex cursor-pointer list-none items-center px-4 py-1.5 text-sm font-normal text-black hover:bg-[#eee] dark:text-neutral-100 dark:hover:bg-neutral-500'
+              className"'flex cursor-pointer list-none items-center px-4 py-1.5 text-sm font-normal text-black hover:bg-[#eee] dark:text-gray-100 dark:hover:bg-gray-50"'
               key={option.value}
               onClick={(e) => onChange(option)}
             >

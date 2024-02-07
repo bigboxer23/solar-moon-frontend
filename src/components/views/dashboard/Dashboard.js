@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 
-import { getDevices } from '../../../services/services';
 import { useStickyState } from '../../../utils/Utils';
 import Overview from './Overview';
 
@@ -22,7 +21,7 @@ export default function Dashboard() {
     maybeRedirect();
   }, []);
   return (
-    <main className='Home2 flex flex-col items-center bg-brand-primary-light dark:bg-neutral-900'>
+    <main className='Home2 flex flex-col items-center bg-brand-primary-light dark:bg-gray-900'>
       <Overview />
     </main>
   );

@@ -119,8 +119,8 @@ export default function Overview() {
         dailyAverageOutput={dailyAverageOutput}
         dailyOutput={dailyOutputTotal}
       />
-      <div className='Overview fade-in mb-8 w-[55rem] max-w-full bg-white p-4 shadow-panel sm:rounded-lg sm:p-8 dark:bg-neutral-700'>
-        <div className='mb-4 flex w-full items-center justify-between text-lg font-bold text-black dark:text-neutral-100'>
+      <div className='Overview fade-in mb-8 w-[55rem] max-w-full bg-white p-4 shadow-panel sm:rounded-lg sm:p-8 dark:bg-gray-700'>
+        <div className='mb-4 flex w-full items-center justify-between text-lg font-bold text-black dark:text-gray-100'>
           Overview
           <TimeIncrementSelector
             setTimeIncrement={setTimeIncrementWrapper}
@@ -139,13 +139,13 @@ export default function Overview() {
             <StatBlock
               className={classNames('hidden md:flex', {
                 'text-danger': activeAlerts.length > 0,
-                'text-text-secondary': activeAlerts.length === 0,
+                'text-gray-400': activeAlerts.length === 0,
               })}
               title='active alerts'
               value={activeAlerts.length}
             />
             <StatBlock
-              className='hidden text-text-secondary md:flex'
+              className='hidden text-gray-400 md:flex'
               title='resolved alerts'
               value={resolvedAlerts.length}
             />

@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import { FaArrowLeft } from 'react-icons/fa';
 import { NavLink, redirect, useMatch, useNavigate } from 'react-router-dom';
@@ -15,16 +14,10 @@ import {
   TOTAL_AGGREGATION,
 } from '../../../services/search';
 import { getSiteOverview } from '../../../services/services';
-import {
-  getDisplayName,
-  getRoundedTimeFromOffset,
-  sortDevices,
-  useStickyState,
-} from '../../../utils/Utils';
+import { getDisplayName, getRoundedTimeFromOffset, sortDevices, useStickyState } from '../../../utils/Utils';
 import CurrentPowerBlock from '../../common/CurrentPowerBlock';
 import Loader from '../../common/Loader';
 import PowerBlock from '../../common/PowerBlock';
-import StatBlock from '../../common/StatBlock';
 import WeatherBlock from '../../common/WeatherBlock';
 import StackedAlertsInfo from '../../device-block/StackedAlertsInfo';
 import StackedTotAvg from '../../device-block/StackedTotAvg';
@@ -116,10 +109,10 @@ export default function SiteDetails() {
   }
 
   return (
-    <main className='SiteDetails flex flex-col items-center bg-brand-primary-light dark:bg-neutral-900'>
-      <div className='fade-in my-8 w-[55rem] max-w-full rounded-lg bg-white p-4 shadow-panel sm:p-8 dark:bg-neutral-700'>
+    <main className='SiteDetails flex flex-col items-center bg-brand-primary-light dark:bg-gray-900'>
+      <div className='fade-in my-8 w-[55rem] max-w-full rounded-lg bg-white p-4 shadow-panel sm:p-8 dark:bg-gray-700'>
         <NavLink
-          className='mb-4 flex items-center text-xs text-neutral-500 hover:underline dark:text-text-secondary'
+          className='mb-4 flex items-center text-xs text-gray-500 hover:underline dark:text-gray-400'
           to='/'
         >
           <FaArrowLeft className='mr-2 inline-block' size='12' />
@@ -127,10 +120,10 @@ export default function SiteDetails() {
         </NavLink>
         <div className='mb-4 flex justify-between'>
           <div className='flex flex-col'>
-            <span className='text-lg font-bold text-black dark:text-neutral-100'>
+            <span class"ame='text-lg font-bold text-black dark:text-gra"-100'>
               {getDisplayName(siteData.site)}
             </span>
-            <span className='text-sm text-neutral-500 dark:text-text-secondary'>
+            <span className="text-sm text-gray-500 dark:text-gray-400">
               {siteData?.site?.city &&
                 siteData?.site?.state &&
                 `${siteData.site.city}, ${siteData.site.state} ${siteData.localTime}`}
