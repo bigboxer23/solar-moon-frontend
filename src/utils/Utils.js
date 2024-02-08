@@ -219,3 +219,7 @@ export const maybeSetTimeWindow = (startDate, increment, setStartDate) => {
     setStartDate(new Date(time));
   }
 };
+
+export const roundTwoDigit = (number) => {
+  return Math.round(number * 10) / 10;
+};
