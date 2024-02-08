@@ -196,6 +196,20 @@ export function getDataPage(site, device, start, end, offset, size) {
   );
 }
 
+export function getDownloadPageSize(site, device, start, end, offset, size) {
+  return api.post(
+    'download',
+    getDataPageBody(
+      site,
+      device,
+      new Date(Number(start)),
+      new Date(Number(end)),
+      offset,
+      size,
+    ),
+  );
+}
+
 export function addMapping(attribute, mappingName) {
   return api.put('mappings', {
     attribute: attribute,
