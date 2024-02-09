@@ -210,7 +210,12 @@ export const timeLabel = function (startDate, increment) {
  * other time periods need a full "offset" of time shown to change
  * @param increment
  */
-export const maybeSetTimeWindow = (startDate, increment, setStartDate) => {
+export const maybeSetTimeWindow = (
+  startDate,
+  increment,
+  setStartDate,
+  setNextDisabled,
+) => {
   const time = startDate.getTime() + increment;
   if (
     (increment === DAY && time < new Date().getTime()) ||
@@ -218,4 +223,14 @@ export const maybeSetTimeWindow = (startDate, increment, setStartDate) => {
   ) {
     setStartDate(new Date(time));
   }
+  const endDate = time + Math.abs(increment);
+  const enabled =
+    (increment === DAY && endDate < new Date().getTime()) ||
+    endDate + increment < new Date().getTime();
+
+  setNextDisabled(!enabled);
+};
+
+export const roundTwoDigit = (number) => {
+  return Math.round(number * 10) / 10;
 };

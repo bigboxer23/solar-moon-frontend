@@ -15,6 +15,7 @@ import {
 } from '../../../utils/Utils';
 import Loader from '../../common/Loader';
 import DownloadReportButton from './DownloadReportButton';
+import { transformRowData } from './ReportUtils';
 import SearchBar from './SearchBar';
 
 const Reports = () => {
@@ -65,16 +66,19 @@ const Reports = () => {
     return (
       <div
         className='flex h-full items-center justify-center'
-        title={row.row['weatherSummary'] + ' ' + temperature}
+        title={row.row['weatherSummary.keyword'] + ' ' + temperature}
       >
-        {getWeatherIcon(row.row['weatherSummary'])}
+        {getWeatherIcon(
+          row.row['weatherSummary.keyword'] &&
+            row.row['weatherSummary.keyword'][0],
+        )}
       </div>
     );
   };
 
   const columns = [
     {
-      key: 'weatherSummary',
+      key: 'weatherSummary.keyword',
       name: (
         <div
           className='flex h-full items-center justify-center'
@@ -87,8 +91,8 @@ const Reports = () => {
       renderCell: WeatherRowRenderer,
     },
     { key: 'time', name: 'Time', width: 150 },
-    { key: 'site', name: 'Site' },
-    { key: 'device-name', name: 'Device Name' },
+    { key: 'site.keyword', name: 'Site' },
+    { key: 'device-name.keyword', name: 'Device Name' },
     {
       key: 'Total Energy Consumption',
       name: (
@@ -117,16 +121,6 @@ const Reports = () => {
       ),
     },
   ];
-
-  const getRow = function (row) {
-    row.time = getFormattedTime(new Date(row['@timestamp']));
-    if (row['Total Energy Consumption'] != null) {
-      row['Total Energy Consumption'] = intl.formatNumber(
-        row['Total Energy Consumption'],
-      );
-    }
-    return row;
-  };
 
   useEffect(() => {
     if (loading) {
@@ -159,7 +153,9 @@ const Reports = () => {
         setSubLoad(false);
         setRefreshSearch(false);
         setTotal(data.hits.total.value);
-        rowSetter(data.hits.hits.map((row) => getRow(row._source)));
+        rowSetter(
+          data.hits.hits.map((row) => transformRowData(row.fields, intl)),
+        );
         if (shouldScrollToTop) {
           scrollToTop();
         }

@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { useState } from 'react';
 import { Bar, Line } from 'react-chartjs-2';
 import {
   MdBarChart,
@@ -26,6 +27,7 @@ export default function SiteDetailsGraph({
   setStartDate,
   startDate,
 }) {
+  const [nextDisabled, setNextDisabled] = useState(true);
   const datasets = deviceNames.map((name) => {
     const data = graphData.filter((d) => d.name === name);
     const dataSet = {
@@ -62,9 +64,6 @@ export default function SiteDetailsGraph({
     plugins: {
       legend: {
         position: 'bottom',
-        labels: {
-          color: '#9ca3af',
-        },
       },
       tooltip: {
         backgroundColor: '#fff',
@@ -95,17 +94,12 @@ export default function SiteDetailsGraph({
         stacked: graphType !== GROUPED_BAR,
         type: 'time',
         ticks: {
-          color: '#9ca3af',
           callback: timeIncrement === DAY ? null : formatXAxisLabels,
         },
       },
       y: {
-        color: '#9ca3af',
         min: 0,
         stacked: graphType !== GROUPED_BAR,
-        ticks: {
-          color: '#9ca3af',
-        },
         title: {
           display: false,
         },
@@ -130,22 +124,36 @@ export default function SiteDetailsGraph({
                 aria-label='previous time period'
                 className='rounded-l px-2 py-1 hover:bg-gray-200 dark:border-gray-600 dark:hover:bg-gray-500 dark:hover:text-gray-100'
                 onClick={() =>
-                  maybeSetTimeWindow(startDate, -timeIncrement, setStartDate)
+                  maybeSetTimeWindow(
+                    startDate,
+                    -timeIncrement,
+                    setStartDate,
+                    setNextDisabled,
+                  )
                 }
               >
                 <MdNavigateBefore className='text-brand-primary-dark text-xl' />
               </button>
               <button
                 aria-label='next time period'
-                className='rounded-r px-2 py-1 hover:bg-gray-200 dark:border-gray-600 dark:hover:bg-gray-500 dark:hover:text-gray-100'
+                className={classNames(
+                  ' rounded-r px-2 py-1 hover:bg-gray-200 dark:border-gray-600 dark:hover:bg-gray-500 dark:hover:text-gray-100',
+                  { 'pointer-events-none opacity-50': nextDisabled },
+                )}
+                disabled={nextDisabled}
                 onClick={() =>
-                  maybeSetTimeWindow(startDate, timeIncrement, setStartDate)
+                  maybeSetTimeWindow(
+                    startDate,
+                    timeIncrement,
+                    setStartDate,
+                    setNextDisabled,
+                  )
                 }
               >
                 <MdNavigateNext className='text-brand-primary-dark text-xl' />
               </button>
             </div>
-            <div className='text-xs text-black dark:text-gray-100'>
+            <div className='text-xs text-black dark:text-neutral-100'>
               {timeLabel(startDate, timeIncrement)}
             </div>
           </div>
