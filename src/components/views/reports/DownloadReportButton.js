@@ -94,7 +94,6 @@ const DownloadReportButton = ({ site, device, start, end, timeFormatter }) => {
       10000,
     )
       .then(({ data }) => {
-        console.log('index: ' + index + ' steps: ' + steps);
         updateStatus(true, steps * index);
         if (data.hits.total.value === 0) {
           finalizeDownload(csv);

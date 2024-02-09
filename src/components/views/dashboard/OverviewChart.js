@@ -38,6 +38,7 @@ export default function OverviewChart({
     'overview',
     'overview.graph',
   );
+  const [nextDisabled, setNextDisabled] = useState(true);
 
   useEffect(() => {
     if (overviewData == null) {
@@ -217,16 +218,30 @@ export default function OverviewChart({
               aria-label='previous time period'
               className='rounded-l px-2 py-1 hover:bg-neutral-200 dark:border-neutral-600 dark:hover:bg-neutral-500 dark:hover:text-neutral-100'
               onClick={() =>
-                maybeSetTimeWindow(startDate, -timeIncrement, setStartDate)
+                maybeSetTimeWindow(
+                  startDate,
+                  -timeIncrement,
+                  setStartDate,
+                  setNextDisabled,
+                )
               }
             >
               <MdNavigateBefore className='text-brand-primary-dark text-xl' />
             </button>
             <button
               aria-label='next time period'
-              className='rounded-r px-2 py-1 hover:bg-neutral-200 dark:border-neutral-600 dark:hover:bg-neutral-500 dark:hover:text-neutral-100'
+              className={classNames(
+                ' rounded-r px-2 py-1 hover:bg-neutral-200 dark:border-neutral-600 dark:hover:bg-neutral-500 dark:hover:text-neutral-100',
+                { 'pointer-events-none opacity-50': nextDisabled },
+              )}
+              disabled={nextDisabled}
               onClick={() =>
-                maybeSetTimeWindow(startDate, timeIncrement, setStartDate)
+                maybeSetTimeWindow(
+                  startDate,
+                  timeIncrement,
+                  setStartDate,
+                  setNextDisabled,
+                )
               }
             >
               <MdNavigateNext className='text-brand-primary-dark text-xl' />
