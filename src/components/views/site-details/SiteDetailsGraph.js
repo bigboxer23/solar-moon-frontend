@@ -153,7 +153,7 @@ export default function SiteDetailsGraph({
                 <MdNavigateNext className='text-brand-primary-dark text-xl' />
               </button>
             </div>
-            <div className='text-xs text-black dark:text-neutral-100'>
+            <div className='text-xs text-black dark:text-gray-100'>
               {timeLabel(startDate, timeIncrement)}
             </div>
           </div>
