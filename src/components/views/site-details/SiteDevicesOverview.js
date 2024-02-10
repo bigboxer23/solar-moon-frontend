@@ -32,7 +32,7 @@ export default function SiteDevicesOverview({
   return (
     <div className='SiteDevicesOverview w-full'>
       <div>
-        <div className='mb-4 text-lg font-bold text-black dark:text-neutral-100'>
+        <div className='mb-4 text-lg font-bold text-black dark:text-gray-100'>
           {devices.length} Devices
         </div>
         <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
@@ -69,7 +69,7 @@ export default function SiteDevicesOverview({
                   <StatBlock
                     className={classNames('ml-[18px]', {
                       'text-danger': activeAlerts > 0,
-                      'text-text-secondary': activeAlerts === 0,
+                      'text-gray-400': activeAlerts === 0,
                     })}
                     key={2}
                     onClick={() => navigate(`/alerts?device=${device.id}`)}
@@ -80,7 +80,7 @@ export default function SiteDevicesOverview({
                     }
                   />,
                   <StatBlock
-                    className='text-text-secondary dark:text-text-secondary'
+                    className='text-gray-400 dark:text-gray-400'
                     key={3}
                     onClick={() => navigate(`/alerts?device=${device.id}`)}
                     title='resolved alerts'

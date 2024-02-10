@@ -4,22 +4,22 @@
 
 @media (prefers-color-scheme: dark) {
   [data-amplify-router] {
-    background-color: theme('colors.neutral.700') !important;
+    background-color: theme('colors.gray.800') !important;
   }
   .amplify-input {
-    background-color: theme('colors.neutral.700') !important;
+    background-color: theme('colors.gray.800') !important;
     color: theme('colors.white') !important;
   }
   .amplify-label {
-    color: theme('colors.text-secondary') !important;
+    color: theme('colors.gray.400') !important;
   }
 
   .amplify-text {
-    color: theme('colors.neutral.300') !important;
+    color: theme('colors.gray.300') !important;
   }
 
   .amplify-heading {
-    color: theme('colors.neutral.100') !important;
+    color: theme('colors.gray.100') !important;
   }
 
   .amplify-button.amplify-button--primary {
@@ -30,25 +30,25 @@
   }
 
   .amplify-button {
-    color: theme('colors.neutral.100') !important;
+    color: theme('colors.gray.100') !important;
 
     &:hover {
-      background-color: theme('colors.neutral.600') !important;
+      background-color: theme('colors.gray.600') !important;
       border-color: theme('colors.brand-primary') !important;
     }
   }
 
   .amplify-button--link {
-    color: theme('colors.neutral.100') !important;
+    color: theme('colors.gray.100') !important;
     &:hover {
-      background-color: theme('colors.neutral.400') !important;
-      border-color: theme('colors.neutral.400') !important;
+      background-color: theme('colors.gray.400') !important;
+      border-color: theme('colors.gray.400') !important;
     }
   }
 
   .amplify-tabs-item[data-state='inactive'] {
-    background-color: theme('colors.neutral.600') !important;
-    color: theme('colors.text-secondary') !important;
+    background-color: theme('colors.gray.700') !important;
+    color: theme('colors.gray.400') !important;
 
     &:hover {
       color: theme('colors.brand-primary') !important;

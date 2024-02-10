@@ -45,12 +45,12 @@ export default function PricingPage() {
             setCount={setYearCount}
           />
         </div>
-        <div className='fade-in my-8 w-[25rem] max-w-full rounded-lg bg-white p-6 shadow-panel sm:w-[55rem] sm:p-8 dark:bg-neutral-700'>
+        <div className='fade-in my-8 w-[25rem] max-w-full rounded-lg bg-white p-6 shadow-panel sm:w-[55rem] sm:p-8 dark:bg-gray-800'>
           <div>
-            <div className='align-self-start mb-4 text-lg font-bold text-black dark:text-neutral-100'>
+            <div className='align-self-start mb-4 text-lg font-bold text-black dark:text-gray-100'>
               Plans include
             </div>
-            <div className='ms-4 text-neutral-500 dark:text-text-secondary'>
+            <div className='ms-4 text-gray-500 dark:text-gray-400'>
               <ul className='list-disc'>
                 <li>Up to 20 devices per seat</li>
                 <li>Site level data via virtual devices</li>

@@ -82,9 +82,9 @@ const ChangePassword = () => {
   }
 
   return (
-    <div className='fade-in my-8 w-[40rem] max-w-full rounded-lg bg-white p-6 shadow-panel sm:p-8 dark:bg-neutral-700'>
+    <div className='fade-in my-8 w-[40rem] max-w-full rounded-lg bg-white p-6 shadow-panel sm:p-8 dark:bg-gray-800'>
       <div className='mb-8 flex w-full justify-between'>
-        <span className='text-lg font-bold text-black dark:text-neutral-100'>
+        <span className='text-lg font-bold text-black dark:text-gray-100'>
           Change Password
         </span>
       </div>

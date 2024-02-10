@@ -41,9 +41,9 @@ export default function ManagePlanTile() {
   };
 
   return (
-    <div className='price fade-in my-8 w-[40rem] max-w-full rounded-lg bg-white p-6 shadow-panel sm:p-8 dark:bg-neutral-700'>
+    <div className='price fade-in my-8 w-[40rem] max-w-full rounded-lg bg-white p-6 shadow-panel sm:p-8 dark:bg-gray-800'>
       <div className='mb-8 flex w-full justify-between'>
-        <span className='text-lg font-bold text-black dark:text-neutral-100'>
+        <span className='text-lg font-bold text-black dark:text-gray-100'>
           Billing Information
         </span>
       </div>
@@ -55,17 +55,14 @@ export default function ManagePlanTile() {
           </div>
           <div className='mb-2 flex items-center'>
             <div className='text-lg'>{20 * quantity}</div>
-            <div className='ps-1 text-sm text-neutral-500'> devices</div>
+            <div className='ps-1 text-sm text-gray-500'> devices</div>
           </div>
           <div className='mb-2 flex items-center'>
             <div className='text-lg'>${price * quantity}</div>
-            <div className='ps-1 text-sm text-neutral-500'>
-              {' '}
-              per {periodShort}
-            </div>
+            <div className='ps-1 text-sm text-gray-500'> per {periodShort}</div>
           </div>
           <div className='mb-6 flex'>
-            <div className='smaller-text text-sm text-neutral-500'>
+            <div className='smaller-text text-sm text-gray-500'>
               {quantity} Seats, ${price} per seat per {periodShort}
             </div>
           </div>

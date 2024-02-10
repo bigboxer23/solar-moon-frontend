@@ -8,7 +8,7 @@ export default function StackedAlertsInfo({
 }) {
   const activeAlertsStyle = classNames('leading-4', {
     'text-red-500': activeAlerts > 0,
-    'text-black dark:text-neutral-100': activeAlerts === 0,
+    'text-black dark:text-gray-100': activeAlerts === 0,
   });
 
   const style = classNames(
@@ -22,7 +22,7 @@ export default function StackedAlertsInfo({
   return (
     <div className={style} onClick={onClick}>
       <div className={activeAlertsStyle}>{activeAlerts} active alerts</div>
-      <div className='leading-4 text-text-secondary'>
+      <div className='leading-4 text-gray-400'>
         {resolvedAlerts} resolved alerts
       </div>
     </div>

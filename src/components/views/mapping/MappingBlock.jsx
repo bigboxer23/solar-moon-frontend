@@ -13,7 +13,7 @@ export default function MappingBlock({
   const [loading, setLoading] = useState(false);
 
   return (
-    <div className='MappingBlock flex w-full items-center overflow-hidden rounded-md bg-[#f5f5f5] p-4 dark:bg-neutral-600 dark:text-neutral-100'>
+    <div className='MappingBlock flex w-full items-center overflow-hidden rounded-md bg-[#f5f5f5] p-4 dark:bg-gray-700 dark:text-gray-100'>
       <div className='text-sm font-extrabold'>{mappingName}</div>
       <span className='pe-2 ps-2'>{'->'}</span>
       <div className='text-sm italic'>{attribute}</div>
@@ -34,7 +34,7 @@ export default function MappingBlock({
           {loading && <Spinner />}
         </Button>
       ) : (
-        <MdLock className='ml-auto text-text-secondary' />
+        <MdLock className='ml-auto text-gray-400' />
       )}
     </div>
   );

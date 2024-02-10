@@ -54,7 +54,7 @@ export default function OverviewSiteList({
 
   return (
     <div className='SiteList mt-5'>
-      <div className='mb-6 text-lg font-bold text-black dark:text-neutral-100'>
+      <div className='mb-6 text-lg font-bold text-black dark:text-gray-100'>
         {sites.length} Sites
       </div>
       <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>

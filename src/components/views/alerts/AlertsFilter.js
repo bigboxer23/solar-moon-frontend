@@ -98,7 +98,7 @@ export default function AlertsFilter({
     <div className='AlertsFilter flex flex-col items-end space-y-3 sm:flex-row sm:items-center sm:space-x-6 sm:space-y-0'>
       {dirty && (
         <button
-          className='border-1 hidden bg-white text-sm font-bold text-text-secondary underline sm:block sm:rounded-full dark:bg-neutral-700'
+          className='border-1 hidden bg-white text-sm font-bold text-gray-400 underline sm:block sm:rounded-full dark:bg-gray-800'
           onClick={resetFilters}
         >
           Reset Filters
@@ -127,7 +127,7 @@ export default function AlertsFilter({
       />
       {dirty && (
         <button
-          className='border-1 block rounded-full bg-white text-sm font-bold text-text-secondary underline sm:hidden dark:bg-neutral-700'
+          className='border-1 block rounded-full bg-white text-sm font-bold text-gray-400 underline sm:hidden dark:bg-gray-800'
           onClick={resetFilters}
         >
           Reset Filters

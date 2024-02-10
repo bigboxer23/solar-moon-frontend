@@ -210,13 +210,13 @@ export default function OverviewChart({
   if (loading) return null;
 
   return (
-    <div className='OverviewChart mb-6 w-full rounded-lg bg-brand-primary-light p-3 dark:bg-neutral-800'>
+    <div className='OverviewChart mb-6 w-full rounded-lg bg-brand-primary-light p-3 dark:bg-gray-900'>
       <div className='mb-2 flex items-center justify-between'>
         <div className='flex w-fit items-center'>
-          <div className='mr-1 flex w-fit rounded bg-white sm:me-4 dark:bg-neutral-600 dark:text-neutral-100'>
+          <div className='mr-1 flex w-fit rounded bg-white sm:me-4 dark:bg-gray-700 dark:text-gray-100'>
             <button
               aria-label='previous time period'
-              className='rounded-l px-2 py-1 hover:bg-neutral-200 dark:border-neutral-600 dark:hover:bg-neutral-500 dark:hover:text-neutral-100'
+              className='rounded-l px-2 py-1 hover:bg-gray-200 dark:border-gray-600 dark:hover:bg-gray-500 dark:hover:text-gray-100'
               onClick={() =>
                 maybeSetTimeWindow(
                   startDate,
@@ -231,7 +231,7 @@ export default function OverviewChart({
             <button
               aria-label='next time period'
               className={classNames(
-                ' rounded-r px-2 py-1 hover:bg-neutral-200 dark:border-neutral-600 dark:hover:bg-neutral-500 dark:hover:text-neutral-100',
+                ' rounded-r px-2 py-1 hover:bg-gray-200 dark:border-gray-600 dark:hover:bg-gray-500 dark:hover:text-gray-100',
                 { 'pointer-events-none opacity-50': nextDisabled },
               )}
               disabled={nextDisabled}
@@ -247,17 +247,17 @@ export default function OverviewChart({
               <MdNavigateNext className='text-brand-primary-dark text-xl' />
             </button>
           </div>
-          <div className='text-xs text-black dark:text-neutral-100'>
+          <div className='text-xs text-black dark:text-gray-100'>
             {timeLabel(startDate, timeIncrement)}
           </div>
         </div>
-        <div className='flex items-center rounded bg-white dark:border-neutral-600 dark:bg-neutral-600 dark:text-neutral-100'>
+        <div className='flex items-center rounded bg-white dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100'>
           <button
             aria-label='grouped bar graph'
             className={classNames(
-              'rounded-l dark:border-neutral-600 px-2 py-1 hover:bg-neutral-200 dark:hover:bg-neutral-500 dark:hover:text-neutral-100',
+              'rounded-l dark:border-gray-600 px-2 py-1 hover:bg-gray-200 dark:hover:bg-gray-500 dark:hover:text-gray-100',
               {
-                'bg-neutral-300 dark:text-black': graphType === 'overview',
+                'bg-gray-300 dark:text-black': graphType === 'overview',
               },
             )}
             onClick={() => setGraphType('overview')}
@@ -267,9 +267,9 @@ export default function OverviewChart({
           <button
             aria-label='line graph'
             className={classNames(
-              'px-2 py-1 hover:bg-neutral-200 dark:hover:bg-neutral-500 dark:hover:text-neutral-100',
+              'px-2 py-1 hover:bg-gray-200 dark:hover:bg-gray-500 dark:hover:text-gray-100',
               {
-                'bg-neutral-300 dark:text-black': graphType === 'stacked-line',
+                'bg-gray-300 dark:text-black': graphType === 'stacked-line',
               },
             )}
             onClick={() => setGraphType('stacked-line')}
@@ -279,9 +279,9 @@ export default function OverviewChart({
           <button
             aria-label='bar graph'
             className={classNames(
-              'rounded-r dark:border-neutral-600 px-2 py-1 hover:bg-neutral-200 dark:hover:bg-neutral-500 dark:hover:text-neutral-100',
+              'rounded-r dark:border-gray-600 px-2 py-1 hover:bg-gray-200 dark:hover:bg-gray-500 dark:hover:text-gray-100',
               {
-                'bg-neutral-300 dark:text-black': graphType === 'stacked-bar',
+                'bg-gray-300 dark:text-black': graphType === 'stacked-bar',
               },
             )}
             onClick={() => setGraphType('stacked-bar')}

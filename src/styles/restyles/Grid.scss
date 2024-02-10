@@ -1,18 +1,18 @@
 @media (prefers-color-scheme: dark) {
   .rdg {
-    color: theme('colors.neutral.100') !important;
+    color: theme('colors.gray.100') !important;
   }
 
   .rdg-row-odd {
-    background-color: theme('colors.neutral.700') !important;
+    background-color: theme('colors.gray.800') !important;
   }
 
   .rdg-row-even {
-    background-color: theme('colors.neutral.600') !important;
+    background-color: theme('colors.gray.700') !important;
   }
 
   .rdg-header-row {
-    background-color: theme('colors.neutral.800') !important;
+    background-color: theme('colors.gray.900') !important;
   }
 }
 

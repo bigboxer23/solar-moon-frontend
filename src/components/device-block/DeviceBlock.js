@@ -14,7 +14,7 @@ export default function DeviceBlock({
   const [expandedDevice, setExpandedDevice] = useState(false);
 
   const style = classNames(
-    'DeviceBlock rounded-lg p-4 sm:p-6 bg-neutral-50 dark:bg-neutral-600 h-fit',
+    'DeviceBlock rounded-lg p-4 sm:p-6 bg-gray-50 dark:bg-gray-700 h-fit',
     className,
   );
 
@@ -31,9 +31,9 @@ export default function DeviceBlock({
       className={style}
       onClick={() => setExpandedDevice(!expandedDevice)}
     >
-      <span className='flex items-center text-base font-bold text-black dark:text-neutral-100'>
+      <span className='flex items-center text-base font-bold text-black dark:text-gray-100'>
         <div>{title}</div>
-        <div className='ml-2 text-sm text-text-secondary'>{subtitle}</div>
+        <div className='ml-2 text-sm text-gray-400'>{subtitle}</div>
         {expandableBody && (
           <div className='ml-auto'>
             {expandedDevice ? <FaChevronUp /> : <FaChevronDown />}
@@ -41,7 +41,7 @@ export default function DeviceBlock({
         )}
       </span>
       {secondaryTitle && (
-        <div className='flex text-xs text-text-secondary'>{secondaryTitle}</div>
+        <div className='flex text-xs text-gray-400'>{secondaryTitle}</div>
       )}
       <div className='my-2 grid grid-cols-2 gap-1 sm:gap-2'>
         {statBlocks.map((block, i) => block)}
