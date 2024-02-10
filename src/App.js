@@ -69,10 +69,7 @@ function App() {
     <IntlProvider locale={navigator.language}>
       <Authenticator components={components}>
         <Router>
-          <div
-            className='App bg-brand-primary-light dark:bg-gray-950'
-            id='scroll'
-          >
+          <div className='App' id='scroll'>
             <Routes>
               <Route element='' path='/checkout' />
               <Route element='' path='/pricing' />
