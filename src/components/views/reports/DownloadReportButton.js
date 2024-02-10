@@ -7,12 +7,14 @@ import { toast, ToastContainer } from 'react-toastify';
 import { ALL, DAY } from '../../../services/search';
 import { getDataPage, getDownloadPageSize } from '../../../services/services';
 import Button from '../../common/Button';
-import Spinner from '../../common/Spinner';
+import ProgressCircle from '../../common/ProgressCircle';
 import { transformRowData } from './ReportUtils';
 
 const DownloadReportButton = ({ site, device, start, end, timeFormatter }) => {
   const [downloading, setDownloading] = useState(false);
   const [buttonTitle, setButtonTitle] = useState('Download');
+  const [percent, setPercent] = useState(0);
+
   const intl = useIntl();
 
   const headers = [
@@ -52,9 +54,11 @@ const DownloadReportButton = ({ site, device, start, end, timeFormatter }) => {
     setDownloading(downloading);
     if (percent === 100) {
       setButtonTitle('Download');
+      setPercent(0);
       return;
     }
-    setButtonTitle(percent + '% Downloading');
+    setButtonTitle('Downloading');
+    setPercent(percent);
   };
 
   const updateError = () => {
@@ -165,7 +169,7 @@ const DownloadReportButton = ({ site, device, start, end, timeFormatter }) => {
       variant='outline-secondary'
     >
       {!downloading && <FaDownload />}
-      {downloading && <Spinner />}
+      {downloading && <ProgressCircle percent={percent} />}
       <span className='hidden whitespace-nowrap sm:ml-2 sm:block'>
         {buttonTitle}
       </span>
