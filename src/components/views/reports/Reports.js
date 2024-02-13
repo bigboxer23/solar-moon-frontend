@@ -24,15 +24,15 @@ const Reports = () => {
   const [loading, setLoading] = useState(true);
   const [init, setInit] = useState(false);
   const [subLoad, setSubLoad] = useState(false);
-  const [site, setSite] = useSearchParamState(
+  const [siteId, setSiteId] = useSearchParamState(
     ALL,
-    'site',
+    'siteId',
     searchParams,
     setSearchParams,
   );
-  const [device, setDevice] = useSearchParamState(
+  const [deviceId, setDeviceId] = useSearchParamState(
     ALL,
-    'device',
+    'deviceId',
     searchParams,
     setSearchParams,
   );
@@ -146,7 +146,7 @@ const Reports = () => {
       return;
     }
     fetchData(0, (rows) => setRows(rows), true);
-  }, [site, device, start, end]);
+  }, [siteId, deviceId, start, end]);
 
   useEffect(() => {
     if (loading || !refreshSearch) {
@@ -160,8 +160,8 @@ const Reports = () => {
     setSubLoad(offset > 0);
     setTotal(shouldScrollToTop ? -1 : total);
     getDataPage(
-      site === ALL ? null : site,
-      device === ALL ? null : device,
+      siteId === ALL ? null : siteId,
+      deviceId === ALL ? null : deviceId,
       start,
       end,
       offset,
@@ -223,23 +223,23 @@ const Reports = () => {
           </span>
           <SearchBar
             defaultSearchPeriod={DAY}
-            device={device}
+            deviceId={deviceId}
             devices={devices}
             end={end}
             refreshSearch={refreshSearch}
-            setDevice={setDevice}
+            setDeviceId={setDeviceId}
             setEnd={setEnd}
             setRefreshSearch={setRefreshSearch}
-            setSite={setSite}
+            setSiteId={setSiteId}
             setStart={setStart}
-            site={site}
+            siteId={siteId}
             start={start}
           />
           <DownloadReportButton
-            device={device}
+            deviceId={deviceId}
             deviceMap={deviceMap}
             end={end}
-            site={site}
+            siteId={siteId}
             start={start}
             timeFormatter={getFormattedTime}
           />

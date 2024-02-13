@@ -11,8 +11,8 @@ import ProgressCircle from '../../common/ProgressCircle';
 import { transformRowData } from './ReportUtils';
 
 const DownloadReportButton = ({
-  site,
-  device,
+  siteId,
+  deviceId,
   start,
   end,
   timeFormatter,
@@ -48,11 +48,11 @@ const DownloadReportButton = ({
       ' - ' +
       timeFormatter(new Date(Number(end)));
 
-    if (device !== null && device !== ALL) {
-      return fileName + ' - ' + device + '.csv';
+    if (deviceId !== null && deviceId !== ALL) {
+      return fileName + ' - ' + deviceMap[deviceId] + '.csv';
     }
-    if (site !== null && site !== ALL) {
-      fileName += ' - ' + site;
+    if (siteId !== null && siteId !== ALL) {
+      fileName += ' - ' + deviceMap[siteId];
     }
     return fileName + '.csv';
   };
@@ -145,8 +145,8 @@ const DownloadReportButton = ({
   const download = () => {
     updateStatus(true, 0);
     getDownloadPageSize(
-      site === ALL ? null : site,
-      device === ALL ? null : device,
+      siteId === ALL ? null : siteId,
+      deviceId === ALL ? null : deviceId,
       start,
       end,
       0,
@@ -154,8 +154,8 @@ const DownloadReportButton = ({
     )
       .then(({ data }) => {
         fetchDownload(
-          site === ALL ? null : site,
-          device === ALL ? null : device,
+          siteId === ALL ? null : siteId,
+          deviceId === ALL ? null : deviceId,
           end,
           [],
           data * DAY,

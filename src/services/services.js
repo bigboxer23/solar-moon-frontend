@@ -182,12 +182,12 @@ export function getOverviewTotal(offset) {
   return api.post('search', body);
 }
 
-export function getDataPage(site, device, start, end, offset, size) {
+export function getDataPage(siteId, deviceId, start, end, offset, size) {
   return api.post(
     'search',
     getDataPageBody(
-      site,
-      device,
+      siteId,
+      deviceId,
       new Date(Number(start)),
       new Date(Number(end)),
       offset,
@@ -196,12 +196,19 @@ export function getDataPage(site, device, start, end, offset, size) {
   );
 }
 
-export function getDownloadPageSize(site, device, start, end, offset, size) {
+export function getDownloadPageSize(
+  siteId,
+  deviceId,
+  start,
+  end,
+  offset,
+  size,
+) {
   return api.post(
     'download',
     getDataPageBody(
-      site,
-      device,
+      siteId,
+      deviceId,
       new Date(Number(start)),
       new Date(Number(end)),
       offset,
