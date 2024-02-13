@@ -6,8 +6,9 @@ import { useIntl } from 'react-intl';
 import { useSearchParams } from 'react-router-dom';
 
 import { ALL, DAY } from '../../../services/search';
-import { getDataPage } from '../../../services/services';
+import { getDataPage, getDevices } from '../../../services/services';
 import {
+  getDisplayName,
   getFormattedTime,
   getRoundedTime,
   getWeatherIcon,
@@ -21,6 +22,7 @@ import SearchBar from './SearchBar';
 const Reports = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [loading, setLoading] = useState(true);
+  const [init, setInit] = useState(false);
   const [subLoad, setSubLoad] = useState(false);
   const [site, setSite] = useSearchParamState(
     ALL,
@@ -48,6 +50,7 @@ const Reports = () => {
     setSearchParams,
   );
   const [devices, setDevices] = useState([]);
+  const [deviceMap, setDeviceMap] = useState({});
   const [rows, setRows] = useState([]);
   const [total, setTotal] = useState(-1);
   const [refreshSearch, setRefreshSearch] = useState(false);
@@ -55,8 +58,24 @@ const Reports = () => {
 
   const intl = useIntl();
   useEffect(() => {
-    fetchData(0, (rows) => setRows(rows), true);
+    getDevices().then(({ data }) => {
+      setDevices(data);
+      setDeviceMap(
+        data.reduce((acc, obj) => {
+          acc[obj.id] = getDisplayName(obj);
+          return acc;
+        }, {}),
+      );
+      setInit(true);
+    });
   }, []);
+
+  useEffect(() => {
+    if (!init) {
+      return;
+    }
+    fetchData(0, (rows) => setRows(rows), true);
+  }, [devices]);
 
   const WeatherRowRenderer = (row) => {
     const temperature =
@@ -91,7 +110,7 @@ const Reports = () => {
       renderCell: WeatherRowRenderer,
     },
     { key: 'time', name: 'Time', width: 150 },
-    { key: 'site.keyword', name: 'Site' },
+    { key: 'siteId.keyword', name: 'Site' },
     { key: 'device-name.keyword', name: 'Device Name' },
     {
       key: 'Total Energy Consumption',
@@ -154,7 +173,9 @@ const Reports = () => {
         setRefreshSearch(false);
         setTotal(data.hits.total.value);
         rowSetter(
-          data.hits.hits.map((row) => transformRowData(row.fields, intl)),
+          data.hits.hits.map((row) =>
+            transformRowData(row.fields, deviceMap, intl),
+          ),
         );
         if (shouldScrollToTop) {
           scrollToTop();
@@ -207,7 +228,6 @@ const Reports = () => {
             end={end}
             refreshSearch={refreshSearch}
             setDevice={setDevice}
-            setDevices={setDevices}
             setEnd={setEnd}
             setRefreshSearch={setRefreshSearch}
             setSite={setSite}
@@ -217,6 +237,7 @@ const Reports = () => {
           />
           <DownloadReportButton
             device={device}
+            deviceMap={deviceMap}
             end={end}
             site={site}
             start={start}
