@@ -24,7 +24,6 @@ import Spinner from '../../common/Spinner';
 
 const SearchBar = ({
   devices = [],
-  setDevices,
   site,
   setSite,
   device,
@@ -53,11 +52,6 @@ const SearchBar = ({
 
   const loadSearches = () => {
     setSearchActive(true);
-    if (devices.length === 0) {
-      getDevices().then(({ data }) => {
-        setDevices(data);
-      });
-    }
   };
 
   const dateChanged = (date) => {
@@ -86,7 +80,7 @@ const SearchBar = ({
 
   const deviceOptions = devices
     .filter((d) => {
-      return site === ALL || d.site === site || d.name === ALL;
+      return site === ALL || d.siteId === site || d.name === ALL;
     })
     .sort(sortDevices)
     .map((d) => {
@@ -130,20 +124,18 @@ const SearchBar = ({
           />
           <Dropdown
             onChange={(option) => {
-              setSite(option.label);
+              setSite(option.value);
               setDevice(ALL);
             }}
             options={[allOption, ...siteOptions]}
             prefixLabel='Site'
-            value={siteOptions.find((option) => option.label === site)}
+            value={siteOptions.find((option) => option.value === site)}
           />
           <Dropdown
-            onChange={(option) =>
-              setDevice(option.label.replace(' (site)', ''))
-            }
+            onChange={(option) => setDevice(option.value)}
             options={[allOption, ...deviceOptions]}
             prefixLabel='Device'
-            value={deviceOptions.find((option) => option.label === device)}
+            value={deviceOptions.find((option) => option.value === device)}
           />
           <Button
             buttonProps={{

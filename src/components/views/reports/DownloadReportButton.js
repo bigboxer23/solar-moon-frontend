@@ -10,7 +10,14 @@ import Button from '../../common/Button';
 import ProgressCircle from '../../common/ProgressCircle';
 import { transformRowData } from './ReportUtils';
 
-const DownloadReportButton = ({ site, device, start, end, timeFormatter }) => {
+const DownloadReportButton = ({
+  site,
+  device,
+  start,
+  end,
+  timeFormatter,
+  deviceMap,
+}) => {
   const [downloading, setDownloading] = useState(false);
   const [buttonTitle, setButtonTitle] = useState('Download');
   const [percent, setPercent] = useState(0);
@@ -19,7 +26,7 @@ const DownloadReportButton = ({ site, device, start, end, timeFormatter }) => {
 
   const headers = [
     { key: 'time', label: 'Time' },
-    { key: 'site.keyword', label: 'Site' },
+    { key: 'siteId.keyword', label: 'Site' },
     { key: 'device-name.keyword', label: 'Device Name' },
     {
       key: 'Total Energy Consumption',
@@ -108,7 +115,9 @@ const DownloadReportButton = ({ site, device, start, end, timeFormatter }) => {
           localDevice,
           localEnd - interval,
           csv.concat(
-            data.hits.hits.map((row) => transformRowData(row.fields, intl)),
+            data.hits.hits.map((row) =>
+              transformRowData(row.fields, deviceMap, intl),
+            ),
           ),
           interval,
           steps,

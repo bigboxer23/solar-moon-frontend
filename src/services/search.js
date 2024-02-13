@@ -52,8 +52,9 @@ export function getTimeSeriesBody(device, start, end) {
   return getJSONSearch(device.name, null, null, start, end, 'timeseries');
 }
 
-export function getDataPageBody(site, deviceName, start, end, offset, size) {
-  let searchJSON = getJSONSearch(deviceName, null, site, start, end, 'data');
+export function getDataPageBody(siteId, deviceId, start, end, offset, size) {
+  let searchJSON = getJSONSearch(null, deviceId, null, start, end, 'data');
+  searchJSON.siteId = siteId;
   searchJSON.offset = offset;
   searchJSON.size = size;
   return searchJSON;
