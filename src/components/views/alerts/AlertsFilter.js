@@ -13,8 +13,8 @@ export default function AlertsFilter({
   const [searchParams, setSearchParams] = useSearchParams();
   const allOption = { value: ALL, label: ALL };
 
-  const searchParamSite = searchParams.get('site');
-  const searchParamDevice = searchParams.get('device');
+  const searchParamSite = searchParams.get('siteId');
+  const searchParamDevice = searchParams.get('deviceId');
   const searchParamStart = searchParams.get('start');
   const searchParamEnd = searchParams.get('end');
 
@@ -35,14 +35,14 @@ export default function AlertsFilter({
 
   const [dirty, setDirty] = useState(false);
 
-  const [siteValue, setSiteValue] = useState(defaultSite);
-  const [deviceValue, setDeviceValue] = useState(defaultDevice);
+  const [siteIdValue, setSiteIdValue] = useState(defaultSite);
+  const [deviceIdValue, setDeviceIdValue] = useState(defaultDevice);
   const [dateValue, setDateValue] = useState([defaultStart, defaultEnd]);
 
   useEffect(() => {
     handleFilterChange({
-      site: defaultSite.value,
-      device: defaultDevice.value,
+      siteId: defaultSite.value,
+      deviceId: defaultDevice.value,
       start: dateValue[0] ? dateValue[0] : null,
       end: dateValue[1] ? dateValue[1] : null,
     });
@@ -50,21 +50,21 @@ export default function AlertsFilter({
 
   useEffect(() => {
     handleFilterChange({
-      site: siteValue.value,
-      device: deviceValue.value,
+      siteId: siteIdValue.value,
+      deviceId: deviceIdValue.value,
       start: dateValue[0] ? dateValue[0] : null,
       end: dateValue[1] ? dateValue[1] : null,
     });
-  }, [deviceValue, siteValue, dateValue]);
+  }, [deviceIdValue, siteIdValue, dateValue]);
 
   // Update search params when filters change
   useEffect(() => {
     const searchParams = {};
-    if (siteValue.value !== ALL) {
-      searchParams.site = siteValue.value;
+    if (siteIdValue.value !== ALL) {
+      searchParams.siteId = siteIdValue.value;
     }
-    if (deviceValue.value !== ALL) {
-      searchParams.device = deviceValue.value;
+    if (deviceIdValue.value !== ALL) {
+      searchParams.deviceId = deviceIdValue.value;
     }
 
     if (dateValue[0] && dateValue[1]) {
@@ -73,24 +73,24 @@ export default function AlertsFilter({
     }
 
     setSearchParams(searchParams);
-  }, [deviceValue, siteValue]);
+  }, [deviceIdValue, siteIdValue]);
 
   function resetFilters() {
     setSearchParams({});
-    setSiteValue(allOption);
-    setDeviceValue(allOption);
+    setSiteIdValue(allOption);
+    setDeviceIdValue(allOption);
     setDateValue([null, null]);
     setDirty(false);
   }
 
   function handleSiteFilterChange(siteOption) {
-    setSiteValue(siteOption);
-    setDeviceValue(allOption);
+    setSiteIdValue(siteOption);
+    setDeviceIdValue(allOption);
     setDirty(true);
   }
 
   function handleDeviceFilterChange(deviceOption) {
-    setDeviceValue(deviceOption);
+    setDeviceIdValue(deviceOption);
     setDirty(true);
   }
 
@@ -108,7 +108,7 @@ export default function AlertsFilter({
         onChange={handleSiteFilterChange}
         options={[allOption, ...availableSites]}
         prefixLabel='Site'
-        value={siteValue}
+        value={siteIdValue}
       />
       <Dropdown
         onChange={handleDeviceFilterChange}
@@ -116,14 +116,14 @@ export default function AlertsFilter({
           allOption,
           ...availableDevices.filter((d) => {
             return (
-              siteValue.label === ALL ||
-              d.site === siteValue.label ||
+              siteIdValue.label === ALL ||
+              d.site === siteIdValue.value ||
               d.name === ALL
             );
           }),
         ]}
         prefixLabel='Device'
-        value={deviceValue}
+        value={deviceIdValue}
       />
       {dirty && (
         <button

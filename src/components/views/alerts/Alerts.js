@@ -18,8 +18,8 @@ export default function Alerts() {
   const [deviceOptions, setDeviceOptions] = useState([]);
 
   const [filter, setFilter] = useState({
-    device: ALL,
-    site: ALL,
+    deviceId: ALL,
+    siteId: ALL,
     start: null,
     end: null,
   });
@@ -62,7 +62,7 @@ export default function Alerts() {
             .map((d) => {
               return [
                 d.deviceId,
-                { label: d.deviceName, value: d.deviceId, site: d.deviceSite },
+                { label: d.deviceName, value: d.deviceId, site: d.siteId },
               ];
             }),
         ).values(),
@@ -76,10 +76,10 @@ export default function Alerts() {
 
   useEffect(() => {
     const filterFn = (alert) => {
-      if (filter.device !== ALL && filter.device !== alert.deviceId) {
+      if (filter.deviceId !== ALL && filter.deviceId !== alert.deviceId) {
         return false;
       }
-      if (filter.site !== ALL && filter.site !== alert.siteId) {
+      if (filter.siteId !== ALL && filter.siteId !== alert.siteId) {
         return false;
       }
       const alertDate = new Date(alert.startDate);
@@ -100,8 +100,8 @@ export default function Alerts() {
     setFilteredResolvedAlerts(resolvedAlerts.filter(filterFn));
   }, [filter]);
 
-  function handleFilterChange({ device, site, start, end }) {
-    setFilter({ device, site, start, end });
+  function handleFilterChange({ deviceId, siteId, start, end }) {
+    setFilter({ deviceId, siteId, start, end });
   }
 
   return (

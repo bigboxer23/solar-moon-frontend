@@ -24,10 +24,10 @@ import Spinner from '../../common/Spinner';
 
 const SearchBar = ({
   devices = [],
-  site,
-  setSite,
-  device,
-  setDevice,
+  siteId,
+  setSiteId,
+  deviceId,
+  setDeviceId,
   start,
   setStart,
   end,
@@ -44,8 +44,8 @@ const SearchBar = ({
   ]);
 
   const resetSearch = () => {
-    setSite(ALL);
-    setDevice(ALL);
+    setSiteId(ALL);
+    setDeviceId(ALL);
     dateChanged(null);
     setSearchActive(false);
   };
@@ -80,7 +80,7 @@ const SearchBar = ({
 
   const deviceOptions = devices
     .filter((d) => {
-      return site === ALL || d.siteId === site || d.name === ALL;
+      return siteId === ALL || d.siteId === siteId || d.name === ALL;
     })
     .sort(sortDevices)
     .map((d) => {
@@ -124,18 +124,18 @@ const SearchBar = ({
           />
           <Dropdown
             onChange={(option) => {
-              setSite(option.value);
-              setDevice(ALL);
+              setSiteId(option.value);
+              setDeviceId(ALL);
             }}
             options={[allOption, ...siteOptions]}
             prefixLabel='Site'
-            value={siteOptions.find((option) => option.value === site)}
+            value={siteOptions.find((option) => option.value === siteId)}
           />
           <Dropdown
-            onChange={(option) => setDevice(option.value)}
+            onChange={(option) => setDeviceId(option.value)}
             options={[allOption, ...deviceOptions]}
             prefixLabel='Device'
-            value={deviceOptions.find((option) => option.value === device)}
+            value={deviceOptions.find((option) => option.value === deviceId)}
           />
           <Button
             buttonProps={{
