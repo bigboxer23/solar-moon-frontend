@@ -83,8 +83,8 @@ const DownloadReportButton = ({
   };
 
   const fetchDownload = (
-    localSite,
     localDevice,
+    localSite,
     localEnd,
     csv,
     interval,
@@ -97,8 +97,8 @@ const DownloadReportButton = ({
     }
     index++;
     getDataPage(
-      localSite,
       localDevice,
+      localSite,
       Math.max(start, localEnd - interval + 1),
       localEnd,
       0,
@@ -111,8 +111,8 @@ const DownloadReportButton = ({
           return;
         }
         fetchDownload(
-          localSite,
           localDevice,
+          localSite,
           localEnd - interval,
           csv.concat(
             data.hits.hits.map((row) =>
@@ -145,8 +145,8 @@ const DownloadReportButton = ({
   const download = () => {
     updateStatus(true, 0);
     getDownloadPageSize(
-      siteId === ALL ? null : siteId,
       deviceId === ALL ? null : deviceId,
+      siteId === ALL ? null : siteId,
       start,
       end,
       0,
@@ -154,8 +154,8 @@ const DownloadReportButton = ({
     )
       .then(({ data }) => {
         fetchDownload(
-          siteId === ALL ? null : siteId,
           deviceId === ALL ? null : deviceId,
+          siteId === ALL ? null : siteId,
           end,
           [],
           data * DAY,

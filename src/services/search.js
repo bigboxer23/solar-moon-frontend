@@ -1,8 +1,6 @@
 export const DATE_HISTO = 'date_histogram#2';
 export const AVG = 'avg#1';
 
-export const MAX = 'max#1';
-
 export const TOTAL_REAL_POWER = 'Total Real Power';
 
 export const HOUR = 3600000;
@@ -34,54 +32,33 @@ export function getBucketSize(offset, type) {
 function getTimeZone() {
   return new Intl.DateTimeFormat().resolvedOptions().timeZone;
 }
-export function getMaxCurrentBody(device) {
-  let end = new Date();
-  let start = new Date(end.getTime() - WEEK);
-  return getJSONSearch(device.name, null, null, start, end, 'maxCurrent');
+
+export function getAvgTotalBody(deviceId, start, end) {
+  return getJSONSearch(deviceId, null, start, end, 'avgTotal');
 }
 
-export function getAvgTotalBody(device, start, end) {
-  return getJSONSearch(device?.name, null, null, start, end, 'avgTotal');
-}
-
-export function getStackedTimeSeriesBody(site, start, end, type) {
-  return getJSONSearch(null, null, site.name, start, end, type);
-}
-
-export function getTimeSeriesBody(device, start, end) {
-  return getJSONSearch(device.name, null, null, start, end, 'timeseries');
-}
-
-export function getDataPageBody(siteId, deviceId, start, end, offset, size) {
-  let searchJSON = getJSONSearch(null, deviceId, null, start, end, 'data');
-  searchJSON.siteId = siteId;
+export function getDataPageBody(deviceId, siteId, start, end, offset, size) {
+  let searchJSON = getJSONSearch(deviceId, siteId, start, end, 'data');
   searchJSON.offset = offset;
   searchJSON.size = size;
   return searchJSON;
 }
 
-function getJSONSearch(deviceName, deviceId, site, start, end, type) {
+function getJSONSearch(deviceId, siteId, start, end, type) {
   return {
-    deviceName: deviceName,
     deviceId: deviceId,
     endDate: end.getTime(),
     startDate: start.getTime(),
     timeZone: getTimeZone(),
     bucketSize: getBucketSize(end.getTime() - start.getTime(), type),
     type: type,
-    site: site,
+    siteId: siteId,
   };
 }
 
 export function parseSearchReturn(data) {
   return data.aggregations[DATE_HISTO].buckets.map((d) => {
     return { date: new Date(Number(d.key)), values: d[AVG].value };
-  });
-}
-
-export function parseMaxSearchReturn(data) {
-  return data.aggregations[DATE_HISTO].buckets.map((d) => {
-    return { date: new Date(Number(d.key)), values: d[MAX].value };
   });
 }
 

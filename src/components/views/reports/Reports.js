@@ -160,8 +160,8 @@ const Reports = () => {
     setSubLoad(offset > 0);
     setTotal(shouldScrollToTop ? -1 : total);
     getDataPage(
-      siteId === ALL ? null : siteId,
       deviceId === ALL ? null : deviceId,
+      siteId === ALL ? null : siteId,
       start,
       end,
       offset,
