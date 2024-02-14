@@ -79,6 +79,13 @@ export const getDisplayName = (device) => {
   return device.name == null ? device.deviceName : device.name;
 };
 
+export const getDeviceIdToNameMap = (devices) => {
+  return devices.reduce((acc, obj) => {
+    acc[obj.id] = getDisplayName(obj);
+    return acc;
+  }, {});
+};
+
 export const sortDevices = (d1, d2) =>
   getDisplayName(d1).localeCompare(getDisplayName(d2), undefined, {
     sensitivity: 'accent',

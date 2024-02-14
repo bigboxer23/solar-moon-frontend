@@ -66,14 +66,14 @@ export function getAggregationValue(data, label) {
   return data !== undefined ? Math.round(data.aggregations[label].value) : 0;
 }
 
-export const parseStackedTimeSeriesData = function (data) {
+export const parseStackedTimeSeriesData = function (data, deviceIdToName) {
   const formattedData = [];
   data.aggregations[DATE_HISTO].buckets.forEach((d) => {
     const date = new Date(Number(d.key)).toISOString();
     d['sterms#terms'].buckets.forEach((v) => {
       formattedData.push({
         date: date,
-        name: v.key,
+        name: deviceIdToName[v.key] || v.key,
         avg: v[AVG] ? v[AVG].value : v['1'].value,
       });
     });

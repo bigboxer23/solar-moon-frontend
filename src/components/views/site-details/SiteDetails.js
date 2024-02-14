@@ -16,6 +16,7 @@ import {
 } from '../../../services/search';
 import { getSiteOverview } from '../../../services/services';
 import {
+  getDeviceIdToNameMap,
   getDisplayName,
   getRoundedTimeFromOffset,
   sortDevices,
@@ -93,7 +94,10 @@ export default function SiteDetails() {
       setGraphData(
         data.site.subtraction
           ? parseSearchReturn(data.timeSeries)
-          : parseStackedTimeSeriesData(data.timeSeries),
+          : parseStackedTimeSeriesData(
+              data.timeSeries,
+              getDeviceIdToNameMap(data.devices),
+            ),
       );
       setLoading(false);
       if (callback) {
