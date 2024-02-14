@@ -1,15 +1,9 @@
-import { getRoundedTime, getRoundedTimeFromOffset } from '../utils/Utils';
 import { api } from './apiClient';
 import {
-  DAY,
   getAvgTotalBody,
   getBucketSize,
   getDataPageBody,
-  getMaxCurrentBody,
-  getStackedTimeSeriesBody,
-  getTimeSeriesBody,
   GROUPED_BAR,
-  HOUR,
 } from './search';
 
 export function getCustomer() {
@@ -46,13 +40,6 @@ export function getSubscriptions() {
 
 export function getDevices() {
   return api.get('devices');
-}
-
-export function getSitesOverview() {
-  return api.post(
-    'sites',
-    getAvgTotalBody(null, getRoundedTime(false, 0), new Date()),
-  );
 }
 
 export function getSiteOverview(siteId, start, offset, graphType) {
@@ -98,96 +85,12 @@ export function getOverviewData(start, offset) {
   );
 }
 
-export function getTimeSeriesData(device, offset, isSite) {
-  const body = getTimeSeriesBody(
-    device,
-    getRoundedTimeFromOffset(offset),
-    new Date(),
-  );
-  if (isSite) {
-    body.isSite = true;
-  }
-  return api.post('search', body);
-}
-
-export function getListTimeSeriesData(devices, offset) {
-  const end = new Date();
-  const start = getRoundedTimeFromOffset(offset);
-
-  const timeSeriesBodies = devices.map((device) =>
-    getTimeSeriesBody(device, start, end),
-  );
-
-  return api.post('search', timeSeriesBodies);
-}
-
-export function getStackedTimeSeriesData(device, start, end) {
-  return api.post(
-    'search',
-    getStackedTimeSeriesBody(device, start, end, 'stackedTimeSeries'),
-  );
-}
-
-export function getGroupedTimeSeriesData(device, start, end) {
-  return api.post(
-    'search',
-    getStackedTimeSeriesBody(device, start, end, GROUPED_BAR),
-  );
-}
-
-export function getListAvgTotal(devices, offset) {
-  const end = new Date();
-  const start = getRoundedTimeFromOffset(offset);
-
-  const avgTotalBodies = devices.map((device) =>
-    getAvgTotalBody(device, start, end),
-  );
-
-  return api.post('search', avgTotalBodies);
-}
-
-export function getAvgTotal(device, offset) {
-  return api.post(
-    'search',
-    getAvgTotalBody(device, getRoundedTimeFromOffset(offset), new Date()),
-  );
-}
-
-export function getMaxCurrent(device) {
-  return api.post('search', getMaxCurrentBody(device));
-}
-
-export function getTileContent(device, offset) {
-  return api.post('search', [
-    getAvgTotalBody(device, getRoundedTimeFromOffset(offset), new Date()),
-    getMaxCurrentBody(device),
-    getDataPageBody(
-      device.site,
-      device.name,
-      getRoundedTime(false, DAY),
-      getRoundedTime(true, 0),
-      0,
-      1,
-    ),
-  ]);
-}
-
-export function getOverviewTotal(offset) {
-  const body = getAvgTotalBody(
-    null,
-    getRoundedTimeFromOffset(offset),
-    new Date(),
-  );
-  body.isSite = true;
-  return api.post('search', body);
-}
-
-export function getDataPage(siteId, deviceId, start, end, offset, size) {
+export function getDataPage(deviceId, siteId, start, end, offset, size) {
   return api.post(
     'search',
     getDataPageBody(
-      siteId,
       deviceId,
+      siteId,
       new Date(Number(start)),
       new Date(Number(end)),
       offset,
@@ -197,8 +100,8 @@ export function getDataPage(siteId, deviceId, start, end, offset, size) {
 }
 
 export function getDownloadPageSize(
-  siteId,
   deviceId,
+  siteId,
   start,
   end,
   offset,
@@ -207,8 +110,8 @@ export function getDownloadPageSize(
   return api.post(
     'download',
     getDataPageBody(
-      siteId,
       deviceId,
+      siteId,
       new Date(Number(start)),
       new Date(Number(end)),
       offset,
