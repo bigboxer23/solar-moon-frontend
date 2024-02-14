@@ -13,6 +13,9 @@ export const transformRowData = function (row, deviceMap, intl) {
   if (row['Energy Consumed'] != null) {
     row['Energy Consumed'] = roundTwoDigit(row['Energy Consumed']);
   }
-  row['siteId.keyword'] = deviceMap[row['siteId.keyword']];
+  row['siteId.keyword'] =
+    deviceMap[row['siteId.keyword']] || row['siteId.keyword'];
+  row['device-id.keyword'] =
+    deviceMap[row['device-id.keyword']] || row['device-id.keyword'];
   return row;
 };

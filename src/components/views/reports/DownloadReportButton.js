@@ -27,7 +27,7 @@ const DownloadReportButton = ({
   const headers = [
     { key: 'time', label: 'Time' },
     { key: 'siteId.keyword', label: 'Site' },
-    { key: 'device-name.keyword', label: 'Device Name' },
+    { key: 'device-id.keyword', label: 'Device Name' },
     {
       key: 'Total Energy Consumption',
       label: 'Total Energy Consumption (kWH)',

@@ -111,7 +111,7 @@ const Reports = () => {
     },
     { key: 'time', name: 'Time', width: 150 },
     { key: 'siteId.keyword', name: 'Site' },
-    { key: 'device-name.keyword', name: 'Device Name' },
+    { key: 'device-id.keyword', name: 'Device Name' },
     {
       key: 'Total Energy Consumption',
       name: (
