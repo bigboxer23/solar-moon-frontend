@@ -8,7 +8,7 @@ import { useSearchParams } from 'react-router-dom';
 import { ALL, DAY } from '../../../services/search';
 import { getDataPage, getDevices } from '../../../services/services';
 import {
-  getDisplayName,
+  getDeviceIdToNameMap,
   getFormattedTime,
   getRoundedTime,
   getWeatherIcon,
@@ -60,12 +60,7 @@ const Reports = () => {
   useEffect(() => {
     getDevices().then(({ data }) => {
       setDevices(data);
-      setDeviceMap(
-        data.reduce((acc, obj) => {
-          acc[obj.id] = getDisplayName(obj);
-          return acc;
-        }, {}),
-      );
+      setDeviceMap(getDeviceIdToNameMap(data));
       setInit(true);
     });
   }, []);
