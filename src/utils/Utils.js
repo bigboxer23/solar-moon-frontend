@@ -43,6 +43,10 @@ export function useStickyState(defaultValue, key) {
     return stickyValue !== null ? JSON.parse(stickyValue) : defaultValue;
   });
   useEffect(() => {
+    if (value === null) {
+      window.localStorage.removeItem(key);
+      return;
+    }
     window.localStorage.setItem(key, JSON.stringify(value));
   }, [key, value]);
   return [value, setValue];

@@ -2,7 +2,7 @@
   border: 0 !important;
 }
 
-@media (prefers-color-scheme: dark) {
+.dark {
   [data-amplify-router] {
     background-color: theme('colors.gray.800') !important;
   }

@@ -1,0 +1,19 @@
+.dark {
+  .tippy-box {
+    background-color: #6b7280 !important;
+    color: #f3f4f6 !important;
+  }
+
+  .tippy-box[data-placement^='top'] > .tippy-arrow::before {
+    border-top-color: #6b7280;
+  }
+  .tippy-box[data-placement^='bottom'] > .tippy-arrow::before {
+    border-bottom-color: #6b7280;
+  }
+  .tippy-box[data-placement^='left'] > .tippy-arrow::before {
+    border-left-color: #6b7280;
+  }
+  .tippy-box[data-placement^='right'] > .tippy-arrow::before {
+    border-right-color: #6b7280;
+  }
+}
