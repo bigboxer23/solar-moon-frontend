@@ -32,8 +32,6 @@ export const LockPage = () => {
     },
   });
 
-  console.log('errors', errors);
-
   const onSubmit = (data) => {
     setUnlocked(data.AccessCode);
     window.location.href = '/';
@@ -42,7 +40,7 @@ export const LockPage = () => {
   return (
     <div className='LockPage flex max-w-full flex-col items-center'>
       <HeaderBar headerText='' />
-      <main className='fade-in my-8 flex w-[30rem] max-w-full flex-col content-center bg-white p-6 shadow-panel sm:rounded-lg sm:p-8 dark:bg-gray-800'>
+      <main className='fade-in my-8 flex w-[30rem] max-w-full flex-col content-center bg-white p-6 shadow-panel dark:bg-gray-800 sm:rounded-lg sm:p-8'>
         <div className='text-base font-bold'>
           Enter the access code to proceed to the site
         </div>
