@@ -5,7 +5,7 @@ import { MdComputer } from 'react-icons/md';
 
 import { useStickyState } from '../../utils/Utils';
 
-export default function ThemeSelector() {
+export default function ThemeSelector({ extended }) {
   const [activeTheme, setActiveTheme] = useStickyState(null, 'theme');
 
   function onThemeChange(theme) {
@@ -31,8 +31,51 @@ export default function ThemeSelector() {
 
   return (
     <div className='ThemeSelector w-full'>
-      <div className='my-2 flex w-full rounded border border-neutral-500 dark:border-neutral-100'>
-        <Tippy content='System theme' delay={500} placement='top'>
+      {!extended && (
+        <div className='my-2 flex w-full rounded border border-neutral-500 dark:border-neutral-100'>
+          <Tippy content='System theme' delay={500} placement='top'>
+            <button
+              className={classNames(themeButtonStyle, {
+                [themeButtonActiveStyle]: activeTheme === null,
+                [themeButtonInactiveStyle]: activeTheme !== null,
+              })}
+              onClick={() => {
+                onThemeChange(null);
+              }}
+            >
+              <MdComputer />
+            </button>
+          </Tippy>
+          <Tippy content='Light theme' delay={500} placement='top'>
+            <button
+              className={classNames(themeButtonStyle, {
+                [themeButtonActiveStyle]: activeTheme === 'light',
+                [themeButtonInactiveStyle]: activeTheme !== 'light',
+              })}
+              onClick={() => {
+                onThemeChange('light');
+              }}
+            >
+              <LuSun />
+            </button>
+          </Tippy>
+          <Tippy content='Dark theme' delay={500} placement='top'>
+            <button
+              className={classNames(themeButtonStyle, {
+                [themeButtonActiveStyle]: activeTheme === 'dark',
+                [themeButtonInactiveStyle]: activeTheme !== 'dark',
+              })}
+              onClick={() => {
+                onThemeChange('dark');
+              }}
+            >
+              <LuMoon />
+            </button>
+          </Tippy>
+        </div>
+      )}
+      {extended && (
+        <div className='my-2 flex w-full rounded border border-neutral-500 dark:border-neutral-100 dark:text-gray-100'>
           <button
             className={classNames(themeButtonStyle, {
               [themeButtonActiveStyle]: activeTheme === null,
@@ -42,10 +85,9 @@ export default function ThemeSelector() {
               onThemeChange(null);
             }}
           >
-            <MdComputer />
+            <MdComputer className='mr-3' />
+            System
           </button>
-        </Tippy>
-        <Tippy content='Light theme' delay={500} placement='top'>
           <button
             className={classNames(themeButtonStyle, {
               [themeButtonActiveStyle]: activeTheme === 'light',
@@ -55,10 +97,8 @@ export default function ThemeSelector() {
               onThemeChange('light');
             }}
           >
-            <LuSun />
+            <LuSun className='mr-3' /> Light
           </button>
-        </Tippy>
-        <Tippy content='Dark theme' delay={500} placement='top'>
           <button
             className={classNames(themeButtonStyle, {
               [themeButtonActiveStyle]: activeTheme === 'dark',
@@ -68,10 +108,11 @@ export default function ThemeSelector() {
               onThemeChange('dark');
             }}
           >
-            <LuMoon />
+            <LuMoon className='mr-3' />
+            Dark
           </button>
-        </Tippy>
-      </div>
+        </div>
+      )}
     </div>
   );
 }

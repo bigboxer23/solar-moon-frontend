@@ -25,7 +25,6 @@ import {
 import CurrentPowerBlock from '../../common/CurrentPowerBlock';
 import Loader from '../../common/Loader';
 import PowerBlock from '../../common/PowerBlock';
-import StatBlock from '../../common/StatBlock';
 import WeatherBlock from '../../common/WeatherBlock';
 import StackedAlertsInfo from '../../device-block/StackedAlertsInfo';
 import StackedTotAvg from '../../device-block/StackedTotAvg';
@@ -121,7 +120,7 @@ export default function SiteDetails() {
 
   return (
     <main className='SiteDetails flex flex-col items-center'>
-      <div className='fade-in my-8 w-[55rem] max-w-full rounded-lg bg-white p-4 shadow-panel dark:bg-gray-800 sm:p-8'>
+      <div className='fade-in my-8 w-[55rem] max-w-full bg-white p-4 shadow-panel dark:bg-gray-800 sm:rounded-lg sm:p-8'>
         <NavLink
           className='mb-4 flex items-center text-xs text-gray-500 hover:underline dark:text-gray-400'
           to='/'

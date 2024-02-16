@@ -87,8 +87,8 @@ const SiteManagement = () => {
   };
 
   return (
-    <main className='SiteManagement me-2 ms-2 flex max-w-full flex-col items-center justify-center '>
-      <div className='fade-in my-8 flex w-[45rem] max-w-full flex-col rounded-lg bg-white p-6 shadow-panel dark:bg-gray-800 sm:p-8'>
+    <main className='SiteManagement flex max-w-full flex-col items-center justify-center '>
+      <div className='fade-in my-8 flex w-[45rem] max-w-full flex-col bg-white p-6 shadow-panel dark:bg-gray-800 sm:rounded-lg sm:p-8'>
         <div className=''>
           <div className='mb-10 flex w-full items-center justify-between'>
             <Dropdown
@@ -128,8 +128,8 @@ const SiteManagement = () => {
               variant='secondary'
             >
               <div className='flex items-center'>
-                <MdSettingsInputComposite className='button-icon' />
-                Mappings
+                <MdSettingsInputComposite />
+                <span className='ml-2 hidden sm:flex'>Mappings</span>
               </div>
             </Button>
           </div>

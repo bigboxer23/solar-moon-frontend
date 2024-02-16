@@ -210,8 +210,8 @@ const Reports = () => {
   };
 
   return (
-    <main className='Reports flex w-full flex-col items-center px-2 sm:px-5'>
-      <div className='fade-in  my-8 flex w-[75rem] max-w-full flex-col rounded-lg bg-white shadow-panel dark:bg-gray-800 '>
+    <main className='Reports flex w-full flex-col items-center'>
+      <div className='fade-in  my-8 flex w-[75rem] max-w-full flex-col bg-white shadow-panel dark:bg-gray-800 sm:rounded-lg '>
         <div className='flex w-full items-center justify-between p-2 pb-4 pt-8 sm:p-8'>
           <span className='hidden text-lg font-bold text-black dark:text-gray-100 sm:block'>
             Reports
@@ -239,7 +239,7 @@ const Reports = () => {
             timeFormatter={getFormattedTime}
           />
         </div>
-        <div className='flex w-full flex-col justify-center p-2 sm:pb-6 sm:pe-6 sm:ps-6'>
+        <div className='flex w-full flex-col justify-center px-1 sm:px-6 sm:pb-6'>
           <div className='w-full' id='data-grid'>
             {(!loading || subLoad) && (
               <DataGrid
