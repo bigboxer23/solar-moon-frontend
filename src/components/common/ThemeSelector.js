@@ -28,7 +28,7 @@ export default function ThemeSelector() {
   }
 
   const themeButtonStyle =
-    'flex-1 flex justify-center items-center py-2 transition-colors duration-300 ease-in-out';
+    'flex-1 flex justify-center items-center py-1.5 transition-colors duration-300 ease-in-out';
   const themeButtonActiveStyle =
     'bg-gray-500 text-gray-100 dark:bg-gray-100 dark:text-gray-900';
   const themeButtonInactiveStyle =
@@ -37,7 +37,12 @@ export default function ThemeSelector() {
   return (
     <div className='ThemeSelector w-full'>
       <div className='my-2 flex w-full rounded border border-neutral-500 dark:border-neutral-100'>
-        <Tippy content='System theme' delay={500} placement='top'>
+        <Tippy
+          className='dark:bg-neutral-500'
+          content='System theme'
+          delay={500}
+          placement='top'
+        >
           <button
             className={classNames(themeButtonStyle, {
               [themeButtonActiveStyle]: activeTheme === '',
@@ -50,7 +55,12 @@ export default function ThemeSelector() {
             <MdComputer />
           </button>
         </Tippy>
-        <Tippy content='Light theme' delay={500} placement='top'>
+        <Tippy
+          className='dark:bg-neutral-500'
+          content='Light theme'
+          delay={500}
+          placement='top'
+        >
           <button
             className={classNames(themeButtonStyle, {
               [themeButtonActiveStyle]: activeTheme === 'light',
@@ -63,7 +73,12 @@ export default function ThemeSelector() {
             <LuSun />
           </button>
         </Tippy>
-        <Tippy content='Dark theme' delay={500} placement='top'>
+        <Tippy
+          className='dark:bg-neutral-500'
+          content='Dark theme'
+          delay={500}
+          placement='top'
+        >
           <button
             className={classNames(themeButtonStyle, {
               [themeButtonActiveStyle]: activeTheme === 'dark',
