@@ -1,24 +1,19 @@
 import Tippy from '@tippyjs/react';
 import classNames from 'classnames';
-import { useState } from 'react';
 import { LuMoon, LuSun } from 'react-icons/lu';
 import { MdComputer } from 'react-icons/md';
 
+import { useStickyState } from '../../utils/Utils';
+
 export default function ThemeSelector() {
-  const [activeTheme, setActiveTheme] = useState(localStorage.theme || '');
+  const [activeTheme, setActiveTheme] = useStickyState(null, 'theme');
 
   function onThemeChange(theme) {
     setActiveTheme(theme);
 
-    if (theme === '') {
-      localStorage.removeItem('theme');
-    } else {
-      localStorage.theme = theme;
-    }
-
     if (
-      localStorage.theme === 'dark' ||
-      (!('theme' in localStorage) &&
+      theme === 'dark' ||
+      (theme === null &&
         window.matchMedia('(prefers-color-scheme: dark)').matches)
     ) {
       document.documentElement.classList.add('dark');
@@ -40,11 +35,11 @@ export default function ThemeSelector() {
         <Tippy content='System theme' delay={500} placement='top'>
           <button
             className={classNames(themeButtonStyle, {
-              [themeButtonActiveStyle]: activeTheme === '',
-              [themeButtonInactiveStyle]: activeTheme !== '',
+              [themeButtonActiveStyle]: activeTheme === null,
+              [themeButtonInactiveStyle]: activeTheme !== null,
             })}
             onClick={() => {
-              onThemeChange('');
+              onThemeChange(null);
             }}
           >
             <MdComputer />
