@@ -45,7 +45,7 @@ export default function PricingPage() {
             setCount={setYearCount}
           />
         </div>
-        <div className='fade-in my-8 w-[25rem] max-w-full rounded-lg bg-white p-6 shadow-panel sm:w-[55rem] sm:p-8 dark:bg-gray-800'>
+        <div className='fade-in my-8 w-[25rem] max-w-full rounded-lg bg-white p-6 shadow-panel dark:bg-gray-800 sm:w-[55rem] sm:p-8'>
           <div>
             <div className='align-self-start mb-4 text-lg font-bold text-black dark:text-gray-100'>
               Plans include

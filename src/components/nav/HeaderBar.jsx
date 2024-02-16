@@ -2,7 +2,10 @@ import logo from '../../assets/logo.svg';
 
 export default function HeaderBar({ headerText }) {
   return (
-    <div className='Navbar flex h-[4.5rem] w-full items-center border-b border-gray-400 sm:h-[6.25rem] dark:border-0'>
+    <div
+      className='
+    Navbar flex h-[4.5rem] w-full items-center border-b border-gray-400 dark:border-0 sm:h-[6.25rem]'
+    >
       <div className='flex items-center justify-center'>
         <img
           alt='brand'

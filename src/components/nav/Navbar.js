@@ -64,7 +64,7 @@ export default function Navbar() {
 
   return (
     <>
-      <div className='Navbar2 flex h-[4.5rem] w-full items-center justify-between border-b border-gray-400 sm:h-[6.25rem] dark:border-b-0'>
+      <div className='Navbar2 flex h-[4.5rem] w-full items-center justify-between border-b border-gray-400 dark:border-b-0 sm:h-[6.25rem]'>
         <NavLink className='flex items-center justify-center' to='/'>
           <img
             alt='brand'
@@ -118,7 +118,7 @@ export default function Navbar() {
         <div className='mr-8 hidden items-center justify-center sm:flex'>
           <ProfileMenu />
         </div>
-        <div className='mr-6 flex items-center justify-center text-black sm:hidden dark:text-gray-100'>
+        <div className='mr-6 flex items-center justify-center text-black dark:text-gray-100 sm:hidden'>
           <FaBars className='text-2xl' onClick={() => setSlideMenuOpen(true)} />
         </div>
       </div>
