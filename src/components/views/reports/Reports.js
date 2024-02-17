@@ -210,7 +210,7 @@ const Reports = () => {
   };
 
   return (
-    <main className='Reports flex w-full flex-col items-center'>
+    <main className='Reports flex w-full flex-col items-center sm:px-5'>
       <div className='fade-in  my-8 flex w-[75rem] max-w-full flex-col bg-white shadow-panel dark:bg-gray-800 sm:rounded-lg '>
         <div className='flex w-full items-center justify-between p-2 pb-4 pt-8 sm:p-8'>
           <span className='hidden text-lg font-bold text-black dark:text-gray-100 sm:block'>

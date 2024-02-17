@@ -120,9 +120,9 @@ export default function SiteDetails() {
 
   return (
     <main className='SiteDetails flex flex-col items-center'>
-      <div className='fade-in my-8 w-[55rem] max-w-full bg-white p-4 shadow-panel dark:bg-gray-800 sm:rounded-lg sm:p-8'>
+      <div className='fade-in my-8 flex w-[55rem] max-w-full flex-col bg-white p-4 shadow-panel dark:bg-gray-800 sm:rounded-lg sm:p-8'>
         <NavLink
-          className='mb-4 flex items-center text-xs text-gray-500 hover:underline dark:text-gray-400'
+          className='mb-4 flex items-center self-start text-xs text-gray-500 hover:underline dark:text-gray-400'
           to='/'
         >
           <FaArrowLeft className='mr-2 inline-block' size='12' />

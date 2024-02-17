@@ -26,9 +26,9 @@ export default function Mapping() {
 
   return (
     <main className='Mapping flex w-full flex-col items-center justify-center'>
-      <div className='fade-in my-8 w-[55rem] max-w-full bg-white p-6 shadow-panel dark:bg-gray-800 sm:rounded-lg sm:p-8'>
+      <div className='fade-in my-8 flex w-[55rem] max-w-full flex-col bg-white p-6 shadow-panel dark:bg-gray-800 sm:rounded-lg sm:p-8'>
         <NavLink
-          className='mb-4 flex items-center text-xs text-gray-500 hover:underline dark:text-gray-400'
+          className='mb-4 flex items-center self-start text-xs text-gray-500 hover:underline dark:text-gray-400'
           to='/manage'
         >
           <FaArrowLeft className='mr-2 inline-block' size='12' />
