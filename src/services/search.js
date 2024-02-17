@@ -1,7 +1,11 @@
 export const DATE_HISTO = 'date_histogram#2';
 export const AVG = 'avg#1';
 
-export const TOTAL_REAL_POWER = 'Total Real Power';
+const TOTAL_REAL_POWER = 'Total Real Power';
+
+const CURRENT = 'Average Current';
+
+const VOLTAGE = 'Average Voltage (L-N)';
 
 export const HOUR = 3600000;
 export const DAY = 86400000;
@@ -89,6 +93,14 @@ export const parseCurrentPower = function (data) {
   return data.hits.hits.length > 0
     ? data.hits.hits[0].fields[TOTAL_REAL_POWER][0]
     : 0;
+};
+
+export const parseCurrentVoltage = function (data) {
+  return data.hits.hits.length > 0 ? data.hits.hits[0].fields[VOLTAGE][0] : 0;
+};
+
+export const parseCurrentAmperage = function (data) {
+  return data.hits.hits.length > 0 ? data.hits.hits[0].fields[CURRENT][0] : 0;
 };
 
 export const parseAndCondenseStackedTimeSeriesData = function (data) {

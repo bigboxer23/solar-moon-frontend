@@ -5,15 +5,18 @@ import { useNavigate } from 'react-router-dom';
 import {
   AVG_AGGREGATION,
   getAggregationValue,
+  parseCurrentAmperage,
   parseCurrentPower,
+  parseCurrentVoltage,
   parseMaxData,
   parseSearchReturn,
   TOTAL_AGGREGATION,
 } from '../../../services/search';
 import { getDisplayName } from '../../../utils/Utils';
 import CurrentPowerBlock from '../../common/CurrentPowerBlock';
-import StatBlock from '../../common/StatBlock';
 import DeviceBlock from '../../device-block/DeviceBlock';
+import StackedAlertsInfo from '../../device-block/StackedAlertsInfo';
+import StackedStatBlock from '../../device-block/StackedStatBlock';
 import StackedTotAvg from '../../device-block/StackedTotAvg';
 import DeviceChart from './DeviceChart';
 
@@ -60,31 +63,30 @@ export default function SiteDevicesOverview({
                       avgData[device.id],
                       AVG_AGGREGATION,
                     )}
+                    className='items-end'
                     key={1}
                     total={getAggregationValue(
                       totalData[device.id],
                       TOTAL_AGGREGATION,
                     )}
                   />,
-                  <StatBlock
-                    className={classNames('ml-[18px]', {
-                      'text-danger': activeAlerts > 0,
-                      'text-gray-400': activeAlerts === 0,
-                    })}
+                  <StackedStatBlock
                     key={2}
-                    onClick={() => navigate(`/alerts?device=${device.id}`)}
-                    title='active alerts'
-                    value={
+                    lowerTitle='Current:'
+                    lowerUnit='Amps'
+                    lowerValue={parseCurrentAmperage(maxData[device.id])}
+                    upperTitle='Voltage:'
+                    upperUnit='Volts'
+                    upperValue={parseCurrentVoltage(maxData[device.id])}
+                  />,
+                  <StackedAlertsInfo
+                    activeAlerts={
                       activeSiteAlerts.filter((d) => d.deviceId === device.id)
                         .length
                     }
-                  />,
-                  <StatBlock
-                    className='text-gray-400 dark:text-gray-400'
+                    className='items-end'
                     key={3}
-                    onClick={() => navigate(`/alerts?device=${device.id}`)}
-                    title='resolved alerts'
-                    value={
+                    resolvedAlerts={
                       resolvedSiteAlerts.filter((d) => d.deviceId === device.id)
                         .length
                     }
