@@ -16,7 +16,7 @@ import { getDisplayName } from '../../../utils/Utils';
 import CurrentPowerBlock from '../../common/CurrentPowerBlock';
 import DeviceBlock from '../../device-block/DeviceBlock';
 import StackedAlertsInfo from '../../device-block/StackedAlertsInfo';
-import StackedStatBlock from '../../device-block/StackedStatBlock';
+import StackedCurrentVoltageBlock from '../../device-block/StackedCurrentVoltageBlock';
 import StackedTotAvg from '../../device-block/StackedTotAvg';
 import DeviceChart from './DeviceChart';
 
@@ -70,21 +70,17 @@ export default function SiteDevicesOverview({
                       TOTAL_AGGREGATION,
                     )}
                   />,
-                  <StackedStatBlock
+                  <StackedCurrentVoltageBlock
+                    current={parseCurrentAmperage(maxData[device.id])}
                     key={2}
-                    lowerTitle='Current:'
-                    lowerUnit='Amps'
-                    lowerValue={parseCurrentAmperage(maxData[device.id])}
-                    upperTitle='Voltage:'
-                    upperUnit='Volts'
-                    upperValue={parseCurrentVoltage(maxData[device.id])}
+                    voltage={parseCurrentVoltage(maxData[device.id])}
                   />,
                   <StackedAlertsInfo
                     activeAlerts={
                       activeSiteAlerts.filter((d) => d.deviceId === device.id)
                         .length
                     }
-                    className='items-end'
+                    className='items-end justify-center'
                     key={3}
                     resolvedAlerts={
                       resolvedSiteAlerts.filter((d) => d.deviceId === device.id)

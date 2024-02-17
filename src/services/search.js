@@ -90,17 +90,26 @@ export const parseMaxData = function (data) {
 };
 
 export const parseCurrentPower = function (data) {
-  return data.hits.hits.length > 0
-    ? data.hits.hits[0].fields[TOTAL_REAL_POWER][0]
-    : 0;
+  return safeParseHits(data, TOTAL_REAL_POWER);
 };
 
 export const parseCurrentVoltage = function (data) {
-  return data.hits.hits.length > 0 ? data.hits.hits[0].fields[VOLTAGE][0] : 0;
+  return safeParseHits(data, VOLTAGE);
 };
 
 export const parseCurrentAmperage = function (data) {
-  return data.hits.hits.length > 0 ? data.hits.hits[0].fields[CURRENT][0] : 0;
+  return safeParseHits(data, CURRENT);
+};
+
+const safeParseHits = function (data, fieldName) {
+  if (data.hits.hits.length <= 0) {
+    return 0;
+  }
+  let field = data.hits.hits[0].fields[fieldName];
+  if (field && field.length > 0) {
+    return field[0];
+  }
+  return 0;
 };
 
 export const parseAndCondenseStackedTimeSeriesData = function (data) {
