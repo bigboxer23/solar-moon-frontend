@@ -16,9 +16,12 @@ export default function ManagePlanTile() {
   const [periodShort, setPeriodShort] = useState('');
   const [price, setPrice] = useState(40);
   const [loading, setLoading] = useState(true);
+  const [invalid, setInvalid] = useState(false);
   useEffect(() => {
     getSubscriptions().then(({ data }) => {
       if (data.length === 0) {
+        setLoading(false);
+        setInvalid(true);
         return;
       }
       setQuantity(data[0].quantity);
@@ -48,7 +51,7 @@ export default function ManagePlanTile() {
         </span>
       </div>
       {loading && <Loader className='flex w-full justify-center' />}
-      {!loading && (
+      {!loading && !invalid && (
         <div className='flex flex-col'>
           <div className='mb-2 flex items-center'>
             <div className='text-xl font-bold'>{period}</div>
@@ -82,6 +85,24 @@ export default function ManagePlanTile() {
               Manage
             </Button>
           </div>
+        </div>
+      )}
+      {!loading && invalid && (
+        <div className='flex flex-col'>
+          No Active Plan
+          <Button
+            className='ml-auto mt-3'
+            disabled={billingLoading}
+            onClick={() => (window.location.href = '/pricing')}
+            type='button'
+            variant='primary'
+          >
+            {!billingLoading && (
+              <MdOutlineSubscriptions className='button-icon' />
+            )}
+            {billingLoading && <Spinner className='button-icon' />}
+            Manage
+          </Button>
         </div>
       )}
     </div>
