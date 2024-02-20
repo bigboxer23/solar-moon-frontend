@@ -4,7 +4,8 @@ import {
 } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { FaArrowLeft } from 'react-icons/fa';
+import { NavLink, useSearchParams } from 'react-router-dom';
 
 import { checkout } from '../../../services/services';
 import Loader from '../../common/Loader';
@@ -33,7 +34,16 @@ const CheckoutForm = () => {
   return (
     <div>
       <HeaderBar headerText='Enter payment details' />
-      <div className='flex w-full flex-col py-8'>
+      <main className='flex w-full flex-col items-center justify-center py-8'>
+        <div className='fade-in flex w-[55rem] max-w-full flex-col dark:bg-gray-800 sm:rounded-lg '>
+          <NavLink
+            className='mb-4 flex items-center self-start text-sm text-gray-500 hover:underline dark:text-gray-400'
+            to='/pricing'
+          >
+            <FaArrowLeft className='mr-2 inline-block' size='12' />
+            <span>Back to plans</span>
+          </NavLink>
+        </div>
         {loading && <Loader className='self-center' />}
         <EmbeddedCheckoutProvider
           options={{ clientSecret }}
@@ -41,7 +51,7 @@ const CheckoutForm = () => {
         >
           <EmbeddedCheckout />
         </EmbeddedCheckoutProvider>
-      </div>
+      </main>
     </div>
   );
 };
