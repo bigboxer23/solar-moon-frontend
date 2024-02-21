@@ -9,7 +9,7 @@ import Button from '../../common/Button';
 import { ControlledInput } from '../../common/Input';
 import { ControlledSelect } from '../../common/Select';
 import Spinner from '../../common/Spinner';
-import { attributeMappings, attributes, AVG_CURRENT } from './MappingConstants';
+import { attributeMappings, attributes } from './MappingConstants';
 
 export default function AddMapping({ mappings, setMappings }) {
   const yupSchema = yup
@@ -96,7 +96,7 @@ export default function AddMapping({ mappings, setMappings }) {
       />
       <div className='mx-8 font-bold'>{'->'}</div>
       <ControlledSelect
-        attributes={attributes}
+        attributes={attributes.map((m) => ({ label: m, id: m }))}
         control={control}
         errorMessage={errors.attributes?.message}
         label='Attribute'

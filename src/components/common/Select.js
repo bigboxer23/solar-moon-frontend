@@ -23,10 +23,10 @@ const presets = {
 
 function buildStyles(
   variant,
-  inputClassName,
-  wrapperClassName,
-  labelClassName,
-  errorClassName,
+  inputClassName = '',
+  wrapperClassName = '',
+  labelClassName = '',
+  errorClassName = '',
   extendVariantStyles = true,
 ) {
   const { inputStyle, wrapperStyle, labelStyle, errorStyle } = presets[variant];
@@ -81,8 +81,8 @@ export function Select({
             <select className={inputStyle} {...inputProps}>
               {attributes.map((attr) => {
                 return (
-                  <option key={attr} value={attr}>
-                    {attr}
+                  <option key={attr.id} value={attr.id}>
+                    {attr.label}
                   </option>
                 );
               })}

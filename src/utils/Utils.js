@@ -5,15 +5,8 @@ import { IoPartlySunnyOutline } from 'react-icons/io5';
 import { MdFoggy, MdOutlineWbCloudy, MdOutlineWbSunny } from 'react-icons/md';
 import { RiWindyFill } from 'react-icons/ri';
 
-import {
-  AVG,
-  DATE_HISTO,
-  DAY,
-  HOUR,
-  MONTH,
-  WEEK,
-  YEAR,
-} from '../services/search';
+import { noSite } from '../components/views/site-management/SiteManagement';
+import { DAY, HOUR, MONTH, WEEK, YEAR } from '../services/search';
 
 export function defaultIfEmpty(defaultValue, value) {
   return value === null || value === undefined || value === ''
@@ -80,7 +73,14 @@ export const formatXAxisLabels = (value, index, ticks) => {
 };
 
 export const getDisplayName = (device) => {
-  return device.name == null ? device.deviceName : device.name;
+  return device?.name == null ? device?.deviceName : device?.name;
+};
+
+export const findSiteNameFromSiteId = (siteId, devices) => {
+  if (siteId === noSite) {
+    return noSite;
+  }
+  return getDisplayName(devices.find((d) => d.id === siteId));
 };
 
 export const getDeviceIdToNameMap = (devices) => {

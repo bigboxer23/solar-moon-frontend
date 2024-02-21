@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { AiOutlineDelete } from 'react-icons/ai';
 
-import { deleteDevice } from '../../../services/services';
+import { deleteDevice, getDevices } from '../../../services/services';
 import { sortDevices } from '../../../utils/Utils';
 import AlertSection from '../../common/AlertSection';
 import Button from '../../common/Button';
@@ -10,7 +10,7 @@ import Device from './Device';
 import SiteAttributes from './SiteAttributes';
 import { noSite } from './SiteManagement';
 
-const Site = ({ data, devices, setDevices, setActiveSite }) => {
+const Site = ({ data, devices, setDevices, setActiveSiteId }) => {
   const [site] = useState(data);
   const [loading, setLoading] = useState(false);
   const [deleteSiteWarning, setDeleteSiteWarning] = useState(false);
@@ -18,9 +18,11 @@ const Site = ({ data, devices, setDevices, setActiveSite }) => {
     setLoading(true);
     deleteDevice(site.id)
       .then(() => {
-        setDevices((d) => d.filter((device) => device.id !== site.id));
-        setActiveSite(noSite);
-        setLoading(false);
+        getDevices().then(({ data }) => {
+          setDevices(data);
+          setActiveSiteId(noSite);
+          setLoading(false);
+        });
       })
       .catch((e) => {
         setLoading(false);
@@ -36,13 +38,13 @@ const Site = ({ data, devices, setDevices, setActiveSite }) => {
             <SiteAttributes
               data={device}
               key={device.id}
-              setActiveSite={setActiveSite}
+              setActiveSiteId={setActiveSiteId}
               setDevices={setDevices}
             />
           );
         })}
       {devices
-        .filter((device) => device.site === site.name)
+        .filter((device) => device.siteId === site.id)
         .filter((device) => !device.isSite)
         .sort(sortDevices)
         .map((device) => {

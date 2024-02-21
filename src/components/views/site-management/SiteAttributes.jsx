@@ -8,7 +8,7 @@ import Button from '../../common/Button';
 import { ControlledInput } from '../../common/Input';
 import Spinner from '../../common/Spinner';
 
-const SiteAttributes = ({ data, setDevices, setActiveSite }) => {
+const SiteAttributes = ({ data, setDevices, setActiveSiteId }) => {
   const yupSchema = yup
     .object()
     .shape({
@@ -34,7 +34,7 @@ const SiteAttributes = ({ data, setDevices, setActiveSite }) => {
     )
       .then((d) => {
         //setDevice(d.data);
-        setActiveSite(site.name);
+        setActiveSiteId(site.id);
         //Fetch all new devices b/c site change cascades down to devices (potentially)
         getDevices().then(({ data }) => {
           setDevices(data);
