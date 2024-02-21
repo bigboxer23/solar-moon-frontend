@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
 import { addDevice } from '../../../services/services';
+import { findSiteNameFromSiteId } from '../../../utils/Utils';
 import Button from '../../common/Button';
 import { ControlledInput } from '../../common/Input';
 import Modal, { ModalFooter, ModalHeader } from '../../common/Modal';
@@ -16,7 +17,7 @@ export default function NewDeviceDialog({
   devices,
   setDevices,
   setVersion,
-  site,
+  siteId,
 }) {
   const yupSchema = yup
     .object()
@@ -35,14 +36,17 @@ export default function NewDeviceDialog({
     mode: 'onBlur',
     resolver: yupResolver(yupSchema),
     defaultValues: {
-      site: site,
+      siteId: siteId,
       deviceName: '',
       name: '',
     },
   });
   const createNewDevice = (device) => {
     setLoading(true);
-    addDevice(device)
+    addDevice({
+      ...device,
+      site: findSiteNameFromSiteId(device.siteId, devices),
+    })
       .then(({ data }) => {
         setDevices((devices) => [...devices, data]);
         setVersion((v) => v + 1);
@@ -83,12 +87,15 @@ export default function NewDeviceDialog({
             attributes={devices
               .filter((d) => d.isSite)
               .map((site) => {
-                return site.name;
+                return {
+                  id: site.id,
+                  label: findSiteNameFromSiteId(site.id, devices),
+                };
               })}
             control={control}
             errorMessage={errors.site?.message}
             label='Site'
-            name='site'
+            name='siteId'
             type='text'
             variant='underline'
           />

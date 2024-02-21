@@ -12,7 +12,12 @@ import {
   getSeatCount,
   updateDevice,
 } from '../../../services/services';
-import { sortDevices, useStickyState } from '../../../utils/Utils';
+import {
+  findSiteNameFromSiteId,
+  getDisplayName,
+  sortDevices,
+  useStickyState,
+} from '../../../utils/Utils';
 import Button from '../../common/Button';
 import Dropdown from '../../common/Dropdown';
 import Loader from '../../common/Loader';
@@ -26,7 +31,7 @@ export const noSite = 'No Site';
 const SiteManagement = () => {
   const [loading, setLoading] = useState(true);
   const [devices, setDevices] = useState([]);
-  const [activeSite, setActiveSite] = useStickyState('', 'site.management');
+  const [activeSiteId, setActiveSiteId] = useStickyState('', 'site.management');
   const [showNewSite, setShowNewSite] = useState(false);
   const [showNewSiteExample, setShowNewSiteExample] = useState(false);
   const [showNewDeviceExample, setShowNewDeviceExample] = useState(false);
@@ -57,6 +62,7 @@ const SiteManagement = () => {
     }
     if (devices.length === 0) {
       setShowNewSiteExample(true);
+      return;
     }
     if (devices.filter((device) => !device.isSite).length === 0) {
       setShowNewDeviceExample(true);
@@ -68,8 +74,8 @@ const SiteManagement = () => {
       .then(({ data }) => {
         setDevices(data);
         setLoading(false);
-        if (activeSite === '') {
-          setActiveSite(data.find((device) => device.isSite)?.name || noSite);
+        if (activeSiteId === '') {
+          setActiveSiteId(data.find((device) => device.isSite)?.id || noSite);
         }
       })
       .catch((e) => {
@@ -86,7 +92,10 @@ const SiteManagement = () => {
         .filter((device) => device.isSite)
         .sort(sortDevices)
         .map((site) => {
-          return { label: site.name, value: site.name };
+          return {
+            label: findSiteNameFromSiteId(site.id, devices),
+            value: site.id,
+          };
         }),
       { label: noSite, value: noSite },
       ...(subscriptionAvailable
@@ -112,11 +121,14 @@ const SiteManagement = () => {
               onChange={(option) => {
                 option.value === '-1'
                   ? setShowNewSite(true)
-                  : setActiveSite(option.value);
+                  : setActiveSiteId(option.value);
               }}
               options={getSiteSelectItems()}
               prefixLabel='Manage'
-              value={{ label: activeSite, value: activeSite }}
+              value={{
+                label: findSiteNameFromSiteId(activeSiteId, devices),
+                value: activeSiteId,
+              }}
             />
             <div className='grow' />
             <Button
@@ -159,21 +171,21 @@ const SiteManagement = () => {
         {loading && <Loader className='self-center' />}
         {[...devices, { id: noSite, name: noSite, isSite: '1', virtual: true }]
           .filter((device) => device.isSite)
-          .filter((site) => site.name === activeSite)
+          .filter((site) => site.id === activeSiteId)
           .map((site) => {
             return (
               <Site
                 data={site}
                 devices={devices}
                 key={site.id}
-                setActiveSite={setActiveSite}
+                setActiveSiteId={setActiveSiteId}
                 setDevices={setDevices}
               />
             );
           })}
         <NewSiteDialog
           key={newSiteFormVersion}
-          setActiveSite={setActiveSite}
+          setActiveSiteId={setActiveSiteId}
           setDevices={setDevices}
           setShow={setShowNewSite}
           setVersion={setNewSiteFormVersion}
@@ -186,12 +198,12 @@ const SiteManagement = () => {
         />
         <NewDeviceDialog
           devices={devices}
-          key={'device' + newSiteFormVersion + activeSite}
+          key={'device' + newSiteFormVersion + activeSiteId}
           setDevices={setDevices}
           setShow={setShowNewDevice}
           setVersion={setNewSiteFormVersion}
           show={showNewDevice}
-          site={activeSite}
+          siteId={activeSiteId}
         />
         <NewDeviceExampleDialog
           setShow={setShowNewDeviceExample}

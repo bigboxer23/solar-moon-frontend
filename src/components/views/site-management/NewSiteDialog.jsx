@@ -19,7 +19,7 @@ export default function NewSiteDialog({
   show,
   setShow,
   setDevices,
-  setActiveSite,
+  setActiveSiteId,
   setVersion,
 }) {
   const yupSchema = yup
@@ -58,7 +58,7 @@ export default function NewSiteDialog({
     })
       .then(({ data }) => {
         setDevices((devices) => [...devices, data]);
-        setActiveSite(data.name);
+        setActiveSiteId(data.id);
         setVersion((v) => v + 1);
         setShow(false);
         setLoading(false);

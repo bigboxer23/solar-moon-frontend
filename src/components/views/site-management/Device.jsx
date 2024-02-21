@@ -6,6 +6,7 @@ import { v4 } from 'uuid';
 import * as yup from 'yup';
 
 import { deleteDevice, updateDevice } from '../../../services/services';
+import { findSiteNameFromSiteId, getDisplayName } from '../../../utils/Utils';
 import AlertSection from '../../common/AlertSection';
 import Button from '../../common/Button';
 import { ControlledCheck } from '../../common/Check';
@@ -44,6 +45,7 @@ const Device = ({ data, devices, setDevices }) => {
       ...data,
       notificationsDisabled: !data.notificationsEnabled,
       disabled: !data.enabled,
+      site: findSiteNameFromSiteId(data.siteId, devices),
     })
       .then(({ data }) => {
         setDevices([...devices.filter((d) => d.id !== data.id), data]);
@@ -114,14 +116,17 @@ const Device = ({ data, devices, setDevices }) => {
               ...devices
                 .filter((d) => d.isSite)
                 .map((site) => {
-                  return site.name;
+                  return {
+                    label: findSiteNameFromSiteId(site.id, devices),
+                    id: site.id,
+                  };
                 }),
-              noSite,
+              { label: noSite, id: noSite },
             ]}
             control={control}
             errorMessage={errors.site?.message}
             label='Site'
-            name='site'
+            name='siteId'
             type='text'
             variant='underline'
             wrapperClassName='mb-6'
