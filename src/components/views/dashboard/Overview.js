@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { redirect, useNavigate } from 'react-router-dom';
 
 import {
   AVG_AGGREGATION,
@@ -53,6 +53,10 @@ export default function Overview() {
 
   useEffect(() => {
     getOverviewData(startDate, timeIncrement).then(({ data }) => {
+      if (data.devices.length === 0) {
+        window.location.href = '/manage';
+        return;
+      }
       handleDevices(data.devices);
       handleAlarms(data.alarms);
       handleOverviewTotal(data.overall.avg, data.overall.total);

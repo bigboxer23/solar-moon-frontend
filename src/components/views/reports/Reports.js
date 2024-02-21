@@ -111,7 +111,7 @@ const Reports = () => {
       key: 'Total Energy Consumption',
       name: (
         <div className='flex'>
-          Total Energy Cons.
+          Total Consumption
           <div className='rdg-header-secondary text-gray-400'>&nbsp; kWH</div>
         </div>
       ),
@@ -120,7 +120,7 @@ const Reports = () => {
       key: 'Total Real Power',
       name: (
         <div className='flex'>
-          Total Power
+          Power
           <div className='rdg-header-secondary text-gray-400'>&nbsp; kW</div>
         </div>
       ),
@@ -129,7 +129,7 @@ const Reports = () => {
       key: 'Energy Consumed',
       name: (
         <div className='flex'>
-          Energy Cons.{' '}
+          Consumption
           <div className='rdg-header-secondary text-gray-400'>&nbsp; kWH</div>
         </div>
       ),

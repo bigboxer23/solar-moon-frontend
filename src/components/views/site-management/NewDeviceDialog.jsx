@@ -22,6 +22,7 @@ export default function NewDeviceDialog({
     .object()
     .shape({
       deviceName: yup.string().required('Device name is required'),
+      name: yup.string().required('Display name is required'),
     })
     .required();
 

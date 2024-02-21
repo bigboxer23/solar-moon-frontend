@@ -3,6 +3,7 @@ import { FaArrowLeft } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
 
 import { deleteMapping, getMappings } from '../../../services/services';
+import { MAPPING_HELP_TEXT } from '../../../utils/HelpText';
 import Help from '../../common/Help';
 import AddMapping from './AddMapping';
 import MappingBlock from './MappingBlock';
@@ -38,7 +39,7 @@ export default function Mapping() {
           <span className='text-lg font-bold dark:text-white'>
             Attribute Mappings
           </span>
-          <Help content='Mappings provide a way to translate names of data points from your devices to the fields Solar Moon needs to generate graphs, analytics and alerts. There are a number of mappings provided by default, but if you are unable to change your device settings to match them, the platform can map to existing config instead.' />
+          <Help content={MAPPING_HELP_TEXT} />
         </div>
         <div>
           <AddMapping mappings={mappings} setMappings={setMappings} />
