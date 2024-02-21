@@ -2,7 +2,7 @@ import FormattedLabel from '../../graphs/FormattedLabel';
 
 export default function SummaryHeader({ dailyOutput, dailyAverageOutput }) {
   const calculatePercent = (total, average) => {
-    return Math.round((total / average) * 100);
+    return Math.abs(Math.round((total / average) * 100));
   };
   return (
     <span className='SummaryHeader mx-6 flex flex-wrap items-baseline justify-center space-x-2 space-y-2 py-8 text-xl font-bold text-black dark:text-gray-100'>

@@ -4,18 +4,24 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
 import { addDevice } from '../../../services/services';
+import {
+  SITE_HELP_TEXT1,
+  SITE_HELP_TEXT2,
+  SITE_HELP_TEXT3,
+} from '../../../utils/HelpText';
 import Button from '../../common/Button';
+import Help from '../../common/Help';
 import { ControlledInput } from '../../common/Input';
 import Modal, { ModalFooter, ModalHeader } from '../../common/Modal';
 import Spinner from '../../common/Spinner';
 
-const NewSiteDialog = ({
+export default function NewSiteDialog({
   show,
   setShow,
   setDevices,
   setActiveSite,
   setVersion,
-}) => {
+}) {
   const yupSchema = yup
     .object()
     .shape({
@@ -64,7 +70,17 @@ const NewSiteDialog = ({
   return (
     <Modal className='NewSiteDialog' isOpen={show}>
       <ModalHeader
-        label='Create New Site'
+        label={
+          <div className='flex items-center'>
+            Create New Site{' '}
+            <Help
+              className='ml-2'
+              content={
+                SITE_HELP_TEXT1 + ' ' + SITE_HELP_TEXT2 + ' ' + SITE_HELP_TEXT3
+              }
+            />
+          </div>
+        }
         onCloseClick={() => setShow(false)}
       />
       <form onSubmit={handleSubmit(createNewSite)}>
@@ -126,5 +142,4 @@ const NewSiteDialog = ({
       </form>
     </Modal>
   );
-};
-export default NewSiteDialog;
+}

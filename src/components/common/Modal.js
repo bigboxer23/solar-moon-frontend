@@ -4,16 +4,16 @@ import { FaXmark } from 'react-icons/fa6';
 import Button from './Button';
 
 const sizes = {
-  sm: 'w-64',
-  md: 'w-[32rem]',
-  lg: 'w-[50rem]',
+  sm: 'sm:w-64',
+  md: 'sm:w-[32rem]',
+  lg: 'sm:w-[50rem]',
 };
 
 export default function Modal({ children, size = 'md', isOpen = false }) {
   function renderDialog() {
     return (
       <dialog
-        className={`Modal fixed !top-1/4 z-10 !mx-auto rounded-xl bg-white shadow-modal dark:bg-gray-800 ${sizes[size]}`}
+        className={`Modal fixed !top-[10%] z-10 !mx-auto w-full rounded-xl bg-white shadow-modal dark:bg-gray-800 sm:!top-1/4 ${sizes[size]}`}
         open={isOpen}
       >
         {children}

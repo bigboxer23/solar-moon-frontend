@@ -17,7 +17,9 @@ import Button from '../../common/Button';
 import Dropdown from '../../common/Dropdown';
 import Loader from '../../common/Loader';
 import NewDeviceDialog from './NewDeviceDialog';
+import NewDeviceExampleDialog from './NewDeviceExampleDialog';
 import NewSiteDialog from './NewSiteDialog';
+import NewSiteExampleDialog from './NewSiteExampleDialog';
 import Site from './Site';
 
 export const noSite = 'No Site';
@@ -26,6 +28,8 @@ const SiteManagement = () => {
   const [devices, setDevices] = useState([]);
   const [activeSite, setActiveSite] = useStickyState('', 'site.management');
   const [showNewSite, setShowNewSite] = useState(false);
+  const [showNewSiteExample, setShowNewSiteExample] = useState(false);
+  const [showNewDeviceExample, setShowNewDeviceExample] = useState(false);
   const [showNewDevice, setShowNewDevice] = useState(false);
   const [newSiteFormVersion, setNewSiteFormVersion] = useState(0);
   const [subscriptionAvailable, setSubscriptionAvailable] = useState(false);
@@ -46,6 +50,18 @@ const SiteManagement = () => {
       });
     });
   }, []);
+
+  useEffect(() => {
+    if (loading) {
+      return;
+    }
+    if (devices.length === 0) {
+      setShowNewSiteExample(true);
+    }
+    if (devices.filter((device) => !device.isSite).length === 0) {
+      setShowNewDeviceExample(true);
+    }
+  }, [devices]);
 
   const loadDevices = () => {
     getDevices()
@@ -133,14 +149,6 @@ const SiteManagement = () => {
               </div>
             </Button>
           </div>
-          <div
-            className={
-              (devices.length === 0 ? '' : 'no-bottom-border ') +
-              'flex items-center flex-wrap'
-            }
-          >
-            {/*<Mapping />*/}
-          </div>
           {!loading && devices.length === 0 && (
             <div>
               You don&apos;t have any devices yet. Add some by clicking
@@ -171,6 +179,11 @@ const SiteManagement = () => {
           setVersion={setNewSiteFormVersion}
           show={showNewSite}
         />
+        <NewSiteExampleDialog
+          setShow={setShowNewSiteExample}
+          show={showNewSiteExample}
+          showSiteCreation={setShowNewSite}
+        />
         <NewDeviceDialog
           devices={devices}
           key={'device' + newSiteFormVersion + activeSite}
@@ -179,6 +192,11 @@ const SiteManagement = () => {
           setVersion={setNewSiteFormVersion}
           show={showNewDevice}
           site={activeSite}
+        />
+        <NewDeviceExampleDialog
+          setShow={setShowNewDeviceExample}
+          show={showNewDeviceExample}
+          showDeviceCreation={setShowNewDevice}
         />
       </div>
     </main>
