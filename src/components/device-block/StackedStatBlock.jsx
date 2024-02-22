@@ -1,6 +1,8 @@
 import classNames from 'classnames';
 import { FormattedNumber } from 'react-intl';
 
+import { roundTwoDigit } from '../../utils/Utils';
+
 export default function StackedStatBlock({
   lowerValue,
   upperValue,
@@ -23,14 +25,14 @@ export default function StackedStatBlock({
       >
         <div>{upperTitle}</div>
         <div>
-          {upperValue && <FormattedNumber value={upperValue} />}
+          {upperValue && <FormattedNumber value={roundTwoDigit(upperValue)} />}
           <span className='text-sm text-gray-400'> {upperUnit}</span>
         </div>
       </div>
       <div className='average-output flex flex-row flex-wrap space-x-1 text-end text-base font-bold text-black dark:text-gray-100 xs:text-lg'>
         <div>{lowerTitle}</div>
         <div>
-          {lowerValue && <FormattedNumber value={lowerValue} />}
+          {lowerValue && <FormattedNumber value={roundTwoDigit(lowerValue)} />}
           <span className='text-sm text-gray-400'> {lowerUnit}</span>
         </div>
       </div>
