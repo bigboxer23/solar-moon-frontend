@@ -88,7 +88,7 @@ export default function ManagePlanTile() {
         </div>
       )}
       {!loading && invalid && (
-        <div className='flex flex-col'>
+        <div className='flex flex-col dark:text-gray-100'>
           No Active Plan
           <Button
             className='ml-auto mt-3'
