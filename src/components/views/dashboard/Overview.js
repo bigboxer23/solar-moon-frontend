@@ -159,6 +159,7 @@ export default function Overview() {
               className='hidden md:flex'
               power={totalOutput}
               title='total'
+              unit='Wh'
             />
             <PowerBlock
               className='hidden md:flex'

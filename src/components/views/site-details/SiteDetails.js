@@ -167,6 +167,7 @@ export default function SiteDetails() {
               className='hidden md:flex'
               power={getAggregationValue(siteData.total, TOTAL_AGGREGATION)}
               title='total'
+              unit='Wh'
             />
             <PowerBlock
               className='hidden md:flex'
