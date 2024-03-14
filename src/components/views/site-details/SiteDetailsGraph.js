@@ -14,7 +14,9 @@ import {
   formatXAxisLabels,
   getFormattedTime,
   maybeSetTimeWindow,
+  roundTwoDigit,
   timeLabel,
+  truncate,
 } from '../../../utils/Utils';
 import { tooltipPlugin } from '../../common/graphPlugins';
 
@@ -31,7 +33,7 @@ export default function SiteDetailsGraph({
   const datasets = deviceNames.map((name) => {
     const data = graphData.filter((d) => d.name === name);
     const dataSet = {
-      label: name,
+      label: truncate(name, 15),
       data: data,
       fill: false,
       categoryPercentage: 0.76,
@@ -79,10 +81,10 @@ export default function SiteDetailsGraph({
             return getFormattedTime(date);
           },
           label: (context) => {
-            const siteLabel = context.dataset.label;
+            const siteLabel = truncate(context.dataset.label, 15);
             let label = context.formattedValue || '';
             if (label) {
-              label += ' kW';
+              label = roundTwoDigit(label) + ' kW';
             }
             return `${siteLabel} ${label}`;
           },

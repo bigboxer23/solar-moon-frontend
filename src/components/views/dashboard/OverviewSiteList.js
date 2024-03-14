@@ -54,9 +54,12 @@ export default function OverviewSiteList({
 
   return (
     <div className='SiteList mt-5'>
-      <div className='mb-6 text-lg font-bold text-black dark:text-gray-100'>
-        {sites.length} Sites
-      </div>
+      <span className='mb-6 flex items-center text-lg font-bold text-black dark:text-gray-100'>
+        <div>{sites.length} Sites</div>
+        <div className='ml-2 text-sm text-gray-400'>
+          {devices.length} devices
+        </div>
+      </span>
       <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
         {siteData.map((site) => (
           <NavLink key={site.info.id} to={`/sites/${site.info.id}`}>
