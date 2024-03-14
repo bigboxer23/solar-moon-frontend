@@ -2,6 +2,8 @@ import classNames from 'classnames';
 import { useState } from 'react';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 
+import { truncate } from '../../utils/Utils';
+
 export default function DeviceBlock({
   title,
   secondaryTitle,
@@ -12,7 +14,11 @@ export default function DeviceBlock({
   className,
 }) {
   const [expandedDevice, setExpandedDevice] = useState(false);
-
+  const truncatedTitle = truncate(title, 20);
+  const truncatedSubtitle = truncate(subtitle, 20);
+  const hoverTitle = title.length === truncatedTitle.length ? '' : title;
+  const hoverSubtitle =
+    subtitle.length === truncatedSubtitle.length ? '' : subtitle;
   const style = classNames(
     'DeviceBlock rounded-lg p-4 sm:p-6 bg-gray-50 dark:bg-gray-700 h-fit',
     className,
@@ -32,8 +38,10 @@ export default function DeviceBlock({
       onClick={() => setExpandedDevice(!expandedDevice)}
     >
       <span className='flex items-center text-base font-bold text-black dark:text-gray-100'>
-        <div>{title}</div>
-        <div className='ml-2 text-sm text-gray-400'>{subtitle}</div>
+        <div title={hoverTitle}>{truncatedTitle}</div>
+        <div className='ml-2 text-sm text-gray-400' title={hoverSubtitle}>
+          {truncatedSubtitle}
+        </div>
         {expandableBody && (
           <div className='ml-auto'>
             {expandedDevice ? <FaChevronUp /> : <FaChevronDown />}
