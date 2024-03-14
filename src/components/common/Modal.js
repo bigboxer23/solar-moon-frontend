@@ -31,7 +31,9 @@ export default function Modal({ children, size = 'md', isOpen = false }) {
 export function ModalHeader({ label, onCloseClick }) {
   return (
     <div className='ModalHeader flex items-center justify-between border-b border-gray-200 px-6 py-4'>
-      <h2 className='ModalHeader text-lg font-bold'>{label}</h2>
+      <h2 className='ModalHeader text-lg font-bold dark:text-gray-100'>
+        {label}
+      </h2>
       {onCloseClick && (
         <Button onClick={onCloseClick} variant='icon'>
           <FaXmark size={20} />
