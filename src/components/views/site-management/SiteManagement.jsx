@@ -114,7 +114,7 @@ const SiteManagement = () => {
   return (
     <main className='SiteManagement flex max-w-full flex-col items-center justify-center '>
       <div className='fade-in my-8 flex w-[45rem] max-w-full flex-col bg-white p-6 shadow-panel dark:bg-gray-800 sm:rounded-lg sm:p-8'>
-        <div className=''>
+        <div className='dark:text-gray-100'>
           <div className='mb-10 flex w-full items-center justify-between'>
             <Dropdown
               className='align-self-end'
