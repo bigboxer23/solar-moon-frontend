@@ -12,10 +12,11 @@ export default function DeviceBlock({
   expandableBody,
   body,
   className,
+  truncationLength = 50,
 }) {
   const [expandedDevice, setExpandedDevice] = useState(false);
-  const truncatedTitle = truncate(title, 20);
-  const truncatedSubtitle = truncate(subtitle, 20);
+  const truncatedTitle = truncate(title, truncationLength);
+  const truncatedSubtitle = truncate(subtitle, truncationLength);
   const hoverTitle = title.length === truncatedTitle.length ? '' : title;
   const hoverSubtitle =
     subtitle.length === truncatedSubtitle.length ? '' : subtitle;

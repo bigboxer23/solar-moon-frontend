@@ -90,6 +90,7 @@ export default function SiteDevicesOverview({
                 ]}
                 subtitle={device.deviceName}
                 title={getDisplayName(device)}
+                truncationLength={20}
               />
             );
           })}
