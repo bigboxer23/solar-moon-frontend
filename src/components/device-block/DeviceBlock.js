@@ -28,7 +28,7 @@ export default function DeviceBlock({
   const expandableGraph = classNames(
     'transition-all duration-300 ease-in-out overflow-hidden',
     {
-      'h-0': !expandedDevice,
+      'h-0 sm:h-40': !expandedDevice,
       'h-40': expandedDevice,
     },
   );
@@ -44,7 +44,7 @@ export default function DeviceBlock({
           {truncatedSubtitle}
         </div>
         {expandableBody && (
-          <div className='ml-auto'>
+          <div className='ml-auto sm:hidden'>
             {expandedDevice ? <FaChevronUp /> : <FaChevronDown />}
           </div>
         )}

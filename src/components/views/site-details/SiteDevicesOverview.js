@@ -29,9 +29,6 @@ export default function SiteDevicesOverview({
   timeSeriesData,
   maxData,
 }) {
-  const [expandedDevice, setExpandedDevice] = useState(-1);
-  const navigate = useNavigate();
-
   return (
     <div className='SiteDevicesOverview w-full'>
       <div>
