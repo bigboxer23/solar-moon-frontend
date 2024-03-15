@@ -28,10 +28,7 @@ export default function Profile() {
       {loading && <Loader />}
       {!loading && (
         <div className='max-w-full'>
-          <CustomerInformation
-            email={customerData?.email || ''}
-            name={customerData?.name || ''}
-          />
+          <CustomerInformation customer={customerData} />
           <Appearance />
           <ManagePlanTile />
           <APIInformation
