@@ -4,8 +4,9 @@ import PowerIcon from './PowerIcon';
 
 export default function PowerBlock({ className, power, title, unit = 'W' }) {
   const isMw = power > 1000;
-  const unitPrefix = isMw ? 'M' : 'k';
-  const powerValue = isMw ? power / 1000 : power;
+  const isGw = power > 1000000;
+  const unitPrefix = isGw ? 'G' : isMw ? 'M' : 'k';
+  const powerValue = isGw ? power / 1000000 : isMw ? power / 1000 : power;
   const decimals = isMw ? 100 : 10;
   return (
     <div
