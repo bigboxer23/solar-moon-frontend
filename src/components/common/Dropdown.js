@@ -31,7 +31,7 @@ export default function Dropdown({
           if (option.divider)
             return (
               <MenuDivider
-                className='me-3 ms-3 h-[1px] bg-[#eee]'
+                className='me-3 ms-3 h-px bg-[#eee]'
                 key={option.value}
               />
             );

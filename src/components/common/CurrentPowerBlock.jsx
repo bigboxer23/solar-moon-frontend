@@ -21,7 +21,7 @@ export default function CurrentPowerBlock({ className, max, currentPower }) {
       )}
       title={percent + '% of ' + Math.round(max) + 'kW'}
     >
-      <div className='h-[3rem] self-end py-1.5'>
+      <div className='h-12 self-end py-1.5'>
         <PowerIcon max={max} percent={percent} />
       </div>
       <PowerBlock power={Math.round(currentPower)} title='now' />
