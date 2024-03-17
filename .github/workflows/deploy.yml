@@ -34,7 +34,7 @@ jobs:
       - name: Build
         run: npm run build
         env:
-	        CI: ""
+          CI: ''
       - name: Deploy to S3
         uses: reggionick/s3-deploy@v4
         with:
