@@ -5,6 +5,7 @@ import {
   MdBarChart,
   MdNavigateBefore,
   MdNavigateNext,
+  MdShowChart,
   MdStackedBarChart,
   MdStackedLineChart,
 } from 'react-icons/md';
@@ -12,6 +13,7 @@ import {
 import { DAY, GROUPED_BAR } from '../../../services/search';
 import {
   formatXAxisLabels,
+  getDisplayName,
   getFormattedTime,
   maybeSetTimeWindow,
   roundTwoDigit,
@@ -22,7 +24,7 @@ import { tooltipPlugin } from '../../common/graphPlugins';
 
 export default function SiteDetailsGraph({
   graphData,
-  deviceNames,
+  devices,
   graphType,
   setGraphType,
   timeIncrement,
@@ -30,22 +32,29 @@ export default function SiteDetailsGraph({
   startDate,
 }) {
   const [nextDisabled, setNextDisabled] = useState(true);
-  const datasets = deviceNames.map((name) => {
-    const data = graphData.filter((d) => d.name === name);
-    const dataSet = {
-      label: truncate(name, 15),
-      data: data,
-      fill: false,
-      categoryPercentage: 0.76,
-      barThickness: 'flex',
-      barPercentage: 1,
-    };
-    if (graphType === GROUPED_BAR) {
-      dataSet.skipNull = true;
-      dataSet.clip = { left: 50, top: 0, right: 50, bottom: 0 };
-    }
-    return dataSet;
-  });
+  const datasets = devices
+    .filter(
+      (d) =>
+        (graphType !== 'overview' && !d.isSite) ||
+        (graphType === 'overview' && d.isSite),
+    )
+    .map((d) => getDisplayName(d))
+    .map((name) => {
+      const data = graphData.filter((d) => d.name === name);
+      const dataSet = {
+        label: truncate(name, 15),
+        data: data,
+        fill: false,
+        categoryPercentage: 0.76,
+        barThickness: 'flex',
+        barPercentage: 1,
+      };
+      if (graphType === GROUPED_BAR) {
+        dataSet.skipNull = true;
+        dataSet.clip = { left: 50, top: 0, right: 50, bottom: 0 };
+      }
+      return dataSet;
+    });
 
   const data = {
     datasets: datasets,
@@ -185,6 +194,18 @@ export default function SiteDetailsGraph({
               <MdStackedBarChart className='text-brand-primary-dark text-xl' />
             </button>
             <button
+              aria-label='grouped bar graph'
+              className={classNames(
+                'rounded-l dark:border-gray-600 px-2 py-1 hover:bg-gray-200 dark:hover:bg-gray-500 dark:hover:text-gray-100',
+                {
+                  'bg-gray-300 dark:text-black': graphType === 'overview',
+                },
+              )}
+              onClick={() => setGraphType('overview')}
+            >
+              <MdShowChart className='text-brand-primary-dark text-xl' />
+            </button>
+            <button
               aria-label='overview graph'
               className={classNames(
                 'rounded-r dark:border-gray-600 px-2 py-1 hover:bg-gray-200 dark:hover:bg-gray-500 dark:hover:text-gray-100',
@@ -199,10 +220,10 @@ export default function SiteDetailsGraph({
           </div>
         </div>
         <div className='h-72'>
-          {graphType === 'line' && (
+          {(graphType === 'line' || graphType === 'overview') && (
             <Line data={data} options={options} plugins={[tooltipPlugin]} />
           )}
-          {graphType !== 'line' && (
+          {graphType !== 'line' && graphType !== 'overview' && (
             <Bar data={data} options={options} plugins={[tooltipPlugin]} />
           )}
         </div>

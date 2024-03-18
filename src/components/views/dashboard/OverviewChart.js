@@ -18,6 +18,7 @@ import {
   formatXAxisLabels,
   getFormattedTime,
   maybeSetTimeWindow,
+  roundTwoDigit,
   splitDayAndNightDataSets,
   timeLabel,
   useStickyState,
@@ -133,7 +134,7 @@ export default function OverviewChart({
           label: (context) => {
             let label = context.formattedValue || '';
             if (label) {
-              label += ' kW';
+              label = roundTwoDigit(label) + ' kW';
             }
             return label;
           },
@@ -194,7 +195,7 @@ export default function OverviewChart({
           label: (context) => {
             let label = context.formattedValue || '';
             if (label) {
-              label += ' kW';
+              label = roundTwoDigit(label) + ' kW';
             }
             return label;
           },
