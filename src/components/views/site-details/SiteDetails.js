@@ -84,7 +84,6 @@ export default function SiteDetails() {
       setSiteData(data);
       setDevices(
         data.devices
-          .filter((device) => !device.isSite)
           .filter((device) => device.site === data.site.name)
           .sort(sortDevices),
       );
@@ -188,7 +187,7 @@ export default function SiteDetails() {
           </div>
         </div>
         <SiteDetailsGraph
-          deviceNames={devices.map((d) => getDisplayName(d))}
+          devices={devices}
           graphData={graphData}
           graphType={graphType}
           setGraphType={setGraphTypeWrapper}
@@ -199,7 +198,7 @@ export default function SiteDetails() {
         <SiteDevicesOverview
           activeSiteAlerts={activeSiteAlerts}
           avgData={siteData?.deviceAvg}
-          devices={devices}
+          devices={devices.filter((device) => !device.isSite)}
           maxData={siteData?.deviceWeeklyMaxPower}
           resolvedSiteAlerts={resolvedSiteAlerts}
           timeSeriesData={siteData?.deviceTimeSeries}
