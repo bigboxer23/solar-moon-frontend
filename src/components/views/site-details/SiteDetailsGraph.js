@@ -196,7 +196,7 @@ export default function SiteDetailsGraph({
             <button
               aria-label='grouped bar graph'
               className={classNames(
-                'rounded-l dark:border-gray-600 px-2 py-1 hover:bg-gray-200 dark:hover:bg-gray-500 dark:hover:text-gray-100',
+                'dark:border-gray-600 px-2 py-1 hover:bg-gray-200 dark:hover:bg-gray-500 dark:hover:text-gray-100',
                 {
                   'bg-gray-300 dark:text-black': graphType === 'overview',
                 },
