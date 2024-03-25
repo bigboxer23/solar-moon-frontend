@@ -1,5 +1,6 @@
 import { api } from './apiClient';
 import {
+  DAY,
   getAvgTotalBody,
   getBucketSize,
   getDataPageBody,
@@ -48,6 +49,7 @@ export function getSiteOverview(siteId, start, offset, graphType) {
     start,
     new Date(Math.min(start.getTime() + offset, new Date().getTime())),
   );
+  body.daylight = offset === DAY;
   if (graphType === GROUPED_BAR) {
     body.bucketSize = getBucketSize(offset, GROUPED_BAR);
   }
@@ -75,14 +77,13 @@ export function getAlarmData() {
 }
 
 export function getOverviewData(start, offset) {
-  return api.post(
-    'overview',
-    getAvgTotalBody(
-      null,
-      start,
-      new Date(Math.min(start.getTime() + offset, new Date().getTime())),
-    ),
+  const body = getAvgTotalBody(
+    null,
+    start,
+    new Date(Math.min(start.getTime() + offset, new Date().getTime())),
   );
+  body.daylight = offset === DAY;
+  return api.post('overview', body);
 }
 
 export function getDataPage(deviceId, siteId, start, end, offset, size) {
