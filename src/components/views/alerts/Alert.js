@@ -12,7 +12,7 @@ export default function Alert({ alert, active }) {
   const alertClass = classNames(
     'Alert flex w-full justify-between text-black dark:text-gray-100 bg-[#f5f5f5] dark:bg-gray-700 p-4 rounded-md overflow-hidden flex-col-reverse sm:flex-row',
     {
-      'bg-[#fee2e2]': active,
+      'bg-danger text-white dark:bg-danger': active,
     },
   );
 
