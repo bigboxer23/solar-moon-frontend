@@ -145,11 +145,13 @@ export default function Overview() {
                 'text-danger': activeAlerts.length > 0,
                 'text-gray-400': activeAlerts.length === 0,
               })}
+              onClick={() => navigate('/alerts')}
               title='active alerts'
               value={activeAlerts.length}
             />
             <StatBlock
               className='hidden text-gray-400 md:flex'
+              onClick={() => navigate('/alerts')}
               title='resolved alerts'
               value={resolvedAlerts.length}
             />
