@@ -16,7 +16,6 @@ import {
 } from 'react-icons/md';
 
 import { ALL } from '../../../services/search';
-import { getDevices } from '../../../services/services';
 import { getRoundedTime, sortDevices } from '../../../utils/Utils';
 import Button from '../../common/Button';
 import Dropdown from '../../common/Dropdown';
