@@ -16,6 +16,7 @@ export default function Alerts() {
 
   const [siteOptions, setSiteOptions] = useState([]);
   const [deviceOptions, setDeviceOptions] = useState([]);
+  const [refreshSearch, setRefreshSearch] = useState(false);
 
   const [filter, setFilter] = useState({
     deviceId: ALL,
@@ -24,7 +25,7 @@ export default function Alerts() {
     end: null,
   });
 
-  useEffect(() => {
+  const loadData = () => {
     getAlarmData().then(({ data }) => {
       const active = data
         .filter((d) => d.state > 0)
@@ -38,8 +39,8 @@ export default function Alerts() {
       setResolvedAlerts(resolved);
 
       // Initialize filtered alerts
-      setFilteredActiveAlerts(active);
-      setFilteredResolvedAlerts(resolved);
+      setFilteredActiveAlerts(active.filter(filterFn));
+      setFilteredResolvedAlerts(resolved.filter(filterFn));
 
       const siteOptions = [
         ...new Map(
@@ -69,36 +70,47 @@ export default function Alerts() {
       ].sort(sortSelectAlphabetically);
       setSiteOptions(siteOptions);
       setDeviceOptions(deviceOptions);
-
+      setRefreshSearch(false);
       setLoading(false);
     });
+  };
+
+  const filterFn = (alert) => {
+    if (filter.deviceId !== ALL && filter.deviceId !== alert.deviceId) {
+      return false;
+    }
+    if (filter.siteId !== ALL && filter.siteId !== alert.siteId) {
+      return false;
+    }
+    const alertDate = new Date(alert.startDate);
+
+    if (filter.start === null || filter.end === null) {
+      return true;
+    }
+
+    if (filter.start && alertDate < filter.start) {
+      return false;
+    }
+    if (filter.end && alertDate > filter.end) {
+      return false;
+    }
+  };
+
+  useEffect(() => {
+    loadData();
   }, []);
 
   useEffect(() => {
-    const filterFn = (alert) => {
-      if (filter.deviceId !== ALL && filter.deviceId !== alert.deviceId) {
-        return false;
-      }
-      if (filter.siteId !== ALL && filter.siteId !== alert.siteId) {
-        return false;
-      }
-      const alertDate = new Date(alert.startDate);
-
-      if (filter.start === null || filter.end === null) {
-        return true;
-      }
-
-      if (filter.start && alertDate < filter.start) {
-        return false;
-      }
-      if (filter.end && alertDate > filter.end) {
-        return false;
-      }
-    };
-
     setFilteredActiveAlerts(activeAlerts.filter(filterFn));
     setFilteredResolvedAlerts(resolvedAlerts.filter(filterFn));
   }, [filter]);
+
+  useEffect(() => {
+    if (loading || !refreshSearch) {
+      return;
+    }
+    loadData();
+  }, [refreshSearch]);
 
   function handleFilterChange({ deviceId, siteId, start, end }) {
     setFilter({ deviceId, siteId, start, end });
@@ -118,6 +130,9 @@ export default function Alerts() {
               availableSites={siteOptions}
               handleFilterChange={handleFilterChange}
               initialFilter={filter}
+              refreshSearch={refreshSearch}
+              reloadData={loadData}
+              setRefreshSearch={setRefreshSearch}
             />
           </div>
           <div className='mb-8 space-y-4'>

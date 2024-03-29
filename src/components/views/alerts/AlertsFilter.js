@@ -1,14 +1,19 @@
 import moment from 'moment';
 import { useEffect, useState } from 'react';
+import { FaRotate } from 'react-icons/fa6';
 import { useSearchParams } from 'react-router-dom';
 
 import { ALL } from '../../../services/search';
+import Button from '../../common/Button';
 import Dropdown from '../../common/Dropdown';
+import Spinner from '../../common/Spinner';
 
 export default function AlertsFilter({
   handleFilterChange,
   availableSites,
   availableDevices,
+  refreshSearch,
+  setRefreshSearch,
 }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const allOption = { value: ALL, label: ALL };
@@ -104,6 +109,7 @@ export default function AlertsFilter({
           Reset Filters
         </button>
       )}
+
       <Dropdown
         onChange={handleSiteFilterChange}
         options={[allOption, ...availableSites]}
@@ -125,6 +131,20 @@ export default function AlertsFilter({
         prefixLabel='Device'
         value={deviceIdValue}
       />
+      <Button
+        buttonProps={{
+          title: 'Refresh Alerts',
+          'aria-label': 'Refresh Alerts',
+          className: 'flex items-center',
+        }}
+        disabled={refreshSearch}
+        onClick={() => setRefreshSearch(true)}
+        variant='icon'
+      >
+        <div className='me-2 sm:hidden'>Refresh Alerts</div>
+        {refreshSearch && <Spinner />}
+        {!refreshSearch && <FaRotate className='text-base' />}
+      </Button>
       {dirty && (
         <button
           className='border-1 block rounded-full bg-white text-sm font-bold text-gray-400 underline dark:bg-gray-800 sm:hidden'
