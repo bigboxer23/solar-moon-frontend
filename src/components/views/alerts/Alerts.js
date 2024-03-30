@@ -32,7 +32,7 @@ export default function Alerts() {
         .sort((row, row2) => row2.startDate - row.startDate);
       const resolved = data
         .filter((d) => d.state === 0)
-        .sort((row, row2) => row2.startDate - row.startDate);
+        .sort((row, row2) => row2.endDate - row.endDate);
 
       // Initialize alerts
       setActiveAlerts(active);
