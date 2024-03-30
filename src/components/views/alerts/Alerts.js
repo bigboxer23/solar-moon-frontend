@@ -122,8 +122,13 @@ export default function Alerts() {
       {!loading && (
         <div className='fade-in my-8 w-[55rem] max-w-full bg-white p-6 shadow-panel dark:bg-gray-800 sm:rounded-lg sm:p-8'>
           <div className='mb-10 flex w-full justify-between'>
-            <span className='text-lg font-bold text-black dark:text-gray-100'>
+            <span className='flex items-center text-lg font-bold text-black dark:text-gray-100'>
               Alerts
+              {filteredActiveAlerts.length > 0 && (
+                <div className='ml-2 text-sm text-gray-400'>
+                  {filteredActiveAlerts.length} active
+                </div>
+              )}
             </span>
             <AlertsFilter
               availableDevices={deviceOptions}
@@ -147,6 +152,11 @@ export default function Alerts() {
           </div>
           <div className='mb-6 flex w-full items-center justify-between text-lg font-bold text-black dark:text-gray-100'>
             Resolved Alerts
+            {filteredResolvedAlerts.length > 0 && (
+              <div className='ml-2 text-sm text-gray-400'>
+                {filteredResolvedAlerts.length} resolved
+              </div>
+            )}
           </div>
           <div className='space-y-4'>
             {filteredResolvedAlerts.map((alert) => (
