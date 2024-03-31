@@ -1,7 +1,7 @@
+import { TOTAL_REAL_POWER } from '../components/views/reports/ReportUtils';
+
 export const DATE_HISTO = 'date_histogram#2';
 export const AVG = 'avg#1';
-
-const TOTAL_REAL_POWER = 'Total Real Power';
 
 const CURRENT = 'Average Current';
 

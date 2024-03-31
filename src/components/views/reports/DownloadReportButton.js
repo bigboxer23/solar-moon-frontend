@@ -8,7 +8,14 @@ import { ALL, DAY } from '../../../services/search';
 import { getDataPage, getDownloadPageSize } from '../../../services/services';
 import Button from '../../common/Button';
 import ProgressCircle from '../../common/ProgressCircle';
-import { transformRowData } from './ReportUtils';
+import {
+  DEVICE_ID_KEYWORD,
+  ENERGY_CONSUMED,
+  SITE_ID_KEYWORD,
+  TOTAL_ENERGY_CONS,
+  TOTAL_REAL_POWER,
+  transformRowData,
+} from './ReportUtils';
 
 const DownloadReportButton = ({
   siteId,
@@ -26,18 +33,18 @@ const DownloadReportButton = ({
 
   const headers = [
     { key: 'time', label: 'Time' },
-    { key: 'siteId.keyword', label: 'Site' },
-    { key: 'device-id.keyword', label: 'Display Name' },
+    { key: SITE_ID_KEYWORD, label: 'Site' },
+    { key: DEVICE_ID_KEYWORD, label: 'Display Name' },
     {
-      key: 'Total Energy Consumption',
+      key: TOTAL_ENERGY_CONS,
       label: 'Total Energy Consumption (kWH)',
     },
     {
-      key: 'Total Real Power',
+      key: TOTAL_REAL_POWER,
       label: 'Total Power (kW)',
     },
     {
-      key: 'Energy Consumed',
+      key: ENERGY_CONSUMED,
       label: 'Energy Consumed (kWH)',
     },
   ];
