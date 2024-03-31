@@ -16,7 +16,7 @@ import {
 } from '../../../utils/Utils';
 import Loader from '../../common/Loader';
 import DownloadReportButton from './DownloadReportButton';
-import { transformRowData } from './ReportUtils';
+import { sortRowData, transformRowData } from './ReportUtils';
 import SearchBar from './SearchBar';
 
 const Reports = () => {
@@ -168,9 +168,9 @@ const Reports = () => {
         setRefreshSearch(false);
         setTotal(data.hits.total.value);
         rowSetter(
-          data.hits.hits.map((row) =>
-            transformRowData(row.fields, deviceMap, intl),
-          ),
+          data.hits.hits
+            .map((row) => transformRowData(row.fields, deviceMap, intl))
+            .sort(sortRowData),
         );
         if (shouldScrollToTop) {
           scrollToTop();
