@@ -16,7 +16,15 @@ import {
 } from '../../../utils/Utils';
 import Loader from '../../common/Loader';
 import DownloadReportButton from './DownloadReportButton';
-import { sortRowData, transformRowData } from './ReportUtils';
+import {
+  DEVICE_ID_KEYWORD,
+  ENERGY_CONSUMED,
+  SITE_ID_KEYWORD,
+  sortRowData,
+  TOTAL_ENERGY_CONS,
+  TOTAL_REAL_POWER,
+  transformRowData,
+} from './ReportUtils';
 import SearchBar from './SearchBar';
 
 const Reports = () => {
@@ -105,10 +113,10 @@ const Reports = () => {
       renderCell: WeatherRowRenderer,
     },
     { key: 'time', name: 'Time', width: 150 },
-    { key: 'siteId.keyword', name: 'Site' },
-    { key: 'device-id.keyword', name: 'Display Name' },
+    { key: SITE_ID_KEYWORD, name: 'Site' },
+    { key: DEVICE_ID_KEYWORD, name: 'Display Name' },
     {
-      key: 'Total Energy Consumption',
+      key: TOTAL_ENERGY_CONS,
       name: (
         <div className='flex'>
           Total Consumption
@@ -117,7 +125,7 @@ const Reports = () => {
       ),
     },
     {
-      key: 'Total Real Power',
+      key: TOTAL_REAL_POWER,
       name: (
         <div className='flex'>
           Power
@@ -126,7 +134,7 @@ const Reports = () => {
       ),
     },
     {
-      key: 'Energy Consumed',
+      key: ENERGY_CONSUMED,
       name: (
         <div className='flex'>
           Consumption
