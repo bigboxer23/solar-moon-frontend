@@ -26,24 +26,24 @@ export const transformRowData = function (row, deviceMap, intl) {
 
 export const sortRowData = function (row, row2) {
   const dateSort = row2.timeSort - row.timeSort;
-  if (dateSort === 0) {
-    const siteSort = row['siteId.keyword'].localeCompare(
-      row2['siteId.keyword'].trim(),
-      undefined,
-      {
-        sensitivity: 'accent',
-      },
-    );
-    if (siteSort === 0) {
-      return row['device-id.keyword'].localeCompare(
-        row2['device-id.keyword'].trim(),
-        undefined,
-        {
-          sensitivity: 'accent',
-        },
-      );
-    }
+  if (dateSort !== 0) {
+    return dateSort;
+  }
+  const siteSort = row['siteId.keyword'].localeCompare(
+    row2['siteId.keyword'].trim(),
+    undefined,
+    {
+      sensitivity: 'accent',
+    },
+  );
+  if (siteSort !== 0) {
     return siteSort;
   }
-  return dateSort;
+  return row['device-id.keyword'].localeCompare(
+    row2['device-id.keyword'].trim(),
+    undefined,
+    {
+      sensitivity: 'accent',
+    },
+  );
 };
