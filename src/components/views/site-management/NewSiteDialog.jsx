@@ -75,9 +75,7 @@ export default function NewSiteDialog({
             Create New Site{' '}
             <Help
               className='ml-2'
-              content={
-                SITE_HELP_TEXT1 + ' ' + SITE_HELP_TEXT2 + ' ' + SITE_HELP_TEXT3
-              }
+              content={`${SITE_HELP_TEXT1} ${SITE_HELP_TEXT2} ${SITE_HELP_TEXT3}`}
             />
           </div>
         }

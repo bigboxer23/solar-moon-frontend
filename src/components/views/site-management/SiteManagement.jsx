@@ -198,7 +198,7 @@ const SiteManagement = () => {
         />
         <NewDeviceDialog
           devices={devices}
-          key={'device' + newSiteFormVersion + activeSiteId}
+          key={`device${newSiteFormVersion}${activeSiteId}`}
           setDevices={setDevices}
           setShow={setShowNewDevice}
           setVersion={setNewSiteFormVersion}

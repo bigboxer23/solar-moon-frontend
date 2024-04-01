@@ -30,6 +30,7 @@
     "import/first": "error",
     "import/no-duplicates": "error",
     "import/newline-after-import": "error",
-    "simple-import-sort/imports": "error"
+    "simple-import-sort/imports": "error",
+	"prefer-template": "error"
   }
 }

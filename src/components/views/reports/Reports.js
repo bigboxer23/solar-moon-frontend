@@ -84,11 +84,11 @@ const Reports = () => {
     const temperature =
       row.row['temperature'] === undefined
         ? ''
-        : Math.round(row.row['temperature']) + '°F';
+        : `${Math.round(row.row['temperature'])}°F`;
     return (
       <div
         className='flex h-full items-center justify-center'
-        title={row.row['weatherSummary.keyword'] + ' ' + temperature}
+        title={`${row.row['weatherSummary.keyword']} ${temperature}`}
       >
         {getWeatherIcon(
           row.row['weatherSummary.keyword'] &&

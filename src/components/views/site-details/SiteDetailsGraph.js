@@ -93,7 +93,7 @@ export default function SiteDetailsGraph({
             const siteLabel = truncate(context.dataset.label, 15);
             let label = context.formattedValue || '';
             if (label) {
-              label = roundTwoDigit(label) + ' kW';
+              label = `${roundTwoDigit(label)} kW`;
             }
             return `${siteLabel} ${label}`;
           },

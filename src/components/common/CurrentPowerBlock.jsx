@@ -19,7 +19,7 @@ export default function CurrentPowerBlock({ className, max, currentPower }) {
         'PowerBlock dark:text-gray-100 flex space-x-2 items-end',
         className,
       )}
-      title={percent + '% of ' + Math.round(max) + 'kW'}
+      title={`${percent}% of ${Math.round(max)}kW`}
     >
       <div className='h-12 self-end py-1.5'>
         <PowerIcon max={max} percent={percent} />

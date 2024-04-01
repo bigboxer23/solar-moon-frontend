@@ -81,7 +81,7 @@ export default function SiteDevicesOverview({
                     }
                     className='items-end justify-center'
                     key={3}
-                    onClick={() => navigate('/alerts?deviceId=' + device.id)}
+                    onClick={() => navigate(`/alerts?deviceId=${device.id}`)}
                     resolvedAlerts={
                       resolvedSiteAlerts.filter((d) => d.deviceId === device.id)
                         .length

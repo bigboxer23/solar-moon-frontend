@@ -145,15 +145,15 @@ export const getFormattedDaysHoursMinutes = (time) => {
   //let seconds = ~~time % 60;
   let formattedTime = '';
   if (days > 0) {
-    formattedTime += days + 'd ';
+    formattedTime += `${days}d `;
   }
   if (hours > 0) {
-    formattedTime += hours + 'h ';
+    formattedTime += `${hours}h `;
   }
   if (days === 0 && hours === 0 && minutes === 0) {
     minutes = 1;
   }
-  return formattedTime + minutes + 'm';
+  return `${formattedTime + minutes}m`;
 };
 
 // TODO: Expand to include more weather types/night weather, use consistent icons
@@ -207,13 +207,9 @@ export const formatMessage = function (message) {
 };
 
 export const timeLabel = function (startDate, increment) {
-  return (
-    getFormattedDate(startDate) +
-    ' - ' +
-    getFormattedDate(
-      new Date(Math.min(startDate.getTime() + increment, new Date().getTime())),
-    )
-  );
+  return `${getFormattedDate(startDate)} - ${getFormattedDate(
+    new Date(Math.min(startDate.getTime() + increment, new Date().getTime())),
+  )}`;
 };
 
 /**
@@ -247,5 +243,5 @@ export const roundTwoDigit = (number) => {
 };
 
 export const truncate = (str, n) => {
-  return str.length > n ? str.slice(0, n - 1).trim() + '...' : str;
+  return str.length > n ? `${str.slice(0, n - 1).trim()}...` : str;
 };

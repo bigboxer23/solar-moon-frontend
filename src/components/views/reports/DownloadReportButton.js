@@ -50,18 +50,17 @@ const DownloadReportButton = ({
   ];
 
   const getFileName = () => {
-    let fileName =
-      timeFormatter(new Date(Number(start))) +
-      ' - ' +
-      timeFormatter(new Date(Number(end)));
+    let fileName = `${timeFormatter(new Date(Number(start)))} - ${timeFormatter(
+      new Date(Number(end)),
+    )}`;
 
     if (deviceId !== null && deviceId !== ALL) {
-      return fileName + ' - ' + deviceMap[deviceId] + '.csv';
+      return `${fileName} - ${deviceMap[deviceId]}.csv`;
     }
     if (siteId !== null && siteId !== ALL) {
-      fileName += ' - ' + deviceMap[siteId];
+      fileName += ` - ${deviceMap[siteId]}`;
     }
-    return fileName + '.csv';
+    return `${fileName}.csv`;
   };
 
   const updateStatus = (downloading, percent) => {

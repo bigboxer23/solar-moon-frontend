@@ -134,7 +134,7 @@ export default function OverviewChart({
           label: (context) => {
             let label = context.formattedValue || '';
             if (label) {
-              label = roundTwoDigit(label) + ' kW';
+              label = `${roundTwoDigit(label)} kW`;
             }
             return label;
           },
@@ -195,7 +195,7 @@ export default function OverviewChart({
           label: (context) => {
             let label = context.formattedValue || '';
             if (label) {
-              label = roundTwoDigit(label) + ' kW';
+              label = `${roundTwoDigit(label)} kW`;
             }
             return label;
           },

@@ -71,10 +71,9 @@ const Device = ({ data, devices, setDevices }) => {
     <div className='Device mb-6 flex w-full flex-col items-center overflow-hidden rounded-md bg-grid-background-alt p-6 dark:bg-gray-700'>
       <div className='mb-10 flex w-full justify-between'>
         <span
-          className={
-            (data.disabled ? 'opacity-50 ' : '') +
-            'text-lg font-bold text-black dark:text-gray-100'
-          }
+          className={`${
+            data.disabled ? 'opacity-50 ' : ''
+          }text-lg font-bold text-black dark:text-gray-100`}
         >
           {data.name}
         </span>

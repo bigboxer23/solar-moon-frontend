@@ -53,15 +53,15 @@ export function getSiteOverview(siteId, start, offset, graphType) {
   if (graphType === GROUPED_BAR) {
     body.bucketSize = getBucketSize(offset, GROUPED_BAR);
   }
-  return api.post('sites/' + siteId, body);
+  return api.post(`sites/${siteId}`, body);
 }
 
 export function getDevice(deviceId) {
-  return api.get('devices/' + deviceId);
+  return api.get(`devices/${deviceId}`);
 }
 
 export function deleteDevice(deviceId) {
-  return api.delete('devices/' + deviceId);
+  return api.delete(`devices/${deviceId}`);
 }
 
 export function updateDevice(device) {
@@ -133,5 +133,5 @@ export function getMappings() {
 }
 
 export function deleteMapping(mappingName) {
-  return api.delete('mappings/' + mappingName);
+  return api.delete(`mappings/${mappingName}`);
 }
