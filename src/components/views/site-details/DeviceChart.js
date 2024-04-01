@@ -44,7 +44,7 @@ export default function DeviceChart({ graphData }) {
         bodyAlign: 'center',
         callbacks: {
           title: (context) => {
-            const { dataIndex, datasetIndex } = context[0];
+            const [{ dataIndex, datasetIndex }] = context;
             const { date } = data.datasets[datasetIndex].data[dataIndex];
             return getFormattedTime(date);
           },
