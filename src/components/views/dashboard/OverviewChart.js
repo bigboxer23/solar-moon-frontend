@@ -127,7 +127,7 @@ export default function OverviewChart({
         bodyAlign: 'center',
         callbacks: {
           title: (context) => {
-            const { dataIndex } = context[0];
+            const [{ dataIndex }] = context;
             const { date } = overallDataset.datasets[0].data[dataIndex];
             return getFormattedTime(date);
           },
@@ -188,7 +188,7 @@ export default function OverviewChart({
         titleAlign: 'center',
         callbacks: {
           title: (context) => {
-            const { dataIndex } = context[0];
+            const [{ dataIndex }] = context;
             const { date } = overallDataset.datasets[0].data[dataIndex];
             return getFormattedTime(date);
           },
