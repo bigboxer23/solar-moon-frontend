@@ -25,9 +25,7 @@ export default function ProgressCircle({ percent }) {
           fill='transparent'
           r='15'
           strokeDasharray='94.2px'
-          strokeDashoffset={
-            94.2 * ((100 - Math.max(0, Math.min(100, percent))) / 100) + 'px'
-          }
+          strokeDashoffset={`${94.2 * ((100 - Math.max(0, Math.min(100, percent))) / 100)}px`}
           strokeLinecap='butt'
           strokeWidth='30'
         ></circle>

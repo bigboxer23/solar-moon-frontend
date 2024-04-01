@@ -157,7 +157,7 @@ export default function SiteDetails() {
             <StackedAlertsInfo
               activeAlerts={activeSiteAlerts.length}
               className='mt-2 hidden md:flex'
-              onClick={() => navigate('/alerts?siteId=' + siteId)}
+              onClick={() => navigate(`/alerts?siteId=${siteId}`)}
               resolvedAlerts={resolvedSiteAlerts.length}
             />
           </div>
@@ -181,7 +181,7 @@ export default function SiteDetails() {
             <StackedAlertsInfo
               activeAlerts={activeSiteAlerts.length}
               className='mt-2 flex items-end md:hidden'
-              onClick={() => navigate('/alerts?siteId=' + siteId)}
+              onClick={() => navigate(`/alerts?siteId=${siteId}`)}
               resolvedAlerts={resolvedSiteAlerts.length}
             />
           </div>

@@ -109,14 +109,11 @@ const SiteAttributes = ({ data, setDevices, setActiveSiteId }) => {
         />
         <div className='flex items-center'>
           <div
-            className={
-              (data.latitude !== -1 && data.longitude !== -1
-                ? ''
-                : 'opacity-0 ') +
-              'flex content-end smaller-text text-sm text-gray-400'
-            }
+            className={`${
+              data.latitude !== -1 && data.longitude !== -1 ? '' : 'opacity-0 '
+            }smaller-text flex content-end text-sm text-gray-400`}
           >
-            {data.latitude + ',' + data.longitude}
+            {`${data.latitude},${data.longitude}`}
           </div>
           <div className='grow' />
           <Button

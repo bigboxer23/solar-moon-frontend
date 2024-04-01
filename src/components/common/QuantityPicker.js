@@ -41,7 +41,7 @@ function QuantityPicker({ min, max, setCount }) {
   return (
     <div className='quantity-picker d-flex align-self-end'>
       <Button
-        className={'left-modifier' + (disableDec ? ' disabled' : '')}
+        className={`left-modifier${disableDec ? ' disabled' : ''}`}
         onClick={() => decrement()}
         variant='secondary'
       >
@@ -49,7 +49,7 @@ function QuantityPicker({ min, max, setCount }) {
       </Button>
       <input className='quantity-display' readOnly type='text' value={value} />
       <Button
-        className={'right-modifier' + (disableInc ? ' disabled' : '')}
+        className={`right-modifier${disableInc ? ' disabled' : ''}`}
         onClick={() => increment()}
         variant='secondary'
       >

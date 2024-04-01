@@ -40,7 +40,7 @@ function QuantityPicker({ min, max, setCount, className }) {
   };
 
   return (
-    <div className={className + ' quantity-picker flex self-end'}>
+    <div className={`${className} quantity-picker flex self-end`}>
       <Button
         className='rounded-r-none dark:bg-gray-500 dark:disabled:bg-gray-800'
         disabled={disableDec}
