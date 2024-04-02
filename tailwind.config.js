@@ -30,5 +30,5 @@ module.exports = {
   },
   plugins: [],
   // Remove later
-  //prefix: "tw-",
+  // prefix: "tw-",
 };

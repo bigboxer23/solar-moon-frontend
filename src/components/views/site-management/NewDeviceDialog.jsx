@@ -100,7 +100,7 @@ export default function NewDeviceDialog({
             variant='underline'
           />
         </div>
-        {/*Needed so pressing enter to submit works*/}
+        {/* Needed so pressing enter to submit works*/}
         <Button className='hidden' type='submit' variant='primary'></Button>
         <ModalFooter className='space-x-2'>
           <Button
