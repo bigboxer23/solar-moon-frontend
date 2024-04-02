@@ -32,6 +32,13 @@
     "import/newline-after-import": "error",
     "simple-import-sort/imports": "error",
     "prefer-template": "error",
-    "prefer-destructuring": "error"
+    "prefer-destructuring": "error",
+    "prefer-arrow-callback": "error",
+    "no-iterator": "error",
+    "no-restricted-syntax": "error",
+    "no-undef": "error",
+    "prefer-const": "error",
+    "no-unneeded-ternary": "error",
+    "no-nested-ternary": "error"
   }
 }

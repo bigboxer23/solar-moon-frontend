@@ -3,11 +3,14 @@ import classNames from 'classnames';
 import PowerIcon from './PowerIcon';
 
 export default function PowerBlock({ className, power, title, unit = 'W' }) {
-  const isMw = power > 1000;
-  const isGw = power > 1000000;
-  const unitPrefix = isGw ? 'G' : isMw ? 'M' : 'k';
-  const powerValue = isGw ? power / 1000000 : isMw ? power / 1000 : power;
-  const decimals = isMw ? 100 : 10;
+  const getPowerInformation = () => {
+    if (power > 1000000)
+      return { unitPrefix: 'G', powerValue: power / 1000000, decimals: 10 };
+    if (power > 1000)
+      return { unitPrefix: 'M', powerValue: power / 1000, decimals: 100 };
+    return { unitPrefix: 'k', powerValue: power, decimals: 10 };
+  };
+  const { unitPrefix, powerValue, decimals } = getPowerInformation();
   return (
     <div
       className={classNames(
