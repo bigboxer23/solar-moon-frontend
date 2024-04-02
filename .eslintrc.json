@@ -41,8 +41,8 @@
     "no-unneeded-ternary": "error",
     "no-nested-ternary": "error",
     "spaced-comment": "error",
-	"no-new-wrappers": "error",
-	"camelcase": "error",
-	"no-restricted-globals": "error"
+    "no-new-wrappers": "error",
+    "camelcase": "error",
+    "no-restricted-globals": "error"
   }
 }
