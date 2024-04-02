@@ -142,7 +142,7 @@ export const getFormattedDaysHoursMinutes = (time) => {
   const days = ~~(time / 86400);
   const hours = ~~((time / 3600) % 24);
   let minutes = ~~((time % 3600) / 60);
-  //let seconds = ~~time % 60;
+  // let seconds = ~~time % 60;
   let formattedTime = '';
   if (days > 0) {
     formattedTime += `${days}d `;
@@ -202,7 +202,7 @@ export const formatMessage = function (message) {
   const timestamp =
     Number(unixMS == null ? unixSec : unixMS) * (unixMS == null ? 1000 : 1);
   const finalMatch = unixMS == null ? unixSec : unixMS;
-  //Replace timestamp w/local time
+  // Replace timestamp w/local time
   return message.replaceAll(finalMatch, getFormattedTime(new Date(timestamp)));
 };
 

@@ -33,9 +33,9 @@ const SiteAttributes = ({ data, setDevices, setActiveSiteId }) => {
       maybeUpdateLocation({ ...site, displayName: site.name, site: site.name }),
     )
       .then((d) => {
-        //setDevice(d.data);
+        // setDevice(d.data);
         setActiveSiteId(site.id);
-        //Fetch all new devices b/c site change cascades down to devices (potentially)
+        // Fetch all new devices b/c site change cascades down to devices (potentially)
         getDevices().then(({ data }) => {
           setDevices(data);
           setLoading(false);

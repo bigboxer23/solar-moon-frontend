@@ -123,7 +123,7 @@ export default function NewSiteDialog({
             type='text'
             variant='underline'
           />
-          {/*Needed so pressing enter to submit works*/}
+          {/* Needed so pressing enter to submit works*/}
           <Button className='hidden' type='submit' variant='primary'></Button>
         </div>
         <ModalFooter className='space-x-2'>

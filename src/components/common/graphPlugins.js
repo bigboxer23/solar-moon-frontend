@@ -2,7 +2,7 @@ export const tooltipPlugin = {
   id: 'verticalLiner',
   afterInit: (chart) => {
     chart.verticalLiner = {};
-    /*Chart.register(Filler);*/
+    /* Chart.register(Filler);*/
   },
   afterEvent: (chart, args) => {
     const { inChartArea } = args;
