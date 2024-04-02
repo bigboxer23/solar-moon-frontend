@@ -42,7 +42,7 @@ export function getAvgTotalBody(deviceId, start, end) {
 }
 
 export function getDataPageBody(deviceId, siteId, start, end, offset, size) {
-  let searchJSON = getJSONSearch(deviceId, siteId, start, end, 'data');
+  const searchJSON = getJSONSearch(deviceId, siteId, start, end, 'data');
   searchJSON.offset = offset;
   searchJSON.size = size;
   return searchJSON;
@@ -105,7 +105,7 @@ const safeParseHits = function (data, fieldName) {
   if (data.hits.hits.length <= 0) {
     return 0;
   }
-  let field = data.hits.hits[0].fields[fieldName];
+  const field = data.hits.hits[0].fields[fieldName];
   if (field && field.length > 0) {
     return field[0];
   }

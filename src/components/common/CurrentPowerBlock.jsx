@@ -7,7 +7,7 @@ import PowerIcon from './PowerIcon';
 export default function CurrentPowerBlock({ className, max, currentPower }) {
   const getPercent = (max, current) => {
     max = max === null ? 0 : max;
-    let scale = 100 / max;
+    const scale = 100 / max;
     return current === 0 ? current : Math.round(Math.round(scale * current));
   };
 

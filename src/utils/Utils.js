@@ -115,8 +115,8 @@ export const getRoundedTime = (roundedUp, offset) => {
 };
 
 export const splitDayAndNightDataSets = (data) => {
-  let dayData = [];
-  let nightData = [];
+  const dayData = [];
+  const nightData = [];
   data.forEach((d) => {
     const hour = moment(d.date).hour();
 
@@ -139,8 +139,8 @@ export const getFormattedDaysHoursMinutes = (time) => {
     return '';
   }
   time = time / 1000;
-  let days = ~~(time / 86400);
-  let hours = ~~((time / 3600) % 24);
+  const days = ~~(time / 86400);
+  const hours = ~~((time / 3600) % 24);
   let minutes = ~~((time % 3600) / 60);
   //let seconds = ~~time % 60;
   let formattedTime = '';
