@@ -135,8 +135,8 @@ export default function AlertsFilter({
         buttonProps={{
           title: 'Refresh Alerts',
           'aria-label': 'Refresh Alerts',
-          className: 'flex items-center',
         }}
+        className='flex items-center'
         disabled={refreshSearch}
         onClick={() => setRefreshSearch(true)}
         variant='icon'
