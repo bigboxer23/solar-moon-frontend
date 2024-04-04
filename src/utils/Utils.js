@@ -238,10 +238,22 @@ export const maybeSetTimeWindow = (
   setNextDisabled(!enabled);
 };
 
+export const roundToDecimals = (number, decimals) => {
+  return Math.round(number * decimals) / decimals;
+};
+
 export const roundTwoDigit = (number) => {
-  return Math.round(number * 10) / 10;
+  return roundToDecimals(number, 10);
 };
 
 export const truncate = (str, n) => {
   return str.length > n ? `${str.slice(0, n - 1).trim()}...` : str;
+};
+
+export const getPowerScalingInformation = (power) => {
+  if (power > 1000000)
+    return { unitPrefix: 'G', powerValue: power / 1000000, decimals: 10 };
+  if (power > 1000)
+    return { unitPrefix: 'M', powerValue: power / 1000, decimals: 100 };
+  return { unitPrefix: 'k', powerValue: power, decimals: 10 };
 };
