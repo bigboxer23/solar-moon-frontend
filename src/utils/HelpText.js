@@ -20,3 +20,6 @@ export const DEVICE_HELP_TEXT4 =
 
 export const MAPPING_HELP_TEXT =
   'Mappings provide a way to translate names of data points from your devices to the fields Solar Moon needs to generate graphs, analytics and alerts. There are a number of mappings provided by default, but if you are unable to change your device settings to match them, the platform can map to existing config instead.';
+
+export const AVERAGE_CALCULATION =
+  'Calculated by using the last 90 days of collected data for all sites & devices.';
