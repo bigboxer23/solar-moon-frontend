@@ -53,6 +53,7 @@ export default function SiteDevicesOverview({
                 key={device.id}
                 statBlocks={[
                   <CurrentPowerBlock
+                    activeAlert={activeAlerts > 0}
                     currentPower={parseCurrentPower(maxData[device.id])}
                     key={0}
                     max={parseMaxData(maxData[device.id])}
