@@ -4,7 +4,12 @@ import { useState } from 'react';
 import PowerBlock from './PowerBlock';
 import PowerIcon from './PowerIcon';
 
-export default function CurrentPowerBlock({ className, max, currentPower }) {
+export default function CurrentPowerBlock({
+  className,
+  max,
+  currentPower,
+  activeAlert = false,
+}) {
   const getPercent = (max, current) => {
     max = max === null ? 0 : max;
     const scale = 100 / max;
@@ -22,9 +27,13 @@ export default function CurrentPowerBlock({ className, max, currentPower }) {
       title={`${percent}% of ${Math.round(max)}kW`}
     >
       <div className='h-12 self-end py-1.5'>
-        <PowerIcon max={max} percent={percent} />
+        <PowerIcon activeAlert={activeAlert} max={max} percent={percent} />
       </div>
-      <PowerBlock power={Math.round(currentPower)} title='now' />
+      <PowerBlock
+        activeAlert={activeAlert}
+        power={Math.round(currentPower)}
+        title='now'
+      />
     </div>
   );
 }
