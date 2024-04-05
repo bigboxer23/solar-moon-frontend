@@ -141,7 +141,9 @@ export default function AlertsFilter({
         onClick={() => setRefreshSearch(true)}
         variant='icon'
       >
-        <div className='me-2 sm:hidden'>Refresh Alerts</div>
+        <div className='me-2 text-black dark:text-gray-100 sm:hidden'>
+          Refresh
+        </div>
         {refreshSearch && <Spinner />}
         {!refreshSearch && <FaRotate className='text-base' />}
       </Button>
