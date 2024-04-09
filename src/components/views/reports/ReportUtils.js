@@ -1,4 +1,4 @@
-import { getFormattedTime, roundTwoDigit } from '../../../utils/Utils';
+import { getFormattedTime, roundToDecimals } from '../../../utils/Utils';
 
 const coef = 1000 * 60; // 60s
 
@@ -14,14 +14,14 @@ export const transformRowData = function (row, deviceMap, intl) {
   row.time = getFormattedTime(date);
   if (row[TOTAL_ENERGY_CONS] != null) {
     row[TOTAL_ENERGY_CONS] = intl.formatNumber(
-      roundTwoDigit(row[TOTAL_ENERGY_CONS]),
+      roundToDecimals(row[TOTAL_ENERGY_CONS], 100),
     );
   }
   if (row[TOTAL_REAL_POWER] != null) {
-    row[TOTAL_REAL_POWER] = roundTwoDigit(row[TOTAL_REAL_POWER]);
+    row[TOTAL_REAL_POWER] = roundToDecimals(row[TOTAL_REAL_POWER], 100);
   }
   if (row[ENERGY_CONSUMED] != null) {
-    row[ENERGY_CONSUMED] = roundTwoDigit(row[ENERGY_CONSUMED]);
+    row[ENERGY_CONSUMED] = roundToDecimals(row[ENERGY_CONSUMED], 100);
   }
   row[SITE_ID_KEYWORD] =
     deviceMap[row[SITE_ID_KEYWORD]] || row[SITE_ID_KEYWORD];

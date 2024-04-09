@@ -1,9 +1,11 @@
+import Tippy from '@tippyjs/react';
 import classNames from 'classnames';
 import moment from 'moment';
 
 import {
   formatMessage,
   getFormattedDaysHoursMinutes,
+  getFormattedTime,
 } from '../../../utils/Utils';
 
 export default function Alert({ alert, active }) {
@@ -40,14 +42,36 @@ export default function Alert({ alert, active }) {
         </div>
       </div>
       <div className='mb-1 flex flex-row justify-between space-x-1 text-xs italic sm:mb-0 sm:flex-col'>
-        {alert.state === 1 && <div>{timeSinceAlert}</div>}
+        {alert.state === 1 && (
+          <Tippy
+            content={`Starting at ${getFormattedTime(alert.startDate)}`}
+            delay={500}
+            placement='top'
+          >
+            <div>{timeSinceAlert}</div>
+          </Tippy>
+        )}
         {alert.state === 0 && (
           <>
-            <div> Resolved {timeSinceResolved}</div>
-            <div>
-              Duration{' '}
-              {getFormattedDaysHoursMinutes(alert.endDate - alert.startDate)}
-            </div>
+            <Tippy
+              content={`Ending at ${getFormattedTime(alert.endDate)}`}
+              delay={500}
+              placement='top'
+            >
+              <div> Resolved {timeSinceResolved}</div>
+            </Tippy>
+            <Tippy
+              content={`${getFormattedTime(alert.startDate)} to ${getFormattedTime(
+                alert.endDate,
+              )}`}
+              delay={500}
+              placement='top'
+            >
+              <div>
+                Duration{' '}
+                {getFormattedDaysHoursMinutes(alert.endDate - alert.startDate)}
+              </div>
+            </Tippy>
           </>
         )}
       </div>
