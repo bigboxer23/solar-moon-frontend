@@ -9,6 +9,7 @@ import { ALL, DAY } from '../../../services/search';
 import { getDataPage, getDevices } from '../../../services/services';
 import {
   getDeviceIdToNameMap,
+  getFormattedShortTime,
   getFormattedTime,
   getRoundedTime,
   getWeatherIcon,
@@ -28,6 +29,8 @@ import {
 import SearchBar from './SearchBar';
 
 const Reports = () => {
+  const windowSize = useRef([window.innerWidth, window.innerHeight]);
+
   const [searchParams, setSearchParams] = useSearchParams();
   const [loading, setLoading] = useState(true);
   const [init, setInit] = useState(false);
@@ -98,6 +101,20 @@ const Reports = () => {
     );
   };
 
+  const timeRowRenderer = (row) => {
+    return windowSize.current[0] > 500
+      ? row.row['time']
+      : getFormattedShortTime(new Date(row.row['@timestamp']));
+  };
+
+  const getNamesWidth = () => {
+    return windowSize.current[0] > 500 ? 175 : 100;
+  };
+
+  const getTimeWidth = () => {
+    return windowSize.current[0] > 500 ? 150 : 125;
+  };
+
   const columns = [
     {
       key: 'weatherSummary.keyword',
@@ -112,17 +129,21 @@ const Reports = () => {
       width: 50,
       renderCell: WeatherRowRenderer,
     },
-    { key: 'time', name: 'Time', width: 150 },
-    { key: SITE_ID_KEYWORD, name: 'Site' },
-    { key: DEVICE_ID_KEYWORD, name: 'Display Name' },
     {
-      key: TOTAL_ENERGY_CONS,
-      name: (
-        <div className='flex'>
-          Total Consumption
-          <div className='rdg-header-secondary text-gray-400'>&nbsp; kWH</div>
-        </div>
-      ),
+      key: 'time',
+      name: 'Time',
+      width: getTimeWidth(),
+      renderCell: timeRowRenderer,
+    },
+    {
+      key: SITE_ID_KEYWORD,
+      name: 'Site',
+      width: getNamesWidth(),
+    },
+    {
+      key: DEVICE_ID_KEYWORD,
+      name: 'Display Name',
+      width: getNamesWidth(),
     },
     {
       key: TOTAL_REAL_POWER,
@@ -138,6 +159,15 @@ const Reports = () => {
       name: (
         <div className='flex'>
           Consumption
+          <div className='rdg-header-secondary text-gray-400'>&nbsp; kWH</div>
+        </div>
+      ),
+    },
+    {
+      key: TOTAL_ENERGY_CONS,
+      name: (
+        <div className='flex'>
+          Total Consumption
           <div className='rdg-header-secondary text-gray-400'>&nbsp; kWH</div>
         </div>
       ),
