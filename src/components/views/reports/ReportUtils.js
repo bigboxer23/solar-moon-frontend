@@ -18,10 +18,14 @@ export const transformRowData = function (row, deviceMap, intl) {
     );
   }
   if (row[TOTAL_REAL_POWER] != null) {
-    row[TOTAL_REAL_POWER] = roundToDecimals(row[TOTAL_REAL_POWER], 100);
+    row[TOTAL_REAL_POWER] = intl.formatNumber(
+      roundToDecimals(row[TOTAL_REAL_POWER], 100),
+    );
   }
   if (row[ENERGY_CONSUMED] != null) {
-    row[ENERGY_CONSUMED] = roundToDecimals(row[ENERGY_CONSUMED], 100);
+    row[ENERGY_CONSUMED] = intl.formatNumber(
+      roundToDecimals(row[ENERGY_CONSUMED], 100),
+    );
   }
   row[SITE_ID_KEYWORD] =
     deviceMap[row[SITE_ID_KEYWORD]] || row[SITE_ID_KEYWORD];
