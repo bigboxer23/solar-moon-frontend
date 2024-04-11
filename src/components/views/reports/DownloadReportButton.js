@@ -109,6 +109,7 @@ const DownloadReportButton = ({
       localEnd,
       0,
       10000,
+      null,
     )
       .then(({ data }) => {
         updateStatus(true, steps * index);

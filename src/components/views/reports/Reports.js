@@ -1,5 +1,6 @@
 import 'react-data-grid/lib/styles.css';
 
+import Tippy from '@tippyjs/react';
 import { useEffect, useRef, useState } from 'react';
 import DataGrid from 'react-data-grid';
 import { useIntl } from 'react-intl';
@@ -13,6 +14,7 @@ import {
   getFormattedTime,
   getRoundedTime,
   getWeatherIcon,
+  roundTwoDigit,
   useSearchParamState,
 } from '../../../utils/Utils';
 import Loader from '../../common/Loader';
@@ -84,20 +86,31 @@ const Reports = () => {
   }, [devices]);
 
   const WeatherRowRenderer = (row) => {
-    const temperature =
-      row.row['temperature'] === undefined
-        ? ''
-        : `${Math.round(row.row['temperature'])}°F`;
+    const content = (
+      <>
+        <div>
+          {`${row.row['weatherSummary.keyword']} `}
+          {row.row['temperature'] && `${Math.round(row.row['temperature'])}°F`}
+        </div>
+        <div>
+          {row.row['uvIndex'] &&
+            `UV Index: ${roundTwoDigit(row.row['uvIndex'])}`}
+        </div>
+        <div>
+          {row.row['cloudCover'] &&
+            `Cloud Cover: ${roundTwoDigit(row.row['cloudCover'])}`}
+        </div>
+      </>
+    );
     return (
-      <div
-        className='flex h-full items-center justify-center'
-        title={`${row.row['weatherSummary.keyword']} ${temperature}`}
-      >
-        {getWeatherIcon(
-          row.row['weatherSummary.keyword'] &&
-            row.row['weatherSummary.keyword'][0],
-        )}
-      </div>
+      <Tippy content={content} delay={500} placement='top'>
+        <div className='flex h-full items-center justify-center'>
+          {getWeatherIcon(
+            row.row['weatherSummary.keyword'] &&
+              row.row['weatherSummary.keyword'][0],
+          )}
+        </div>
+      </Tippy>
     );
   };
 
@@ -202,6 +215,7 @@ const Reports = () => {
       end,
       offset,
       500,
+      ['uvIndex', 'Daylight', 'cloudCover'],
     )
       .then(({ data }) => {
         setLoading(false);

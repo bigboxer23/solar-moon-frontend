@@ -86,7 +86,15 @@ export function getOverviewData(start, offset) {
   return api.post('overview', body);
 }
 
-export function getDataPage(deviceId, siteId, start, end, offset, size) {
+export function getDataPage(
+  deviceId,
+  siteId,
+  start,
+  end,
+  offset,
+  size,
+  additionalFields,
+) {
   return api.post(
     'search',
     getDataPageBody(
@@ -96,6 +104,7 @@ export function getDataPage(deviceId, siteId, start, end, offset, size) {
       new Date(Number(end)),
       offset,
       size,
+      additionalFields,
     ),
   );
 }
@@ -117,6 +126,7 @@ export function getDownloadPageSize(
       new Date(Number(end)),
       offset,
       size,
+      null,
     ),
   );
 }
