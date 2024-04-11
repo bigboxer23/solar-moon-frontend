@@ -41,10 +41,21 @@ export function getAvgTotalBody(deviceId, start, end) {
   return getJSONSearch(deviceId, null, start, end, 'avgTotal');
 }
 
-export function getDataPageBody(deviceId, siteId, start, end, offset, size) {
+export function getDataPageBody(
+  deviceId,
+  siteId,
+  start,
+  end,
+  offset,
+  size,
+  additionalFields,
+) {
   const searchJSON = getJSONSearch(deviceId, siteId, start, end, 'data');
   searchJSON.offset = offset;
   searchJSON.size = size;
+  if (additionalFields) {
+    searchJSON.additionalFields = additionalFields;
+  }
   return searchJSON;
 }
 
