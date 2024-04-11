@@ -147,6 +147,7 @@ const Reports = () => {
     },
     {
       key: TOTAL_REAL_POWER,
+      minWidth: 100,
       name: (
         <div className='flex'>
           Power
@@ -156,6 +157,7 @@ const Reports = () => {
     },
     {
       key: ENERGY_CONSUMED,
+      minWidth: 100,
       name: (
         <div className='flex'>
           Consumption
@@ -165,6 +167,7 @@ const Reports = () => {
     },
     {
       key: TOTAL_ENERGY_CONS,
+      minWidth: 100,
       name: (
         <div className='flex'>
           Total Consumption
