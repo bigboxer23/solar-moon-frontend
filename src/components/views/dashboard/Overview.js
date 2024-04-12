@@ -17,6 +17,7 @@ import {
   useStickyState,
 } from '../../../utils/Utils';
 import CurrentPowerBlock from '../../common/CurrentPowerBlock';
+import Error from '../../common/Error';
 import Loader from '../../common/Loader';
 import PowerBlock from '../../common/PowerBlock';
 import StatBlock from '../../common/StatBlock';
@@ -28,6 +29,7 @@ import SummaryHeader from './SummaryHeader';
 import TimeIncrementSelector from './TimeIncrementSelector';
 
 export default function Overview() {
+  const [error, setError] = useState(false);
   const [sites, setSites] = useState([]);
   const [devices, setDevices] = useState([]);
   const [activeAlerts, setActiveAlerts] = useState([]);
@@ -52,20 +54,25 @@ export default function Overview() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    getOverviewData(startDate, timeIncrement).then(({ data }) => {
-      if (data.devices.length === 0) {
-        window.location.href = '/manage';
-        return;
-      }
-      handleDevices(data.devices);
-      handleAlarms(data.alarms);
-      handleOverviewTotal(data.overall.avg, data.overall.total);
-      handleMax(data.sitesOverviewData);
-      setOverallTimeSeries(data.overall.timeSeries);
-      setSitesGraphData(data.sitesOverviewData);
-      handleSummaryHeader(data.overall);
-      setLoading(false);
-    });
+    getOverviewData(startDate, timeIncrement)
+      .then(({ data }) => {
+        if (data.devices.length === 0) {
+          window.location.href = '/manage';
+          return;
+        }
+        handleDevices(data.devices);
+        handleAlarms(data.alarms);
+        handleOverviewTotal(data.overall.avg, data.overall.total);
+        handleMax(data.sitesOverviewData);
+        setOverallTimeSeries(data.overall.timeSeries);
+        setSitesGraphData(data.sitesOverviewData);
+        handleSummaryHeader(data.overall);
+        setLoading(false);
+      })
+      .catch((e) => {
+        setLoading(false);
+        setError(true);
+      });
   }, [timeIncrement, startDate]);
 
   const handleSummaryHeader = (data) => {
@@ -116,6 +123,8 @@ export default function Overview() {
   };
 
   if (loading) return <Loader />;
+
+  if (error) return <Error />;
 
   return (
     <div className='flex max-w-full flex-col items-center'>
