@@ -7,6 +7,8 @@ const CURRENT = 'Average Current';
 
 const VOLTAGE = 'Average Voltage (L-N)';
 
+export const FORTY_FIVE = 2700000;
+
 export const HOUR = 3600000;
 export const DAY = 86400000;
 
@@ -116,11 +118,25 @@ const safeParseHits = function (data, fieldName) {
   if (data.hits.hits.length <= 0) {
     return 0;
   }
+  if (isDataStale(data)) {
+    return 0;
+  }
   const field = data.hits.hits[0].fields[fieldName];
   if (field && field.length > 0) {
     return field[0];
   }
   return 0;
+};
+
+const isDataStale = function (data) {
+  try {
+    return (
+      new Date(data.hits.hits[0].fields['@timestamp']).getTime() <
+      new Date().getTime() - FORTY_FIVE
+    );
+  } catch (e) {
+    return false;
+  }
 };
 
 export const parseAndCondenseStackedTimeSeriesData = function (data) {
