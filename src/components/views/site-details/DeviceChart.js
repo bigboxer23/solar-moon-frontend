@@ -68,6 +68,7 @@ export default function DeviceChart({ graphData }) {
         },
       },
       y: {
+        min: 0,
         stacked: true,
         ticks: {
           color: '#9ca3af',
