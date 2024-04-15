@@ -1,3 +1,4 @@
+import Tippy from '@tippyjs/react';
 import classNames from 'classnames';
 import { useState } from 'react';
 
@@ -24,11 +25,16 @@ export default function CurrentPowerBlock({
         'PowerBlock dark:text-gray-100 flex space-x-2 items-end',
         className,
       )}
-      title={`${percent}% of ${Math.round(max)}kW`}
     >
-      <div className='h-12 self-end py-1.5'>
-        <PowerIcon activeAlert={activeAlert} max={max} percent={percent} />
-      </div>
+      <Tippy
+        content={`${percent}% of ${Math.round(max)}kW`}
+        delay={500}
+        placement='top'
+      >
+        <div className='h-12 self-end py-1.5'>
+          <PowerIcon activeAlert={activeAlert} max={max} percent={percent} />
+        </div>
+      </Tippy>
       <PowerBlock
         activeAlert={activeAlert}
         power={Math.round(currentPower)}
