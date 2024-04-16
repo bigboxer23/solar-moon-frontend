@@ -47,7 +47,23 @@ export const sortRowData = function (row, row2) {
 };
 
 const compare = function (row, row2, field) {
-  return row[field].localeCompare(row2[field].trim(), undefined, {
-    sensitivity: 'accent',
-  });
+  return unwrapValue(row[field]).localeCompare(
+    unwrapValue(row2[field]).trim(),
+    undefined,
+    {
+      sensitivity: 'accent',
+    },
+  );
+};
+
+const unwrapValue = function (value) {
+  if (
+    value !== null &&
+    value !== undefined &&
+    Array.isArray(value) &&
+    value.length > 0
+  ) {
+    return value[0];
+  }
+  return value;
 };
