@@ -6,6 +6,7 @@ import {
   getAggregationValue,
   parseCurrentPower,
   parseMaxData,
+  parseSearchReturn,
   TOTAL_AGGREGATION,
 } from '../../../services/search';
 import CurrentPowerBlock from '../../common/CurrentPowerBlock';
@@ -13,11 +14,10 @@ import WeatherBlock from '../../common/WeatherBlock';
 import DeviceBlock from '../../device-block/DeviceBlock';
 import StackedAlertsInfo from '../../device-block/StackedAlertsInfo';
 import StackedTotAvg from '../../device-block/StackedTotAvg';
-import MiniGraph from '../../graphs/MiniGraph';
+import MiniChart from '../../graphs/MiniChart';
 
 export default function OverviewSiteList({
   sites,
-  timeIncrement,
   devices,
   alerts,
   sitesGraphData,
@@ -65,10 +65,9 @@ export default function OverviewSiteList({
           <NavLink key={site.info.id} to={`/sites/${site.info.id}`}>
             <DeviceBlock
               body={
-                <MiniGraph
-                  className='mt-4'
-                  graphData={site.graphData}
-                  timeIncrement={timeIncrement}
+                <MiniChart
+                  graphData={parseSearchReturn(site.graphData.timeSeries)}
+                  stepSize={20}
                 />
               }
               className='w-full'
