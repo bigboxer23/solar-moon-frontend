@@ -261,3 +261,7 @@ export const getPowerScalingInformation = (power) => {
     return { unitPrefix: 'M', powerValue: power / 1000, decimals: 100 };
   return { unitPrefix: 'k', powerValue: power, decimals: 10 };
 };
+
+export const isXS = (windowSize) => {
+  return windowSize.current[0] <= 500;
+};
