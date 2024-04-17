@@ -1,9 +1,9 @@
 import { Line } from 'react-chartjs-2';
 
-import { formatXAxisLabels, getFormattedTime } from '../../../utils/Utils';
-import { tooltipPlugin } from '../../common/graphPlugins';
+import { getFormattedTime } from '../../utils/Utils';
+import { tooltipPlugin } from '../common/graphPlugins';
 
-export default function DeviceChart({ graphData }) {
+export default function MiniChart({ graphData }) {
   const data = {
     datasets: [
       {
@@ -60,16 +60,19 @@ export default function DeviceChart({ graphData }) {
     },
     scales: {
       x: {
+        grid: {
+          display: false,
+        },
+        border: {
+          display: false,
+        },
         type: 'time',
         ticks: {
-          color: '#9ca3af',
-          stepSize: 6,
-          callback: formatXAxisLabels,
+          display: false,
         },
       },
       y: {
         min: 0,
-        stacked: true,
         ticks: {
           color: '#9ca3af',
         },
@@ -81,7 +84,7 @@ export default function DeviceChart({ graphData }) {
   };
 
   return (
-    <div className='DeviceChart h-40 w-full rounded-lg bg-brand-primary-light p-2 dark:bg-gray-900'>
+    <div className='MiniChart h-40 w-full rounded-lg bg-brand-primary-light p-2 dark:bg-gray-900'>
       <Line data={data} options={options} plugins={[tooltipPlugin]} />
     </div>
   );

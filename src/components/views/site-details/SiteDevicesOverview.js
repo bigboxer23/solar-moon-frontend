@@ -1,5 +1,3 @@
-import classNames from 'classnames';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import {
@@ -18,7 +16,7 @@ import DeviceBlock from '../../device-block/DeviceBlock';
 import StackedAlertsInfo from '../../device-block/StackedAlertsInfo';
 import StackedCurrentVoltageBlock from '../../device-block/StackedCurrentVoltageBlock';
 import StackedTotAvg from '../../device-block/StackedTotAvg';
-import DeviceChart from './DeviceChart';
+import MiniChart from '../../graphs/MiniChart';
 
 export default function SiteDevicesOverview({
   devices,
@@ -45,8 +43,8 @@ export default function SiteDevicesOverview({
 
             return (
               <DeviceBlock
-                expandableBody={
-                  <DeviceChart
+                body={
+                  <MiniChart
                     graphData={parseSearchReturn(timeSeriesData[device.id])}
                   />
                 }

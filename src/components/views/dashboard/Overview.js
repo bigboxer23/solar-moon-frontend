@@ -203,7 +203,6 @@ export default function Overview() {
           devices={devices}
           sites={sites}
           sitesGraphData={sitesGraphData}
-          timeIncrement={timeIncrement}
         />
       </div>
     </div>
