@@ -14,6 +14,7 @@ import {
   getFormattedTime,
   getRoundedTime,
   getWeatherIcon,
+  isXS,
   roundTwoDigit,
   useSearchParamState,
 } from '../../../utils/Utils';
@@ -115,17 +116,17 @@ const Reports = () => {
   };
 
   const timeRowRenderer = (row) => {
-    return windowSize.current[0] > 500
-      ? row.row['time']
-      : getFormattedShortTime(new Date(row.row['@timestamp']));
+    return isXS(windowSize)
+      ? getFormattedShortTime(new Date(row.row['@timestamp']))
+      : row.row['time'];
   };
 
   const getNamesWidth = () => {
-    return windowSize.current[0] > 500 ? 175 : 100;
+    return isXS(windowSize) ? 100 : 175;
   };
 
   const getTimeWidth = () => {
-    return windowSize.current[0] > 500 ? 150 : 125;
+    return isXS(windowSize) ? 125 : 150;
   };
 
   const columns = [
