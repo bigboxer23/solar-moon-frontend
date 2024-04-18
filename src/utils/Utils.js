@@ -94,13 +94,22 @@ export const getDeviceIdToNameMap = (devices) => {
   }, {});
 };
 
-export const sortDevices = (d1, d2) =>
-  getDisplayName(d1).localeCompare(getDisplayName(d2), undefined, {
+export const compare = (value1, value2) => {
+  if (value1 === undefined || value2 === undefined) {
+    return 0;
+  }
+  return value1.localeCompare(value2, undefined, {
     sensitivity: 'accent',
   });
+};
 
-export const sortSelectAlphabetically = (d1, d2) =>
-  d1.label.localeCompare(d2.label, undefined, { sensitivity: 'accent' });
+export const sortDevices = (d1, d2) => {
+  const siteSort = compare(d1.site, d2.site);
+  if (siteSort !== 0) {
+    return siteSort;
+  }
+  return compare(getDisplayName(d1), getDisplayName(d2));
+};
 
 export const getRoundedTimeFromOffset = (offset) => {
   return offset === HOUR
