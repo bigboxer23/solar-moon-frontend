@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { ALL } from '../../../services/search';
 import { getAlarmData } from '../../../services/services';
-import { sortSelectAlphabetically } from '../../../utils/Utils';
+import { compare } from '../../../utils/Utils';
 import Loader from '../../common/Loader';
 import Alert from './Alert';
 import AlertsFilter from './AlertsFilter';
@@ -24,6 +24,14 @@ export default function Alerts() {
     start: null,
     end: null,
   });
+
+  const sortAlarms = (alarm, alarm2) => {
+    const siteSort = compare(alarm.siteName, alarm2.siteName);
+    if (siteSort !== 0) {
+      return siteSort;
+    }
+    return compare(alarm.deviceName, alarm2.deviceName);
+  };
 
   const loadData = () => {
     getAlarmData().then(({ data }) => {
@@ -49,25 +57,42 @@ export default function Alerts() {
               return d.deviceSite && d.siteId;
             })
             .map((d) => {
-              return [d.siteId, { label: d.deviceSite, value: d.siteId }];
-            }),
-        ).values(),
-      ].sort(sortSelectAlphabetically);
-
-      const deviceOptions = [
-        ...new Map(
-          data
-            .filter((d) => {
-              return d.deviceName && d.deviceId;
-            })
-            .map((d) => {
               return [
-                d.deviceId,
-                { label: d.deviceName, value: d.deviceId, site: d.siteId },
+                d.siteId,
+                {
+                  label: d.deviceSite,
+                  value: d.siteId,
+                  deviceName: d.deviceSite,
+                  siteName: d.deviceSite,
+                },
               ];
             }),
         ).values(),
-      ].sort(sortSelectAlphabetically);
+      ].sort(sortAlarms);
+
+      const deviceOptions = [
+        ...new Map(
+          data.map((d) => {
+            return [
+              d.deviceId,
+              {
+                label: d.deviceDisabled ? (
+                  <div className='opacity-50' title='(Disabled)'>
+                    {d.deviceName}
+                  </div>
+                ) : (
+                  d.deviceName
+                ),
+                deviceName: d.deviceName,
+                value: d.deviceId,
+                site: d.siteId,
+                siteName: d.deviceSite,
+              },
+            ];
+          }),
+        ).values(),
+      ].sort(sortAlarms);
+
       setSiteOptions(siteOptions);
       setDeviceOptions(deviceOptions);
       setRefreshSearch(false);

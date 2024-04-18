@@ -198,7 +198,9 @@ export default function SiteDetails() {
         <SiteDevicesOverview
           activeSiteAlerts={activeSiteAlerts}
           avgData={siteData?.deviceAvg}
-          devices={devices.filter((device) => !device.isSite)}
+          devices={devices
+            .filter((device) => !device.isSite)
+            .filter((device) => !device.disabled)}
           maxData={siteData?.deviceWeeklyMaxPower}
           resolvedSiteAlerts={resolvedSiteAlerts}
           timeSeriesData={siteData?.deviceTimeSeries}

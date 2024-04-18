@@ -16,7 +16,11 @@ import {
 } from 'react-icons/md';
 
 import { ALL } from '../../../services/search';
-import { getRoundedTime, sortDevices } from '../../../utils/Utils';
+import {
+  getDisplayName,
+  getRoundedTime,
+  sortDevices,
+} from '../../../utils/Utils';
 import Button from '../../common/Button';
 import Dropdown from '../../common/Dropdown';
 import Spinner from '../../common/Spinner';
@@ -85,9 +89,13 @@ const SearchBar = ({
     .map((d) => {
       return {
         value: d.id,
-        label:
-          (d.name == null ? d.deviceName : d.name) +
-          (d.isSite ? ' (site)' : ''),
+        label: d.disabled ? (
+          <div className='opacity-50' title='(Disabled)'>
+            {getDisplayName(d)}
+          </div>
+        ) : (
+          getDisplayName(d) + (d.isSite ? ' (site)' : '')
+        ),
       };
     });
 

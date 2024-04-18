@@ -33,7 +33,9 @@ export default function OverviewSiteList({
     const mappedSiteData = sites.map((site) => {
       const siteInfo = {
         ...site,
-        deviceCount: devices.filter((d) => d.site === site.name).length,
+        deviceCount: devices
+          .filter((d) => d.site === site.name)
+          .filter((device) => !device.disabled).length,
         resolvedAlertCount: alerts
           .filter((d) => d.siteId === site.id)
           .filter((d) => d.state === 0).length,
