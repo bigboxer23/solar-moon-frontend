@@ -31,11 +31,11 @@ export function checkoutStatus(sessionId) {
   return api.get(`billing/status?session_id=${sessionId}`);
 }
 
-export function getSeatCount() {
+export function getSubscriptionInformation() {
   return api.get('subscription');
 }
 
-export function getSubscriptions() {
+export function getStripeSubscriptions() {
   return api.get('billing/subscriptions');
 }
 

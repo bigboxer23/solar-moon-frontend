@@ -9,7 +9,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
   getDevice,
   getDevices,
-  getSeatCount,
+  getSubscriptionInformation,
   updateDevice,
 } from '../../../services/services';
 import {
@@ -81,8 +81,8 @@ const SiteManagement = () => {
       .catch((e) => {
         setLoading(false);
       });
-    getSeatCount().then(({ data }) => {
-      setSubscriptionAvailable(data * 20 > devices.length);
+    getSubscriptionInformation().then(({ data }) => {
+      setSubscriptionAvailable(data?.packs * 20 > devices.length);
     });
   };
 
