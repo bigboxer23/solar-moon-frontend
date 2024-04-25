@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { MdOutlineSubscriptions } from 'react-icons/md';
 
 import {
-  getSubscriptions,
+  getStripeSubscriptions,
   getUserPortalSession,
 } from '../../../services/services';
 import Button from '../../common/Button';
@@ -18,7 +18,7 @@ export default function ManagePlanTile() {
   const [loading, setLoading] = useState(true);
   const [invalid, setInvalid] = useState(false);
   useEffect(() => {
-    getSubscriptions().then(({ data }) => {
+    getStripeSubscriptions().then(({ data }) => {
       if (data.length === 0) {
         setLoading(false);
         setInvalid(true);
