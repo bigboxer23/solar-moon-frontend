@@ -36,7 +36,7 @@ export default function Profile() {
             setCustomerData={setCustomerData}
           />
           <ChangePassword />
-          <DeleteAccount />
+          <DeleteAccount customerData={customerData} />
         </div>
       )}
     </main>
