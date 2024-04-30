@@ -35,6 +35,10 @@ export function getSubscriptionInformation() {
   return api.get('subscription');
 }
 
+export function activateTrial() {
+  return api.post('subscription');
+}
+
 export function getStripeSubscriptions() {
   return api.get('billing/subscriptions');
 }
