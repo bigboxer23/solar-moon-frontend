@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 
 import { ALL } from '../../../services/search';
-import { getAlarmData } from '../../../services/services';
+import {
+  getAlarmData,
+  getSubscriptionInformation,
+} from '../../../services/services';
 import { compare } from '../../../utils/Utils';
 import Loader from '../../common/Loader';
 import Alert from './Alert';
@@ -41,7 +44,9 @@ export default function Alerts({ setTrialDate }) {
       const resolved = data
         .filter((d) => d.state === 0)
         .sort((row, row2) => row2.endDate - row.endDate);
-      setTrialDate(data.trialDate);
+      getSubscriptionInformation().then(({ data }) => {
+        setTrialDate(data?.joinDate);
+      });
       // Initialize alerts
       setActiveAlerts(active);
       setResolvedAlerts(resolved);
