@@ -274,3 +274,8 @@ export const getPowerScalingInformation = (power) => {
 export const isXS = (windowSize) => {
   return windowSize.current[0] <= 500;
 };
+
+export const getDaysLeftInTrial = (date) => {
+  const days = Math.round((date + DAY * 90 - new Date().getTime()) / DAY);
+  return `${days} day${days > 1 ? 's' : ''} left`;
+};

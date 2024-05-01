@@ -4,10 +4,12 @@ import { useEffect, useRef, useState } from 'react';
 import { FaBars } from 'react-icons/fa';
 import { FaXmark } from 'react-icons/fa6';
 import { LuSun } from 'react-icons/lu';
+import { MdOutlineInfo } from 'react-icons/md';
 import { NavLink, useLocation } from 'react-router-dom';
 import { useOnClickOutside } from 'usehooks-ts';
 
 import logo from '../../assets/logo.svg';
+import { getDaysLeftInTrial, useStickyState } from '../../utils/Utils';
 import ProfileMenu from './ProfileMenu';
 
 // TODO: break this up, it's a mess (break out the slider menu at least)
@@ -27,6 +29,8 @@ export default function Navbar() {
   const [slideMenuOpen, setSlideMenuOpen] = useState(false);
 
   const menuRef = useRef(null);
+
+  const [trialDate] = useStickyState(-1, 'trialDate');
 
   useOnClickOutside(menuRef, () => {
     if (slideMenuOpen) {
@@ -142,6 +146,14 @@ export default function Navbar() {
           </button>
         </div>
         <nav className='flex w-full flex-col space-y-8'>
+          {trialDate > -1 && (
+            <div className='flex'>
+              <MdOutlineInfo className='mr-2 text-gray-400' size={18} />
+              <span className='mr-4 text-sm text-gray-400'>
+                {getDaysLeftInTrial(trialDate)} in trial
+              </span>
+            </div>
+          )}
           <NavLink
             className={({ isActive }) =>
               isActive ? slideMenuActiveLinkStyle : slideMenuLinkStyle

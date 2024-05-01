@@ -53,6 +53,8 @@ export default function Overview() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  const [_, setTrialDate] = useStickyState(-1, 'trialDate');
+
   useEffect(() => {
     getOverviewData(startDate, timeIncrement)
       .then(({ data }) => {
@@ -67,6 +69,7 @@ export default function Overview() {
         setOverallTimeSeries(data.overall.timeSeries);
         setSitesGraphData(data.sitesOverviewData);
         handleSummaryHeader(data.overall);
+        setTrialDate(data.trialDate);
         setLoading(false);
       })
       .catch((e) => {
