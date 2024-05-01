@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { MdOutlineSubscriptions } from 'react-icons/md';
 
+import { DAY } from '../../../services/search';
 import {
   getStripeSubscriptions,
+  getSubscriptionInformation,
   getUserPortalSession,
 } from '../../../services/services';
 import Button from '../../common/Button';
@@ -17,11 +19,22 @@ export default function ManagePlanTile() {
   const [price, setPrice] = useState(40);
   const [loading, setLoading] = useState(true);
   const [invalid, setInvalid] = useState(false);
+  const [trialMode, setTrialMode] = useState(false);
+  const [trialDaysLeft, setTrialDaysLeft] = useState(90);
+
   useEffect(() => {
     getStripeSubscriptions().then(({ data }) => {
       if (data.length === 0) {
-        setLoading(false);
-        setInvalid(true);
+        getSubscriptionInformation().then(({ data }) => {
+          setLoading(false);
+          if (data?.packs !== -1) {
+            setInvalid(true);
+            return;
+          }
+          setTrialMode(true);
+          const joinDate = data?.joinDate + DAY * 90;
+          setTrialDaysLeft(Math.round((joinDate - new Date().getTime()) / DAY));
+        });
         return;
       }
       setQuantity(data[0].quantity);
@@ -51,7 +64,7 @@ export default function ManagePlanTile() {
         </span>
       </div>
       {loading && <Loader className='flex w-full justify-center' />}
-      {!loading && !invalid && (
+      {!loading && !invalid && !trialMode && (
         <div className='flex flex-col'>
           <div className='mb-2 flex items-center'>
             <div className='text-xl font-bold'>{period}</div>
@@ -83,6 +96,38 @@ export default function ManagePlanTile() {
               )}
               {billingLoading && <Spinner className='button-icon' />}
               Manage
+            </Button>
+          </div>
+        </div>
+      )}
+      {!loading && trialMode && (
+        <div className='flex flex-col'>
+          <div className='mb-2 flex items-center'>
+            <div className='text-xl font-bold'>Trial Mode</div>
+          </div>
+          <div className='mb-2 flex items-center'>
+            <div className='text-lg'>10</div>
+            <div className='ps-1 text-sm text-gray-500'> devices</div>
+          </div>
+          <div className='mb-6 flex'>
+            <div className='smaller-text text-sm text-gray-500'>
+              {trialDaysLeft} day{trialDaysLeft > 1 ? 's' : ''} left
+            </div>
+          </div>
+          <div className='grow-1' />
+          <div>
+            <Button
+              className='ml-auto mt-3'
+              disabled={billingLoading}
+              onClick={() => (window.location.href = '/pricing')}
+              type='button'
+              variant='primary'
+            >
+              {!billingLoading && (
+                <MdOutlineSubscriptions className='button-icon' />
+              )}
+              {billingLoading && <Spinner className='button-icon' />}
+              Change Subscription
             </Button>
           </div>
         </div>
