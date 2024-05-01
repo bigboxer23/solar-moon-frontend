@@ -7,7 +7,7 @@ import Loader from '../../common/Loader';
 import Alert from './Alert';
 import AlertsFilter from './AlertsFilter';
 
-export default function Alerts() {
+export default function Alerts({ setTrialDate }) {
   const [loading, setLoading] = useState(true);
   const [activeAlerts, setActiveAlerts] = useState([]);
   const [resolvedAlerts, setResolvedAlerts] = useState([]);
@@ -41,7 +41,7 @@ export default function Alerts() {
       const resolved = data
         .filter((d) => d.state === 0)
         .sort((row, row2) => row2.endDate - row.endDate);
-
+      setTrialDate(data.trialDate);
       // Initialize alerts
       setActiveAlerts(active);
       setResolvedAlerts(resolved);

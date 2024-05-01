@@ -6,8 +6,7 @@ import { getDaysLeftInTrial, useStickyState } from '../../utils/Utils';
 import Avatar from '../common/Avatar';
 import ThemeSelector from '../common/ThemeSelector';
 
-export default function ProfileMenu() {
-  const [trialDate] = useStickyState(-1, 'trialDate');
+export default function ProfileMenu({ trialDate }) {
   const { user, signOut } = useAuthenticator((context) => [context.user]);
 
   const menuItemClassName =

@@ -14,7 +14,6 @@ import {
 } from '../../../services/services';
 import {
   findSiteNameFromSiteId,
-  getDisplayName,
   sortDevices,
   useStickyState,
 } from '../../../utils/Utils';
@@ -28,7 +27,7 @@ import NewSiteExampleDialog from './NewSiteExampleDialog';
 import Site from './Site';
 
 export const noSite = 'No Site';
-const SiteManagement = () => {
+const SiteManagement = ({ setTrialDate }) => {
   const [loading, setLoading] = useState(true);
   const [devices, setDevices] = useState([]);
   const [activeSiteId, setActiveSiteId] = useStickyState('', 'site.management');
@@ -82,6 +81,7 @@ const SiteManagement = () => {
         setLoading(false);
       });
     getSubscriptionInformation().then(({ data }) => {
+      setTrialDate(data?.joinDate);
       setSubscriptionAvailable(data?.packs * 20 > devices.length);
     });
   };

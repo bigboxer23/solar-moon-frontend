@@ -13,7 +13,7 @@ import { getDaysLeftInTrial, useStickyState } from '../../utils/Utils';
 import ProfileMenu from './ProfileMenu';
 
 // TODO: break this up, it's a mess (break out the slider menu at least)
-export default function Navbar() {
+export default function Navbar({ trialDate }) {
   const separatorStyle =
     'text-gray-400 text-lg text-decoration-none font-bold hidden lg:block dark:text-brand-secondary';
   const linkStyle =
@@ -29,8 +29,6 @@ export default function Navbar() {
   const [slideMenuOpen, setSlideMenuOpen] = useState(false);
 
   const menuRef = useRef(null);
-
-  const [trialDate] = useStickyState(-1, 'trialDate');
 
   useOnClickOutside(menuRef, () => {
     if (slideMenuOpen) {
@@ -120,7 +118,7 @@ export default function Navbar() {
         </nav>
         {/* annoying hack because this thing has bizarre positioning */}
         <div className='mr-8 hidden items-center justify-center sm:flex'>
-          <ProfileMenu />
+          <ProfileMenu trialDate={trialDate} />
         </div>
         <div className='mr-6 flex items-center justify-center text-black dark:text-gray-100 sm:hidden'>
           <FaBars className='text-2xl' onClick={() => setSlideMenuOpen(true)} />

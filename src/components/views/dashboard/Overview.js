@@ -28,7 +28,7 @@ import OverviewSiteList from './OverviewSiteList';
 import SummaryHeader from './SummaryHeader';
 import TimeIncrementSelector from './TimeIncrementSelector';
 
-export default function Overview() {
+export default function Overview({ setTrialDate }) {
   const [error, setError] = useState(false);
   const [sites, setSites] = useState([]);
   const [devices, setDevices] = useState([]);
@@ -52,8 +52,6 @@ export default function Overview() {
 
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
-  const [_, setTrialDate] = useStickyState(-1, 'trialDate');
 
   useEffect(() => {
     getOverviewData(startDate, timeIncrement)
