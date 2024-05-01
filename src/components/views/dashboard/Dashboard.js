@@ -1,10 +1,9 @@
 import { useEffect } from 'react';
 
-import { getDevices } from '../../../services/services';
 import { useStickyState } from '../../../utils/Utils';
 import Overview from './Overview';
 
-export default function Dashboard() {
+export default function Dashboard({ setTrialDate }) {
   const [unlocked, _] = useStickyState(null, 'unlock.code');
 
   const maybeRedirect = () => {
@@ -23,7 +22,7 @@ export default function Dashboard() {
   }, []);
   return (
     <main className='Home2 flex flex-col items-center'>
-      <Overview />
+      <Overview setTrialDate={setTrialDate} />
     </main>
   );
 }

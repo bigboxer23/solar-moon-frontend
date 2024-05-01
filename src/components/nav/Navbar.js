@@ -4,14 +4,16 @@ import { useEffect, useRef, useState } from 'react';
 import { FaBars } from 'react-icons/fa';
 import { FaXmark } from 'react-icons/fa6';
 import { LuSun } from 'react-icons/lu';
+import { MdOutlineInfo } from 'react-icons/md';
 import { NavLink, useLocation } from 'react-router-dom';
 import { useOnClickOutside } from 'usehooks-ts';
 
 import logo from '../../assets/logo.svg';
+import { getDaysLeftInTrial, useStickyState } from '../../utils/Utils';
 import ProfileMenu from './ProfileMenu';
 
 // TODO: break this up, it's a mess (break out the slider menu at least)
-export default function Navbar() {
+export default function Navbar({ trialDate }) {
   const separatorStyle =
     'text-gray-400 text-lg text-decoration-none font-bold hidden lg:block dark:text-brand-secondary';
   const linkStyle =
@@ -116,7 +118,7 @@ export default function Navbar() {
         </nav>
         {/* annoying hack because this thing has bizarre positioning */}
         <div className='mr-8 hidden items-center justify-center sm:flex'>
-          <ProfileMenu />
+          <ProfileMenu trialDate={trialDate} />
         </div>
         <div className='mr-6 flex items-center justify-center text-black dark:text-gray-100 sm:hidden'>
           <FaBars className='text-2xl' onClick={() => setSlideMenuOpen(true)} />
@@ -142,6 +144,14 @@ export default function Navbar() {
           </button>
         </div>
         <nav className='flex w-full flex-col space-y-8'>
+          {trialDate > -1 && (
+            <div className='flex'>
+              <MdOutlineInfo className='mr-2 text-gray-400' size={18} />
+              <span className='mr-4 text-sm text-gray-400'>
+                {getDaysLeftInTrial(trialDate)} in trial
+              </span>
+            </div>
+          )}
           <NavLink
             className={({ isActive }) =>
               isActive ? slideMenuActiveLinkStyle : slideMenuLinkStyle

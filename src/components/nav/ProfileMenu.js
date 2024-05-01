@@ -2,10 +2,11 @@ import { useAuthenticator } from '@aws-amplify/ui-react';
 import { Menu, MenuButton, MenuItem } from '@szhsin/react-menu';
 import { NavLink } from 'react-router-dom';
 
+import { getDaysLeftInTrial, useStickyState } from '../../utils/Utils';
 import Avatar from '../common/Avatar';
 import ThemeSelector from '../common/ThemeSelector';
 
-export default function ProfileMenu() {
+export default function ProfileMenu({ trialDate }) {
   const { user, signOut } = useAuthenticator((context) => [context.user]);
 
   const menuItemClassName =
@@ -16,6 +17,11 @@ export default function ProfileMenu() {
 
   return (
     <div className='ProfileMenu text-black dark:text-gray-100'>
+      {trialDate > -1 && (
+        <span className='mr-4 text-sm text-gray-400'>
+          {getDaysLeftInTrial(trialDate)} in trial
+        </span>
+      )}
       <Menu
         boundingBoxPadding='12'
         gap={12}

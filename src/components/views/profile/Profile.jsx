@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 
-import { getCustomer } from '../../../services/services';
+import {
+  getCustomer,
+  getSubscriptionInformation,
+} from '../../../services/services';
 import Loader from '../../common/Loader';
 import APIInformation from './APIInformation';
 import Appearance from './Appearance';
@@ -9,7 +12,7 @@ import CustomerInformation from './CustomerInformation';
 import DeleteAccount from './DeleteAccount';
 import ManagePlanTile from './ManagePlanTile';
 
-export default function Profile() {
+export default function Profile({ setTrialDate }) {
   const [loading, setLoading] = useState(true);
   const [customerData, setCustomerData] = useState({});
   useEffect(() => {
@@ -21,6 +24,9 @@ export default function Profile() {
       .catch((e) => {
         setLoading(false);
       });
+    getSubscriptionInformation().then(({ data }) => {
+      setTrialDate(data?.joinDate);
+    });
   }, []);
 
   return (

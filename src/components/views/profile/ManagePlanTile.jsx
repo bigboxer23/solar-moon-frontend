@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { MdOutlineSubscriptions } from 'react-icons/md';
 
-import { DAY } from '../../../services/search';
 import {
   getStripeSubscriptions,
   getSubscriptionInformation,
   getUserPortalSession,
 } from '../../../services/services';
+import { getDaysLeftInTrial } from '../../../utils/Utils';
 import Button from '../../common/Button';
 import Loader from '../../common/Loader';
 import Spinner from '../../common/Spinner';
@@ -32,8 +32,7 @@ export default function ManagePlanTile() {
             return;
           }
           setTrialMode(true);
-          const joinDate = data?.joinDate + DAY * 90;
-          setTrialDaysLeft(Math.round((joinDate - new Date().getTime()) / DAY));
+          setTrialDaysLeft(getDaysLeftInTrial(data?.joinDate));
         });
         return;
       }
@@ -65,20 +64,20 @@ export default function ManagePlanTile() {
       </div>
       {loading && <Loader className='flex w-full justify-center' />}
       {!loading && !invalid && !trialMode && (
-        <div className='flex flex-col'>
+        <div className='flex flex-col dark:text-gray-100'>
           <div className='mb-2 flex items-center'>
             <div className='text-xl font-bold'>{period}</div>
           </div>
           <div className='mb-2 flex items-center'>
             <div className='text-lg'>{20 * quantity}</div>
-            <div className='ps-1 text-sm text-gray-500'> devices</div>
+            <div className='ps-1 text-sm text-gray-400'> devices</div>
           </div>
           <div className='mb-2 flex items-center'>
             <div className='text-lg'>${price * quantity}</div>
-            <div className='ps-1 text-sm text-gray-500'> per {periodShort}</div>
+            <div className='ps-1 text-sm text-gray-400'> per {periodShort}</div>
           </div>
           <div className='mb-6 flex'>
-            <div className='smaller-text text-sm text-gray-500'>
+            <div className='smaller-text text-sm text-gray-400'>
               {quantity} Seats, ${price} per seat per {periodShort}
             </div>
           </div>
@@ -101,17 +100,17 @@ export default function ManagePlanTile() {
         </div>
       )}
       {!loading && trialMode && (
-        <div className='flex flex-col'>
+        <div className='flex flex-col dark:text-gray-100'>
           <div className='mb-2 flex items-center'>
-            <div className='text-xl font-bold'>Trial Mode</div>
+            <div className='text-xl font-bold '>Trial Mode</div>
           </div>
           <div className='mb-2 flex items-center'>
             <div className='text-lg'>10</div>
-            <div className='ps-1 text-sm text-gray-500'> devices</div>
+            <div className='ps-1 text-sm text-gray-400'> devices</div>
           </div>
           <div className='mb-6 flex'>
-            <div className='smaller-text text-sm text-gray-500'>
-              {trialDaysLeft} day{trialDaysLeft > 1 ? 's' : ''} left
+            <div className='smaller-text text-sm text-gray-400'>
+              {trialDaysLeft}
             </div>
           </div>
           <div className='grow-1' />

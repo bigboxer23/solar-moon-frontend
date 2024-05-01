@@ -32,7 +32,7 @@ import TimeIncrementSelector from '../dashboard/TimeIncrementSelector';
 import SiteDetailsGraph from './SiteDetailsGraph';
 import SiteDevicesOverview from './SiteDevicesOverview';
 
-export default function SiteDetails() {
+export default function SiteDetails({ setTrialDate }) {
   const [siteData, setSiteData] = useState({});
   const [loading, setLoading] = useState(true);
   const [devices, setDevices] = useState([]);
@@ -97,6 +97,7 @@ export default function SiteDetails() {
               getDeviceIdToNameMap(data.devices),
             ),
       );
+      setTrialDate(data.trialDate);
       setLoading(false);
       if (callback) {
         callback();

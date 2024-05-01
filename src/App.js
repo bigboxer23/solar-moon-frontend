@@ -41,6 +41,7 @@ import Profile from './components/views/profile/Profile';
 import Reports from './components/views/reports/Reports';
 import SiteDetails from './components/views/site-details/SiteDetails';
 import SiteManagement from './components/views/site-management/SiteManagement';
+import { useStickyState } from './utils/Utils';
 
 ChartJS.register(
   CategoryScale,
@@ -65,6 +66,8 @@ function App() {
     Footer,
   };
 
+  const [trialDate, setTrialDate] = useStickyState(-1, 'trialDate');
+
   return (
     <IntlProvider locale={navigator.language}>
       <Authenticator components={components}>
@@ -77,18 +80,33 @@ function App() {
               <Route element='' path='/checkout' />
               <Route element='' path='/pricing' />
               <Route element='' path='/lock' />
-              <Route element={<Navbar />} path='*' />
+              <Route element={<Navbar trialDate={trialDate} />} path='*' />
             </Routes>
             <Routes>
-              <Route element={<Dashboard />} path='/' />
+              <Route
+                element={<Dashboard setTrialDate={setTrialDate} />}
+                path='/'
+              />
               <Route element={<Reports />} path='/reports' />
-              <Route element={<SiteDetails />} path='/sites/:siteId' />
-              <Route element={<Alerts />} path='/alerts' />
-              <Route element={<Profile />} path='/profile' />
+              <Route
+                element={<SiteDetails setTrialDate={setTrialDate} />}
+                path='/sites/:siteId'
+              />
+              <Route
+                element={<Alerts setTrialDate={setTrialDate} />}
+                path='/alerts'
+              />
+              <Route
+                element={<Profile setTrialDate={setTrialDate} />}
+                path='/profile'
+              />
               <Route element={<CheckoutForm />} path='/checkout' />
               <Route element={<Return />} path='/return' />
               <Route element={<PricingPage />} path='/pricing' />
-              <Route element={<SiteManagement />} path='/manage' />
+              <Route
+                element={<SiteManagement setTrialDate={setTrialDate} />}
+                path='/manage'
+              />
               <Route element={<LockPage />} path='/lock' />
               <Route element={<Mapping />} path='/mapping' />
               <Route element={<Navigate to='/' />} path='*' />
