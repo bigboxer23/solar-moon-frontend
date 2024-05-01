@@ -12,6 +12,7 @@ export default function SummaryHeader({ dailyOutput, dailyAverageOutput }) {
   const intl = useIntl();
   const { unitPrefix, powerValue, decimals } =
     getPowerScalingInformation(dailyOutput);
+  const avg = getPowerScalingInformation(dailyAverageOutput);
   const calculatePercent = (total, average) => {
     return Math.abs(Math.round((total / average) * 100));
   };
@@ -38,7 +39,21 @@ export default function SummaryHeader({ dailyOutput, dailyAverageOutput }) {
       </span>
       <span className='whitespace-nowrap text-center'>
         {"That's "}
-        <Tippy content={AVERAGE_CALCULATION} delay={500} placement='top'>
+        <Tippy
+          content={
+            <span>
+              {AVERAGE_CALCULATION}
+              <br />
+              <br />
+              {`Your daily average is ${intl.formatNumber(
+                roundToDecimals(avg.powerValue, avg.decimals),
+              )}
+              ${avg.unitPrefix}Wh`}
+            </span>
+          }
+          delay={500}
+          placement='top'
+        >
           <span>
             <FormattedLabel
               className='mx-1 whitespace-nowrap text-center text-3xl font-bold text-brand-primary'
