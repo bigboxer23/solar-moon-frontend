@@ -144,7 +144,7 @@ export default function Navbar({ trialDate }) {
           </button>
         </div>
         <nav className='flex w-full flex-col space-y-8'>
-          {trialDate > -1 && (
+          {trialDate > 0 && (
             <div className='flex'>
               <MdOutlineInfo className='mr-2 text-gray-400' size={18} />
               <span className='mr-4 text-sm text-gray-400'>
