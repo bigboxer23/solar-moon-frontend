@@ -1,7 +1,10 @@
 import Tippy from '@tippyjs/react';
 import classNames from 'classnames';
 import { useRef, useState } from 'react';
+import { useIntl } from 'react-intl';
 
+import { roundToDecimals } from '../../utils/Utils';
+import { TOTAL_ENERGY_CONS } from '../views/reports/ReportUtils';
 import PowerBlock from './PowerBlock';
 import PowerIcon from './PowerIcon';
 
@@ -11,6 +14,7 @@ export default function CurrentPowerBlock({
   currentPower,
   activeAlert = false,
 }) {
+  const intl = useIntl();
   const getPercent = (max, current) => {
     max = max === null ? 0 : max;
     const scale = 100 / max;
@@ -22,7 +26,7 @@ export default function CurrentPowerBlock({
 
   return (
     <Tippy
-      content={`${percent}% of ${Math.round(max)}kW`}
+      content={`${percent}% of ${intl.formatNumber(Math.round(max))} kW`}
       delay={500}
       placement='top-start'
     >
