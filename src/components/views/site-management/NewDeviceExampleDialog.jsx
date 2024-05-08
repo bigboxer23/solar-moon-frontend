@@ -1,4 +1,4 @@
-import { Link } from '@aws-amplify/ui-react';
+import { FiExternalLink } from 'react-icons/fi';
 
 import exampleDevice from '../../../assets/docs/exampleDevice.jpg';
 import {
@@ -25,12 +25,19 @@ export default function NewDeviceExampleDialog({
         <div className='p-4 text-sm'>
           <p className='indent-2'>
             {`${DEVICE_HELP_TEXT1} `}
-            <Link
-              className='text-brand-primary underline'
-              href='https://solarmoonanalytics.com/docs/connectingDevice'
-            >
-              here
-            </Link>
+            <span className='inline-block'>
+              <span
+                className='flex cursor-pointer items-center pl-0.5 text-brand-primary underline'
+                onClick={() =>
+                  window.open(
+                    'https://solarmoonanalytics.com/docs/connectingDevice',
+                  )
+                }
+              >
+                <FiExternalLink className='-mr-2' />
+                here
+              </span>
+            </span>
             {`. ${DEVICE_HELP_TEXT2}`}
           </p>
           <br />
