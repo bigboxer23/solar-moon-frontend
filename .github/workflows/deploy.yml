@@ -35,11 +35,11 @@ jobs:
         run: npm run build
         env:
           CI: ''
-      - name: Deploy to S3
-        uses: reggionick/s3-deploy@v4
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          folder: build
-          bucket: ${{ secrets.S3_BUCKET }}
-          bucket-region: ${{ secrets.S3_BUCKET_REGION }}
-          delete-removed: true
-          files-to-include: '{.*/**,**}'
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.S3_BUCKET_REGION }}
+      - name: Deploy static site to S3 bucket
+        run: aws s3 sync build s3://${{ secrets.S3_BUCKET }} --delete
