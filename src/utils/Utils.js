@@ -68,6 +68,10 @@ export const getFormattedDate = (date) => {
   return format(date, 'MMM d, yy');
 };
 
+export const formatXAxisLabelsDay = (value) => {
+  return format(value, 'h:mmaaaaa');
+};
+
 export const formatXAxisLabels = (value, index, ticks) => {
   const d = new Date(value);
   if (d.getHours() % 6 !== 0 || d.getMinutes() !== 0) {

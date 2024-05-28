@@ -13,6 +13,7 @@ import {
 import { DAY, GROUPED_BAR } from '../../../services/search';
 import {
   formatXAxisLabels,
+  formatXAxisLabelsDay,
   getDisplayName,
   getFormattedTime,
   maybeSetTimeWindow,
@@ -105,7 +106,8 @@ export default function SiteDetailsGraph({
         stacked: graphType !== GROUPED_BAR,
         type: 'time',
         ticks: {
-          callback: timeIncrement === DAY ? null : formatXAxisLabels,
+          callback:
+            timeIncrement === DAY ? formatXAxisLabelsDay : formatXAxisLabels,
         },
       },
       y: {

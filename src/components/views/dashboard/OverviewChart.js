@@ -17,10 +17,10 @@ import {
 } from '../../../services/search';
 import {
   formatXAxisLabels,
+  formatXAxisLabelsDay,
   getFormattedTime,
   maybeSetTimeWindow,
   roundTwoDigit,
-  splitDayAndNightDataSets,
   timeLabel,
   useStickyState,
 } from '../../../utils/Utils';
@@ -80,7 +80,8 @@ export default function OverviewChart({
         type: 'time',
         ticks: {
           stepSize: 6,
-          callback: timeIncrement === DAY ? null : formatXAxisLabels,
+          callback:
+            timeIncrement === DAY ? formatXAxisLabelsDay : formatXAxisLabels,
         },
       },
       y: {
@@ -143,11 +144,7 @@ export default function OverviewChart({
         ticks: {
           stepSize: 6,
           callback:
-            timeIncrement === DAY
-              ? (value) => {
-                  return format(value, 'h:mmaaaaa');
-                }
-              : formatXAxisLabels,
+            timeIncrement === DAY ? formatXAxisLabelsDay : formatXAxisLabels,
         },
       },
       y: {
