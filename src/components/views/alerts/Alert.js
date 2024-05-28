@@ -1,6 +1,6 @@
 import Tippy from '@tippyjs/react';
 import classNames from 'classnames';
-import moment from 'moment';
+import { formatDistance } from 'date-fns';
 
 import {
   formatMessage,
@@ -9,8 +9,12 @@ import {
 } from '../../../utils/Utils';
 
 export default function Alert({ alert, active }) {
-  const timeSinceAlert = moment(alert.startDate).fromNow();
-  const timeSinceResolved = moment(alert.endDate).fromNow();
+  const timeSinceAlert = formatDistance(alert.startDate, new Date(), {
+    addSuffix: true,
+  });
+  const timeSinceResolved = formatDistance(alert.endDate, new Date(), {
+    addSuffix: true,
+  });
   const alertClass = classNames(
     'Alert flex w-full justify-between text-black dark:text-gray-100 bg-[#f5f5f5] p-4 rounded-md overflow-hidden flex-col-reverse sm:flex-row',
     {

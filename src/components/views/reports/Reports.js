@@ -130,7 +130,7 @@ const Reports = () => {
   };
 
   const getTimeWidth = () => {
-    return isXS(windowSize) ? 110 : 150;
+    return isXS(windowSize) ? 95 : 150;
   };
 
   const columns = [
