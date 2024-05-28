@@ -1,4 +1,4 @@
-import moment from 'moment';
+import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { IoIosSnow, IoMdRainy } from 'react-icons/io';
 import { IoPartlySunnyOutline } from 'react-icons/io5';
@@ -57,15 +57,15 @@ export function debounce(fn, ms) {
 }
 
 export const getFormattedShortTime = (date) => {
-  return moment(date).format('M/D h:mm A');
+  return format(date, 'M/d h:mmaaaaa');
 };
 
 export const getFormattedTime = (date) => {
-  return moment(date).format('MMM D, YY h:mm A');
+  return format(date, 'MMM d, yy h:mm aaa');
 };
 
 export const getFormattedDate = (date) => {
-  return moment(date).format('MMM D, YY');
+  return format(date, 'MMM d, yy');
 };
 
 export const formatXAxisLabels = (value, index, ticks) => {
@@ -73,7 +73,7 @@ export const formatXAxisLabels = (value, index, ticks) => {
   if (d.getHours() % 6 !== 0 || d.getMinutes() !== 0) {
     return '';
   }
-  return moment(d).format(d.getHours() === 0 ? 'MMM D' : 'hA');
+  return format(d, d.getHours() === 0 ? 'MMM d' : 'ha');
 };
 
 export const getDisplayName = (device) => {
@@ -125,26 +125,6 @@ export const getRoundedTime = (roundedUp, offset) => {
   }
   date.setHours(23, 59, 59, 999);
   return date;
-};
-
-export const splitDayAndNightDataSets = (data) => {
-  const dayData = [];
-  const nightData = [];
-  data.forEach((d) => {
-    const hour = moment(d.date).hour();
-
-    if (hour > 5 && hour < 18) {
-      dayData.push(d);
-      nightData.push({ date: d.date, values: null });
-    } else if (hour === 18 || hour === 5) {
-      dayData.push(d);
-      nightData.push(d);
-    } else {
-      nightData.push(d);
-      dayData.push({ date: d.date, values: null });
-    }
-  });
-  return [dayData, nightData];
 };
 
 export const getFormattedDaysHoursMinutes = (time) => {

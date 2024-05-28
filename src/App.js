@@ -1,5 +1,5 @@
 import '@aws-amplify/ui-react/styles.css';
-import 'chartjs-adapter-moment';
+import 'chartjs-adapter-date-fns';
 
 import { Authenticator } from '@aws-amplify/ui-react';
 import { Amplify } from 'aws-amplify';

@@ -1,4 +1,3 @@
-import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { FaRotate } from 'react-icons/fa6';
 import { useSearchParams } from 'react-router-dom';
@@ -30,13 +29,9 @@ export default function AlertsFilter({
     availableDevices.find((device) => device.value === searchParamDevice) ||
     allOption;
 
-  const defaultStart = searchParamStart
-    ? moment.unix(searchParamStart).toDate()
-    : null;
+  const defaultStart = searchParamStart ? new Date(searchParamStart) : null;
 
-  const defaultEnd = searchParamEnd
-    ? moment.unix(searchParamEnd).toDate()
-    : null;
+  const defaultEnd = searchParamEnd ? new Date(searchParamEnd) : null;
 
   const [dirty, setDirty] = useState(false);
 

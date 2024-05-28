@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { Bar, Line } from 'react-chartjs-2';
 import {
@@ -33,8 +34,7 @@ export default function OverviewChart({
   startDate,
 }) {
   const [loading, setLoading] = useState(true);
-  const [dayData, setDayData] = useState([]);
-  const [nightData, setNightData] = useState([]);
+  const [data, setData] = useState([]);
   const [graphType, setGraphType] = useStickyState(
     'overview',
     'overview.graph',
@@ -46,34 +46,16 @@ export default function OverviewChart({
       return;
     }
     setLoading(false);
-    const parsedData = parseAndCondenseStackedTimeSeriesData(overviewData);
-
-    if (timeIncrement === DAY) {
-      const [dayData, nightData] = splitDayAndNightDataSets(parsedData);
-      setDayData(dayData);
-      setNightData(nightData);
-    } else {
-      setDayData(parsedData);
-      setNightData([]);
-    }
+    setData(parseAndCondenseStackedTimeSeriesData(overviewData));
   }, [overviewData]);
 
   const overallDataset = {
     datasets: [
       {
-        data: dayData,
+        data: data,
         borderColor: '#5178C2',
         borderWidth: 4,
       },
-      ...(nightData.length > 0
-        ? [
-            {
-              data: nightData,
-              borderColor: '#9754cb',
-              borderWidth: 4,
-            },
-          ]
-        : []),
     ],
   };
 
@@ -160,7 +142,12 @@ export default function OverviewChart({
         stacked: true,
         ticks: {
           stepSize: 6,
-          callback: timeIncrement === DAY ? null : formatXAxisLabels,
+          callback:
+            timeIncrement === DAY
+              ? (value) => {
+                  return format(value, 'h:mmaaaaa');
+                }
+              : formatXAxisLabels,
         },
       },
       y: {
