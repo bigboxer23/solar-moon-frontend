@@ -45,7 +45,7 @@ export default function Alert({ alert, active }) {
           {formatMessage(alert.message)}
         </div>
       </div>
-      <div className='mb-1 flex flex-row justify-between space-x-1 text-xs italic sm:mb-0 sm:flex-col'>
+      <div className='mb-1 flex flex-row justify-between space-x-1 text-xs italic sm:mb-0 sm:flex-col sm:items-end'>
         {alert.state === 1 && (
           <Tippy
             content={`Starting at ${getFormattedTime(alert.startDate)}`}
