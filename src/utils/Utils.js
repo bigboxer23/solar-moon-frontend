@@ -57,7 +57,7 @@ export function debounce(fn, ms) {
 }
 
 export const getFormattedShortTime = (date) => {
-  return moment(date).format('MMM D h:mm A');
+  return moment(date).format('M/D h:mm A');
 };
 
 export const getFormattedTime = (date) => {

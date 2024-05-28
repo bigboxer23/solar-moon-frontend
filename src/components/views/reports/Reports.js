@@ -121,12 +121,16 @@ const Reports = () => {
       : row.row['time'];
   };
 
+  const getSitesWidth = () => {
+    return isXS(windowSize) ? 90 : 175;
+  };
+
   const getNamesWidth = () => {
-    return isXS(windowSize) ? 100 : 175;
+    return isXS(windowSize) ? 125 : 175;
   };
 
   const getTimeWidth = () => {
-    return isXS(windowSize) ? 125 : 150;
+    return isXS(windowSize) ? 110 : 150;
   };
 
   const columns = [
@@ -152,7 +156,7 @@ const Reports = () => {
     {
       key: SITE_ID_KEYWORD,
       name: 'Site',
-      width: getNamesWidth(),
+      width: getSitesWidth(),
     },
     {
       key: DEVICE_ID_KEYWORD,
