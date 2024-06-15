@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 
-import { getWeatherIcon } from '../../utils/Utils';
+import { getWeatherIcon, getWeatherIconWithTippy } from '../../utils/Utils';
 
 // TODO: Pretty UV Index
 
@@ -35,7 +35,10 @@ export default function WeatherBlock({
             </span>
           </div>
           <span className='ml-2.5 text-[2.5rem]'>
-            {getWeatherIcon(weather?.weatherSummary)}
+            {getWeatherIconWithTippy(
+              weather?.weatherSummary,
+              weather?.precipitationIntensity,
+            )}
           </span>
         </div>
       )}

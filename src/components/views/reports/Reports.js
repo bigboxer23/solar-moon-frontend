@@ -16,6 +16,7 @@ import {
   getWeatherIcon,
   isXS,
   roundTwoDigit,
+  TIPPY_DELAY,
   useSearchParamState,
 } from '../../../utils/Utils';
 import Loader from '../../common/Loader';
@@ -104,7 +105,7 @@ const Reports = () => {
       </>
     );
     return (
-      <Tippy content={content} delay={500} placement='top'>
+      <Tippy content={content} delay={TIPPY_DELAY} placement='top'>
         <div className='flex h-full items-center justify-center'>
           {getWeatherIcon(
             row.row['weatherSummary.keyword'] &&

@@ -5,6 +5,7 @@ import { AVERAGE_CALCULATION } from '../../../utils/HelpText';
 import {
   getPowerScalingInformation,
   roundToDecimals,
+  TIPPY_DELAY,
 } from '../../../utils/Utils';
 import FormattedLabel from '../../graphs/FormattedLabel';
 
@@ -22,7 +23,7 @@ export default function SummaryHeader({ dailyOutput, dailyAverageOutput }) {
       <span className='whitespace-nowrap text-center'>
         <Tippy
           content={`${intl.formatNumber(Math.round(dailyOutput))} kWh`}
-          delay={500}
+          delay={TIPPY_DELAY}
           placement='top'
         >
           <span>
@@ -51,7 +52,7 @@ export default function SummaryHeader({ dailyOutput, dailyAverageOutput }) {
               ${avg.unitPrefix}Wh`}
             </span>
           }
-          delay={500}
+          delay={TIPPY_DELAY}
           placement='top'
         >
           <span>
