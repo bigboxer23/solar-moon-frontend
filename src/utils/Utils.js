@@ -1,3 +1,4 @@
+import Tippy from '@tippyjs/react';
 import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { IoIosSnow, IoMdRainy } from 'react-icons/io';
@@ -7,6 +8,8 @@ import { RiWindyFill } from 'react-icons/ri';
 
 import { noSite } from '../components/views/site-management/SiteManagement';
 import { DAY, HOUR, MONTH, WEEK, YEAR } from '../services/search';
+
+export const TIPPY_DELAY = 500;
 
 export function defaultIfEmpty(defaultValue, value) {
   return value === null || value === undefined || value === ''
@@ -154,6 +157,26 @@ export const getFormattedDaysHoursMinutes = (time) => {
 };
 
 // TODO: Expand to include more weather types/night weather, use consistent icons
+export const getWeatherIconWithTippy = (
+  weatherSummary,
+  precipIntensity = 0,
+) => {
+  const content = (
+    <>
+      <div>{`${weatherSummary} `}</div>
+      <div>
+        {precipIntensity > 0 &&
+          `Intensity: ${roundToDecimals(precipIntensity, 100)} in/hr`}
+      </div>
+    </>
+  );
+  return (
+    <Tippy content={content} delay={TIPPY_DELAY} placement='bottom'>
+      <div>{getWeatherIcon(weatherSummary)}</div>
+    </Tippy>
+  );
+};
+
 export const getWeatherIcon = (weatherSummary) => {
   if (weatherSummary === 'Cloudy') {
     return <MdOutlineWbCloudy className='align-self-center' />;
@@ -212,7 +235,10 @@ export const timeLabel = function (startDate, increment) {
 /**
  * Handle bounds checking for setting new start date.  DAY allows up to current time,
  * other time periods need a full "offset" of time shown to change
+ * @param startDate
  * @param increment
+ * @param setStartDate
+ * @param setNextDisabled
  */
 export const maybeSetTimeWindow = (
   startDate,

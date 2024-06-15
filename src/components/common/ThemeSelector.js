@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { LuMoon, LuSun } from 'react-icons/lu';
 import { MdComputer } from 'react-icons/md';
 
-import { useStickyState } from '../../utils/Utils';
+import { TIPPY_DELAY, useStickyState } from '../../utils/Utils';
 
 export default function ThemeSelector({ extended }) {
   const [activeTheme, setActiveTheme] = useStickyState(null, 'theme');
@@ -33,7 +33,7 @@ export default function ThemeSelector({ extended }) {
     <div className='ThemeSelector w-full'>
       {!extended && (
         <div className='my-2 flex w-full rounded border border-neutral-500 dark:border-neutral-100'>
-          <Tippy content='System theme' delay={500} placement='top'>
+          <Tippy content='System theme' delay={TIPPY_DELAY} placement='top'>
             <button
               className={classNames(themeButtonStyle, {
                 [themeButtonActiveStyle]: activeTheme === null,
@@ -46,7 +46,7 @@ export default function ThemeSelector({ extended }) {
               <MdComputer />
             </button>
           </Tippy>
-          <Tippy content='Light theme' delay={500} placement='top'>
+          <Tippy content='Light theme' delay={TIPPY_DELAY} placement='top'>
             <button
               className={classNames(themeButtonStyle, {
                 [themeButtonActiveStyle]: activeTheme === 'light',
@@ -59,7 +59,7 @@ export default function ThemeSelector({ extended }) {
               <LuSun />
             </button>
           </Tippy>
-          <Tippy content='Dark theme' delay={500} placement='top'>
+          <Tippy content='Dark theme' delay={TIPPY_DELAY} placement='top'>
             <button
               className={classNames(themeButtonStyle, {
                 [themeButtonActiveStyle]: activeTheme === 'dark',

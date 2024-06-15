@@ -6,6 +6,7 @@ import {
   formatMessage,
   getFormattedDaysHoursMinutes,
   getFormattedTime,
+  TIPPY_DELAY,
 } from '../../../utils/Utils';
 
 export default function Alert({ alert, active }) {
@@ -49,7 +50,7 @@ export default function Alert({ alert, active }) {
         {alert.state === 1 && (
           <Tippy
             content={`Starting at ${getFormattedTime(alert.startDate)}`}
-            delay={500}
+            delay={TIPPY_DELAY}
             placement='top'
           >
             <div>{timeSinceAlert}</div>
@@ -59,7 +60,7 @@ export default function Alert({ alert, active }) {
           <>
             <Tippy
               content={`Ending at ${getFormattedTime(alert.endDate)}`}
-              delay={500}
+              delay={TIPPY_DELAY}
               placement='top'
             >
               <div> Resolved {timeSinceResolved}</div>
@@ -68,7 +69,7 @@ export default function Alert({ alert, active }) {
               content={`${getFormattedTime(alert.startDate)} to ${getFormattedTime(
                 alert.endDate,
               )}`}
-              delay={500}
+              delay={TIPPY_DELAY}
               placement='top'
             >
               <div>
