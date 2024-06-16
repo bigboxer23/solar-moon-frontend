@@ -15,6 +15,7 @@ import {
   getRoundedTime,
   getWeatherIcon,
   isXS,
+  roundToDecimals,
   roundTwoDigit,
   TIPPY_DELAY,
   useSearchParamState,
@@ -97,6 +98,10 @@ const Reports = () => {
         <div>
           {row.row['uvIndex'] &&
             `UV Index: ${roundTwoDigit(row.row['uvIndex'])}`}
+        </div>
+        <div>
+          {row.row['precipitationIntensity'] > 0 &&
+            `Precipitation: ${roundToDecimals(row.row['precipitationIntensity'], 100)} in/hr`}
         </div>
         <div>
           {row.row['cloudCover'] &&
@@ -221,7 +226,13 @@ const Reports = () => {
       end,
       offset,
       500,
-      ['uvIndex', 'Daylight', 'cloudCover'],
+      [
+        'uvIndex',
+        'Daylight',
+        'cloudCover',
+        'precipitationIntensity',
+        'visibility',
+      ],
     )
       .then(({ data }) => {
         setLoading(false);

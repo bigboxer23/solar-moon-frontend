@@ -17,7 +17,7 @@ export default function WeatherBlock({
   return (
     <div className={wrapperClassName}>
       {weather && (
-        <div className={style} title={weather?.weatherSummary}>
+        <div className={style}>
           <div className='flex flex-col justify-end'>
             <span className='flex h-5 justify-end text-lg font-bold leading-5'>
               {Math.round(weather?.temperature)}
