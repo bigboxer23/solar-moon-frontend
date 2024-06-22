@@ -81,6 +81,7 @@ export default function SiteDetails({ setTrialDate }) {
         return;
       }
       setSiteData(data);
+      document.title = `SMA Dashboard (${data.site.name})`;
       setDevices(
         data.devices
           .filter((device) => device.site === data.site.name)

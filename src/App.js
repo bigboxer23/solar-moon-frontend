@@ -29,6 +29,7 @@ import { Footer } from './components/login/Footer';
 import { Header } from './components/login/Header';
 import { SignInFooter } from './components/login/SignInFooter';
 import Navbar from './components/nav/Navbar';
+import PageTitleRoute from './components/nav/PageTitleRoute';
 import PageFooter from './components/PageFooter';
 import Alerts from './components/views/alerts/Alerts';
 import CheckoutForm from './components/views/checkout/CheckoutForm';
@@ -84,31 +85,75 @@ function App() {
             </Routes>
             <Routes>
               <Route
-                element={<Dashboard setTrialDate={setTrialDate} />}
+                element={
+                  <>
+                    <PageTitleRoute title='SMA Dashboard' />
+                    <Dashboard setTrialDate={setTrialDate} />
+                  </>
+                }
                 path='/'
               />
-              <Route element={<Reports />} path='/reports' />
+              <Route
+                element={
+                  <>
+                    <PageTitleRoute title='SMA Reports' />
+                    <Reports />
+                  </>
+                }
+                path='/reports'
+              />
               <Route
                 element={<SiteDetails setTrialDate={setTrialDate} />}
                 path='/sites/:siteId'
               />
               <Route
-                element={<Alerts setTrialDate={setTrialDate} />}
+                element={
+                  <>
+                    <PageTitleRoute title='SMA Alerts' />
+                    <Alerts setTrialDate={setTrialDate} />
+                  </>
+                }
                 path='/alerts'
               />
               <Route
-                element={<Profile setTrialDate={setTrialDate} />}
+                element={
+                  <>
+                    <PageTitleRoute title='SMA Profile' />
+                    <Profile setTrialDate={setTrialDate} />
+                  </>
+                }
                 path='/profile'
               />
               <Route element={<CheckoutForm />} path='/checkout' />
               <Route element={<Return />} path='/return' />
-              <Route element={<PricingPage />} path='/pricing' />
               <Route
-                element={<SiteManagement setTrialDate={setTrialDate} />}
+                element={
+                  <>
+                    <PageTitleRoute title='SMA Pricing' />
+                    <PricingPage />
+                  </>
+                }
+                path='/pricing'
+              />
+              <Route
+                element={
+                  <>
+                    <PageTitleRoute title='SMA Site Management' />
+                    <SiteManagement setTrialDate={setTrialDate} />
+                  </>
+                }
                 path='/manage'
               />
               <Route element={<LockPage />} path='/lock' />
-              <Route element={<Mapping />} path='/mapping' />
+              <Route
+                element={
+                  <>
+                    <PageTitleRoute title='SMA Mappings' />
+                    <Mapping />
+                  </>
+                }
+                path='/mapping'
+              />
               <Route element={<Navigate to='/' />} path='*' />
             </Routes>
             <PageFooter />
