@@ -1,6 +1,5 @@
-import classNames from 'classnames';
 import { useEffect, useState } from 'react';
-import { FaArrowLeft } from 'react-icons/fa';
+import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { NavLink, redirect, useMatch, useNavigate } from 'react-router-dom';
 
 import {
@@ -121,13 +120,23 @@ export default function SiteDetails({ setTrialDate }) {
   return (
     <main className='SiteDetails flex flex-col items-center'>
       <div className='fade-in my-8 flex w-[55rem] max-w-full flex-col bg-white p-4 shadow-panel dark:bg-gray-800 sm:rounded-lg sm:p-8'>
-        <NavLink
-          className='mb-4 flex items-center self-start text-xs text-gray-500 hover:underline dark:text-gray-400'
-          to='/'
-        >
-          <FaArrowLeft className='mr-2 inline-block' size='12' />
-          <span>Back to dashboard</span>
-        </NavLink>
+        <div className='flex max-w-full'>
+          <NavLink
+            className='mb-4 flex items-center self-start text-xs text-gray-500 hover:underline dark:text-gray-400'
+            to='/'
+          >
+            <FaArrowLeft className='mr-2 inline-block' size='12' />
+            <span>Back to dashboard</span>
+          </NavLink>
+          <div className='grow' />
+          <NavLink
+            className='mb-4 flex items-center self-start text-xs text-gray-500 hover:underline dark:text-gray-400'
+            to={`/reports?siteId=${siteId}`}
+          >
+            <span>Site Report</span>
+            <FaArrowRight className='ml-2 inline-block' size='12' />
+          </NavLink>
+        </div>
         <div className='mb-4 flex justify-between'>
           <div className='flex flex-col'>
             <span className='text-lg font-bold text-black dark:text-gray-100'>
