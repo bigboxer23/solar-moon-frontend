@@ -39,7 +39,9 @@ const SearchBar = ({
   refreshSearch,
   setRefreshSearch,
 }) => {
-  const [searchActive, setSearchActive] = useState(false);
+  const [searchActive, setSearchActive] = useState(
+    deviceId !== ALL || siteId !== ALL,
+  );
 
   const [value, setValue] = useState([
     new Date(Number(start)),
