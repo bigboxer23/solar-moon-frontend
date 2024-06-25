@@ -33,7 +33,9 @@ export default function AlertsFilter({
 
   const defaultEnd = searchParamEnd ? new Date(searchParamEnd) : null;
 
-  const [dirty, setDirty] = useState(false);
+  const [dirty, setDirty] = useState(
+    searchParamSite != null || searchParamDevice != null,
+  );
 
   const [siteIdValue, setSiteIdValue] = useState(defaultSite);
   const [deviceIdValue, setDeviceIdValue] = useState(defaultDevice);
