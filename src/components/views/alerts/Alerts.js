@@ -77,24 +77,26 @@ export default function Alerts({ setTrialDate }) {
 
       const deviceOptions = [
         ...new Map(
-          data.map((d) => {
-            return [
-              d.deviceId,
-              {
-                label: d.deviceDisabled ? (
-                  <div className='opacity-50' title='(Disabled)'>
-                    {d.deviceName}
-                  </div>
-                ) : (
-                  d.deviceName
-                ),
-                deviceName: d.deviceName,
-                value: d.deviceId,
-                site: d.siteId,
-                siteName: d.deviceSite,
-              },
-            ];
-          }),
+          data
+            .filter((d) => d.siteId !== d.deviceId)
+            .map((d) => {
+              return [
+                d.deviceId,
+                {
+                  label: d.deviceDisabled ? (
+                    <div className='opacity-50' title='(Disabled)'>
+                      {d.deviceName}
+                    </div>
+                  ) : (
+                    d.deviceName
+                  ),
+                  deviceName: d.deviceName,
+                  value: d.deviceId,
+                  site: d.siteId,
+                  siteName: d.deviceSite,
+                },
+              ];
+            }),
         ).values(),
       ].sort(sortAlarms);
 
