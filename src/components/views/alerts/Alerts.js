@@ -36,6 +36,16 @@ export default function Alerts({ setTrialDate }) {
     return compare(alarm.deviceName, alarm2.deviceName);
   };
 
+  const getOption = (d, labelObject) => {
+    return {
+      label: labelObject,
+      deviceName: d.deviceName,
+      value: d.deviceId,
+      site: d.siteId,
+      siteName: d.deviceSite,
+    };
+  };
+
   const loadData = () => {
     getAlarmData().then(({ data }) => {
       const active = data
@@ -75,33 +85,46 @@ export default function Alerts({ setTrialDate }) {
         ).values(),
       ].sort(sortAlarms);
 
-      const deviceOptions = [
-        ...new Map(
-          data
-            .filter((d) => d.siteId !== d.deviceId)
-            .map((d) => {
-              return [
-                d.deviceId,
-                {
-                  label: d.deviceDisabled ? (
-                    <div className='opacity-50' title='(Disabled)'>
-                      {d.deviceName}
-                    </div>
-                  ) : (
-                    d.deviceName
-                  ),
-                  deviceName: d.deviceName,
-                  value: d.deviceId,
-                  site: d.siteId,
-                  siteName: d.deviceSite,
-                },
-              ];
-            }),
-        ).values(),
-      ].sort(sortAlarms);
+      const disabledOptions = data
+        .filter((d) => d.deviceDisabled)
+        .filter((d) => d.siteId !== d.deviceId)
+        .reduce((result, d) => {
+          result[d.deviceId] = getOption(
+            d,
+            <div className='opacity-50' title='(Disabled)'>
+              {d.deviceName}
+            </div>,
+          );
+          return result;
+        }, {});
+      const activeOptions = data
+        .filter((d) => disabledOptions[d.deviceId] === undefined)
+        .filter((d) => d.endDate === 0)
+        .filter((d) => d.siteId !== d.deviceId)
+        .reduce((result, d) => {
+          result[d.deviceId] = getOption(
+            d,
+            <div className='text-danger' title='(Active)'>
+              {d.deviceName}
+            </div>,
+          );
+          return result;
+        }, {});
 
+      const deviceOptions = data
+        .filter((d) => disabledOptions[d.deviceId] === undefined)
+        .filter((d) => activeOptions[d.deviceId] === undefined)
+        .filter((d) => d.siteId !== d.deviceId)
+        .reduce((result, d) => {
+          result[d.deviceId] = getOption(d, d.deviceName);
+          return result;
+        }, {});
       setSiteOptions(siteOptions);
-      setDeviceOptions(deviceOptions);
+      setDeviceOptions([
+        ...Object.values(activeOptions).sort(sortAlarms),
+        ...Object.values(deviceOptions).sort(sortAlarms),
+        ...Object.values(disabledOptions).sort(sortAlarms),
+      ]);
       setRefreshSearch(false);
       setLoading(false);
     });
