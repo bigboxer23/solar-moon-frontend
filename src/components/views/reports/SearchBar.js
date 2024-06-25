@@ -81,23 +81,36 @@ const SearchBar = ({
       };
     });
 
-  const deviceOptions = devices
-    .filter((d) => {
-      return siteId === ALL || d.siteId === siteId || d.name === ALL;
-    })
-    .sort(sortDevices)
-    .map((d) => {
-      return {
-        value: d.id,
-        label: d.disabled ? (
-          <div className='opacity-50' title='(Disabled)'>
-            {getDisplayName(d)}
-          </div>
-        ) : (
-          getDisplayName(d) + (d.isSite ? ' (site)' : '')
-        ),
-      };
-    });
+  const deviceOptions = [
+    ...devices
+      .filter((d) => !d.disabled)
+      .filter((d) => {
+        return siteId === ALL || d.siteId === siteId || d.name === ALL;
+      })
+      .sort(sortDevices)
+      .map((d) => {
+        return {
+          value: d.id,
+          label: getDisplayName(d) + (d.isSite ? ' (site)' : ''),
+        };
+      }),
+    ...devices
+      .filter((d) => d.disabled)
+      .filter((d) => {
+        return siteId === ALL || d.siteId === siteId || d.name === ALL;
+      })
+      .sort(sortDevices)
+      .map((d) => {
+        return {
+          value: d.id,
+          label: (
+            <div className='opacity-50' title='(Disabled)'>
+              {getDisplayName(d)}
+            </div>
+          ),
+        };
+      }),
+  ];
 
   return (
     <div className='flex w-full items-center justify-center'>
