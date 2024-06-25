@@ -30,6 +30,7 @@ import StackedTotAvg from '../../device-block/StackedTotAvg';
 import TimeIncrementSelector from '../dashboard/TimeIncrementSelector';
 import SiteDetailsGraph from './SiteDetailsGraph';
 import SiteDevicesOverview from './SiteDevicesOverview';
+import WeatherDetailsChart from './WeatherDetailsChart';
 
 export default function SiteDetails({ setTrialDate }) {
   const [siteData, setSiteData] = useState({});
@@ -206,6 +207,7 @@ export default function SiteDetails({ setTrialDate }) {
           startDate={startDate}
           timeIncrement={timeIncrement}
         />
+        <WeatherDetailsChart />
         <SiteDevicesOverview
           activeSiteAlerts={activeSiteAlerts}
           avgData={siteData?.deviceAvg}
