@@ -1,7 +1,9 @@
 import Tippy from '@tippyjs/react';
 import classNames from 'classnames';
 import { formatDistance } from 'date-fns';
+import { NavLink } from 'react-router-dom';
 
+import { HOUR } from '../../../services/search';
 import {
   formatMessage,
   getFormattedDaysHoursMinutes,
@@ -26,8 +28,15 @@ export default function Alert({ alert, active }) {
     },
   );
 
+  const reportTimeLink =
+    alert.state === 1
+      ? ''
+      : `&start=${alert.startDate - 3 * HOUR}&end=${alert.endDate + HOUR}`;
   return (
-    <div className={alertClass}>
+    <NavLink
+      className={alertClass}
+      to={`/reports?deviceId=${alert.deviceId}${reportTimeLink}`}
+    >
       <div className='flex flex-col space-y-1'>
         <div className='flex flex-col space-y-1 sm:flex-row sm:space-y-0'>
           <div className='mr-3 text-sm'>
@@ -80,6 +89,6 @@ export default function Alert({ alert, active }) {
           </>
         )}
       </div>
-    </div>
+    </NavLink>
   );
 }
