@@ -1,10 +1,8 @@
 import Tippy from '@tippyjs/react';
 import classNames from 'classnames';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { useIntl } from 'react-intl';
 
-import { roundToDecimals } from '../../utils/Utils';
-import { TOTAL_ENERGY_CONS } from '../views/reports/ReportUtils';
 import PowerBlock from './PowerBlock';
 import PowerIcon from './PowerIcon';
 
@@ -21,7 +19,6 @@ export default function CurrentPowerBlock({
     return current === 0 ? current : Math.round(Math.round(scale * current));
   };
 
-  const windowSize = useRef([window.innerWidth, window.innerHeight]);
   const [percent] = useState(getPercent(max, currentPower));
 
   return (
