@@ -36,7 +36,7 @@ export default function StackedStatBlock({
   };
 
   const getContent = (title, value, unit, hover, hoverUnit) => {
-    if (hover === -1) {
+    if (hover === -1 || hoverUnit === unit) {
       return getInternalContent(title, value, unit);
     }
     return (
