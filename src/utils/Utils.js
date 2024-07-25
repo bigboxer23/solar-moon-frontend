@@ -262,7 +262,14 @@ export const maybeSetTimeWindow = (
 };
 
 export const roundToDecimals = (number, decimals) => {
-  return Math.round(number * decimals) / decimals;
+  const rounded = Math.round(number * decimals) / decimals;
+  if (Number.isNaN(rounded)) {
+    if (number.indexOf('.') !== -1) {
+      return number.substring(0, number.indexOf('.'));
+    }
+    return number;
+  }
+  return rounded;
 };
 
 export const roundTwoDigit = (number) => {
