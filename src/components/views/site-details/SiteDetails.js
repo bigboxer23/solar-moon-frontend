@@ -134,7 +134,7 @@ export default function SiteDetails({ setTrialDate }) {
             className='mb-4 flex items-center self-start text-xs text-gray-500 hover:underline dark:text-gray-400'
             to={`/reports?siteId=${siteId}`}
           >
-            <span>Site Report</span>
+            <span>To site report</span>
             <FaArrowRight className='ml-2 inline-block' size='12' />
           </NavLink>
         </div>
