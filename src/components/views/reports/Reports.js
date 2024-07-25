@@ -3,8 +3,9 @@ import 'react-data-grid/lib/styles.css';
 import Tippy from '@tippyjs/react';
 import { useEffect, useRef, useState } from 'react';
 import DataGrid from 'react-data-grid';
+import { FaArrowLeft } from 'react-icons/fa';
 import { useIntl } from 'react-intl';
-import { useSearchParams } from 'react-router-dom';
+import { NavLink, useSearchParams } from 'react-router-dom';
 
 import { ALL, DAY } from '../../../services/search';
 import { getDataPage, getDevices } from '../../../services/services';
@@ -284,7 +285,17 @@ const Reports = () => {
   return (
     <main className='Reports flex w-full flex-col items-center sm:px-5'>
       <div className='fade-in  my-8 flex w-[75rem] max-w-full flex-col bg-white shadow-panel dark:bg-gray-800 sm:rounded-lg '>
-        <div className='flex w-full items-center justify-between p-2 pb-4 pt-8 sm:p-8'>
+        <div className='flex max-w-full pl-4 pt-4 sm:pl-8 sm:pt-8'>
+          <NavLink
+            className='flex items-center self-start text-xs text-gray-500 hover:underline dark:text-gray-400'
+            to={`../${siteId === ALL ? '' : `sites/${siteId}`}`}
+          >
+            <FaArrowLeft className='mr-2 inline-block' size='12' />
+            {siteId === ALL && <span>Back to dashboard</span>}
+            {siteId !== ALL && <span>Back to {deviceMap[siteId]}</span>}
+          </NavLink>
+        </div>
+        <div className='flex w-full items-center justify-between p-2 py-4 sm:p-8 sm:pt-4'>
           <span className='hidden text-lg font-bold text-black dark:text-gray-100 sm:block'>
             Reports
           </span>
