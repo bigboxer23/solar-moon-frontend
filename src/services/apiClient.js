@@ -1,4 +1,4 @@
-import { Auth } from 'aws-amplify';
+import { fetchAuthSession } from 'aws-amplify/auth';
 import axios from 'axios';
 
 export const api = axios.create({
@@ -9,7 +9,7 @@ export const api = axios.create({
 });
 api.interceptors.request.use(
   async (config) => {
-    const jwt = (await Auth.currentSession()).getAccessToken().getJwtToken();
+    const jwt = (await fetchAuthSession()).tokens.accessToken;
     if (jwt !== null) {
       config.headers = {
         ...config.headers,
