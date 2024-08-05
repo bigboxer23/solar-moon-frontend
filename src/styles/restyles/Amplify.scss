@@ -31,7 +31,6 @@
 
   .amplify-button {
     color: theme('colors.gray.100') !important;
-
     &:hover {
       background-color: theme('colors.gray.600') !important;
       border-color: theme('colors.brand-primary') !important;
@@ -39,14 +38,15 @@
   }
 
   .amplify-button--link {
-    color: theme('colors.gray.100') !important;
+    color: theme('colors.black') !important;
     &:hover {
       background-color: theme('colors.gray.400') !important;
       border-color: theme('colors.gray.400') !important;
     }
   }
 
-  .amplify-tabs-item[data-state='inactive'] {
+  .amplify-tabs-item[data-state='inactive'],
+  .amplify-tabs__item {
     background-color: theme('colors.gray.700') !important;
     color: theme('colors.gray.400') !important;
 
@@ -54,6 +54,15 @@
       color: theme('colors.brand-primary') !important;
     }
   }
+
+  .amplify-tabs__item--active {
+    background-color: inherit !important;
+    color: theme('colors.brand-primary') !important;
+  }
+}
+
+.amplify-button {
+  width: 100% !important;
 }
 
 [data-amplify-form] .amplify-button {
@@ -69,7 +78,13 @@
   font-size: theme('fontSize.sm') !important;
 }
 
-.amplify-tabs-item[data-state='active'] {
+.amplify-tabs__item:hover {
+  color: theme('colors.brand-primary') !important;
+}
+
+.amplify-tabs-item[data-state='active'],
+.amplify-tabs__item--active,
+.amplify-tabs__item:active {
   color: theme('colors.brand-primary') !important;
   border-color: theme('colors.brand-primary') !important;
 }
