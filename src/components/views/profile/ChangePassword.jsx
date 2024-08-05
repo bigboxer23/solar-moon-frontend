@@ -1,7 +1,7 @@
 import 'react-toastify/dist/ReactToastify.css';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Auth } from 'aws-amplify';
+import { updatePassword } from 'aws-amplify/auth';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { MdOutlinePassword } from 'react-icons/md';
@@ -53,8 +53,10 @@ const ChangePassword = () => {
   async function changePassword(oldPassword, newPassword) {
     setLoading(true);
     try {
-      const user = await Auth.currentAuthenticatedUser();
-      await Auth.changePassword(user, oldPassword, newPassword);
+      await updatePassword({
+        oldPassword,
+        newPassword,
+      });
       toast.success('Password successfully updated!', {
         position: 'bottom-right',
         autoClose: 2500,
