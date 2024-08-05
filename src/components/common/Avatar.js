@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 
-export default function Avatar({ size = 'md', user }) {
+export default function Avatar({ size = 'md', attributes }) {
   const sizeStyle = {
     sm: 'h-8 w-8',
     md: 'h-12 w-12',
@@ -8,12 +8,11 @@ export default function Avatar({ size = 'md', user }) {
   }[size];
 
   const initials =
-    user?.attributes?.name
+    attributes?.name
       ?.split(' ')
       .map((n) => n[0])
       .slice(0, 2)
       .join('') || '';
-
   return (
     <div
       className={classNames(

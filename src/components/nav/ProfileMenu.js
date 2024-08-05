@@ -1,22 +1,29 @@
+import { fetchUserAttributes } from '@aws-amplify/auth';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { Menu, MenuButton, MenuItem } from '@szhsin/react-menu';
+import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
-import { getDaysLeftInTrial, useStickyState } from '../../utils/Utils';
+import { getDaysLeftInTrial } from '../../utils/Utils';
 import Avatar from '../common/Avatar';
 import ThemeSelector from '../common/ThemeSelector';
 
 export default function ProfileMenu({ trialDate }) {
-  const { user, signOut } = useAuthenticator((context) => [context.user]);
+  const [userAttributes, setUserAttributes] = useState(null);
 
+  const { signOut } = useAuthenticator((context) => [context.user]);
   const menuItemClassName =
     'flex items-center space-x-2 text-text-primary hover:bg-gray-200 dark:bg-gray-700 px-4 py-1 hover:dark:bg-gray-500 cursor-pointer';
 
   const menuItemNoHoverClassName =
     'flex items-center space-x-2 text-text-primary dark:bg-gray-700 px-4 py-1 cursor-pointer';
 
+  useEffect(() => {
+    fetchUserAttributes().then((attributes) => setUserAttributes(attributes));
+  }, []);
+
   return (
-    <div className='ProfileMenu text-black dark:text-gray-100'>
+    <div className='ProfileMenu size-12 text-black dark:text-gray-100'>
       {trialDate > 0 && (
         <span className='mr-4 text-sm text-gray-400'>
           {getDaysLeftInTrial(trialDate)} in trial
@@ -27,7 +34,7 @@ export default function ProfileMenu({ trialDate }) {
         gap={12}
         menuButton={
           <MenuButton>
-            <Avatar user={user} />
+            <Avatar attributes={userAttributes} />
           </MenuButton>
         }
         menuClassName='bg-white dark:bg-gray-700 shadow-panel rounded-md py-2 w-36'
