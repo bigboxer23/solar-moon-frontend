@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { TbAlertTriangle } from 'react-icons/tb';
 
 import { ALL } from '../../../services/search';
 import {
@@ -104,7 +105,11 @@ export default function Alerts({ setTrialDate }) {
         .reduce((result, d) => {
           result[d.deviceId] = getOption(
             d,
-            <div className='text-danger' title='(Active)'>
+            <div
+              className='flex items-center rounded-md bg-danger px-1 text-white'
+              title='(Active)'
+            >
+              <TbAlertTriangle className='mr-1' />
               {d.deviceName}
             </div>,
           );
