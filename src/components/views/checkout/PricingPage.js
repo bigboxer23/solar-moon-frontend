@@ -47,7 +47,7 @@ export default function PricingPage() {
       <HeaderBar headerText='Choose a billing plan' />
       <div className='my-8 flex max-w-full flex-col items-center'>
         {trialOver && (
-          <div className='flex w-full flex-wrap justify-center px-8 dark:text-gray-100'>
+          <div className='flex w-full flex-wrap justify-center px-8 text-lg dark:text-gray-100'>
             Thank you for trialing Solar Moon Analytics. Please upgrade to a
             paid plan to continue accessing your devices.
           </div>

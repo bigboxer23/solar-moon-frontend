@@ -23,7 +23,7 @@ export default function ProfileMenu({ trialDate }) {
   }, []);
 
   return (
-    <div className='ProfileMenu size-12 text-black dark:text-gray-100'>
+    <div className='ProfileMenu flex items-center text-black dark:text-gray-100'>
       {trialDate > 0 && (
         <span className='mr-4 text-sm text-gray-400'>
           {getDaysLeftInTrial(trialDate)} in trial
