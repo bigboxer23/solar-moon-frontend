@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import {
   MdAddCircle,
@@ -30,6 +31,7 @@ export const noSite = 'No Site';
 const SiteManagement = ({ setTrialDate }) => {
   const [loading, setLoading] = useState(true);
   const [devices, setDevices] = useState([]);
+  const [devicesAllowed, setDevicesAllowed] = useState(0);
   const [activeSiteId, setActiveSiteId] = useStickyState('', 'site.management');
   const [showNewSite, setShowNewSite] = useState(false);
   const [showNewSiteExample, setShowNewSiteExample] = useState(false);
@@ -82,6 +84,7 @@ const SiteManagement = ({ setTrialDate }) => {
       });
     getSubscriptionInformation().then(({ data }) => {
       setTrialDate(data?.joinDate);
+      setDevicesAllowed(data?.packs === -1 ? 10 : data?.packs * 20); // -1 === trial
       setSubscriptionAvailable(data?.packs * 20 > devices.length);
     });
   };
@@ -129,10 +132,20 @@ const SiteManagement = ({ setTrialDate }) => {
     ];
   };
 
+  const allowed = devices.length <= devicesAllowed;
+  const deviceCountClassNames = classNames('text-sm', {
+    'text-danger font-bold': !allowed,
+    'text-gray-400': allowed,
+    'opacity-0': !subscriptionAvailable,
+  });
+
   return (
     <main className='SiteManagement flex max-w-full flex-col items-center justify-center '>
       <div className='fade-in my-8 flex w-[45rem] max-w-full flex-col bg-white p-6 shadow-panel dark:bg-gray-800 sm:rounded-lg sm:p-8'>
         <div className='dark:text-gray-100'>
+          <div
+            className={deviceCountClassNames}
+          >{`${devices.length} of ${devicesAllowed} devices used`}</div>
           <div className='mb-10 flex w-full items-center justify-between'>
             <Dropdown
               className='align-self-end'
