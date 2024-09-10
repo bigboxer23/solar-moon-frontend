@@ -86,6 +86,21 @@ const SiteManagement = ({ setTrialDate }) => {
     });
   };
 
+  const getDeviceCountFromSite = (siteId) => {
+    return `${devices.filter((device) => device.siteId === siteId).length || ''}`;
+  };
+
+  const getSiteSelectionLabel = (siteId) => {
+    return (
+      <div>
+        {findSiteNameFromSiteId(siteId, devices)}
+        <span className='text-sm text-gray-400'>
+          {'  '}
+          {getDeviceCountFromSite(siteId)}
+        </span>
+      </div>
+    );
+  };
   const getSiteSelectItems = () => {
     return [
       ...devices
@@ -93,11 +108,14 @@ const SiteManagement = ({ setTrialDate }) => {
         .sort(sortDevices)
         .map((site) => {
           return {
-            label: findSiteNameFromSiteId(site.id, devices),
+            label: getSiteSelectionLabel(site.id),
             value: site.id,
           };
         }),
-      { label: noSite, value: noSite },
+      {
+        label: getSiteSelectionLabel(noSite),
+        value: noSite,
+      },
       ...(subscriptionAvailable
         ? [
             { divider: true, value: 'divider' },
@@ -126,7 +144,7 @@ const SiteManagement = ({ setTrialDate }) => {
               options={getSiteSelectItems()}
               prefixLabel='Manage'
               value={{
-                label: findSiteNameFromSiteId(activeSiteId, devices),
+                label: getSiteSelectionLabel(activeSiteId),
                 value: activeSiteId,
               }}
             />
