@@ -1,4 +1,11 @@
-import { getFormattedTime, roundToDecimals } from '../../../utils/Utils';
+import Tippy from '@tippyjs/react';
+import { MdOutlineInfo } from 'react-icons/md';
+
+import {
+  getFormattedTime,
+  roundToDecimals,
+  TIPPY_DELAY,
+} from '../../../utils/Utils';
 
 const coef = 1000 * 60; // 60s
 
@@ -7,6 +14,8 @@ export const TOTAL_ENERGY_CONS = 'Total Energy Consumption';
 export const ENERGY_CONSUMED = 'Energy Consumed';
 export const SITE_ID_KEYWORD = 'siteId.keyword';
 export const DEVICE_ID_KEYWORD = 'device-id.keyword';
+export const INFORMATIONAL_ERROR = 'informationalErrorString.keyword';
+export const DISPLAY_NAME = 'displayName';
 
 export const transformRowData = function (row, deviceMap, intl) {
   const date = new Date(row['@timestamp']);
@@ -31,6 +40,26 @@ export const transformRowData = function (row, deviceMap, intl) {
     deviceMap[row[SITE_ID_KEYWORD]] || row[SITE_ID_KEYWORD];
   row[DEVICE_ID_KEYWORD] =
     deviceMap[row[DEVICE_ID_KEYWORD]] || row[DEVICE_ID_KEYWORD];
+  row[DISPLAY_NAME] = row[DEVICE_ID_KEYWORD];
+
+  if (
+    row[INFORMATIONAL_ERROR] !== undefined &&
+    row[INFORMATIONAL_ERROR].length > 0 &&
+    row[INFORMATIONAL_ERROR][0] !== ''
+  ) {
+    row[DISPLAY_NAME] = (
+      <Tippy
+        content={`${row[INFORMATIONAL_ERROR]}`}
+        delay={TIPPY_DELAY}
+        placement='bottom'
+      >
+        <div className='flex'>
+          <span className='mr-2'>{row[DISPLAY_NAME]}</span>
+          <MdOutlineInfo className='text-brand-primary' size={18} />
+        </div>
+      </Tippy>
+    );
+  }
   return row;
 };
 

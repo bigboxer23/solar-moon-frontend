@@ -24,8 +24,9 @@ import {
 import Loader from '../../common/Loader';
 import DownloadReportButton from './DownloadReportButton';
 import {
-  DEVICE_ID_KEYWORD,
+  DISPLAY_NAME,
   ENERGY_CONSUMED,
+  INFORMATIONAL_ERROR,
   SITE_ID_KEYWORD,
   sortRowData,
   TOTAL_ENERGY_CONS,
@@ -166,7 +167,7 @@ const Reports = () => {
       width: getSitesWidth(),
     },
     {
-      key: DEVICE_ID_KEYWORD,
+      key: DISPLAY_NAME,
       name: 'Display Name',
       width: getNamesWidth(),
     },
@@ -200,6 +201,11 @@ const Reports = () => {
         </div>
       ),
     },
+    /* {
+      key: INFORMATIONAL_ERROR,
+      minWidth: 100,
+      name: <div className='flex items-center'>Informational Error</div>,
+    },*/
   ];
 
   useEffect(() => {
@@ -233,6 +239,7 @@ const Reports = () => {
         'cloudCover',
         'precipitationIntensity',
         'visibility',
+        INFORMATIONAL_ERROR,
       ],
     )
       .then(({ data }) => {
@@ -250,6 +257,7 @@ const Reports = () => {
         }
       })
       .catch((e) => {
+        console.log(e);
         setLoading(false);
         setRefreshSearch(false);
       });
