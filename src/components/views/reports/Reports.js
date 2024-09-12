@@ -207,13 +207,14 @@ const Reports = () => {
         </div>
       ),
     },
-    /* {
+  ];
+  if (filterErrors === 'true') {
+    columns[columns.length] = {
       key: INFORMATIONAL_ERROR,
       minWidth: 100,
       name: <div className='flex items-center'>Informational Error</div>,
-    },*/
-  ];
-
+    };
+  }
   useEffect(() => {
     if (loading) {
       return;
