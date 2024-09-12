@@ -47,9 +47,12 @@ export const transformRowData = function (row, deviceMap, intl) {
     row[INFORMATIONAL_ERROR].length > 0 &&
     row[INFORMATIONAL_ERROR][0] !== ''
   ) {
+    row[INFORMATIONAL_ERROR] = transformMultiLineErrorContent(
+      row[INFORMATIONAL_ERROR][0],
+    );
     row[DISPLAY_NAME] = (
       <Tippy
-        content={`${row[INFORMATIONAL_ERROR]}`}
+        content={row[INFORMATIONAL_ERROR]}
         delay={TIPPY_DELAY}
         placement='bottom'
       >
@@ -61,6 +64,20 @@ export const transformRowData = function (row, deviceMap, intl) {
     );
   }
   return row;
+};
+
+const transformMultiLineErrorContent = function (error) {
+  const errors = error.replace(/(?:\r\n|\r|\n)/g, '<br>').split('<br>');
+  return (
+    <span>
+      {errors.map((str, index) => (
+        <div key={index}>
+          {str}
+          {index < errors.length - 1 && <br />}{' '}
+        </div>
+      ))}
+    </span>
+  );
 };
 
 export const sortRowData = function (row, row2) {
