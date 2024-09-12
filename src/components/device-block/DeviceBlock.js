@@ -1,6 +1,12 @@
+import Tippy from '@tippyjs/react';
 import classNames from 'classnames';
+import { MdOutlineInfo } from 'react-icons/md';
 
-import { truncate } from '../../utils/Utils';
+import {
+  TIPPY_DELAY,
+  transformMultiLineForHTMLDisplay,
+  truncate,
+} from '../../utils/Utils';
 
 export default function DeviceBlock({
   title,
@@ -10,6 +16,7 @@ export default function DeviceBlock({
   body,
   className,
   truncationLength = 50,
+  informationalErrors = null,
 }) {
   const truncatedTitle = truncate(title, truncationLength);
   const truncatedSubtitle = truncate(subtitle, truncationLength);
@@ -23,12 +30,25 @@ export default function DeviceBlock({
 
   return (
     <div className={style}>
-      <span className='flex items-center text-base font-bold text-black dark:text-gray-100'>
-        <div title={hoverTitle}>{truncatedTitle}</div>
-        <div className='ml-2 text-sm text-gray-400' title={hoverSubtitle}>
-          {truncatedSubtitle}
-        </div>
-      </span>
+      <div className='flex items-center'>
+        <span className='flex grow items-center text-base font-bold text-black dark:text-gray-100'>
+          <div title={hoverTitle}>{truncatedTitle}</div>
+          <div className='ml-2 text-sm text-gray-400' title={hoverSubtitle}>
+            {truncatedSubtitle}
+          </div>
+        </span>
+        {informationalErrors !== null && (
+          <Tippy
+            content={transformMultiLineForHTMLDisplay(informationalErrors)}
+            delay={TIPPY_DELAY}
+            placement='bottom'
+          >
+            <div>
+              <MdOutlineInfo className='text-brand-primary' size={18} />
+            </div>
+          </Tippy>
+        )}
+      </div>
       {secondaryTitle && (
         <div className='flex text-xs text-gray-400'>{secondaryTitle}</div>
       )}

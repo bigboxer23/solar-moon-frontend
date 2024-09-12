@@ -5,6 +5,7 @@ import {
   getFormattedTime,
   roundToDecimals,
   TIPPY_DELAY,
+  transformMultiLineForHTMLDisplay,
 } from '../../../utils/Utils';
 
 const coef = 1000 * 60; // 60s
@@ -47,7 +48,7 @@ export const transformRowData = function (row, deviceMap, intl) {
     row[INFORMATIONAL_ERROR].length > 0 &&
     row[INFORMATIONAL_ERROR][0] !== ''
   ) {
-    row[INFORMATIONAL_ERROR] = transformMultiLineErrorContent(
+    row[INFORMATIONAL_ERROR] = transformMultiLineForHTMLDisplay(
       row[INFORMATIONAL_ERROR][0],
     );
     row[DISPLAY_NAME] = (
@@ -64,20 +65,6 @@ export const transformRowData = function (row, deviceMap, intl) {
     );
   }
   return row;
-};
-
-const transformMultiLineErrorContent = function (error) {
-  const errors = error.replace(/(?:\r\n|\r|\n)/g, '<br>').split('<br>');
-  return (
-    <span>
-      {errors.map((str, index) => (
-        <div key={index}>
-          {str}
-          {index < errors.length - 1 && <br />}{' '}
-        </div>
-      ))}
-    </span>
-  );
 };
 
 export const sortRowData = function (row, row2) {

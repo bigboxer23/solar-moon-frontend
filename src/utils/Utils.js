@@ -296,3 +296,17 @@ export const getDaysLeftInTrial = (date) => {
   const days = Math.round((date + DAY * 90 - new Date().getTime()) / DAY);
   return `${days} day${days > 1 ? 's' : ''} left`;
 };
+
+export const transformMultiLineForHTMLDisplay = function (error) {
+  const errors = error.replace(/(?:\r\n|\r|\n)/g, '<br>').split('<br>');
+  return (
+    <span>
+      {errors.map((str, index) => (
+        <div key={index}>
+          {str}
+          {index < errors.length - 1 && <br />}{' '}
+        </div>
+      ))}
+    </span>
+  );
+};

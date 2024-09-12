@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   AVG_AGGREGATION,
   getAggregationValue,
+  getInformationalErrorInfo,
   parseCurrentAmperage,
   parseCurrentPower,
   parseCurrentVoltage,
@@ -48,6 +49,9 @@ export default function SiteDevicesOverview({
                     graphData={parseSearchReturn(timeSeriesData[device.id])}
                   />
                 }
+                informationalErrors={getInformationalErrorInfo(
+                  timeSeriesData[device.id],
+                )}
                 key={device.id}
                 statBlocks={[
                   <CurrentPowerBlock
