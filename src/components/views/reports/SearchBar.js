@@ -43,7 +43,7 @@ const SearchBar = ({
   setFilterErrors,
 }) => {
   const [searchActive, setSearchActive] = useState(
-    deviceId !== ALL || siteId !== ALL,
+    deviceId !== ALL || siteId !== ALL || filterErrors === 'true',
   );
 
   const [value, setValue] = useState([
