@@ -45,6 +45,7 @@ export function Check({
   errorClassName,
   errorMessage,
   extendVariantStyles = true,
+  onClick = () => {},
 }) {
   const { inputStyle, inputWrapperStyle, labelStyle, errorStyle } = buildStyles(
     inputClassName,
@@ -55,7 +56,10 @@ export function Check({
   );
   return (
     <>
-      <div className={`Input ${inputWrapperStyle} ${className}`}>
+      <div
+        className={`Input ${inputWrapperStyle} ${className}`}
+        onClick={onClick}
+      >
         {label && <div className={labelStyle}>{label}</div>}
         <input
           checked={inputProps.value ? 'checked' : ''}

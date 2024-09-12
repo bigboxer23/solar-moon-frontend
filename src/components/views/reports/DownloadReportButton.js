@@ -20,6 +20,7 @@ import {
 const DownloadReportButton = ({
   siteId,
   deviceId,
+  filterErrors,
   start,
   end,
   timeFormatter,
@@ -91,6 +92,7 @@ const DownloadReportButton = ({
   const fetchDownload = (
     localDevice,
     localSite,
+    localFilterErrors,
     localEnd,
     csv,
     interval,
@@ -105,6 +107,7 @@ const DownloadReportButton = ({
     getDataPage(
       localDevice,
       localSite,
+      localFilterErrors,
       Math.max(start, localEnd - interval + 1),
       localEnd,
       0,
@@ -120,6 +123,7 @@ const DownloadReportButton = ({
         fetchDownload(
           localDevice,
           localSite,
+          localFilterErrors,
           localEnd - interval,
           csv.concat(
             data.hits.hits.map((row) =>
@@ -154,6 +158,7 @@ const DownloadReportButton = ({
     getDownloadPageSize(
       deviceId === ALL ? null : deviceId,
       siteId === ALL ? null : siteId,
+      filterErrors,
       start,
       end,
       0,
@@ -163,6 +168,7 @@ const DownloadReportButton = ({
         fetchDownload(
           deviceId === ALL ? null : deviceId,
           siteId === ALL ? null : siteId,
+          filterErrors,
           end,
           [],
           data * DAY,

@@ -46,6 +46,7 @@ export function getAvgTotalBody(deviceId, start, end) {
 export function getDataPageBody(
   deviceId,
   siteId,
+  filterErrors,
   start,
   end,
   offset,
@@ -53,6 +54,7 @@ export function getDataPageBody(
   additionalFields,
 ) {
   const searchJSON = getJSONSearch(deviceId, siteId, start, end, 'data');
+  searchJSON.filterErrors = filterErrors;
   searchJSON.offset = offset;
   searchJSON.size = size;
   if (additionalFields) {
