@@ -22,6 +22,7 @@ import {
   sortDevices,
 } from '../../../utils/Utils';
 import Button from '../../common/Button';
+import { Check } from '../../common/Check';
 import Dropdown from '../../common/Dropdown';
 import Spinner from '../../common/Spinner';
 
@@ -38,6 +39,8 @@ const SearchBar = ({
   defaultSearchPeriod,
   refreshSearch,
   setRefreshSearch,
+  filterErrors,
+  setFilterErrors,
 }) => {
   const [searchActive, setSearchActive] = useState(
     deviceId !== ALL || siteId !== ALL,
@@ -52,6 +55,7 @@ const SearchBar = ({
     setSiteId(ALL);
     setDeviceId(ALL);
     dateChanged(null);
+    setFilterErrors('false');
     setSearchActive(false);
   };
 
@@ -158,6 +162,18 @@ const SearchBar = ({
             options={[allOption, ...deviceOptions]}
             prefixLabel='Device'
             value={deviceOptions.find((option) => option.value === deviceId)}
+          />
+          <Check
+            extendVariantStyles={false}
+            inputProps={{
+              value: filterErrors === 'true',
+              onChange: () => {},
+            }}
+            inputWrapperClassName='flex focus-within:border-brand-primary space-x-1'
+            label='Only Errors'
+            labelClassName='font-bold'
+            name='errors'
+            onClick={() => setFilterErrors(`${!(filterErrors === 'true')}`)}
           />
           <Button
             buttonProps={{

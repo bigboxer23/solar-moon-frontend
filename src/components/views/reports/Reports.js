@@ -67,6 +67,12 @@ const Reports = () => {
     searchParams,
     setSearchParams,
   );
+  const [filterErrors, setFilterErrors] = useSearchParamState(
+    'false',
+    'err',
+    searchParams,
+    setSearchParams,
+  );
   const [devices, setDevices] = useState([]);
   const [deviceMap, setDeviceMap] = useState({});
   const [rows, setRows] = useState([]);
@@ -213,7 +219,7 @@ const Reports = () => {
       return;
     }
     fetchData(0, (rows) => setRows(rows), true);
-  }, [siteId, deviceId, start, end]);
+  }, [siteId, deviceId, start, end, filterErrors]);
 
   useEffect(() => {
     if (loading || !refreshSearch) {
@@ -229,6 +235,7 @@ const Reports = () => {
     getDataPage(
       deviceId === ALL ? null : deviceId,
       siteId === ALL ? null : siteId,
+      filterErrors,
       start,
       end,
       offset,
@@ -312,9 +319,11 @@ const Reports = () => {
             deviceId={deviceId}
             devices={devices}
             end={end}
+            filterErrors={filterErrors}
             refreshSearch={refreshSearch}
             setDeviceId={setDeviceId}
             setEnd={setEnd}
+            setFilterErrors={setFilterErrors}
             setRefreshSearch={setRefreshSearch}
             setSiteId={setSiteId}
             setStart={setStart}
@@ -325,6 +334,7 @@ const Reports = () => {
             deviceId={deviceId}
             deviceMap={deviceMap}
             end={end}
+            filterErrors={filterErrors}
             siteId={siteId}
             start={start}
             timeFormatter={getFormattedTime}

@@ -93,6 +93,7 @@ export function getOverviewData(start, offset) {
 export function getDataPage(
   deviceId,
   siteId,
+  filterErrors,
   start,
   end,
   offset,
@@ -104,6 +105,7 @@ export function getDataPage(
     getDataPageBody(
       deviceId,
       siteId,
+      filterErrors === 'true',
       new Date(Number(start)),
       new Date(Number(end)),
       offset,
@@ -116,6 +118,7 @@ export function getDataPage(
 export function getDownloadPageSize(
   deviceId,
   siteId,
+  filterErrors,
   start,
   end,
   offset,
@@ -126,6 +129,7 @@ export function getDownloadPageSize(
     getDataPageBody(
       deviceId,
       siteId,
+      filterErrors === 'true',
       new Date(Number(start)),
       new Date(Number(end)),
       offset,
