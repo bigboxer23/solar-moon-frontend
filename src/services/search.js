@@ -1,6 +1,7 @@
 import { TOTAL_REAL_POWER } from '../components/views/reports/ReportUtils';
 
 export const DATE_HISTO = 'date_histogram#2';
+const INFORMATIONAL_ERROR = 'sterms#informationalErrorString';
 export const AVG = 'avg#1';
 
 const CURRENT = 'Average Current';
@@ -83,6 +84,15 @@ export function parseSearchReturn(data) {
 
 export function getAggregationValue(data, label) {
   return data !== undefined ? Math.round(data.aggregations[label].value) : 0;
+}
+
+export function getInformationalErrorInfo(data) {
+  const errorSet = new Set(
+    data.aggregations[INFORMATIONAL_ERROR].buckets
+      .flatMap((error) => error.key.split('\n'))
+      .filter((line) => line.trim() !== ''),
+  );
+  return errorSet.size === 0 ? null : Array.from(errorSet).join('\n');
 }
 
 export const parseStackedTimeSeriesData = function (data, deviceIdToName) {
