@@ -170,7 +170,7 @@ const SearchBar = ({
               onChange: () => {},
             }}
             inputWrapperClassName='flex focus-within:border-brand-primary space-x-1'
-            label='Only Errors'
+            label='Errors:'
             labelClassName='font-bold'
             name='errors'
             onClick={() => setFilterErrors(`${!(filterErrors === 'true')}`)}
