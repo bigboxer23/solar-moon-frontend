@@ -214,6 +214,7 @@ export default function SiteDetails({ setTrialDate }) {
             .filter((device) => !device.disabled)}
           maxData={siteData?.deviceWeeklyMaxPower}
           resolvedSiteAlerts={resolvedSiteAlerts}
+          timeIncrement={timeIncrement}
           timeSeriesData={siteData?.deviceTimeSeries}
           totalData={siteData?.deviceTotals}
         />
