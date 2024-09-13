@@ -11,7 +11,7 @@ import {
   parseSearchReturn,
   TOTAL_AGGREGATION,
 } from '../../../services/search';
-import { getDisplayName } from '../../../utils/Utils';
+import { getDisplayName, getRoundedTimeFromOffset } from '../../../utils/Utils';
 import CurrentPowerBlock from '../../common/CurrentPowerBlock';
 import DeviceBlock from '../../device-block/DeviceBlock';
 import StackedAlertsInfo from '../../device-block/StackedAlertsInfo';
@@ -27,6 +27,7 @@ export default function SiteDevicesOverview({
   totalData,
   timeSeriesData,
   maxData,
+  timeIncrement,
 }) {
   const navigate = useNavigate();
 
@@ -41,7 +42,6 @@ export default function SiteDevicesOverview({
             const activeAlerts = activeSiteAlerts.filter(
               (d) => d.deviceId === device.id,
             ).length;
-
             return (
               <DeviceBlock
                 body={
@@ -52,6 +52,7 @@ export default function SiteDevicesOverview({
                 informationalErrors={getInformationalErrorInfo(
                   timeSeriesData[device.id],
                 )}
+                informationalErrorsLink={`/reports?deviceId=${device.id}&err=true&siteId=${device.siteId}&start=${getRoundedTimeFromOffset(timeIncrement).getTime()}&end=${new Date().getTime()}`}
                 key={device.id}
                 statBlocks={[
                   <CurrentPowerBlock

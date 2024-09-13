@@ -1,6 +1,7 @@
 import Tippy from '@tippyjs/react';
 import classNames from 'classnames';
 import { MdOutlineInfo } from 'react-icons/md';
+import { NavLink } from 'react-router-dom';
 
 import {
   TIPPY_DELAY,
@@ -17,6 +18,7 @@ export default function DeviceBlock({
   className,
   truncationLength = 50,
   informationalErrors = null,
+  informationalErrorsLink = null,
 }) {
   const truncatedTitle = truncate(title, truncationLength);
   const truncatedSubtitle = truncate(subtitle, truncationLength);
@@ -43,9 +45,12 @@ export default function DeviceBlock({
             delay={TIPPY_DELAY}
             placement='bottom'
           >
-            <div>
+            <NavLink
+              className='mb-4 flex items-center self-start text-xs text-gray-500 hover:underline dark:text-gray-400'
+              to={informationalErrorsLink}
+            >
               <MdOutlineInfo className='text-brand-primary' size={18} />
-            </div>
+            </NavLink>
           </Tippy>
         )}
       </div>
