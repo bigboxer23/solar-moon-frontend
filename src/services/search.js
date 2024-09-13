@@ -90,7 +90,8 @@ export function getInformationalErrorInfo(data) {
   const errorSet = new Set(
     data.aggregations[INFORMATIONAL_ERROR].buckets
       .flatMap((error) => error.key.split('\n'))
-      .filter((line) => line.trim() !== ''),
+      .filter((line) => line.trim() !== '')
+      .filter((line) => 'Waiting For Restart' !== line),
   );
   return errorSet.size === 0 ? null : Array.from(errorSet).join('\n');
 }
