@@ -42,6 +42,7 @@ export default function SiteDevicesOverview({
             const activeAlerts = activeSiteAlerts.filter(
               (d) => d.deviceId === device.id,
             ).length;
+            const reportLink = `/reports?deviceId=${device.id}&siteId=${device.siteId}&start=${getRoundedTimeFromOffset(timeIncrement).getTime()}&end=${new Date().getTime()}`;
             return (
               <DeviceBlock
                 body={
@@ -52,8 +53,9 @@ export default function SiteDevicesOverview({
                 informationalErrors={getInformationalErrorInfo(
                   timeSeriesData[device.id],
                 )}
-                informationalErrorsLink={`/reports?deviceId=${device.id}&err=true&siteId=${device.siteId}&start=${getRoundedTimeFromOffset(timeIncrement).getTime()}&end=${new Date().getTime()}`}
+                informationalErrorsLink={`${reportLink}&err=true`}
                 key={device.id}
+                reportLink={reportLink}
                 statBlocks={[
                   <CurrentPowerBlock
                     activeAlert={activeAlerts > 0}
