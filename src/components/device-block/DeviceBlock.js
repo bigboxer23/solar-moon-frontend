@@ -1,5 +1,6 @@
 import Tippy from '@tippyjs/react';
 import classNames from 'classnames';
+import { FaArrowRight } from 'react-icons/fa';
 import { MdOutlineInfo } from 'react-icons/md';
 import { NavLink } from 'react-router-dom';
 
@@ -19,6 +20,7 @@ export default function DeviceBlock({
   truncationLength = 50,
   informationalErrors = null,
   informationalErrorsLink = null,
+  reportLink = null,
 }) {
   const truncatedTitle = truncate(title, truncationLength);
   const truncatedSubtitle = truncate(subtitle, truncationLength);
@@ -46,12 +48,21 @@ export default function DeviceBlock({
             placement='bottom'
           >
             <NavLink
-              className='mb-4 flex items-center self-start text-xs text-gray-500 hover:underline dark:text-gray-400'
+              className='flex items-center text-xs text-gray-500 hover:underline dark:text-gray-400'
               to={informationalErrorsLink}
             >
               <MdOutlineInfo className='text-brand-primary' size={18} />
             </NavLink>
           </Tippy>
+        )}
+        {reportLink && (
+          <NavLink
+            className='flex items-center text-xs text-gray-500 hover:underline dark:text-gray-400'
+            title='To device report'
+            to={reportLink}
+          >
+            <FaArrowRight className='ml-2 text-sm text-gray-400' />
+          </NavLink>
         )}
       </div>
       {secondaryTitle && (
