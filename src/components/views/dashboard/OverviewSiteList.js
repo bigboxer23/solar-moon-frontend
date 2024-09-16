@@ -4,11 +4,13 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import {
   AVG_AGGREGATION,
   getAggregationValue,
+  getInformationalErrorInfo,
   parseCurrentPower,
   parseMaxData,
   parseSearchReturn,
   TOTAL_AGGREGATION,
 } from '../../../services/search';
+import { getRoundedTimeFromOffset } from '../../../utils/Utils';
 import CurrentPowerBlock from '../../common/CurrentPowerBlock';
 import WeatherBlock from '../../common/WeatherBlock';
 import DeviceBlock from '../../device-block/DeviceBlock';
@@ -21,6 +23,7 @@ export default function OverviewSiteList({
   devices,
   alerts,
   sitesGraphData,
+  timeIncrement,
 }) {
   const [loading, setLoading] = useState(true);
   const [siteData, setSiteData] = useState([]);
@@ -73,6 +76,10 @@ export default function OverviewSiteList({
                 />
               }
               className='w-full'
+              informationalErrors={getInformationalErrorInfo(
+                site.graphData.timeSeries,
+              )}
+              informationalErrorsLink={`/reports?siteId=${site.info.id}&start=${getRoundedTimeFromOffset(timeIncrement).getTime()}&end=${new Date().getTime()}&err=true`}
               key={site.info.deviceName}
               secondaryTitle={
                 site.info?.city && site.info?.state

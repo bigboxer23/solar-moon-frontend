@@ -204,6 +204,7 @@ export default function Overview({ setTrialDate }) {
           devices={devices}
           sites={sites}
           sitesGraphData={sitesGraphData}
+          timeIncrement={timeIncrement}
         />
       </div>
     </div>
