@@ -1,6 +1,7 @@
 import Tippy from '@tippyjs/react';
 import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
+import { BsCloudSleet } from 'react-icons/bs';
 import { IoIosSnow, IoMdRainy } from 'react-icons/io';
 import { IoPartlySunnyOutline } from 'react-icons/io5';
 import { MdFoggy, MdOutlineWbCloudy, MdOutlineWbSunny } from 'react-icons/md';
@@ -192,6 +193,8 @@ export const getWeatherIcon = (weatherSummary) => {
     return <RiWindyFill className='align-self-center' />;
   } else if (weatherSummary === 'Rain') {
     return <IoMdRainy className='align-self-center' />;
+  } else if (weatherSummary === 'Sleet') {
+    return <BsCloudSleet className='align-self-center' />;
   }
   return weatherSummary;
 };
