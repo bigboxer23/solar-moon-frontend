@@ -95,7 +95,7 @@ const SiteManagement = ({ setTrialDate }) => {
 
   const getSiteSelectionLabel = (siteId) => {
     return (
-      <div>
+      <div className='whitespace-nowrap'>
         {findSiteNameFromSiteId(siteId, devices)}
         <span className='text-sm text-gray-400'>
           {'  '}
