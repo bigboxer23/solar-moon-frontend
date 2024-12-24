@@ -1,4 +1,6 @@
+import { useAuthenticator } from '@aws-amplify/ui-react';
 import { useEffect, useState } from 'react';
+import { FaArrowLeft } from 'react-icons/fa';
 import { createSearchParams, useNavigate } from 'react-router-dom';
 
 import { MONTH } from '../../../services/search';
@@ -15,6 +17,8 @@ export default function PricingPage() {
   const [yearCount, setYearCount] = useState(1);
   const [trialAvailable, setTrialAvailable] = useState(false);
   const [trialOver, setTrialOver] = useState(false);
+
+  const { user, signOut } = useAuthenticator((context) => [context.user]);
 
   useEffect(() => {
     getSubscriptionInformation().then(({ data }) => {
@@ -44,7 +48,20 @@ export default function PricingPage() {
   };
   return (
     <div className='pricing-page'>
-      <HeaderBar headerText='Choose a billing plan' />
+      <HeaderBar
+        headerText='Choose a billing plan'
+        leftContent={
+          <div>
+            <FaArrowLeft
+              className='ml-6 inline-block cursor-pointer sm:ml-8'
+              onClick={signOut}
+              size='24'
+              title='Sign out'
+            />
+          </div>
+        }
+      />
+
       <div className='my-8 flex max-w-full flex-col items-center'>
         {trialOver && (
           <div className='flex w-full flex-wrap justify-center px-8 text-lg dark:text-gray-100'>
