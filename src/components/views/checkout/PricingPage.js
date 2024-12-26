@@ -53,7 +53,7 @@ export default function PricingPage() {
         leftContent={
           <div>
             <FaArrowLeft
-              className='ml-6 inline-block cursor-pointer sm:ml-8'
+              className='ml-6 inline-block cursor-pointer dark:text-gray-100 sm:ml-8'
               onClick={signOut}
               size='24'
               title='Sign out'
