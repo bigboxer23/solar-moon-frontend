@@ -181,7 +181,10 @@ export const getWeatherIconWithTippy = (
 export const getWeatherIcon = (weatherSummary) => {
   if (weatherSummary === 'Cloudy') {
     return <MdOutlineWbCloudy className='align-self-center' />;
-  } else if (weatherSummary === 'Partly Cloudy') {
+  } else if (
+    weatherSummary === 'Partly Cloudy' ||
+    weatherSummary === 'Mostly Clear'
+  ) {
     return <IoPartlySunnyOutline className='align-self-center' />;
   } else if (weatherSummary === 'Fog') {
     return <MdFoggy className='align-self-center' />;
