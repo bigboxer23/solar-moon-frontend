@@ -2,7 +2,7 @@ import 'react-data-grid/lib/styles.css';
 
 import Tippy from '@tippyjs/react';
 import { useEffect, useRef, useState } from 'react';
-import DataGrid from 'react-data-grid';
+import { DataGrid } from 'react-data-grid';
 import { FaArrowLeft } from 'react-icons/fa';
 import { useIntl } from 'react-intl';
 import { NavLink, useSearchParams } from 'react-router-dom';
