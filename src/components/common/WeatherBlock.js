@@ -37,6 +37,7 @@ export default function WeatherBlock({
           <span className='ml-2.5 text-[2.5rem]'>
             {getWeatherIconWithTippy(
               weather?.weatherSummary,
+              weather?.weatherIcon,
               weather?.precipitationIntensity,
             )}
           </span>

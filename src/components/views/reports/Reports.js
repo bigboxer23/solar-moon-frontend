@@ -121,8 +121,7 @@ const Reports = () => {
       <Tippy content={content} delay={TIPPY_DELAY} placement='top'>
         <div className='flex h-full items-center justify-center'>
           {getWeatherIcon(
-            row.row['weatherSummary.keyword'] &&
-              row.row['weatherSummary.keyword'][0],
+            row.row['weatherIcon.keyword'] && row.row['weatherIcon.keyword'][0],
           )}
         </div>
       </Tippy>
@@ -155,7 +154,7 @@ const Reports = () => {
           className='flex h-full items-center justify-center'
           title='Weather Conditions'
         >
-          {getWeatherIcon('Partly Cloudy')}
+          {getWeatherIcon('partly-cloudy-day')}
         </div>
       ),
       width: 50,
@@ -248,6 +247,7 @@ const Reports = () => {
         'precipitationIntensity',
         'visibility',
         INFORMATIONAL_ERROR,
+        'weatherIcon.keyword',
       ],
     )
       .then(({ data }) => {

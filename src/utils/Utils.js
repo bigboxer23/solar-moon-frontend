@@ -160,6 +160,7 @@ export const getFormattedDaysHoursMinutes = (time) => {
 // TODO: Expand to include more weather types/night weather, use consistent icons
 export const getWeatherIconWithTippy = (
   weatherSummary,
+  weatherIcon,
   precipIntensity = 0,
 ) => {
   const content = (
@@ -173,33 +174,34 @@ export const getWeatherIconWithTippy = (
   );
   return (
     <Tippy content={content} delay={TIPPY_DELAY} placement='bottom'>
-      <div>{getWeatherIcon(weatherSummary)}</div>
+      <div>{getWeatherIcon(weatherIcon)}</div>
     </Tippy>
   );
 };
 
-export const getWeatherIcon = (weatherSummary) => {
-  if (weatherSummary === 'Cloudy') {
+// https://github.com/Pirate-Weather/pirateweather/blob/ffdf06e415106443b50761ffd403989184dd3ee7/DevPortal/custom-content/content-fragments/Home.md?plain=1#L53
+export const getWeatherIcon = (weatherIcon) => {
+  if (weatherIcon === 'cloudy') {
     return <MdOutlineWbCloudy className='align-self-center' />;
   } else if (
-    weatherSummary === 'Partly Cloudy' ||
-    weatherSummary === 'Mostly Clear'
+    weatherIcon === 'partly-cloudy-day' ||
+    weatherIcon === 'partly-cloudy-night'
   ) {
     return <IoPartlySunnyOutline className='align-self-center' />;
-  } else if (weatherSummary === 'Fog') {
+  } else if (weatherIcon === 'fog') {
     return <MdFoggy className='align-self-center' />;
-  } else if (weatherSummary === 'Clear') {
+  } else if (weatherIcon === 'clear-day' || weatherIcon === 'clear-night') {
     return <MdOutlineWbSunny className='align-self-center' />;
-  } else if (weatherSummary === 'Snow') {
+  } else if (weatherIcon === 'snow') {
     return <IoIosSnow className='align-self-center' />;
-  } else if (weatherSummary === 'Windy') {
+  } else if (weatherIcon === 'wind') {
     return <RiWindyFill className='align-self-center' />;
-  } else if (weatherSummary === 'Rain') {
+  } else if (weatherIcon === 'rain') {
     return <IoMdRainy className='align-self-center' />;
-  } else if (weatherSummary === 'Sleet') {
+  } else if (weatherIcon === 'sleet') {
     return <BsCloudSleet className='align-self-center' />;
   }
-  return weatherSummary;
+  return weatherIcon;
 };
 
 export const timeIncrementToText = (timeIncrement, short) => {
