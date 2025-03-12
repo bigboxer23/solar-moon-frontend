@@ -25,7 +25,7 @@ export default function Dropdown({
             <FaChevronDown className='ml-2' size='14' />
           </MenuButton>
         }
-        menuClassName='pl-0 py-2 w-[9rem] rounded-lg flex flex-col list-none bg-white dark:bg-gray-700 shadow-panel z-10'
+        menuClassName='pl-0 py-2 min-w-[9rem] max-w-[15rem] rounded-lg flex flex-col list-none bg-white dark:bg-gray-700 shadow-panel z-10'
       >
         {options.map((option) => {
           if (option.divider)
