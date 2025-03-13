@@ -25,7 +25,7 @@ export default function Dropdown({
             <FaChevronDown className='ml-2' size='14' />
           </MenuButton>
         }
-        menuClassName='pl-0 py-2 min-w-[9rem] max-w-[15rem] rounded-lg flex flex-col list-none bg-white dark:bg-gray-700 shadow-panel z-10'
+        menuClassName='pl-0 py-2 min-w-[9rem] max-w-[14rem] sm:max-w-[20rem] rounded-lg list-none bg-white dark:bg-gray-700 shadow-panel z-10 whitespace-nowrap text-ellipsis overflow-hidden block'
       >
         {options.map((option) => {
           if (option.divider)
@@ -37,12 +37,18 @@ export default function Dropdown({
             );
           return (
             <MenuItem
-              className='flex cursor-pointer list-none items-center px-4 py-1.5 text-sm font-normal text-black hover:bg-[#eee] dark:text-gray-100 dark:hover:bg-gray-500'
+              className='block cursor-pointer list-none items-center truncate px-4 py-1.5 text-sm font-normal text-black hover:bg-[#eee] dark:text-gray-100 dark:hover:bg-gray-500'
               key={option.value}
               onClick={(e) => onChange(option)}
             >
-              {option.icon !== undefined && option.icon}
-              {option.label}
+              {option.icon !== undefined ? (
+                <div className='flex items-center'>
+                  {option.icon}
+                  {option.label}
+                </div>
+              ) : (
+                option.label
+              )}
             </MenuItem>
           );
         })}
