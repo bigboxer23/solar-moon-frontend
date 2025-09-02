@@ -32,6 +32,12 @@ jobs:
       - name: Install dependencies
         run: npm install --legacy-peer-deps
 
+      - name: Setup aws-exports.js
+        run: echo $AWS_EXPORTS_JS >> ./src/aws-exports.js
+        shell: bash
+        env:
+          AWS_EXPORTS_JS: ${{secrets.AWS_EXPORTS}}
+
       - name: Run tests
         run: npm test -- --watchAll=false --coverage
 
