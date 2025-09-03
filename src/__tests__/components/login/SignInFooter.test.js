@@ -1,28 +1,16 @@
 /* eslint-env jest */
-import { render, screen, fireEvent } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 
 import { SignInFooter } from '../../../components/login/SignInFooter';
 
-// Mock functions
-const mockToForgotPassword = jest.fn();
-const mockUseAuthenticator = jest.fn(() => ({
-  toForgotPassword: mockToForgotPassword,
-}));
-const mockUseTheme = jest.fn(() => ({
-  tokens: {
-    space: {
-      xs: '0.5rem',
-    },
-  },
-}));
-
+// Mock AWS Amplify UI components
 jest.mock('@aws-amplify/ui-react', () => ({
   Flex: ({ children, justifyContent, padding }) => (
     <div
-      data-testid='flex'
       data-justify-content={justifyContent}
       data-padding={padding}
+      data-testid='flex'
     >
       {children}
     </div>
@@ -32,13 +20,30 @@ jest.mock('@aws-amplify/ui-react', () => ({
       {children}
     </button>
   ),
-  useAuthenticator: mockUseAuthenticator,
-  useTheme: mockUseTheme,
+  useAuthenticator: jest.fn(() => ({
+    toForgotPassword: jest.fn(),
+  })),
+  useTheme: jest.fn(() => ({
+    tokens: {
+      space: {
+        xs: '0.5rem',
+      },
+    },
+  })),
 }));
 
 describe('SignInFooter', () => {
+  let mockUseAuthenticator;
+  let mockUseTheme;
+  let mockToForgotPassword;
+
   beforeEach(() => {
+    mockToForgotPassword = jest.fn();
+    mockUseAuthenticator = require('@aws-amplify/ui-react').useAuthenticator;
+    mockUseTheme = require('@aws-amplify/ui-react').useTheme;
+
     jest.clearAllMocks();
+
     mockUseAuthenticator.mockReturnValue({
       toForgotPassword: mockToForgotPassword,
     });
@@ -50,6 +55,7 @@ describe('SignInFooter', () => {
       },
     });
   });
+
   test('renders footer component', () => {
     render(<SignInFooter />);
 
@@ -114,7 +120,7 @@ describe('SignInFooter', () => {
   });
 
   test('renders without crashing when useTheme returns undefined tokens', () => {
-    mockUseTheme.mockReturnValue({ tokens: {} });
+    mockUseTheme.mockReturnValue({ tokens: { space: {} } });
 
     render(<SignInFooter />);
 

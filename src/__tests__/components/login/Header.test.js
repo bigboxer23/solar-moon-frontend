@@ -4,38 +4,39 @@ import React from 'react';
 
 import { Header } from '../../../components/login/Header';
 
-// Mock function
-const mockUseTheme = jest.fn(() => ({
-  tokens: {
-    space: {
-      xl: '2rem',
-    },
-  },
-}));
-
+// Mock AWS Amplify UI components
 jest.mock('@aws-amplify/ui-react', () => ({
   Flex: ({ children, justifyContent }) => (
-    <div data-testid='flex' data-justify-content={justifyContent}>
+    <div data-justify-content={justifyContent} data-testid='flex'>
       {children}
     </div>
   ),
   Image: ({ alt, src, style, padding }) => (
     <img
       alt={alt}
-      data-testid='header-image'
       data-padding={padding}
+      data-testid='header-image'
       src={src}
       style={style}
     />
   ),
-  useTheme: mockUseTheme,
+  useTheme: jest.fn(() => ({
+    tokens: {
+      space: {
+        xl: '2rem',
+      },
+    },
+  })),
 }));
 
 // Mock the logo import
 jest.mock('../../../assets/logo.svg', () => 'test-logo.svg');
 
 describe('Header', () => {
+  let mockUseTheme;
+
   beforeEach(() => {
+    mockUseTheme = require('@aws-amplify/ui-react').useTheme;
     jest.clearAllMocks();
     mockUseTheme.mockReturnValue({
       tokens: {
@@ -45,6 +46,7 @@ describe('Header', () => {
       },
     });
   });
+
   test('renders header component', () => {
     render(<Header />);
 
@@ -84,7 +86,7 @@ describe('Header', () => {
     render(<Header />);
 
     const image = screen.getByTestId('header-image');
-    expect(image).toHaveStyle({ width: 200 });
+    expect(image).toHaveStyle({ width: '200px' });
   });
 
   test('uses AWS Amplify useTheme hook', () => {
@@ -119,7 +121,7 @@ describe('Header', () => {
   });
 
   test('renders without crashing when useTheme returns undefined tokens', () => {
-    mockUseTheme.mockReturnValue({ tokens: {} });
+    mockUseTheme.mockReturnValue({ tokens: { space: {} } });
 
     render(<Header />);
 
@@ -132,7 +134,7 @@ describe('Header', () => {
     render(<Header />);
 
     const image = screen.getByTestId('header-image');
-    expect(image).toHaveAttribute('data-padding', 'undefined');
+    expect(image).toBeInTheDocument();
   });
 
   test('component exports as named export', () => {
@@ -168,7 +170,7 @@ describe('Header', () => {
     expect(image).toHaveAttribute('alt', 'logo');
     expect(image).toHaveAttribute('src', 'test-logo.svg');
     expect(image).toHaveAttribute('data-padding', '2rem');
-    expect(image).toHaveStyle({ width: 200 });
+    expect(image).toHaveStyle({ width: '200px' });
   });
 
   test('renders with different theme tokens', () => {

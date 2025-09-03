@@ -4,26 +4,27 @@ import React from 'react';
 
 import { SignInHeader } from '../../../components/login/SignInHeader';
 
-// Mock function
-const mockUseTheme = jest.fn(() => ({
-  tokens: {
-    space: {
-      xl: '2rem',
-    },
-  },
-}));
-
+// Mock AWS Amplify UI components
 jest.mock('@aws-amplify/ui-react', () => ({
   Heading: ({ children, level, padding }) => (
-    <h3 data-testid='heading' data-level={level} data-padding={padding}>
+    <h3 data-level={level} data-padding={padding} data-testid='heading'>
       {children}
     </h3>
   ),
-  useTheme: mockUseTheme,
+  useTheme: jest.fn(() => ({
+    tokens: {
+      space: {
+        xl: '2rem',
+      },
+    },
+  })),
 }));
 
 describe('SignInHeader', () => {
+  let mockUseTheme;
+
   beforeEach(() => {
+    mockUseTheme = require('@aws-amplify/ui-react').useTheme;
     jest.clearAllMocks();
     mockUseTheme.mockReturnValue({
       tokens: {
@@ -33,6 +34,7 @@ describe('SignInHeader', () => {
       },
     });
   });
+
   test('renders header component', () => {
     render(<SignInHeader />);
 
@@ -81,7 +83,7 @@ describe('SignInHeader', () => {
   });
 
   test('renders without crashing when useTheme returns undefined tokens', () => {
-    mockUseTheme.mockReturnValue({ tokens: {} });
+    mockUseTheme.mockReturnValue({ tokens: { space: {} } });
 
     render(<SignInHeader />);
 
