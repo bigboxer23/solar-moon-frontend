@@ -1,3 +1,5 @@
+[![codecov](https://codecov.io/gh/bigboxer23/solar-moon-frontend/branch/master/graph/badge.svg)](https://codecov.io/gh/bigboxer23/solar-moon-frontend)
+
 # solar-moon-frontend
 
 This project encompasses the front end (authenticated) for solar moon analytics.
