@@ -4,23 +4,35 @@ import React from 'react';
 
 import { SignInHeader } from '../../../components/login/SignInHeader';
 
-// Mock AWS Amplify UI components
+// Mock function
+const mockUseTheme = jest.fn(() => ({
+  tokens: {
+    space: {
+      xl: '2rem',
+    },
+  },
+}));
+
 jest.mock('@aws-amplify/ui-react', () => ({
   Heading: ({ children, level, padding }) => (
     <h3 data-testid='heading' data-level={level} data-padding={padding}>
       {children}
     </h3>
   ),
-  useTheme: jest.fn(() => ({
-    tokens: {
-      space: {
-        xl: '2rem',
-      },
-    },
-  })),
+  useTheme: mockUseTheme,
 }));
 
 describe('SignInHeader', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockUseTheme.mockReturnValue({
+      tokens: {
+        space: {
+          xl: '2rem',
+        },
+      },
+    });
+  });
   test('renders header component', () => {
     render(<SignInHeader />);
 
@@ -48,8 +60,6 @@ describe('SignInHeader', () => {
   });
 
   test('uses AWS Amplify useTheme hook', () => {
-    const mockUseTheme = require('@aws-amplify/ui-react').useTheme;
-
     render(<SignInHeader />);
 
     expect(mockUseTheme).toHaveBeenCalled();
@@ -62,7 +72,6 @@ describe('SignInHeader', () => {
         lg: '1.5rem',
       },
     };
-    const mockUseTheme = require('@aws-amplify/ui-react').useTheme;
     mockUseTheme.mockReturnValue({ tokens: mockTokens });
 
     render(<SignInHeader />);
@@ -72,7 +81,6 @@ describe('SignInHeader', () => {
   });
 
   test('renders without crashing when useTheme returns undefined tokens', () => {
-    const mockUseTheme = require('@aws-amplify/ui-react').useTheme;
     mockUseTheme.mockReturnValue({ tokens: {} });
 
     render(<SignInHeader />);
@@ -81,7 +89,6 @@ describe('SignInHeader', () => {
   });
 
   test('renders without crashing when useTheme returns undefined space', () => {
-    const mockUseTheme = require('@aws-amplify/ui-react').useTheme;
     mockUseTheme.mockReturnValue({ tokens: { space: {} } });
 
     render(<SignInHeader />);
@@ -112,7 +119,6 @@ describe('SignInHeader', () => {
   });
 
   test('renders with different theme tokens', () => {
-    const mockUseTheme = require('@aws-amplify/ui-react').useTheme;
     mockUseTheme.mockReturnValue({
       tokens: {
         space: {
@@ -161,7 +167,6 @@ describe('SignInHeader', () => {
   });
 
   test('handles theme hook errors gracefully', () => {
-    const mockUseTheme = require('@aws-amplify/ui-react').useTheme;
     mockUseTheme.mockImplementation(() => {
       throw new Error('Theme error');
     });
@@ -177,7 +182,6 @@ describe('SignInHeader', () => {
   });
 
   test('renders with minimal theme tokens', () => {
-    const mockUseTheme = require('@aws-amplify/ui-react').useTheme;
     mockUseTheme.mockReturnValue({
       tokens: {
         space: {
@@ -193,7 +197,6 @@ describe('SignInHeader', () => {
   });
 
   test('maintains structure with complex theme values', () => {
-    const mockUseTheme = require('@aws-amplify/ui-react').useTheme;
     mockUseTheme.mockReturnValue({
       tokens: {
         space: {

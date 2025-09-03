@@ -4,7 +4,15 @@ import React from 'react';
 
 import { Header } from '../../../components/login/Header';
 
-// Mock AWS Amplify UI components
+// Mock function
+const mockUseTheme = jest.fn(() => ({
+  tokens: {
+    space: {
+      xl: '2rem',
+    },
+  },
+}));
+
 jest.mock('@aws-amplify/ui-react', () => ({
   Flex: ({ children, justifyContent }) => (
     <div data-testid='flex' data-justify-content={justifyContent}>
@@ -20,19 +28,23 @@ jest.mock('@aws-amplify/ui-react', () => ({
       style={style}
     />
   ),
-  useTheme: jest.fn(() => ({
-    tokens: {
-      space: {
-        xl: '2rem',
-      },
-    },
-  })),
+  useTheme: mockUseTheme,
 }));
 
 // Mock the logo import
 jest.mock('../../../assets/logo.svg', () => 'test-logo.svg');
 
 describe('Header', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockUseTheme.mockReturnValue({
+      tokens: {
+        space: {
+          xl: '2rem',
+        },
+      },
+    });
+  });
   test('renders header component', () => {
     render(<Header />);
 
@@ -76,8 +88,6 @@ describe('Header', () => {
   });
 
   test('uses AWS Amplify useTheme hook', () => {
-    const mockUseTheme = require('@aws-amplify/ui-react').useTheme;
-
     render(<Header />);
 
     expect(mockUseTheme).toHaveBeenCalled();
@@ -90,7 +100,6 @@ describe('Header', () => {
         lg: '1.5rem',
       },
     };
-    const mockUseTheme = require('@aws-amplify/ui-react').useTheme;
     mockUseTheme.mockReturnValue({ tokens: mockTokens });
 
     render(<Header />);
@@ -110,7 +119,6 @@ describe('Header', () => {
   });
 
   test('renders without crashing when useTheme returns undefined tokens', () => {
-    const mockUseTheme = require('@aws-amplify/ui-react').useTheme;
     mockUseTheme.mockReturnValue({ tokens: {} });
 
     render(<Header />);
@@ -119,7 +127,6 @@ describe('Header', () => {
   });
 
   test('renders without crashing when useTheme returns undefined space', () => {
-    const mockUseTheme = require('@aws-amplify/ui-react').useTheme;
     mockUseTheme.mockReturnValue({ tokens: { space: {} } });
 
     render(<Header />);
@@ -165,7 +172,6 @@ describe('Header', () => {
   });
 
   test('renders with different theme tokens', () => {
-    const mockUseTheme = require('@aws-amplify/ui-react').useTheme;
     mockUseTheme.mockReturnValue({
       tokens: {
         space: {
