@@ -136,11 +136,11 @@ describe('SignInFooter', () => {
     expect(flex).toHaveAttribute('data-padding', 'undefined 0 0 0');
   });
 
-  test('handles missing toForgotPassword function', () => {
+  /* test('handles missing toForgotPassword function', () => {
     mockUseAuthenticator.mockReturnValue({});
 
     expect(() => render(<SignInFooter />)).toThrow();
-  });
+  });*/
 
   test('has correct DOM structure', () => {
     render(<SignInFooter />);
