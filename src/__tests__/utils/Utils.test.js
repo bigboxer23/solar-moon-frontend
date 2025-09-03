@@ -3,30 +3,15 @@ import { render, screen } from '@testing-library/react';
 import { format } from 'date-fns';
 import React from 'react';
 
-// Mock the search service to avoid ES6 import issues
-jest.mock('../../services/search', () => ({
-  DAY: 86400000,
-  HOUR: 3600000,
-  MONTH: 2592000000,
-  WEEK: 604800000,
-  YEAR: 31536000000,
-}));
-
-// Mock the SiteManagement component to avoid import chain issues  
-jest.mock('../../components/views/site-management/SiteManagement', () => ({
-  noSite: 'No Site',
-}));
-
-const { DAY, HOUR, MONTH, WEEK, YEAR } = require('../../services/search');
 import {
   compare,
   debounce,
   defaultIfEmpty,
   findSiteNameFromSiteId,
   formatMessage,
+  getDaysLeftInTrial,
   getDeviceIdToNameMap,
   getDisplayName,
-  getDaysLeftInTrial,
   getFormattedDate,
   getFormattedDaysHoursMinutes,
   getFormattedShortTime,
@@ -43,18 +28,36 @@ import {
   sortDevices,
   timeIncrementToText,
   timeLabel,
+  TIPPY_DELAY,
   transformMultiLineForHTMLDisplay,
   truncate,
-  TIPPY_DELAY,
 } from '../../utils/Utils';
+
+// Mock the search service to avoid ES6 import issues
+jest.mock('../../services/search', () => ({
+  DAY: 86400000,
+  HOUR: 3600000,
+  MONTH: 2592000000,
+  WEEK: 604800000,
+  YEAR: 31536000000,
+}));
+
+// Mock the SiteManagement component to avoid import chain issues
+jest.mock('../../components/views/site-management/SiteManagement', () => ({
+  noSite: 'No Site',
+}));
+
+const { DAY, HOUR, MONTH, WEEK, YEAR } = require('../../services/search');
 
 // Mock Tippy component
 jest.mock('@tippyjs/react', () => {
-  return ({ children, content }) => (
-    <div data-testid="tippy" data-content={content}>
+  const MockTippy = ({ children, content }) => (
+    <div data-content={content} data-testid='tippy'>
       {children}
     </div>
   );
+  MockTippy.displayName = 'MockTippy';
+  return MockTippy;
 });
 
 // Mock localStorage
@@ -198,8 +201,8 @@ describe('Utils', () => {
 
       const result = getDeviceIdToNameMap(devices);
       expect(result).toEqual({
-        '1': 'Device 1',
-        '2': 'Device 2',
+        1: 'Device 1',
+        2: 'Device 2',
       });
     });
 
@@ -337,7 +340,7 @@ describe('Utils', () => {
     it('getWeatherIconWithTippy creates tippy wrapper', () => {
       const result = getWeatherIconWithTippy('Sunny', 'clear-day', 0.5);
       render(result);
-      
+
       expect(screen.getByTestId('tippy')).toBeInTheDocument();
     });
   });
@@ -370,7 +373,7 @@ describe('Utils', () => {
       const unixTimestamp = '1703520645'; // Unix timestamp
       const message = `Error occurred at ${unixTimestamp}`;
       const result = formatMessage(message);
-      
+
       expect(result).not.toContain(unixTimestamp);
       expect(result).toMatch(/Error occurred at \w+ \d+, \d+ \d+:\d+ [ap]m/i);
     });
@@ -379,7 +382,7 @@ describe('Utils', () => {
       const unixTimestamp = '1703520645123'; // Unix timestamp in ms
       const message = `Error occurred at ${unixTimestamp}`;
       const result = formatMessage(message);
-      
+
       expect(result).not.toContain(unixTimestamp);
       expect(result).toMatch(/Error occurred at \w+ \d+, \d+ \d+:\d+ [ap]m/i);
     });
@@ -395,26 +398,26 @@ describe('Utils', () => {
       const startDate = new Date('2023-12-25T00:00:00');
       const increment = DAY;
       const result = timeLabel(startDate, increment);
-      
+
       expect(result).toBe('Dec 25, 23 - Dec 26, 23');
     });
 
     it('caps end date at current time', () => {
       jest.useFakeTimers();
       jest.setSystemTime(new Date('2023-12-25T12:00:00'));
-      
+
       const startDate = new Date('2023-12-24T00:00:00');
       const increment = DAY * 2; // Would go past current time
       const result = timeLabel(startDate, increment);
-      
+
       expect(result).toBe('Dec 24, 23 - Dec 25, 23');
-      
+
       jest.useRealTimers();
     });
   });
 
   describe('maybeSetTimeWindow', () => {
-    let mockSetStartDate, mockSetNextDisabled;
+    let mockSetNextDisabled, mockSetStartDate;
 
     beforeEach(() => {
       mockSetStartDate = jest.fn();
@@ -430,21 +433,23 @@ describe('Utils', () => {
     it('sets start date when within bounds', () => {
       const startDate = new Date('2023-12-24T00:00:00');
       maybeSetTimeWindow(startDate, DAY, mockSetStartDate, mockSetNextDisabled);
-      
-      expect(mockSetStartDate).toHaveBeenCalledWith(new Date('2023-12-25T00:00:00'));
+
+      expect(mockSetStartDate).toHaveBeenCalledWith(
+        new Date('2023-12-25T00:00:00'),
+      );
     });
 
     it('does not set start date when out of bounds', () => {
       const startDate = new Date('2023-12-25T00:00:00');
       maybeSetTimeWindow(startDate, DAY, mockSetStartDate, mockSetNextDisabled);
-      
+
       expect(mockSetStartDate).not.toHaveBeenCalled();
     });
 
     it('sets next disabled correctly', () => {
       const startDate = new Date('2023-12-23T00:00:00');
       maybeSetTimeWindow(startDate, DAY, mockSetStartDate, mockSetNextDisabled);
-      
+
       expect(mockSetNextDisabled).toHaveBeenCalled();
     });
   });
@@ -553,9 +558,9 @@ describe('Utils', () => {
     it('transforms newlines to JSX with br tags', () => {
       const error = 'Line 1\nLine 2\rLine 3\r\nLine 4';
       const result = transformMultiLineForHTMLDisplay(error);
-      
+
       render(result);
-      
+
       expect(screen.getByText('Line 1')).toBeInTheDocument();
       expect(screen.getByText('Line 2')).toBeInTheDocument();
       expect(screen.getByText('Line 3')).toBeInTheDocument();
@@ -565,7 +570,7 @@ describe('Utils', () => {
     it('handles single line without newlines', () => {
       const error = 'Single line error';
       const result = transformMultiLineForHTMLDisplay(error);
-      
+
       render(result);
       expect(screen.getByText('Single line error')).toBeInTheDocument();
     });

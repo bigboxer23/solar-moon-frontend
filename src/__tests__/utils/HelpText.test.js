@@ -49,19 +49,25 @@ describe('HelpText', () => {
       expect(DEVICE_HELP_TEXT3).toContain('display name');
       expect(DEVICE_HELP_TEXT3).toContain('Solar Moon interface');
       expect(DEVICE_HELP_TEXT3).toContain('device name is the technical name');
-      expect(DEVICE_HELP_TEXT3).toContain('automatically be placed into the active site');
+      expect(DEVICE_HELP_TEXT3).toContain(
+        'automatically be placed into the active site',
+      );
     });
 
     it('DEVICE_HELP_TEXT4 contains expected content about device name matching', () => {
       expect(DEVICE_HELP_TEXT4).toContain('starting from the manage page');
       expect(DEVICE_HELP_TEXT4).toContain('device name must match');
-      expect(DEVICE_HELP_TEXT4).toContain('passed from the device with the data');
+      expect(DEVICE_HELP_TEXT4).toContain(
+        'passed from the device with the data',
+      );
     });
   });
 
   describe('MAPPING_HELP_TEXT constant', () => {
     it('contains expected content about mappings functionality', () => {
-      expect(MAPPING_HELP_TEXT).toContain('Mappings provide a way to translate');
+      expect(MAPPING_HELP_TEXT).toContain(
+        'Mappings provide a way to translate',
+      );
       expect(MAPPING_HELP_TEXT).toContain('data points from your devices');
       expect(MAPPING_HELP_TEXT).toContain('Solar Moon needs');
       expect(MAPPING_HELP_TEXT).toContain('graphs, analytics and alerts');
@@ -142,7 +148,7 @@ describe('HelpText', () => {
     it('site help texts mention key concepts', () => {
       const siteTexts = [SITE_HELP_TEXT1, SITE_HELP_TEXT2, SITE_HELP_TEXT3];
       const combinedSiteText = siteTexts.join(' ');
-      
+
       expect(combinedSiteText).toContain('site');
       expect(combinedSiteText).toContain('devices');
       expect(combinedSiteText).toContain('data');
@@ -156,7 +162,7 @@ describe('HelpText', () => {
         DEVICE_HELP_TEXT4,
       ];
       const combinedDeviceText = deviceTexts.join(' ');
-      
+
       expect(combinedDeviceText).toContain('device');
       expect(combinedDeviceText).toContain('manage');
       expect(combinedDeviceText).toContain('name');
