@@ -35,7 +35,6 @@ describe('StackedStatBlock', () => {
     jest.clearAllMocks();
   });
 
-
   test('applies correct base CSS classes', () => {
     const { container } = renderWithIntl(
       <StackedStatBlock
@@ -123,7 +122,6 @@ describe('StackedStatBlock', () => {
     expect(component).not.toHaveClass('cursor-pointer');
   });
 
-
   test('does not display tooltip when hover values equal display values', () => {
     renderWithIntl(
       <StackedStatBlock
@@ -163,7 +161,6 @@ describe('StackedStatBlock', () => {
     const tooltips = document.querySelectorAll('[data-testid="tippy-wrapper"]');
     expect(tooltips).toHaveLength(0);
   });
-
 
   test('applies correct text styling classes to upper section', () => {
     const { container } = renderWithIntl(
@@ -218,7 +215,6 @@ describe('StackedStatBlock', () => {
     );
   });
 
-
   test('unit styling has correct classes', () => {
     const { container } = renderWithIntl(
       <StackedStatBlock
@@ -237,5 +233,4 @@ describe('StackedStatBlock', () => {
       expect(span).toHaveTextContent(/k[W|W]h?/);
     });
   });
-
 });

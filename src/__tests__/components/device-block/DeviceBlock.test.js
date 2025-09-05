@@ -186,7 +186,7 @@ describe('DeviceBlock', () => {
     // The body div should not exist if no body content is provided
     const statBlocksContainer = container.querySelector('.my-2.grid');
     expect(statBlocksContainer).toBeInTheDocument();
-    
+
     // There should be no additional div after the stat blocks container
     const bodyDiv = statBlocksContainer.nextElementSibling;
     expect(bodyDiv).toBeNull();
