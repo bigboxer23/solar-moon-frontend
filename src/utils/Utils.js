@@ -272,7 +272,8 @@ export const maybeSetTimeWindow = (
 export const roundToDecimals = (number, decimals) => {
   const rounded = Math.round(number * decimals) / decimals;
   if (Number.isNaN(rounded)) {
-    if (number.indexOf('.') !== -1) {
+    // Handle string inputs for backwards compatibility
+    if (typeof number === 'string' && number.indexOf('.') !== -1) {
       return number.substring(0, number.indexOf('.'));
     }
     return number;
@@ -281,7 +282,7 @@ export const roundToDecimals = (number, decimals) => {
 };
 
 export const roundTwoDigit = (number) => {
-  return roundToDecimals(number, 10);
+  return roundToDecimals(number, 100);
 };
 
 export const truncate = (str, n) => {

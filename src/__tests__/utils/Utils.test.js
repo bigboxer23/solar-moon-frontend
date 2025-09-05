@@ -471,8 +471,8 @@ describe('Utils', () => {
 
   describe('roundTwoDigit', () => {
     it('rounds to two decimal places', () => {
-      expect(roundTwoDigit(1.234)).toBe(1.2);
-      expect(roundTwoDigit(1.267)).toBe(1.3);
+      expect(roundTwoDigit(1.234)).toBe(1.23);
+      expect(roundTwoDigit(1.267)).toBe(1.27);
     });
   });
 

@@ -26,7 +26,7 @@ export default function DeviceBlock({
   const truncatedSubtitle = truncate(subtitle, truncationLength);
   const hoverTitle = title.length === truncatedTitle.length ? '' : title;
   const hoverSubtitle =
-    subtitle.length === truncatedSubtitle.length ? '' : subtitle;
+    subtitle && subtitle.length === truncatedSubtitle.length ? '' : subtitle;
   const style = classNames(
     'DeviceBlock rounded-lg p-4 sm:p-6 bg-gray-50 dark:bg-gray-700 h-fit',
     className,
