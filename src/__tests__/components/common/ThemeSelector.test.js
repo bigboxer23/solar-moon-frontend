@@ -15,12 +15,12 @@ jest.mock('@tippyjs/react', () => {
   };
 });
 
-jest.mock('../../utils/Utils', () => ({
+jest.mock('../../../utils/Utils', () => ({
   TIPPY_DELAY: 300,
   useStickyState: jest.fn(),
 }));
 
-const { useStickyState } = require('../../utils/Utils');
+const { useStickyState } = require('../../../utils/Utils');
 
 // Mock window.matchMedia
 Object.defineProperty(window, 'matchMedia', {
@@ -56,6 +56,18 @@ describe('ThemeSelector', () => {
     useStickyState.mockReturnValue([null, mockSetActiveTheme]);
     document.documentElement.classList.add.mockClear();
     document.documentElement.classList.remove.mockClear();
+
+    // Reset matchMedia to default behavior
+    window.matchMedia.mockImplementation((query) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: jest.fn(),
+      removeListener: jest.fn(),
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+      dispatchEvent: jest.fn(),
+    }));
   });
 
   test('renders compact theme selector by default', () => {
@@ -96,8 +108,7 @@ describe('ThemeSelector', () => {
     useStickyState.mockReturnValue(['light', mockSetActiveTheme]);
     const { container } = render(<ThemeSelector />);
 
-    const buttons = container.querySelectorAll('button');
-    const lightButton = buttons[1]; // Second button
+    const [, lightButton] = container.querySelectorAll('button');
     expect(lightButton).toHaveClass('bg-gray-500', 'text-gray-100');
   });
 
@@ -105,8 +116,7 @@ describe('ThemeSelector', () => {
     useStickyState.mockReturnValue(['dark', mockSetActiveTheme]);
     const { container } = render(<ThemeSelector />);
 
-    const buttons = container.querySelectorAll('button');
-    const darkButton = buttons[2]; // Third button
+    const [, , darkButton] = container.querySelectorAll('button');
     expect(darkButton).toHaveClass('bg-gray-500', 'text-gray-100');
   });
 
@@ -245,9 +255,7 @@ describe('ThemeSelector', () => {
     useStickyState.mockReturnValue(['light', mockSetActiveTheme]); // Light is active
     const { container } = render(<ThemeSelector />);
 
-    const buttons = container.querySelectorAll('button');
-    const systemButton = buttons[0]; // Should be inactive
-    const darkButton = buttons[2]; // Should be inactive
+    const [systemButton, , darkButton] = container.querySelectorAll('button');
 
     expect(systemButton).toHaveClass(
       'hover:bg-gray-300',

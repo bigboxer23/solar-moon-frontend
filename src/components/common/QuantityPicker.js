@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Button } from 'react-bootstrap';
+
+import Button from './Button';
 
 function QuantityPicker({ min, max, setCount }) {
   const [disableDec, setDisableDec] = useState(true);

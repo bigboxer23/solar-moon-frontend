@@ -4,20 +4,6 @@ import React from 'react';
 
 import QuantityPicker from '../../../components/common/QuantityPicker';
 
-// Mock react-bootstrap Button
-jest.mock('react-bootstrap', () => ({
-  Button: ({ children, onClick, className, variant, ...props }) => (
-    <button
-      className={className}
-      data-variant={variant}
-      onClick={onClick}
-      {...props}
-    >
-      {children}
-    </button>
-  ),
-}));
-
 describe('QuantityPicker', () => {
   const mockSetCount = jest.fn();
 
@@ -188,12 +174,12 @@ describe('QuantityPicker', () => {
     expect(input).toHaveClass('quantity-display');
   });
 
-  test('buttons have correct variants', () => {
+  test('buttons have correct variant classes', () => {
     render(<QuantityPicker max={10} min={1} setCount={mockSetCount} />);
 
     const buttons = screen.getAllByRole('button');
     buttons.forEach((button) => {
-      expect(button).toHaveAttribute('data-variant', 'secondary');
+      expect(button).toHaveClass('Button-secondary');
     });
   });
 
