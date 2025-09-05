@@ -24,11 +24,17 @@ export default function StackedStatBlock({
   });
 
   const getInternalContent = (title, value, unit) => {
+    const roundedValue =
+      value !== null && value !== undefined ? roundTwoDigit(value) : null;
     return (
       <div className='flex'>
         <div>{title}&nbsp;</div>
         <div>
-          {value && <FormattedNumber value={roundTwoDigit(value)} />}
+          {roundedValue !== null ? (
+            <FormattedNumber value={roundedValue} />
+          ) : (
+            ''
+          )}
           <span className='text-sm text-gray-400'>&nbsp;{unit}</span>
         </div>
       </div>
@@ -41,7 +47,7 @@ export default function StackedStatBlock({
     }
     return (
       <Tippy
-        content={`${intl.formatNumber(roundTwoDigit(hover))} ${hoverUnit}`}
+        content={`${hover !== null && hover !== undefined ? intl.formatNumber(roundTwoDigit(hover)) : ''} ${hoverUnit}`}
         delay={TIPPY_DELAY}
         placement='top'
       >
