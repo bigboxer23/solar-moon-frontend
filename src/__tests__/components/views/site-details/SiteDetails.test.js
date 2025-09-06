@@ -275,10 +275,6 @@ describe('SiteDetails', () => {
     searchService.parseStackedTimeSeriesData.mockImplementation(
       (data, nameMap) => data,
     );
-    searchService.DAY = 'day';
-    searchService.GROUPED_BAR = 'groupedBar';
-    searchService.TOTAL_AGGREGATION = 'total';
-    searchService.AVG_AGGREGATION = 'avg';
 
     // Mock successful service call
     services.getSiteOverview.mockResolvedValue({ data: mockSiteData });
@@ -499,7 +495,7 @@ describe('SiteDetails', () => {
         expect(screen.queryByTestId('loader')).not.toBeInTheDocument();
       });
 
-      const alertComponent = screen.getAllByTestId('stacked-alerts-info')[0];
+      const [alertComponent] = screen.getAllByTestId('stacked-alerts-info');
       fireEvent.click(alertComponent);
 
       expect(mockNavigate).toHaveBeenCalledWith('/alerts?siteId=site-123');

@@ -242,9 +242,6 @@ describe('Overview', () => {
     searchService.parseCurrentPower.mockImplementation(
       (data) => data?.current || 0,
     );
-    searchService.DAY = 'day';
-    searchService.TOTAL_AGGREGATION = 'total';
-    searchService.AVG_AGGREGATION = 'avg';
 
     // Mock successful service call
     services.getOverviewData.mockResolvedValue({ data: mockOverviewData });
@@ -351,7 +348,7 @@ describe('Overview', () => {
         expect(screen.queryByTestId('loader')).not.toBeInTheDocument();
       });
 
-      const alertComponent = screen.getAllByTestId('stacked-alerts-info')[0];
+      const [alertComponent] = screen.getAllByTestId('stacked-alerts-info');
       fireEvent.click(alertComponent);
 
       expect(mockNavigate).toHaveBeenCalledWith('/alerts');
