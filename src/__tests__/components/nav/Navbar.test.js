@@ -89,7 +89,7 @@ describe('Navbar', () => {
       renderWithRouter(<Navbar trialDate={30} />, '/reports');
 
       const reportsLinks = screen.getAllByRole('link', { name: 'Reports' });
-      const desktopReportsLink = reportsLinks[0]; // Desktop link
+      const [desktopReportsLink] = reportsLinks; // Desktop link
       expect(desktopReportsLink).toHaveClass('border-b-2');
     });
 
@@ -282,7 +282,7 @@ describe('Navbar', () => {
       routes.forEach(({ path, linkText }) => {
         const { unmount } = renderWithRouter(<Navbar trialDate={30} />, path);
 
-        const activeLink = screen.getAllByRole('link', { name: linkText })[0]; // Desktop link
+        const [activeLink] = screen.getAllByRole('link', { name: linkText }); // Desktop link
         expect(activeLink).toHaveClass(
           'border-b-2',
           'border-black',
@@ -303,9 +303,10 @@ describe('Navbar', () => {
       const hamburgerIcon = hamburgerContainer.querySelector('svg');
       fireEvent.click(hamburgerIcon);
 
-      const mobileReportsLink = screen.getAllByRole('link', {
+      const reportsLinks = screen.getAllByRole('link', {
         name: 'Reports',
-      })[1]; // Mobile link
+      });
+      const [, mobileReportsLink] = reportsLinks; // Mobile link (second item)
       expect(mobileReportsLink).toHaveClass(
         'border-b-2',
         'border-black',
