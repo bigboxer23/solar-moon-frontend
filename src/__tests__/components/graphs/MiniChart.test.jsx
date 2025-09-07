@@ -76,7 +76,7 @@ describe('MiniChart', () => {
       expect(chartData).toHaveProperty('datasets');
       expect(chartData.datasets).toHaveLength(1);
 
-      const dataset = chartData.datasets[0];
+      const [dataset] = chartData.datasets;
       expect(dataset.data).toEqual(mockGraphData);
       expect(dataset.borderColor).toBe('#5178C2');
       expect(dataset.borderWidth).toBe(3);
