@@ -1,9 +1,11 @@
 # Claude Code Project Guide
 
 ## Project Overview
+
 React frontend for solar monitoring application with AWS Amplify authentication, data visualization, and device management capabilities.
 
 ## Key Technologies
+
 - React 18 with functional components and hooks
 - AWS Amplify for authentication and API
 - React Router for navigation
@@ -13,6 +15,7 @@ React frontend for solar monitoring application with AWS Amplify authentication,
 - ESLint + Prettier for code quality
 
 ## Project Structure
+
 ```
 src/
 ├── components/
@@ -31,6 +34,7 @@ src/
 ```
 
 ## Development Commands
+
 ```bash
 # Start development server
 npm start
@@ -51,6 +55,7 @@ npm run build
 ## Testing Patterns
 
 ### Component Testing
+
 - Use `render()` from React Testing Library
 - Mock external dependencies (AWS Amplify, external libraries)
 - Test user interactions with `fireEvent`
@@ -58,15 +63,17 @@ npm run build
 - Test accessibility with proper aria attributes
 
 ### Navigation Testing
+
 ```javascript
 const renderWithRouter = (component, initialRoute = '/') => {
   return render(
-    <MemoryRouter initialEntries={[initialRoute]}>{component}</MemoryRouter>
+    <MemoryRouter initialEntries={[initialRoute]}>{component}</MemoryRouter>,
   );
 };
 ```
 
 ### Common Mocks
+
 ```javascript
 // AWS Amplify
 jest.mock('@aws-amplify/auth', () => ({
@@ -78,10 +85,13 @@ jest.mock('@aws-amplify/ui-react', () => ({
 }));
 
 // External libraries
-jest.mock('@szhsin/react-menu', () => ({ /* mock implementation */ }));
+jest.mock('@szhsin/react-menu', () => ({
+  /* mock implementation */
+}));
 ```
 
 ## Code Style Guidelines
+
 - Use functional components with hooks
 - Prefer `const` declarations
 - Use array destructuring (`const [first] = array`) instead of index access
@@ -90,24 +100,28 @@ jest.mock('@szhsin/react-menu', () => ({ /* mock implementation */ }));
 - Keep components focused and testable
 
 ## Authentication Flow
+
 - Uses AWS Amplify Authenticator
 - Profile management through ProfileMenu component
 - Trial period tracking with `getDaysLeftInTrial()`
 - Sign out functionality integrated in navigation
 
 ## Navigation Structure
+
 - Desktop: Horizontal navigation with ProfileMenu dropdown
 - Mobile: Hamburger menu with slide-out navigation
 - Active route highlighting with border styling
 - Responsive design with `sm:` prefixes
 
 ## Data Visualization
+
 - Chart components for power generation data
 - Weather integration for solar forecasting
 - Device status monitoring and alerts
 - Report generation and export functionality
 
 ## State Management
+
 - Uses React hooks (useState, useEffect, custom hooks)
 - `useStickyState` for persistent preferences
 - Context-based theme switching
@@ -116,23 +130,27 @@ jest.mock('@szhsin/react-menu', () => ({ /* mock implementation */ }));
 ## Key Components to Understand
 
 ### Navigation Components
+
 - `HeaderBar`: Simple header with logo and title
 - `Navbar`: Main navigation with responsive design
 - `ProfileMenu`: User profile dropdown with settings
 
 ### Common Components
+
 - `Avatar`: User profile image with fallback
 - `Button`: Styled button variants
 - `Modal`: Overlay dialogs
 - `ThemeSelector`: Dark/light mode toggle
 
 ### View Components
+
 - `Dashboard/Overview`: Main dashboard with charts
 - `Reports`: Data export and reporting
 - `SiteDetails`: Individual site monitoring
 - `SiteManagement`: Site and device configuration
 
 ## Testing Strategy
+
 - Aim for high test coverage (90%+)
 - Test component rendering, props, user interactions
 - Mock external dependencies appropriately
@@ -140,18 +158,21 @@ jest.mock('@szhsin/react-menu', () => ({ /* mock implementation */ }));
 - Test both happy path and edge cases
 
 ## Common Issues
+
 - React Router future flag warnings (expected in tests)
 - ESLint prefer-destructuring rule (use array destructuring)
 - Icon rendering in tests (use SVG selectors instead of class names)
 - Mock persistence between tests (reset in beforeEach)
 
 ## Performance Considerations
+
 - Lazy load route components where appropriate
 - Optimize chart rendering for large datasets
 - Use React.memo for expensive components
 - Implement proper loading states for async operations
 
 ## Deployment
+
 - Builds to static files for CDN deployment
 - Environment variables for API endpoints
 - AWS Amplify hosting integration
