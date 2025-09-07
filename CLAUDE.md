@@ -40,9 +40,9 @@ src/
 npm start
 
 # Run tests
-npm test
+npm test -- --watchAll=false
 npm test -- --watchAll=false --coverage  # With coverage
-npm test -- --testPathPattern=ComponentName  # Specific tests
+npm test -- --watchAll=false --testPathPattern=ComponentName  # Specific tests
 
 # Linting and formatting
 npm run lint

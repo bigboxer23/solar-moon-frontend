@@ -33,6 +33,11 @@ export default function SiteDetailsGraph({
   startDate,
 }) {
   const [nextDisabled, setNextDisabled] = useState(true);
+
+  if (!graphData) {
+    return <div className='SiteDetailsGraph h-40 w-full'></div>;
+  }
+
   const datasets = devices
     .filter(
       (d) =>
@@ -123,9 +128,6 @@ export default function SiteDetailsGraph({
       yAxisKey: 'avg',
     },
   };
-  if (!graphData) {
-    return <div className='SiteDetailsGraph h-40 w-full'></div>;
-  }
 
   return (
     <>
