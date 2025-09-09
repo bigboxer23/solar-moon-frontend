@@ -16,6 +16,11 @@
   },
   "plugins": ["react", "prettier", "simple-import-sort", "import"],
   "ignorePatterns": ["**/aws-exports.js"],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
   "rules": {
     "sort-vars": "error",
     "react/jsx-sort-props": ["error"],
