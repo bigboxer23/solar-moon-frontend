@@ -318,7 +318,9 @@ describe('Device', () => {
     const allDeleteButtons = screen.getAllByRole('button', {
       name: /delete device/i,
     });
-    const confirmDeleteButton = allDeleteButtons[1]; // The second one is in the modal
+    const [, confirmDeleteButton] = screen.getAllByRole('button', {
+      name: /delete device/i,
+    });
     fireEvent.click(confirmDeleteButton);
 
     await waitFor(() => {
@@ -347,7 +349,9 @@ describe('Device', () => {
     const allDeleteButtons = screen.getAllByRole('button', {
       name: /delete device/i,
     });
-    const confirmDeleteButton = allDeleteButtons[1]; // The second one is in the modal
+    const [, confirmDeleteButton] = screen.getAllByRole('button', {
+      name: /delete device/i,
+    });
     fireEvent.click(confirmDeleteButton);
 
     await waitFor(() => {

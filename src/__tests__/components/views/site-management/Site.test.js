@@ -150,7 +150,7 @@ describe('Site', () => {
     const confirmDeleteButton = screen.getAllByRole('button', {
       name: /delete site/i,
     });
-    const confirmButton = confirmDeleteButton[1]; // The second one is in the modal
+    const [, confirmButton] = confirmDeleteButton; // The second one is in the modal
     fireEvent.click(confirmButton);
 
     await waitFor(() => {
@@ -167,7 +167,7 @@ describe('Site', () => {
     const confirmDeleteButton = screen.getAllByRole('button', {
       name: /delete site/i,
     });
-    const confirmButton = confirmDeleteButton[1];
+    const [, confirmButton] = confirmDeleteButton;
     fireEvent.click(confirmButton);
 
     await waitFor(() => {
@@ -189,7 +189,7 @@ describe('Site', () => {
     const confirmDeleteButton = screen.getAllByRole('button', {
       name: /delete site/i,
     });
-    const confirmButton = confirmDeleteButton[1];
+    const [, confirmButton] = confirmDeleteButton;
     fireEvent.click(confirmButton);
 
     await waitFor(() => {
@@ -206,7 +206,7 @@ describe('Site', () => {
     const confirmDeleteButton = screen.getAllByRole('button', {
       name: /delete site/i,
     });
-    const confirmButton = confirmDeleteButton[1];
+    const [, confirmButton] = confirmDeleteButton;
     fireEvent.click(confirmButton);
 
     await waitFor(() => {
@@ -225,7 +225,7 @@ describe('Site', () => {
     const confirmDeleteButton = screen.getAllByRole('button', {
       name: /delete site/i,
     });
-    const confirmButton = confirmDeleteButton[1];
+    const [, confirmButton] = confirmDeleteButton;
     fireEvent.click(confirmButton);
 
     await waitFor(() => {
@@ -248,7 +248,7 @@ describe('Site', () => {
     const confirmDeleteButton = screen.getAllByRole('button', {
       name: /delete site/i,
     });
-    const confirmButton = confirmDeleteButton[1];
+    const [, confirmButton] = confirmDeleteButton;
     fireEvent.click(confirmButton);
 
     await waitFor(() => {
@@ -268,7 +268,7 @@ describe('Site', () => {
     const confirmDeleteButton = screen.getAllByRole('button', {
       name: /delete site/i,
     });
-    const confirmButton = confirmDeleteButton[1];
+    const [, confirmButton] = confirmDeleteButton;
     fireEvent.click(confirmButton);
 
     await waitFor(() => {
