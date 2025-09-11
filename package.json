@@ -73,5 +73,14 @@
     "stylelint": "^16.8.1",
     "stylelint-prettier": "^5.0.2"
   },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}",
+      "!src/**/*.d.ts",
+      "!src/graphql/**/*",
+      "!src/aws-exports.js",
+      "!src/index.js"
+    ]
+  },
   "proxy": "https://app.solarmoonanalytics.com"
 }
