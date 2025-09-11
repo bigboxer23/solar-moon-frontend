@@ -2,7 +2,7 @@
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 
-import WeatherDetailsChart from '../../../../components/views/site-details/WeatherDetailsChart';
+import WeatherDetailsChart from '../../../../components/views/site-details/WeatherDetailsChart.jsx';
 
 describe('WeatherDetailsChart', () => {
   describe('Basic Rendering', () => {
