@@ -4,18 +4,25 @@ import React from 'react';
 
 import MiniChart from '../../../components/graphs/MiniChart';
 
+// Variable to capture chart options for callback testing
+let capturedOptions = null;
+
 // Mock react-chartjs-2 components
 jest.mock('react-chartjs-2', () => ({
-  Line: ({ data, options, plugins }) => (
-    <div
-      data-chart-data={JSON.stringify(data)}
-      data-chart-options={JSON.stringify(options)}
-      data-chart-plugins={JSON.stringify(plugins)}
-      data-testid='line-chart'
-    >
-      Mocked Line Chart
-    </div>
-  ),
+  Line: ({ data, options, plugins }) => {
+    // Capture the actual options (including callbacks) for testing
+    capturedOptions = options;
+    return (
+      <div
+        data-chart-data={JSON.stringify(data)}
+        data-chart-options={JSON.stringify(options)}
+        data-chart-plugins={JSON.stringify(plugins)}
+        data-testid='line-chart'
+      >
+        Mocked Line Chart
+      </div>
+    );
+  },
 }));
 
 // Mock external dependencies
@@ -39,6 +46,7 @@ describe('MiniChart', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    capturedOptions = null;
   });
 
   describe('Basic Rendering', () => {
@@ -230,6 +238,56 @@ describe('MiniChart', () => {
       // We just verify the callbacks object exists, as individual functions are lost during serialization
       expect(chartOptions.plugins.tooltip.callbacks).toBeDefined();
       expect(typeof chartOptions.plugins.tooltip.callbacks).toBe('object');
+    });
+
+    test('tooltip title callback executes correctly and calls getFormattedTime', () => {
+      const getFormattedTimeMock =
+        require('../../../utils/Utils').getFormattedTime;
+      getFormattedTimeMock.mockReturnValue('10:30 AM');
+
+      render(<MiniChart graphData={mockGraphData} />);
+
+      // Access the captured options with the actual callback functions
+      expect(capturedOptions).not.toBeNull();
+      const titleCallback = capturedOptions.plugins.tooltip.callbacks.title;
+
+      // Create mock context that matches Chart.js structure
+      const mockContext = [{ dataIndex: 1, datasetIndex: 0 }];
+
+      // Execute the actual callback function
+      const result = titleCallback(mockContext);
+
+      // Verify getFormattedTime was called with the correct date
+      expect(getFormattedTimeMock).toHaveBeenCalledWith(mockGraphData[1].date);
+      expect(result).toBe('10:30 AM');
+    });
+
+    test('tooltip label callback formats values correctly with kW unit', () => {
+      render(<MiniChart graphData={mockGraphData} />);
+
+      // Access the captured options with the actual callback functions
+      expect(capturedOptions).not.toBeNull();
+      const labelCallback = capturedOptions.plugins.tooltip.callbacks.label;
+
+      // Test with formatted value
+      const mockContextWithValue = { formattedValue: '15.5' };
+      const resultWithValue = labelCallback(mockContextWithValue);
+      expect(resultWithValue).toBe('15.5 kW');
+
+      // Test with empty formatted value
+      const mockContextEmpty = { formattedValue: '' };
+      const resultEmpty = labelCallback(mockContextEmpty);
+      expect(resultEmpty).toBe('');
+
+      // Test with null formatted value
+      const mockContextNull = { formattedValue: null };
+      const resultNull = labelCallback(mockContextNull);
+      expect(resultNull).toBe('');
+
+      // Test with undefined formatted value
+      const mockContextUndefined = { formattedValue: undefined };
+      const resultUndefined = labelCallback(mockContextUndefined);
+      expect(resultUndefined).toBe('');
     });
   });
 
