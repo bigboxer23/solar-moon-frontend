@@ -80,6 +80,12 @@
       "!src/graphql/**/*",
       "!src/aws-exports.js",
       "!src/index.js"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "src/graphql/",
+      "src/aws-exports.js",
+      "src/index.js"
     ]
   },
   "proxy": "https://app.solarmoonanalytics.com"
