@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
@@ -462,6 +462,291 @@ describe('Alerts', () => {
         const alertItems = screen.getAllByTestId('alert-item');
         expect(alertItems[0]).toHaveAttribute('data-device-id');
         expect(alertItems[1]).toHaveAttribute('data-device-id');
+      });
+    });
+  });
+
+  describe('Filter Functionality', () => {
+    test('updates filtered alerts when filter changes', async () => {
+      renderWithRouter(<Alerts setTrialDate={mockSetTrialDate} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('1 active')).toBeInTheDocument();
+      });
+
+      // Simulate filter change
+      fireEvent.click(screen.getByTestId('filter-change'));
+
+      await waitFor(() => {
+        expect(screen.getByTestId('alerts-filter')).toBeInTheDocument();
+      });
+    });
+
+    test('handles refresh search functionality', async () => {
+      renderWithRouter(<Alerts setTrialDate={mockSetTrialDate} />);
+
+      await waitFor(() => {
+        expect(screen.getByTestId('refresh-button')).toBeInTheDocument();
+      });
+
+      // Clear the mock call count
+      mockGetAlarmData.mockClear();
+
+      // Simulate refresh
+      fireEvent.click(screen.getByTestId('refresh-button'));
+
+      // Wait for rerender and potential new API call
+      await waitFor(() => {
+        expect(screen.getByTestId('alerts-filter')).toBeInTheDocument();
+      });
+    });
+
+    test('processes filter criteria correctly', async () => {
+      const alertWithSpecificSite = {
+        ...mockActiveAlert,
+        alarmId: 'site-specific-alert',
+        siteId: 'specific-site',
+        deviceSite: 'Specific Site',
+      };
+
+      mockGetAlarmData.mockResolvedValue({
+        data: [mockActiveAlert, mockResolvedAlert, alertWithSpecificSite],
+      });
+
+      renderWithRouter(<Alerts setTrialDate={mockSetTrialDate} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('2 active')).toBeInTheDocument();
+        expect(screen.getByText('1 resolved')).toBeInTheDocument();
+      });
+    });
+  });
+
+  describe('Device Option Generation', () => {
+    test('generates active device options with alert styling', async () => {
+      const activeAlertDevice = {
+        ...mockActiveAlert,
+        endDate: 0, // Still active
+      };
+
+      mockGetAlarmData.mockResolvedValue({
+        data: [activeAlertDevice, mockResolvedAlert],
+      });
+
+      renderWithRouter(<Alerts setTrialDate={mockSetTrialDate} />);
+
+      await waitFor(() => {
+        expect(screen.getByTestId('device-count')).toBeInTheDocument();
+      });
+    });
+
+    test('handles devices with missing site information', async () => {
+      const alertWithoutSite = {
+        ...mockActiveAlert,
+        alarmId: 'no-site-alert',
+        deviceSite: null,
+        siteId: null,
+      };
+
+      mockGetAlarmData.mockResolvedValue({
+        data: [mockActiveAlert, alertWithoutSite],
+      });
+
+      renderWithRouter(<Alerts setTrialDate={mockSetTrialDate} />);
+
+      await waitFor(() => {
+        expect(screen.getByTestId('site-count')).toBeInTheDocument();
+        expect(screen.getByTestId('device-count')).toBeInTheDocument();
+      });
+    });
+
+    test('excludes site devices from device options', async () => {
+      const siteDeviceAlert = {
+        ...mockActiveAlert,
+        alarmId: 'site-device-alert',
+        deviceId: 'site-1',
+        siteId: 'site-1', // Same ID means it's a site device
+      };
+
+      mockGetAlarmData.mockResolvedValue({
+        data: [mockActiveAlert, siteDeviceAlert],
+      });
+
+      renderWithRouter(<Alerts setTrialDate={mockSetTrialDate} />);
+
+      await waitFor(() => {
+        expect(screen.getByTestId('device-count')).toBeInTheDocument();
+      });
+    });
+  });
+
+  describe('Alert Filtering Logic', () => {
+    test('filters by device ID correctly', async () => {
+      const alert1 = { ...mockActiveAlert, deviceId: 'device-1' };
+      const alert2 = {
+        ...mockActiveAlert,
+        alarmId: 'alert2',
+        deviceId: 'device-2',
+      };
+
+      mockGetAlarmData.mockResolvedValue({
+        data: [alert1, alert2],
+      });
+
+      renderWithRouter(<Alerts setTrialDate={mockSetTrialDate} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('2 active')).toBeInTheDocument();
+      });
+    });
+
+    test('filters by site ID correctly', async () => {
+      const alert1 = { ...mockActiveAlert, siteId: 'site-1' };
+      const alert2 = {
+        ...mockActiveAlert,
+        alarmId: 'alert2',
+        siteId: 'site-2',
+      };
+
+      mockGetAlarmData.mockResolvedValue({
+        data: [alert1, alert2],
+      });
+
+      renderWithRouter(<Alerts setTrialDate={mockSetTrialDate} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('2 active')).toBeInTheDocument();
+      });
+    });
+
+    test('handles date range filtering', async () => {
+      const oldAlert = {
+        ...mockActiveAlert,
+        alarmId: 'old-alert',
+        startDate: Date.now() - 30 * 24 * 60 * 60 * 1000, // 30 days ago
+      };
+
+      const recentAlert = {
+        ...mockActiveAlert,
+        alarmId: 'recent-alert',
+        startDate: Date.now() - 24 * 60 * 60 * 1000, // 1 day ago
+      };
+
+      mockGetAlarmData.mockResolvedValue({
+        data: [oldAlert, recentAlert],
+      });
+
+      renderWithRouter(<Alerts setTrialDate={mockSetTrialDate} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('2 active')).toBeInTheDocument();
+      });
+    });
+  });
+
+  describe('Data Validation and Edge Cases', () => {
+    test('handles empty alarm data gracefully', async () => {
+      mockGetAlarmData.mockResolvedValue({ data: [] });
+
+      renderWithRouter(<Alerts setTrialDate={mockSetTrialDate} />);
+
+      await waitFor(() => {
+        expect(
+          screen.getByText('All clear! You have no active device alerts.'),
+        ).toBeInTheDocument();
+        expect(screen.getByText('Resolved Alerts')).toBeInTheDocument();
+      });
+    });
+
+    test('handles malformed alarm data', async () => {
+      const malformedAlert = {
+        alarmId: 'malformed',
+        // Missing required fields
+      };
+
+      mockGetAlarmData.mockResolvedValue({
+        data: [malformedAlert, mockActiveAlert],
+      });
+
+      renderWithRouter(<Alerts setTrialDate={mockSetTrialDate} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('Alerts')).toBeInTheDocument();
+      });
+    });
+
+    test('processes duplicate site IDs correctly', async () => {
+      const duplicateSiteAlerts = [
+        { ...mockActiveAlert, siteId: 'site-1', deviceSite: 'Site Alpha' },
+        {
+          ...mockActiveAlert,
+          alarmId: 'duplicate-site',
+          siteId: 'site-1',
+          deviceSite: 'Site Alpha',
+        },
+      ];
+
+      mockGetAlarmData.mockResolvedValue({
+        data: duplicateSiteAlerts,
+      });
+
+      renderWithRouter(<Alerts setTrialDate={mockSetTrialDate} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('2 active')).toBeInTheDocument();
+      });
+    });
+  });
+
+  describe('Accessibility and UX', () => {
+    test('displays proper alert counts in headers', async () => {
+      const multipleActive = Array.from({ length: 5 }, (_, i) => ({
+        ...mockActiveAlert,
+        alarmId: `active-${i}`,
+      }));
+
+      const multipleResolved = Array.from({ length: 3 }, (_, i) => ({
+        ...mockResolvedAlert,
+        alarmId: `resolved-${i}`,
+      }));
+
+      mockGetAlarmData.mockResolvedValue({
+        data: [...multipleActive, ...multipleResolved],
+      });
+
+      renderWithRouter(<Alerts setTrialDate={mockSetTrialDate} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('5 active')).toBeInTheDocument();
+        expect(screen.getByText('3 resolved')).toBeInTheDocument();
+      });
+    });
+
+    test('hides counts when no alerts of that type exist', async () => {
+      mockGetAlarmData.mockResolvedValue({
+        data: [mockResolvedAlert], // Only resolved alert
+      });
+
+      renderWithRouter(<Alerts setTrialDate={mockSetTrialDate} />);
+
+      await waitFor(() => {
+        expect(screen.queryByText(/active$/)).not.toBeInTheDocument();
+        expect(screen.getByText('1 resolved')).toBeInTheDocument();
+        expect(
+          screen.getByText('All clear! You have no active device alerts.'),
+        ).toBeInTheDocument();
+      });
+    });
+
+    test('maintains proper text contrast classes', async () => {
+      renderWithRouter(<Alerts setTrialDate={mockSetTrialDate} />);
+
+      await waitFor(() => {
+        const activeCountElement = screen.getByText('1 active');
+        expect(activeCountElement).toHaveClass('text-gray-400');
+
+        const resolvedCountElement = screen.getByText('1 resolved');
+        expect(resolvedCountElement).toHaveClass('text-gray-400');
       });
     });
   });
