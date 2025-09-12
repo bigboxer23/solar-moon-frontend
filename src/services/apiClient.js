@@ -26,6 +26,7 @@ api.interceptors.request.use(
 api.interceptors.response.use(undefined, (error) => {
   console.log(error);
   if (
+    error.response &&
     error.response.status === 403 &&
     error.response.data === 'No subscription is active'
   ) {
