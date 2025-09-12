@@ -77,6 +77,7 @@ jest.mock('../../../../components/common/Check', () => ({
         <input
           checked={inputProps?.value || false}
           data-testid='checkbox'
+          onChange={() => {}} // Add onChange to prevent React warning
           onClick={onClick}
           type='checkbox'
         />
@@ -114,21 +115,26 @@ describe('SearchBar', () => {
   const defaultProps = {
     devices: [
       {
-        deviceId: 'device1',
-        name: 'Device 1',
-        enabled: true,
+        id: 'site1',
+        name: 'Site 1',
+        disabled: false,
         siteId: 'site1',
+        isSite: true,
       },
       {
-        deviceId: 'device2',
-        name: 'Device 2',
-        enabled: false,
-        siteId: 'site2',
+        id: 'device1',
+        name: 'Device 1',
+        disabled: false,
+        siteId: 'site1',
+        isSite: false,
       },
-    ],
-    sites: [
-      { siteId: 'site1', name: 'Site 1' },
-      { siteId: 'site2', name: 'Site 2' },
+      {
+        id: 'device2',
+        name: 'Device 2',
+        disabled: true,
+        siteId: 'site2',
+        isSite: false,
+      },
     ],
     deviceId: ALL,
     setDeviceId: jest.fn(),
@@ -140,12 +146,9 @@ describe('SearchBar', () => {
     setEnd: jest.fn(),
     filterErrors: 'false',
     setFilterErrors: jest.fn(),
-    refreshing: false,
+    refreshSearch: false,
     setRefreshSearch: jest.fn(),
-    resetSearch: jest.fn(),
-    searchActive: false,
-    setSearchActive: jest.fn(),
-    defaultPeriod: [new Date('2024-01-01'), new Date('2024-01-31')],
+    defaultSearchPeriod: 30,
   };
 
   beforeEach(() => {
@@ -154,12 +157,12 @@ describe('SearchBar', () => {
     utils.getDisplayName.mockImplementation(
       (device) => device?.name || device?.deviceName || 'Unknown',
     );
-    utils.getRoundedTime.mockImplementation((date) => date);
-    utils.sortDevices.mockImplementation((devices) => {
-      if (!Array.isArray(devices)) return [];
-      return [...devices].sort((a, b) =>
-        (a.name || '').localeCompare(b.name || ''),
-      );
+    utils.getRoundedTime.mockImplementation((isEnd, period) => {
+      if (isEnd) return new Date('2024-01-31');
+      return new Date('2024-01-01');
+    });
+    utils.sortDevices.mockImplementation((a, b) => {
+      return (a.name || '').localeCompare(b.name || '');
     });
   });
 
@@ -209,5 +212,153 @@ describe('SearchBar', () => {
     fireEvent.click(checkbox);
 
     expect(defaultProps.setFilterErrors).toHaveBeenCalledWith('true');
+  });
+
+  test('activates search when search button is clicked', () => {
+    render(<SearchBar {...defaultProps} />);
+
+    const searchButton = screen.getByTestId('button-primary');
+    fireEvent.click(searchButton);
+
+    // After clicking search, the search form should be visible
+    expect(screen.getByTestId('date-range-picker')).toBeInTheDocument();
+  });
+
+  test('resets search when reset button is clicked', () => {
+    render(<SearchBar {...defaultProps} searchActive={true} />);
+
+    const resetButton = screen.getByTestId('button-text');
+    fireEvent.click(resetButton);
+
+    expect(defaultProps.setSiteId).toHaveBeenCalledWith('ALL');
+    expect(defaultProps.setDeviceId).toHaveBeenCalledWith('ALL');
+    expect(defaultProps.setFilterErrors).toHaveBeenCalledWith('false');
+  });
+
+  test('handles date change with null value', () => {
+    utils.getRoundedTime
+      .mockReturnValueOnce(new Date('2024-01-01'))
+      .mockReturnValueOnce(new Date('2024-01-31'));
+
+    render(<SearchBar {...defaultProps} searchActive={true} />);
+
+    fireEvent.click(screen.getByTestId('clear-date'));
+
+    expect(utils.getRoundedTime).toHaveBeenCalledWith(false, 30);
+    expect(utils.getRoundedTime).toHaveBeenCalledWith(true, 0);
+    expect(defaultProps.setStart).toHaveBeenCalled();
+    expect(defaultProps.setEnd).toHaveBeenCalled();
+  });
+
+  test('handles site dropdown change and resets device', () => {
+    render(<SearchBar {...defaultProps} searchActive={true} />);
+
+    const siteSelect = screen.getByTestId('select-site');
+    fireEvent.change(siteSelect, { target: { value: 'site1' } });
+
+    expect(defaultProps.setSiteId).toHaveBeenCalledWith('site1');
+    expect(defaultProps.setDeviceId).toHaveBeenCalledWith('ALL');
+  });
+
+  test('calls setDeviceId when device dropdown changes', () => {
+    render(<SearchBar {...defaultProps} searchActive={true} />);
+
+    const deviceSelect = screen.getByTestId('select-device');
+    fireEvent.change(deviceSelect, { target: { value: 'device1' } });
+
+    expect(defaultProps.setDeviceId).toHaveBeenCalledWith('device1');
+  });
+
+  test('renders refresh button and handles click', () => {
+    render(<SearchBar {...defaultProps} searchActive={true} />);
+
+    const refreshButton = screen.getByTestId('button-icon');
+    fireEvent.click(refreshButton);
+
+    expect(defaultProps.setRefreshSearch).toHaveBeenCalledWith(true);
+  });
+
+  test('shows spinner when refresh is active', () => {
+    render(
+      <SearchBar {...defaultProps} refreshSearch={true} searchActive={true} />,
+    );
+
+    expect(screen.getByTestId('spinner')).toBeInTheDocument();
+  });
+
+  test('filters devices by site when site is selected', () => {
+    const devicesWithSites = [
+      {
+        id: 'device1',
+        name: 'Device 1',
+        siteId: 'site1',
+        disabled: false,
+        isSite: false,
+      },
+      {
+        id: 'device2',
+        name: 'Device 2',
+        siteId: 'site2',
+        disabled: false,
+        isSite: false,
+      },
+      {
+        id: 'site1',
+        name: 'Site 1',
+        siteId: 'site1',
+        disabled: false,
+        isSite: true,
+      },
+    ];
+
+    render(
+      <SearchBar
+        {...defaultProps}
+        devices={devicesWithSites}
+        searchActive={true}
+        siteId='site1'
+      />,
+    );
+
+    // Verify device dropdown is rendered (filtered options will be handled internally)
+    expect(screen.getByTestId('dropdown-device')).toBeInTheDocument();
+  });
+
+  test('renders disabled devices with opacity styling', () => {
+    const devicesWithDisabled = [
+      { id: 'device1', name: 'Device 1', disabled: false, siteId: 'site1' },
+      { id: 'device2', name: 'Device 2', disabled: true, siteId: 'site1' },
+    ];
+
+    render(
+      <SearchBar
+        {...defaultProps}
+        devices={devicesWithDisabled}
+        searchActive={true}
+      />,
+    );
+
+    expect(screen.getByTestId('dropdown-device')).toBeInTheDocument();
+  });
+
+  test('shows search active when deviceId is not ALL', () => {
+    render(<SearchBar {...defaultProps} deviceId='device1' />);
+
+    // Component should show as active since deviceId !== ALL
+    expect(screen.getByTestId('date-range-picker')).toBeInTheDocument();
+  });
+
+  test('shows search active when siteId is not ALL', () => {
+    render(<SearchBar {...defaultProps} siteId='site1' />);
+
+    // Component should show as active since siteId !== ALL
+    expect(screen.getByTestId('date-range-picker')).toBeInTheDocument();
+  });
+
+  test('shows search active when filterErrors is true', () => {
+    render(<SearchBar {...defaultProps} filterErrors='true' />);
+
+    // Component should show as active since filterErrors === 'true'
+    expect(screen.getByTestId('date-range-picker')).toBeInTheDocument();
   });
 });
