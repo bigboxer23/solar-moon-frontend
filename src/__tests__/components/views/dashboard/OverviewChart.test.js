@@ -585,4 +585,115 @@ describe('OverviewChart', () => {
       );
     });
   });
+
+  describe('Tooltip Configuration', () => {
+    test('configures tooltip callbacks correctly for overall chart', () => {
+      render(<OverviewChart {...defaultProps} />);
+
+      const lineChart = screen.getByTestId('line-chart');
+      const chartOptions = JSON.parse(
+        lineChart.getAttribute('data-chart-options'),
+      );
+
+      const { tooltip } = chartOptions.plugins;
+      expect(tooltip.backgroundColor).toBe('#fff');
+      expect(tooltip.titleColor).toBe('#000');
+      expect(tooltip.bodyColor).toBe('#000');
+      expect(tooltip.displayColors).toBe(false);
+      expect(tooltip.boxPadding).toBe(8);
+      expect(tooltip.titleAlign).toBe('center');
+      expect(tooltip.bodyAlign).toBe('center');
+      expect(tooltip.callbacks).toBeDefined();
+    });
+
+    test('configures tooltip callbacks correctly for stacked charts', () => {
+      require('../../../../utils/Utils').useStickyState.mockReturnValue([
+        'stacked-line',
+        jest.fn(),
+      ]);
+
+      render(<OverviewChart {...defaultProps} />);
+
+      const lineChart = screen.getByTestId('line-chart');
+      const chartOptions = JSON.parse(
+        lineChart.getAttribute('data-chart-options'),
+      );
+
+      const { tooltip } = chartOptions.plugins;
+      expect(tooltip.backgroundColor).toBe('#fff');
+      expect(tooltip.titleColor).toBe('#000');
+      expect(tooltip.bodyColor).toBe('#000');
+      expect(tooltip.boxPadding).toBe(8);
+      expect(tooltip.titleAlign).toBe('center');
+      expect(tooltip.callbacks).toBeDefined();
+    });
+  });
+
+  describe('Data Updates', () => {
+    test('updates data when overviewData prop changes', () => {
+      const { rerender } = render(<OverviewChart {...defaultProps} />);
+
+      const newOverviewData = [
+        { date: Date.now() - 1800000, values: 25 },
+        { date: Date.now(), values: 30 },
+      ];
+
+      const {
+        parseAndCondenseStackedTimeSeriesData,
+      } = require('../../../../services/search');
+      parseAndCondenseStackedTimeSeriesData.mockClear();
+
+      rerender(
+        <OverviewChart {...defaultProps} overviewData={newOverviewData} />,
+      );
+
+      expect(parseAndCondenseStackedTimeSeriesData).toHaveBeenCalledWith(
+        newOverviewData,
+      );
+    });
+
+    test('handles rapid prop updates gracefully', () => {
+      const { rerender } = render(<OverviewChart {...defaultProps} />);
+
+      const updates = [
+        [{ date: Date.now() - 1800000, values: 25 }],
+        [{ date: Date.now() - 900000, values: 30 }],
+        [{ date: Date.now(), values: 35 }],
+      ];
+
+      updates.forEach((data) => {
+        rerender(<OverviewChart {...defaultProps} overviewData={data} />);
+      });
+
+      expect(screen.getByTestId('line-chart')).toBeInTheDocument();
+    });
+  });
+
+  describe('Performance Optimizations', () => {
+    test('does not reprocess data when overviewData is null', () => {
+      const {
+        parseAndCondenseStackedTimeSeriesData,
+      } = require('../../../../services/search');
+
+      parseAndCondenseStackedTimeSeriesData.mockClear();
+
+      render(<OverviewChart {...defaultProps} overviewData={null} />);
+
+      expect(parseAndCondenseStackedTimeSeriesData).not.toHaveBeenCalled();
+    });
+
+    test('maintains chart responsiveness configuration', () => {
+      render(<OverviewChart {...defaultProps} />);
+
+      const lineChart = screen.getByTestId('line-chart');
+      const chartOptions = JSON.parse(
+        lineChart.getAttribute('data-chart-options'),
+      );
+
+      expect(chartOptions.responsive).toBe(true);
+      expect(chartOptions.maintainAspectRatio).toBe(false);
+      expect(chartOptions.interaction.mode).toBe('index');
+      expect(chartOptions.interaction.intersect).toBe(false);
+    });
+  });
 });

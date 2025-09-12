@@ -698,5 +698,198 @@ describe('SiteDetailsGraph', () => {
       const chartData2 = JSON.parse(barChart.getAttribute('data-chart-data'));
       expect(chartData2.datasets).toHaveLength(2); // Device A and Device B
     });
+
+    test('handles data filtering with mismatched names gracefully', () => {
+      const mismatchedData = [
+        { name: 'Unknown Device', date: Date.now(), avg: 10 },
+      ];
+
+      render(
+        <SiteDetailsGraph
+          {...defaultProps}
+          graphData={mismatchedData}
+          graphType='bar'
+        />,
+      );
+
+      const barChart = screen.getByTestId('bar-chart');
+      const chartData = JSON.parse(barChart.getAttribute('data-chart-data'));
+
+      // Should still have datasets for known devices, even with empty data
+      expect(chartData.datasets).toHaveLength(2);
+    });
+  });
+
+  describe('Chart Height and Container', () => {
+    test('renders chart container with correct height', () => {
+      const { container } = render(<SiteDetailsGraph {...defaultProps} />);
+
+      const chartHeight = container.querySelector('.h-72');
+      expect(chartHeight).toBeInTheDocument();
+      expect(chartHeight).toHaveClass('h-72');
+    });
+
+    test('maintains container structure for empty state', () => {
+      const { container } = render(
+        <SiteDetailsGraph {...defaultProps} graphData={null} />,
+      );
+
+      const emptyContainer = container.querySelector('.SiteDetailsGraph');
+      expect(emptyContainer).toHaveClass('h-40', 'w-full');
+    });
+  });
+
+  describe('Next Button State Management', () => {
+    test('initializes with next button disabled', () => {
+      render(<SiteDetailsGraph {...defaultProps} />);
+
+      const nextButton = screen.getByLabelText('next time period');
+      expect(nextButton).toBeDisabled();
+      expect(nextButton).toHaveClass('pointer-events-none', 'opacity-50');
+    });
+
+    test('next button maintains disabled state during interactions', () => {
+      render(<SiteDetailsGraph {...defaultProps} />);
+
+      // Click previous button
+      fireEvent.click(screen.getByLabelText('previous time period'));
+
+      const nextButton = screen.getByLabelText('next time period');
+      expect(nextButton).toBeDisabled();
+    });
+  });
+
+  describe('Dataset Configuration Details', () => {
+    test('configures dataset properties correctly for bar charts', () => {
+      const { getDisplayName } = require('../../../../utils/Utils');
+      getDisplayName.mockImplementation(
+        (device) => device.name || device.deviceName || 'Unknown',
+      );
+
+      render(<SiteDetailsGraph {...defaultProps} graphType='bar' />);
+
+      const barChart = screen.getByTestId('bar-chart');
+      const chartData = JSON.parse(barChart.getAttribute('data-chart-data'));
+
+      chartData.datasets.forEach((dataset) => {
+        expect(dataset).toHaveProperty('fill', false);
+        expect(dataset).toHaveProperty('categoryPercentage', 0.76);
+        expect(dataset).toHaveProperty('barThickness', 'flex');
+        expect(dataset).toHaveProperty('barPercentage', 1);
+      });
+    });
+
+    test('omits special GROUPED_BAR properties for other chart types', () => {
+      render(<SiteDetailsGraph {...defaultProps} graphType='bar' />);
+
+      const barChart = screen.getByTestId('bar-chart');
+      const chartData = JSON.parse(barChart.getAttribute('data-chart-data'));
+
+      chartData.datasets.forEach((dataset) => {
+        expect(dataset).not.toHaveProperty('skipNull');
+        expect(dataset).not.toHaveProperty('clip');
+      });
+    });
+  });
+
+  describe('Button Accessibility', () => {
+    test('all buttons have proper aria-label attributes', () => {
+      render(<SiteDetailsGraph {...defaultProps} />);
+
+      expect(screen.getByLabelText('previous time period')).toBeInTheDocument();
+      expect(screen.getByLabelText('next time period')).toBeInTheDocument();
+      expect(
+        screen.getByLabelText('site stacked line graph'),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByLabelText('site stacked bar graph'),
+      ).toBeInTheDocument();
+      expect(screen.getByLabelText('grouped bar graph')).toBeInTheDocument();
+      expect(screen.getByLabelText('overview graph')).toBeInTheDocument();
+    });
+
+    test('disabled next button maintains accessibility attributes', () => {
+      render(<SiteDetailsGraph {...defaultProps} />);
+
+      const nextButton = screen.getByLabelText('next time period');
+      expect(nextButton).toHaveAttribute('disabled');
+      expect(nextButton).toHaveAttribute('aria-label', 'next time period');
+    });
+  });
+
+  describe('Data Transformation', () => {
+    test('processes and transforms data correctly for each dataset', () => {
+      const { getDisplayName } = require('../../../../utils/Utils');
+
+      render(<SiteDetailsGraph {...defaultProps} graphType='bar' />);
+
+      // getDisplayName should be called for each non-site device
+      const nonSiteDevices = mockDevices.filter((d) => !d.isSite);
+      expect(getDisplayName).toHaveBeenCalledTimes(nonSiteDevices.length);
+
+      nonSiteDevices.forEach((device) => {
+        expect(getDisplayName).toHaveBeenCalledWith(device);
+      });
+    });
+
+    test('filters graph data by device name for each dataset', () => {
+      render(<SiteDetailsGraph {...defaultProps} graphType='bar' />);
+
+      const barChart = screen.getByTestId('bar-chart');
+      const chartData = JSON.parse(barChart.getAttribute('data-chart-data'));
+
+      // Each dataset should represent data for a specific device
+      expect(chartData.datasets).toHaveLength(2);
+      chartData.datasets.forEach((dataset, index) => {
+        expect(dataset.data).toBeDefined();
+        expect(Array.isArray(dataset.data)).toBe(true);
+      });
+    });
+  });
+
+  describe('Performance and Rendering', () => {
+    test('renders efficiently with large device lists', () => {
+      const largeDeviceList = Array.from({ length: 20 }, (_, i) => ({
+        id: `device-${i}`,
+        name: `Device ${i}`,
+        deviceName: `Device ${i}`,
+        isSite: i % 5 === 0, // Every 5th device is a site
+      }));
+
+      const largeGraphData = largeDeviceList.flatMap((device, deviceIndex) =>
+        Array.from({ length: 10 }, (_, i) => ({
+          name: device.name,
+          date: Date.now() - i * 3600000,
+          avg: Math.random() * 100,
+        })),
+      );
+
+      render(
+        <SiteDetailsGraph
+          {...defaultProps}
+          devices={largeDeviceList}
+          graphData={largeGraphData}
+          graphType='bar'
+        />,
+      );
+
+      expect(screen.getByTestId('bar-chart')).toBeInTheDocument();
+    });
+
+    test('handles rapid graph type changes efficiently', () => {
+      const { rerender } = render(<SiteDetailsGraph {...defaultProps} />);
+
+      const graphTypes = ['bar', 'line', 'overview', 'GROUPED_BAR'];
+
+      graphTypes.forEach((graphType) => {
+        rerender(<SiteDetailsGraph {...defaultProps} graphType={graphType} />);
+
+        if (graphType === 'line' || graphType === 'overview') {
+          expect(screen.getByTestId('line-chart')).toBeInTheDocument();
+        } else {
+          expect(screen.getByTestId('bar-chart')).toBeInTheDocument();
+        }
+      });
+    });
   });
 });
