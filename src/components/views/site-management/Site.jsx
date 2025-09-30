@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { AiOutlineDelete } from 'react-icons/ai';
 
 import { deleteDevice, getDevices } from '../../../services/services';
-import { sortDevices } from '../../../utils/Utils';
+import { sortDevicesWithDisabled } from '../../../utils/Utils';
 import AlertSection from '../../common/AlertSection';
 import Button from '../../common/Button';
 import Spinner from '../../common/Spinner';
@@ -46,7 +46,7 @@ const Site = ({ data, devices, setDevices, setActiveSiteId }) => {
       {devices
         .filter((device) => device.siteId === site.id)
         .filter((device) => !device.isSite)
-        .sort(sortDevices)
+        .sort(sortDevicesWithDisabled)
         .map((device) => {
           return (
             <Device

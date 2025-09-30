@@ -119,6 +119,17 @@ export const sortDevices = (d1, d2) => {
   return compare(getDisplayName(d1), getDisplayName(d2));
 };
 
+export const sortDevicesWithDisabled = (d1, d2) => {
+  const siteSort = compare(d1.site, d2.site);
+  if (siteSort !== 0) {
+    return siteSort;
+  }
+  if (d1.disabled !== d2.disabled) {
+    return d1.disabled ? 1 : -1;
+  }
+  return compare(getDisplayName(d1), getDisplayName(d2));
+};
+
 export const getRoundedTimeFromOffset = (offset) => {
   return offset === HOUR
     ? new Date(new Date().getTime() - offset)
