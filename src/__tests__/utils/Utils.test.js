@@ -26,6 +26,7 @@ import {
   roundToDecimals,
   roundTwoDigit,
   sortDevices,
+  sortDevicesWithDisabled,
   timeIncrementToText,
   timeLabel,
   TIPPY_DELAY,
@@ -244,6 +245,55 @@ describe('Utils', () => {
         { site: 'Site A', name: 'Device B' },
         { site: 'Site B', name: 'Device A' },
       ]);
+    });
+  });
+
+  describe('sortDevicesWithDisabled', () => {
+    it('sorts disabled devices to the bottom', () => {
+      const devices = [
+        { site: 'Site A', name: 'Device B', disabled: true },
+        { site: 'Site A', name: 'Device A', disabled: false },
+        { site: 'Site A', name: 'Device C', disabled: true },
+      ];
+
+      const sorted = devices.sort(sortDevicesWithDisabled);
+      expect(sorted).toEqual([
+        { site: 'Site A', name: 'Device A', disabled: false },
+        { site: 'Site A', name: 'Device B', disabled: true },
+        { site: 'Site A', name: 'Device C', disabled: true },
+      ]);
+    });
+
+    it('sorts by site first, then by disabled status, then by display name', () => {
+      const devices = [
+        { site: 'Site B', name: 'Device A', disabled: false },
+        { site: 'Site A', name: 'Device C', disabled: true },
+        { site: 'Site A', name: 'Device A', disabled: false },
+        { site: 'Site A', name: 'Device B', disabled: false },
+      ];
+
+      const sorted = devices.sort(sortDevicesWithDisabled);
+      expect(sorted).toEqual([
+        { site: 'Site A', name: 'Device A', disabled: false },
+        { site: 'Site A', name: 'Device B', disabled: false },
+        { site: 'Site A', name: 'Device C', disabled: true },
+        { site: 'Site B', name: 'Device A', disabled: false },
+      ]);
+    });
+
+    it('handles devices without disabled property', () => {
+      const devices = [
+        { site: 'Site A', name: 'Device B', disabled: true },
+        { site: 'Site A', name: 'Device A' },
+      ];
+
+      const sorted = devices.sort(sortDevicesWithDisabled);
+      expect(sorted[0]).toEqual({ site: 'Site A', name: 'Device A' });
+      expect(sorted[1]).toEqual({
+        site: 'Site A',
+        name: 'Device B',
+        disabled: true,
+      });
     });
   });
 
