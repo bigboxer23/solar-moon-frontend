@@ -4,7 +4,7 @@ import React from 'react';
 
 import Site from '../../../../components/views/site-management/Site';
 import { deleteDevice, getDevices } from '../../../../services/services';
-import { sortDevices } from '../../../../utils/Utils';
+import { sortDevicesWithDisabled } from '../../../../utils/Utils';
 
 jest.mock('../../../../services/services', () => ({
   deleteDevice: jest.fn(),
@@ -12,7 +12,7 @@ jest.mock('../../../../services/services', () => ({
 }));
 
 jest.mock('../../../../utils/Utils', () => ({
-  sortDevices: jest.fn((a, b) => a.name.localeCompare(b.name)),
+  sortDevicesWithDisabled: jest.fn((a, b) => a.name.localeCompare(b.name)),
 }));
 
 jest.mock('react-icons/ai', () => ({
@@ -276,10 +276,10 @@ describe('Site', () => {
     });
   });
 
-  test('sorts devices using sortDevices utility', () => {
+  test('sorts devices using sortDevicesWithDisabled utility', () => {
     render(<Site {...defaultProps} />);
 
-    expect(sortDevices).toHaveBeenCalled();
+    expect(sortDevicesWithDisabled).toHaveBeenCalled();
   });
 
   test('filters devices correctly', () => {
