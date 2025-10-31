@@ -517,6 +517,12 @@ describe('Utils', () => {
     it('returns string without decimal for NaN without decimal', () => {
       expect(roundToDecimals('test', 100)).toBe('test');
     });
+
+    it('returns 0 for numeric NaN values', () => {
+      expect(roundToDecimals(NaN, 100)).toBe(0);
+      expect(roundToDecimals(undefined / undefined, 100)).toBe(0);
+      expect(roundToDecimals(0 / 0, 100)).toBe(0);
+    });
   });
 
   describe('roundTwoDigit', () => {
