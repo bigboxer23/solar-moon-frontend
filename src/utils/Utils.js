@@ -317,7 +317,13 @@ export const isXS = (windowSize) => {
 };
 
 export const getDaysLeftInTrial = (date) => {
+  if (date == null || typeof date !== 'number' || isNaN(date)) {
+    return '';
+  }
   const days = Math.round((date + DAY * 90 - new Date().getTime()) / DAY);
+  if (days <= 0) {
+    return 'Trial Expired!';
+  }
   return `${days} day${days > 1 ? 's' : ''} left`;
 };
 

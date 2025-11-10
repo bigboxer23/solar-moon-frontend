@@ -216,7 +216,12 @@ describe('Overview', () => {
         weeklyMaxPower: { current: 100, max: 180 },
       },
     },
-    trialDate: '2024-12-31',
+    subscription: {
+      customerId: 'test-customer-id',
+      joinDate: '2024-12-31',
+      manualSubscriptionDate: 0,
+      packs: 0,
+    },
   };
 
   beforeEach(() => {
