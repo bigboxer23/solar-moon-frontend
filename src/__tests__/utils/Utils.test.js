@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import { render, screen } from '@testing-library/react';
+import { act, render, renderHook, screen } from '@testing-library/react';
 import { format } from 'date-fns';
 import React from 'react';
 
@@ -32,6 +32,7 @@ import {
   TIPPY_DELAY,
   transformMultiLineForHTMLDisplay,
   truncate,
+  useStickyState,
 } from '../../utils/Utils';
 
 // Mock the search service to avoid ES6 import issues
@@ -126,6 +127,106 @@ describe('Utils', () => {
 
       jest.advanceTimersByTime(100);
       expect(mockFn).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('useStickyState', () => {
+    it('returns default value when localStorage is empty', () => {
+      jest.spyOn(Storage.prototype, 'getItem').mockReturnValue(null);
+      const { result } = renderHook(() =>
+        useStickyState('default', 'test-key'),
+      );
+      expect(result.current[0]).toBe('default');
+      Storage.prototype.getItem.mockRestore();
+    });
+
+    it('returns parsed value from localStorage when available', () => {
+      jest
+        .spyOn(Storage.prototype, 'getItem')
+        .mockReturnValue(JSON.stringify('stored-value'));
+      const { result } = renderHook(() =>
+        useStickyState('default', 'test-key'),
+      );
+      expect(result.current[0]).toBe('stored-value');
+      Storage.prototype.getItem.mockRestore();
+    });
+
+    it('returns default value when localStorage contains "undefined" string', () => {
+      jest.spyOn(Storage.prototype, 'getItem').mockReturnValue('undefined');
+      const { result } = renderHook(() =>
+        useStickyState('default', 'test-key'),
+      );
+      expect(result.current[0]).toBe('default');
+      Storage.prototype.getItem.mockRestore();
+    });
+
+    it('returns default value when localStorage contains corrupted JSON', () => {
+      jest
+        .spyOn(Storage.prototype, 'getItem')
+        .mockReturnValue('{invalid json}');
+      const { result } = renderHook(() =>
+        useStickyState('default', 'test-key'),
+      );
+      expect(result.current[0]).toBe('default');
+      Storage.prototype.getItem.mockRestore();
+    });
+
+    it('stores value in localStorage when updated', () => {
+      jest.spyOn(Storage.prototype, 'getItem').mockReturnValue(null);
+      const setItemSpy = jest.spyOn(Storage.prototype, 'setItem');
+
+      const { result } = renderHook(() =>
+        useStickyState('default', 'test-key'),
+      );
+
+      act(() => {
+        result.current[1]('new-value');
+      });
+
+      expect(setItemSpy).toHaveBeenCalledWith(
+        'test-key',
+        JSON.stringify('new-value'),
+      );
+      Storage.prototype.getItem.mockRestore();
+      setItemSpy.mockRestore();
+    });
+
+    it('removes value from localStorage when set to null', () => {
+      jest
+        .spyOn(Storage.prototype, 'getItem')
+        .mockReturnValue(JSON.stringify('initial'));
+      const removeItemSpy = jest.spyOn(Storage.prototype, 'removeItem');
+
+      const { result } = renderHook(() =>
+        useStickyState('default', 'test-key'),
+      );
+
+      act(() => {
+        result.current[1](null);
+      });
+
+      expect(removeItemSpy).toHaveBeenCalledWith('test-key');
+      Storage.prototype.getItem.mockRestore();
+      removeItemSpy.mockRestore();
+    });
+
+    it('removes value from localStorage when set to undefined', () => {
+      jest
+        .spyOn(Storage.prototype, 'getItem')
+        .mockReturnValue(JSON.stringify('initial'));
+      const removeItemSpy = jest.spyOn(Storage.prototype, 'removeItem');
+
+      const { result } = renderHook(() =>
+        useStickyState('default', 'test-key'),
+      );
+
+      act(() => {
+        result.current[1](undefined);
+      });
+
+      expect(removeItemSpy).toHaveBeenCalledWith('test-key');
+      Storage.prototype.getItem.mockRestore();
+      removeItemSpy.mockRestore();
     });
   });
 
