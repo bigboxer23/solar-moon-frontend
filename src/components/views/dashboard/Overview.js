@@ -67,7 +67,7 @@ export default function Overview({ setTrialDate }) {
         setOverallTimeSeries(data.overall.timeSeries);
         setSitesGraphData(data.sitesOverviewData);
         handleSummaryHeader(data.overall);
-        setTrialDate(data.subscription?.joinDate);
+        setTrialDate(data.subscription?.joinDate || -1);
         setLoading(false);
       })
       .catch((e) => {
