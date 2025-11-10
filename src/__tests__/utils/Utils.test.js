@@ -608,6 +608,38 @@ describe('Utils', () => {
       const result = getDaysLeftInTrial(startDate);
       expect(result).toBe('1 day left');
     });
+
+    it('returns "Trial Expired!" when trial has expired', () => {
+      const startDate = new Date('2023-09-20T00:00:00').getTime();
+      const result = getDaysLeftInTrial(startDate);
+      expect(result).toBe('Trial Expired!');
+    });
+
+    it('returns "Trial Expired!" on the exact day trial ends', () => {
+      const startDate = new Date('2023-09-26T00:00:00').getTime();
+      const result = getDaysLeftInTrial(startDate);
+      expect(result).toBe('Trial Expired!');
+    });
+
+    it('returns empty string when date is null', () => {
+      const result = getDaysLeftInTrial(null);
+      expect(result).toBe('');
+    });
+
+    it('returns empty string when date is undefined', () => {
+      const result = getDaysLeftInTrial(undefined);
+      expect(result).toBe('');
+    });
+
+    it('returns empty string when date is NaN', () => {
+      const result = getDaysLeftInTrial(NaN);
+      expect(result).toBe('');
+    });
+
+    it('returns empty string when date is a string', () => {
+      const result = getDaysLeftInTrial('invalid');
+      expect(result).toBe('');
+    });
   });
 
   describe('transformMultiLineForHTMLDisplay', () => {
