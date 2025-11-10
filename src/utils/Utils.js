@@ -37,10 +37,17 @@ export function useSearchParamState(
 export function useStickyState(defaultValue, key) {
   const [value, setValue] = useState(() => {
     const stickyValue = window.localStorage.getItem(key);
-    return stickyValue !== null ? JSON.parse(stickyValue) : defaultValue;
+    if (stickyValue === null) {
+      return defaultValue;
+    }
+    try {
+      return JSON.parse(stickyValue);
+    } catch (e) {
+      return defaultValue;
+    }
   });
   useEffect(() => {
-    if (value === null) {
+    if (value === null || value === undefined) {
       window.localStorage.removeItem(key);
       return;
     }
