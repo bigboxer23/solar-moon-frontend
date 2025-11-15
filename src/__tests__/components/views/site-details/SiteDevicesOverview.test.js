@@ -17,6 +17,7 @@ jest.mock('../../../../services/search', () => ({
   AVG_AGGREGATION: 'avg',
   TOTAL_AGGREGATION: 'total',
   getAggregationValue: jest.fn(),
+  getBucketSize: jest.fn(() => '1m'),
   getInformationalErrorInfo: jest.fn(),
   parseCurrentAmperage: jest.fn(),
   parseCurrentPower: jest.fn(),
@@ -150,6 +151,7 @@ const renderWithRouter = (component) => {
 describe('SiteDevicesOverview', () => {
   const {
     getAggregationValue,
+    getBucketSize,
     getInformationalErrorInfo,
     parseCurrentAmperage,
     parseCurrentPower,
@@ -224,6 +226,7 @@ describe('SiteDevicesOverview', () => {
     // Setup mocks
     getRoundedTimeFromOffset.mockReturnValue(new Date('2023-01-01'));
     getDisplayName.mockImplementation((device) => device.name);
+    getBucketSize.mockReturnValue('1m');
     parseSearchReturn.mockImplementation((data) => data);
     getInformationalErrorInfo.mockReturnValue([]);
     parseCurrentPower.mockImplementation((data) => data?.power || 0);
@@ -433,8 +436,14 @@ describe('SiteDevicesOverview', () => {
     expect(miniCharts).toHaveLength(2);
 
     // Verify parseSearchReturn was called with correct data
-    expect(parseSearchReturn).toHaveBeenCalledWith(mockTimeSeriesData.device1);
-    expect(parseSearchReturn).toHaveBeenCalledWith(mockTimeSeriesData.device2);
+    expect(parseSearchReturn).toHaveBeenCalledWith(
+      mockTimeSeriesData.device1,
+      '1m',
+    );
+    expect(parseSearchReturn).toHaveBeenCalledWith(
+      mockTimeSeriesData.device2,
+      '1m',
+    );
   });
 
   test('renders CurrentPowerBlock with correct data', () => {

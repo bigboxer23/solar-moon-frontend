@@ -31,6 +31,7 @@ jest.mock('react-chartjs-2', () => ({
 // Mock external dependencies
 jest.mock('../../../../services/search', () => ({
   DAY: 'DAY',
+  getBucketSize: jest.fn(() => '1m'),
   parseAndCondenseStackedTimeSeriesData: jest.fn((data) => data || []),
   parseSearchReturn: jest.fn((data) => data || []),
 }));
@@ -124,6 +125,7 @@ describe('OverviewChart', () => {
       'overview',
       jest.fn(),
     ]);
+    require('../../../../services/search').getBucketSize.mockReturnValue('1m');
   });
 
   describe('Loading State', () => {
@@ -306,6 +308,7 @@ describe('OverviewChart', () => {
 
       expect(parseAndCondenseStackedTimeSeriesData).toHaveBeenCalledWith(
         mockOverviewData,
+        '1m',
       );
     });
 
@@ -315,9 +318,11 @@ describe('OverviewChart', () => {
 
       expect(parseSearchReturn).toHaveBeenCalledWith(
         mockSitesData['Site Alpha'].timeSeries,
+        '1m',
       );
       expect(parseSearchReturn).toHaveBeenCalledWith(
         mockSitesData['Site Beta'].timeSeries,
+        '1m',
       );
     });
   });
@@ -570,6 +575,7 @@ describe('OverviewChart', () => {
 
       expect(parseAndCondenseStackedTimeSeriesData).toHaveBeenCalledWith(
         mockOverviewData,
+        '1m',
       );
     });
 
@@ -579,9 +585,11 @@ describe('OverviewChart', () => {
 
       expect(parseSearchReturn).toHaveBeenCalledWith(
         mockSitesData['Site Alpha'].timeSeries,
+        '1m',
       );
       expect(parseSearchReturn).toHaveBeenCalledWith(
         mockSitesData['Site Beta'].timeSeries,
+        '1m',
       );
     });
   });
@@ -649,6 +657,7 @@ describe('OverviewChart', () => {
 
       expect(parseAndCondenseStackedTimeSeriesData).toHaveBeenCalledWith(
         newOverviewData,
+        '1m',
       );
     });
 

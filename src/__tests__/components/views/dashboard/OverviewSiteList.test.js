@@ -14,6 +14,7 @@ jest.mock('../../../../services/search', () => ({
     if (type === 'total') return 5000;
     return 0;
   }),
+  getBucketSize: jest.fn(() => '1m'),
   getInformationalErrorInfo: jest.fn(() => []),
   parseCurrentPower: jest.fn(() => 2500),
   parseMaxData: jest.fn(() => 3000),

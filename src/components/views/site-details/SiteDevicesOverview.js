@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   AVG_AGGREGATION,
   getAggregationValue,
+  getBucketSize,
   getInformationalErrorInfo,
   parseCurrentAmperage,
   parseCurrentPower,
@@ -30,6 +31,7 @@ export default function SiteDevicesOverview({
   timeIncrement,
 }) {
   const navigate = useNavigate();
+  const bucketSize = getBucketSize(timeIncrement, 'avgTotal');
 
   return (
     <div className='SiteDevicesOverview w-full'>
@@ -47,7 +49,10 @@ export default function SiteDevicesOverview({
               <DeviceBlock
                 body={
                   <MiniChart
-                    graphData={parseSearchReturn(timeSeriesData[device.id])}
+                    graphData={parseSearchReturn(
+                      timeSeriesData[device.id],
+                      bucketSize,
+                    )}
                   />
                 }
                 informationalErrors={getInformationalErrorInfo(
