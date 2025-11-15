@@ -4,6 +4,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import {
   AVG_AGGREGATION,
   getAggregationValue,
+  getBucketSize,
   getInformationalErrorInfo,
   parseCurrentPower,
   parseMaxData,
@@ -28,6 +29,7 @@ export default function OverviewSiteList({
   const [loading, setLoading] = useState(true);
   const [siteData, setSiteData] = useState([]);
   const navigate = useNavigate();
+  const bucketSize = getBucketSize(timeIncrement, 'avgTotal');
 
   useEffect(() => {
     if (sitesGraphData === null) {
@@ -71,7 +73,10 @@ export default function OverviewSiteList({
             <DeviceBlock
               body={
                 <MiniChart
-                  graphData={parseSearchReturn(site.graphData.timeSeries)}
+                  graphData={parseSearchReturn(
+                    site.graphData.timeSeries,
+                    bucketSize,
+                  )}
                   stepSize={20}
                 />
               }

@@ -12,6 +12,7 @@ import {
 
 import {
   DAY,
+  getBucketSize,
   parseAndCondenseStackedTimeSeriesData,
   parseSearchReturn,
 } from '../../../services/search';
@@ -46,8 +47,9 @@ export default function OverviewChart({
       return;
     }
     setLoading(false);
-    setData(parseAndCondenseStackedTimeSeriesData(overviewData));
-  }, [overviewData]);
+    const bucketSize = getBucketSize(timeIncrement, 'avgTotal');
+    setData(parseAndCondenseStackedTimeSeriesData(overviewData, bucketSize));
+  }, [overviewData, timeIncrement]);
 
   const overallDataset = {
     datasets: [
@@ -59,11 +61,12 @@ export default function OverviewChart({
     ],
   };
 
+  const bucketSize = getBucketSize(timeIncrement, 'avgTotal');
   const sitesDataset = {
     datasets: Object.entries(sitesData).map(([siteName, data]) => {
       return {
         label: siteName,
-        data: parseSearchReturn(data.timeSeries),
+        data: parseSearchReturn(data.timeSeries, bucketSize),
       };
     }),
   };

@@ -8,6 +8,7 @@ const CURRENT = 'Average Current';
 
 const VOLTAGE = 'Average Voltage (L-N)';
 
+export const TWENTY_MINUTES = 1200000;
 export const FORTY_FIVE = 2700000;
 
 export const HOUR = 3600000;
@@ -34,6 +35,40 @@ export function getBucketSize(offset, type) {
   if (offset <= WEEK + DAY) return grouped ? '1d' : '3h';
   if (offset <= MONTH + DAY) return grouped ? '4d' : '6h';
   return grouped ? '21d' : '1d';
+}
+
+/**
+ * Determines if the last time bucket should be dropped due to incomplete data.
+ * Given that data arrives every ~15 minutes, we need different strategies per bucket size.
+ *
+ * @param {string} bucketSize - The bucket size (e.g., '1m', '30m', '1h', '3h', '6h', '1d', '4d', '21d')
+ * @param {number} lastBucketTimestamp - Timestamp of the last bucket in milliseconds
+ * @param {number} now - Current timestamp in milliseconds (defaults to Date.now())
+ * @returns {boolean} - True if the last bucket should be dropped
+ */
+export function shouldDropLastBucket(
+  bucketSize,
+  lastBucketTimestamp,
+  now = Date.now(),
+) {
+  const bucketAge = now - lastBucketTimestamp;
+
+  // For minute/sub-hour buckets: always drop (definitely incomplete with 15-min data cadence)
+  if (bucketSize === '1m' || bucketSize === '30m' || bucketSize === '1h') {
+    return true;
+  }
+
+  // For 3h/6h buckets: drop if bucket started less than 20 minutes ago
+  if (bucketSize === '3h' || bucketSize === '6h') {
+    return bucketAge < TWENTY_MINUTES;
+  }
+
+  // For daily/multi-day buckets: drop if bucket started less than 1 hour ago
+  if (bucketSize === '1d' || bucketSize === '4d' || bucketSize === '21d') {
+    return bucketAge < HOUR;
+  }
+
+  return false;
 }
 
 function getTimeZone() {
@@ -76,8 +111,19 @@ function getJSONSearch(deviceId, siteId, start, end, type) {
   };
 }
 
-export function parseSearchReturn(data) {
-  return data.aggregations[DATE_HISTO].buckets.map((d) => {
+export function parseSearchReturn(data, bucketSize = null) {
+  let { buckets } = data.aggregations[DATE_HISTO];
+
+  // Drop last bucket if incomplete
+  if (bucketSize && buckets.length > 0) {
+    const lastBucket = buckets[buckets.length - 1];
+    const lastBucketTimestamp = Number(lastBucket.key);
+    if (shouldDropLastBucket(bucketSize, lastBucketTimestamp)) {
+      buckets = buckets.slice(0, -1);
+    }
+  }
+
+  return buckets.map((d) => {
     return { date: new Date(Number(d.key)), values: d[AVG].value };
   });
 }
@@ -96,9 +142,24 @@ export function getInformationalErrorInfo(data) {
   return errorSet.size === 0 ? null : Array.from(errorSet).join('\n');
 }
 
-export const parseStackedTimeSeriesData = function (data, deviceIdToName) {
+export const parseStackedTimeSeriesData = function (
+  data,
+  deviceIdToName,
+  bucketSize = null,
+) {
+  let { buckets } = data.aggregations[DATE_HISTO];
+
+  // Drop last bucket if incomplete
+  if (bucketSize && buckets.length > 0) {
+    const lastBucket = buckets[buckets.length - 1];
+    const lastBucketTimestamp = Number(lastBucket.key);
+    if (shouldDropLastBucket(bucketSize, lastBucketTimestamp)) {
+      buckets = buckets.slice(0, -1);
+    }
+  }
+
   const formattedData = [];
-  data.aggregations[DATE_HISTO].buckets.forEach((d) => {
+  buckets.forEach((d) => {
     const date = new Date(Number(d.key)).toISOString();
     d['sterms#terms'].buckets.forEach((v) => {
       formattedData.push({
@@ -152,9 +213,23 @@ const isDataStale = function (data) {
   }
 };
 
-export const parseAndCondenseStackedTimeSeriesData = function (data) {
+export const parseAndCondenseStackedTimeSeriesData = function (
+  data,
+  bucketSize = null,
+) {
+  let { buckets } = data.aggregations[DATE_HISTO];
+
+  // Drop last bucket if incomplete
+  if (bucketSize && buckets.length > 0) {
+    const lastBucket = buckets[buckets.length - 1];
+    const lastBucketTimestamp = Number(lastBucket.key);
+    if (shouldDropLastBucket(bucketSize, lastBucketTimestamp)) {
+      buckets = buckets.slice(0, -1);
+    }
+  }
+
   const formattedData = [];
-  data.aggregations[DATE_HISTO].buckets.forEach((d) => {
+  buckets.forEach((d) => {
     const point = { date: new Date(Number(d.key)), values: 0 };
     formattedData.push(point);
     d['sterms#terms'].buckets.forEach((v) => {

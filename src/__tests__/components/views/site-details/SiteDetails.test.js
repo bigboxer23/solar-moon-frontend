@@ -150,6 +150,7 @@ jest.mock('../../../../services/search', () => ({
   GROUPED_BAR: 'groupedBar',
   TOTAL_AGGREGATION: 'total',
   getAggregationValue: jest.fn(),
+  getBucketSize: jest.fn(() => '1m'),
   parseCurrentPower: jest.fn(),
   parseMaxData: jest.fn(),
   parseSearchReturn: jest.fn(),
@@ -267,6 +268,7 @@ describe('SiteDetails', () => {
     searchService.getAggregationValue.mockImplementation(
       (data, type) => data?.value || 0,
     );
+    searchService.getBucketSize.mockReturnValue('1m');
     searchService.parseMaxData.mockImplementation((data) => data?.max || 0);
     searchService.parseCurrentPower.mockImplementation(
       (data) => data?.current || 0,
@@ -632,6 +634,7 @@ describe('SiteDetails', () => {
         expect(searchService.parseStackedTimeSeriesData).toHaveBeenCalledWith(
           mockSiteData.timeSeries,
           { 'device-1': 'Device 1', 'device-2': 'Device 2' },
+          '1m',
         );
       });
     });
@@ -648,6 +651,7 @@ describe('SiteDetails', () => {
       await waitFor(() => {
         expect(searchService.parseSearchReturn).toHaveBeenCalledWith(
           subtractionSiteData.timeSeries,
+          '1m',
         );
       });
     });

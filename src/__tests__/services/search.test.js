@@ -23,7 +23,9 @@ import {
   parseMaxData,
   parseSearchReturn,
   parseStackedTimeSeriesData,
+  shouldDropLastBucket,
   TOTAL_AGGREGATION,
+  TWENTY_MINUTES,
   WEEK,
   YEAR,
 } from '../../services/search';
@@ -35,6 +37,7 @@ jest.mock('../../components/views/reports/ReportUtils', () => ({
 describe('search service', () => {
   describe('constants', () => {
     test('exports correct time constants', () => {
+      expect(TWENTY_MINUTES).toBe(1200000);
       expect(FORTY_FIVE).toBe(2700000);
       expect(HOUR).toBe(3600000);
       expect(DAY).toBe(86400000);
@@ -97,6 +100,82 @@ describe('search service', () => {
     test('returns 21d for large offsets (grouped)', () => {
       expect(getBucketSize(YEAR, GROUPED_BAR)).toBe('21d');
       expect(getBucketSize(MONTH + DAY + 1000, GROUPED_BAR)).toBe('21d');
+    });
+  });
+
+  describe('shouldDropLastBucket', () => {
+    const now = Date.now();
+
+    test('always drops 1m buckets', () => {
+      const lastBucketTimestamp = now - 30000; // 30 seconds ago
+      expect(shouldDropLastBucket('1m', lastBucketTimestamp, now)).toBe(true);
+    });
+
+    test('always drops 30m buckets', () => {
+      const lastBucketTimestamp = now - 10 * 60 * 1000; // 10 minutes ago
+      expect(shouldDropLastBucket('30m', lastBucketTimestamp, now)).toBe(true);
+    });
+
+    test('always drops 1h buckets', () => {
+      const lastBucketTimestamp = now - 30 * 60 * 1000; // 30 minutes ago
+      expect(shouldDropLastBucket('1h', lastBucketTimestamp, now)).toBe(true);
+    });
+
+    test('drops 3h buckets if less than 20 minutes old', () => {
+      const recentBucket = now - 10 * 60 * 1000; // 10 minutes ago
+      expect(shouldDropLastBucket('3h', recentBucket, now)).toBe(true);
+    });
+
+    test('keeps 3h buckets if more than 20 minutes old', () => {
+      const oldBucket = now - 25 * 60 * 1000; // 25 minutes ago
+      expect(shouldDropLastBucket('3h', oldBucket, now)).toBe(false);
+    });
+
+    test('drops 6h buckets if less than 20 minutes old', () => {
+      const recentBucket = now - 15 * 60 * 1000; // 15 minutes ago
+      expect(shouldDropLastBucket('6h', recentBucket, now)).toBe(true);
+    });
+
+    test('keeps 6h buckets if more than 20 minutes old', () => {
+      const oldBucket = now - 30 * 60 * 1000; // 30 minutes ago
+      expect(shouldDropLastBucket('6h', oldBucket, now)).toBe(false);
+    });
+
+    test('drops 1d buckets if less than 1 hour old', () => {
+      const recentBucket = now - 30 * 60 * 1000; // 30 minutes ago
+      expect(shouldDropLastBucket('1d', recentBucket, now)).toBe(true);
+    });
+
+    test('keeps 1d buckets if more than 1 hour old', () => {
+      const oldBucket = now - 90 * 60 * 1000; // 90 minutes ago
+      expect(shouldDropLastBucket('1d', oldBucket, now)).toBe(false);
+    });
+
+    test('drops 4d buckets if less than 1 hour old', () => {
+      const recentBucket = now - 45 * 60 * 1000; // 45 minutes ago
+      expect(shouldDropLastBucket('4d', recentBucket, now)).toBe(true);
+    });
+
+    test('keeps 4d buckets if more than 1 hour old', () => {
+      const oldBucket = now - 120 * 60 * 1000; // 120 minutes ago
+      expect(shouldDropLastBucket('4d', oldBucket, now)).toBe(false);
+    });
+
+    test('drops 21d buckets if less than 1 hour old', () => {
+      const recentBucket = now - 30 * 60 * 1000; // 30 minutes ago
+      expect(shouldDropLastBucket('21d', recentBucket, now)).toBe(true);
+    });
+
+    test('keeps 21d buckets if more than 1 hour old', () => {
+      const oldBucket = now - 61 * 60 * 1000; // 61 minutes ago
+      expect(shouldDropLastBucket('21d', oldBucket, now)).toBe(false);
+    });
+
+    test('defaults to not dropping for unknown bucket sizes', () => {
+      const lastBucketTimestamp = now - 1000;
+      expect(shouldDropLastBucket('unknown', lastBucketTimestamp, now)).toBe(
+        false,
+      );
     });
   });
 
@@ -210,6 +289,80 @@ describe('search service', () => {
         date: new Date(1672531260000),
         values: 15.2,
       });
+    });
+
+    test('drops last bucket when bucket size indicates it should be dropped', () => {
+      const now = Date.now();
+      const mockData = {
+        aggregations: {
+          [DATE_HISTO]: {
+            buckets: [
+              {
+                key: String(now - 120000), // 2 minutes ago
+                [AVG]: { value: 10.5 },
+              },
+              {
+                key: String(now - 60000), // 1 minute ago
+                [AVG]: { value: 15.2 },
+              },
+            ],
+          },
+        },
+      };
+
+      // For 1m buckets, always drop the last one
+      const result = parseSearchReturn(mockData, '1m');
+
+      expect(result).toHaveLength(1);
+      expect(result[0]).toEqual({
+        date: new Date(now - 120000),
+        values: 10.5,
+      });
+    });
+
+    test('keeps all buckets when bucket size indicates it should not be dropped', () => {
+      const now = Date.now();
+      const mockData = {
+        aggregations: {
+          [DATE_HISTO]: {
+            buckets: [
+              {
+                key: String(now - 7200000), // 2 hours ago
+                [AVG]: { value: 10.5 },
+              },
+              {
+                key: String(now - 3600000), // 1 hour ago
+                [AVG]: { value: 15.2 },
+              },
+            ],
+          },
+        },
+      };
+
+      // For 3h buckets, keep if more than 20 minutes old
+      const result = parseSearchReturn(mockData, '3h');
+
+      expect(result).toHaveLength(2);
+    });
+
+    test('works without bucket size parameter (backward compatibility)', () => {
+      const mockData = {
+        aggregations: {
+          [DATE_HISTO]: {
+            buckets: [
+              {
+                key: '1672531200000',
+                [AVG]: { value: 10.5 },
+              },
+            ],
+          },
+        },
+      };
+
+      const result = parseSearchReturn(mockData);
+
+      expect(result).toHaveLength(1);
+      expect(result[0].values).toBe(10.5);
     });
   });
 
@@ -396,6 +549,73 @@ describe('search service', () => {
       const result = parseStackedTimeSeriesData(mockData, {});
       expect(result[0].avg).toBe(20.5);
     });
+
+    test('drops last bucket when bucket size indicates it should be dropped', () => {
+      const now = Date.now();
+      const mockData = {
+        aggregations: {
+          [DATE_HISTO]: {
+            buckets: [
+              {
+                key: String(now - 120000), // 2 minutes ago
+                'sterms#terms': {
+                  buckets: [
+                    {
+                      key: 'device1',
+                      [AVG]: { value: 10.5 },
+                    },
+                  ],
+                },
+              },
+              {
+                key: String(now - 60000), // 1 minute ago (should be dropped)
+                'sterms#terms': {
+                  buckets: [
+                    {
+                      key: 'device1',
+                      [AVG]: { value: 15.2 },
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        },
+      };
+
+      // For 1m buckets, always drop the last one
+      const result = parseStackedTimeSeriesData(mockData, {}, '1m');
+
+      expect(result).toHaveLength(1);
+      expect(result[0].avg).toBe(10.5);
+    });
+
+    test('works without bucket size parameter (backward compatibility)', () => {
+      const mockData = {
+        aggregations: {
+          [DATE_HISTO]: {
+            buckets: [
+              {
+                key: '1672531200000',
+                'sterms#terms': {
+                  buckets: [
+                    {
+                      key: 'device1',
+                      [AVG]: { value: 10.5 },
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        },
+      };
+
+      const result = parseStackedTimeSeriesData(mockData, {});
+
+      expect(result).toHaveLength(1);
+      expect(result[0].avg).toBe(10.5);
+    });
   });
 
   describe('parseMaxData', () => {
@@ -578,6 +798,77 @@ describe('search service', () => {
 
       const result = parseAndCondenseStackedTimeSeriesData(mockData);
       expect(result[0].values).toBe(15.0);
+    });
+
+    test('drops last bucket when bucket size indicates it should be dropped', () => {
+      const now = Date.now();
+      const mockData = {
+        aggregations: {
+          [DATE_HISTO]: {
+            buckets: [
+              {
+                key: String(now - 120000), // 2 minutes ago
+                'sterms#terms': {
+                  buckets: [
+                    {
+                      key: 'device1',
+                      [AVG]: { value: 10.5 },
+                    },
+                    {
+                      key: 'device2',
+                      [AVG]: { value: 5.0 },
+                    },
+                  ],
+                },
+              },
+              {
+                key: String(now - 60000), // 1 minute ago (should be dropped)
+                'sterms#terms': {
+                  buckets: [
+                    {
+                      key: 'device1',
+                      [AVG]: { value: 20.0 },
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        },
+      };
+
+      // For 1m buckets, always drop the last one
+      const result = parseAndCondenseStackedTimeSeriesData(mockData, '1m');
+
+      expect(result).toHaveLength(1);
+      expect(result[0].values).toBe(15.5); // 10.5 + 5.0
+    });
+
+    test('works without bucket size parameter (backward compatibility)', () => {
+      const mockData = {
+        aggregations: {
+          [DATE_HISTO]: {
+            buckets: [
+              {
+                key: '1672531200000',
+                'sterms#terms': {
+                  buckets: [
+                    {
+                      key: 'device1',
+                      [AVG]: { value: 10.0 },
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        },
+      };
+
+      const result = parseAndCondenseStackedTimeSeriesData(mockData);
+
+      expect(result).toHaveLength(1);
+      expect(result[0].values).toBe(10.0);
     });
   });
 });

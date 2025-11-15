@@ -6,6 +6,7 @@ import {
   AVG_AGGREGATION,
   DAY,
   getAggregationValue,
+  getBucketSize,
   GROUPED_BAR,
   parseCurrentPower,
   parseMaxData,
@@ -89,12 +90,14 @@ export default function SiteDetails({ setTrialDate }) {
       );
       setActiveSiteAlerts(data.alarms.filter((d) => d.state > 0));
       setResolvedSiteAlerts(data.alarms.filter((d) => d.state === 0));
+      const bucketSize = getBucketSize(time, type);
       setGraphData(
         data.site.subtraction
-          ? parseSearchReturn(data.timeSeries)
+          ? parseSearchReturn(data.timeSeries, bucketSize)
           : parseStackedTimeSeriesData(
               data.timeSeries,
               getDeviceIdToNameMap(data.devices),
+              bucketSize,
             ),
       );
       setTrialDate(data.trialDate);
