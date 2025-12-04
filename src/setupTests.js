@@ -1,9 +1,9 @@
 /* eslint-env jest */
 import '@testing-library/jest-dom';
 
+import { webcrypto } from 'crypto';
 // Polyfills for React Router v7
 import { TextDecoder, TextEncoder } from 'util';
-import { webcrypto } from 'crypto';
 
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
