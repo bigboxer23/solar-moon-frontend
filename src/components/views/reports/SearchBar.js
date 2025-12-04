@@ -1,4 +1,4 @@
-import 'react-day-picker/dist/style.css';
+import 'react-day-picker/style.css';
 import '@wojtekmaj/react-daterange-picker/dist/DateRangePicker.css';
 import 'react-calendar/dist/Calendar.css';
 
@@ -130,22 +130,24 @@ const SearchBar = ({
           <DateRangePicker
             calendarClassName='shadow-panel'
             calendarIcon={null}
-            calendarType='gregory'
+            calendarProps={{
+              calendarType: 'gregory',
+              next2Label: (
+                <MdOutlineKeyboardDoubleArrowRight className='w-full text-lg' />
+              ),
+              nextLabel: (
+                <MdOutlineKeyboardArrowRight className='w-full text-lg' />
+              ),
+              prev2Label: (
+                <MdOutlineKeyboardDoubleArrowLeft className='w-full text-lg' />
+              ),
+              prevLabel: (
+                <MdOutlineKeyboardArrowLeft className='w-full text-lg' />
+              ),
+            }}
             className='mr-6 sm:mr-0'
             clearIcon={<MdClear aria-label='clear date search' />}
-            next2Label={
-              <MdOutlineKeyboardDoubleArrowRight className='w-full text-lg' />
-            }
-            nextLabel={
-              <MdOutlineKeyboardArrowRight className='w-full text-lg' />
-            }
             onChange={dateChanged}
-            prev2Label={
-              <MdOutlineKeyboardDoubleArrowLeft className='w-full text-lg' />
-            }
-            prevLabel={
-              <MdOutlineKeyboardArrowLeft className='w-full text-lg' />
-            }
             value={value}
           />
           <Dropdown
