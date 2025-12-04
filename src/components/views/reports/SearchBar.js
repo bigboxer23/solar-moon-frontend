@@ -1,4 +1,4 @@
-import 'react-day-picker/dist/style.css';
+import 'react-day-picker/style.css';
 import '@wojtekmaj/react-daterange-picker/dist/DateRangePicker.css';
 import 'react-calendar/dist/Calendar.css';
 
