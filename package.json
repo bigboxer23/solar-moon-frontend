@@ -9,7 +9,7 @@
     "@stripe/stripe-js": "^2.4.0",
     "@szhsin/react-menu": "^4.5.0",
     "@tippyjs/react": "^4.2.6",
-    "@wojtekmaj/react-daterange-picker": "^5.5.0",
+    "@wojtekmaj/react-daterange-picker": "^7.0.0",
     "aws-amplify": "^6.15.6",
     "axios": "^1.12.2",
     "chart.js": "^4.5.0",
