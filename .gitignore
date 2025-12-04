@@ -22,7 +22,6 @@ src/graphql/
 .graphqlconfig.yml
 .env
 yarn.lock
-package-lock.json
 coverage/
 .claude/
 #amplify-do-not-edit-end
