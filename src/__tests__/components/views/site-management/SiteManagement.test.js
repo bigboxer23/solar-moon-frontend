@@ -608,7 +608,9 @@ describe('SiteManagement', () => {
       });
 
       await waitFor(() => {
-        expect(screen.getByTestId('new-site-example-dialog')).toBeInTheDocument();
+        expect(
+          screen.getByTestId('new-site-example-dialog'),
+        ).toBeInTheDocument();
       });
     });
 
