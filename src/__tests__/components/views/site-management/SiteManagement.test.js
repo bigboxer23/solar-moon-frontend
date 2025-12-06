@@ -146,7 +146,7 @@ jest.mock(
               showSiteCreation(true);
             }}
           >
-            Create First Site
+            Create first site
           </button>
         </div>
       );
@@ -211,7 +211,7 @@ jest.mock(
               showDeviceCreation(true);
             }}
           >
-            Create First Device
+            Create first device
           </button>
         </div>
       );
@@ -607,7 +607,11 @@ describe('SiteManagement', () => {
         expect(screen.queryByTestId('loader')).not.toBeInTheDocument();
       });
 
-      expect(screen.getByTestId('new-site-example-dialog')).toBeInTheDocument();
+      await waitFor(() => {
+        expect(
+          screen.getByTestId('new-site-example-dialog'),
+        ).toBeInTheDocument();
+      });
     });
 
     test('shows new device example dialog when only sites exist', async () => {
@@ -622,9 +626,11 @@ describe('SiteManagement', () => {
         expect(screen.queryByTestId('loader')).not.toBeInTheDocument();
       });
 
-      expect(
-        screen.getByTestId('new-device-example-dialog'),
-      ).toBeInTheDocument();
+      await waitFor(() => {
+        expect(
+          screen.getByTestId('new-device-example-dialog'),
+        ).toBeInTheDocument();
+      });
     });
 
     test('new site example dialog can trigger site creation', async () => {
@@ -636,7 +642,9 @@ describe('SiteManagement', () => {
         expect(screen.queryByTestId('loader')).not.toBeInTheDocument();
       });
 
-      const createSiteButton = screen.getByText('Create First Site');
+      const createSiteButton = await waitFor(() =>
+        screen.getByText('Create first site'),
+      );
       fireEvent.click(createSiteButton);
 
       expect(
@@ -657,7 +665,9 @@ describe('SiteManagement', () => {
         expect(screen.queryByTestId('loader')).not.toBeInTheDocument();
       });
 
-      const createDeviceButton = screen.getByText('Create First Device');
+      const createDeviceButton = await waitFor(() =>
+        screen.getByText('Create first device'),
+      );
       fireEvent.click(createDeviceButton);
 
       expect(
