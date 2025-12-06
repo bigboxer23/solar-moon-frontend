@@ -82,7 +82,7 @@ jest.mock('../../../../components/views/reports/DownloadReportButton', () => {
 
 // Mock react-data-grid
 jest.mock('react-data-grid', () => {
-  return function MockDataGrid({
+  const MockDataGrid = function ({
     rows,
     columns,
     onScroll,
@@ -103,6 +103,10 @@ jest.mock('react-data-grid', () => {
         ))}
       </div>
     );
+  };
+
+  return {
+    DataGrid: MockDataGrid,
   };
 });
 
