@@ -99,7 +99,7 @@ describe('HelpText', () => {
         AVERAGE_CALCULATION,
       ];
 
-      helpTexts.forEach((text, index) => {
+      helpTexts.forEach((text) => {
         expect(typeof text).toBe('string');
         expect(text.length).toBeGreaterThan(0);
         expect(text.trim()).toBe(text); // No leading/trailing whitespace

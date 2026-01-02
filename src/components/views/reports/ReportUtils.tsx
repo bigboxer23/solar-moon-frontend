@@ -28,7 +28,7 @@ export interface RowData {
   [ENERGY_CONSUMED]?: number | string;
   [SITE_ID_KEYWORD]?: string | string[];
   [DEVICE_ID_KEYWORD]?: string | string[];
-  [INFORMATIONAL_ERROR]?: string | string[];
+  [INFORMATIONAL_ERROR]?: string | string[] | ReactElement;
   [DISPLAY_NAME]?: string | string[] | ReactElement;
   [key: string]: unknown;
 }
@@ -85,7 +85,7 @@ export const transformRowData = function (
     infoError[0] !== ''
   ) {
     const errorText = transformMultiLineForHTMLDisplay(String(infoError[0]));
-    row[INFORMATIONAL_ERROR] = String(infoError[0]);
+    row[INFORMATIONAL_ERROR] = errorText;
     row[DISPLAY_NAME] = (
       <Tippy content={errorText} delay={TIPPY_DELAY} placement='bottom'>
         <div className='flex'>

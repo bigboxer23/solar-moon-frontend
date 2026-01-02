@@ -14,7 +14,17 @@ import {
 } from '../../../../components/views/reports/ReportUtils';
 
 jest.mock('@tippyjs/react', () => {
-  return function MockTippy({ children, content, delay, placement }) {
+  return function MockTippy({
+    children,
+    content,
+    delay,
+    placement,
+  }: {
+    children: React.ReactNode;
+    content: unknown;
+    delay: number;
+    placement: string;
+  }) {
     return (
       <div
         data-content={typeof content === 'string' ? content : 'tooltip'}
@@ -57,7 +67,7 @@ describe('ReportUtils', () => {
     };
 
     const mockIntl = {
-      formatNumber: jest.fn((value) => value.toFixed(2)),
+      formatNumber: jest.fn((value: number) => value.toFixed(2)),
     };
 
     beforeEach(() => {
@@ -65,10 +75,11 @@ describe('ReportUtils', () => {
 
       utils.getFormattedTime.mockReturnValue('2024-01-15 10:30 AM');
       utils.roundToDecimals.mockImplementation(
-        (value, multiplier) => Math.round(value * multiplier) / multiplier,
+        (value: number, multiplier: number) =>
+          Math.round(value * multiplier) / multiplier,
       );
-      utils.transformMultiLineForHTMLDisplay.mockImplementation((text) =>
-        text.replace(/\n/g, '<br>'),
+      utils.transformMultiLineForHTMLDisplay.mockImplementation(
+        (text: string) => text.replace(/\n/g, '<br>'),
       );
     });
 
@@ -84,7 +95,7 @@ describe('ReportUtils', () => {
       );
       expect(result.time).toBe('2024-01-15 10:30 AM');
       expect(result.timeSort).toBe(
-        Math.round(new Date('2024-01-15T10:30:00Z') / 60000) * 60000,
+        Math.round(new Date('2024-01-15T10:30:00Z').getTime() / 60000) * 60000,
       );
     });
 
@@ -431,7 +442,7 @@ describe('ReportUtils', () => {
       expect(result.timeSort).toBe(expectedTime);
 
       // Verify it rounds to nearest minute
-      expect(result.timeSort % 60000).toBe(0);
+      expect((result.timeSort ?? 0) % 60000).toBe(0);
     });
 
     test('error tooltip integration', () => {
@@ -497,7 +508,9 @@ describe('ReportUtils', () => {
         [TOTAL_ENERGY_CONS]: 123.45,
       };
 
-      expect(() => transformRowData(row, mockDeviceMap, mockIntl)).toThrow();
+      expect(() =>
+        transformRowData(row, mockDeviceMap, mockIntl as any),
+      ).toThrow();
     });
 
     test('sortRowData handles missing fields gracefully', () => {
