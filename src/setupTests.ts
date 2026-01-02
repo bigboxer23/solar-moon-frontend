@@ -5,12 +5,13 @@ import { webcrypto } from 'crypto';
 // Polyfills for React Router v7
 import { TextDecoder, TextEncoder } from 'util';
 
-global.TextEncoder = TextEncoder;
-global.TextDecoder = TextDecoder;
+// Type-safe global assignments
+global.TextEncoder = TextEncoder as typeof global.TextEncoder;
+global.TextDecoder = TextDecoder as typeof global.TextDecoder;
 
 // Polyfill for uuid v13+ (requires Web Crypto API)
 if (!global.crypto) {
-  global.crypto = webcrypto;
+  global.crypto = webcrypto as Crypto;
 }
 
 jest.mock('@aws-amplify/ui-react/styles.css', () => ({}), { virtual: true });

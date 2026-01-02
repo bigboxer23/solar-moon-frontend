@@ -13,7 +13,6 @@ import {
   transformRowData,
 } from '../../../../components/views/reports/ReportUtils';
 
-// Mock @tippyjs/react
 jest.mock('@tippyjs/react', () => {
   return function MockTippy({ children, content, delay, placement }) {
     return (
@@ -29,7 +28,6 @@ jest.mock('@tippyjs/react', () => {
   };
 });
 
-// Mock utilities
 jest.mock('../../../../utils/Utils', () => ({
   getFormattedTime: jest.fn(),
   roundToDecimals: jest.fn(),
@@ -98,7 +96,6 @@ describe('ReportUtils', () => {
         [ENERGY_CONSUMED]: 543.21,
       };
 
-      // transformRowData mutates the original row object and returns it
       transformRowData(row, mockDeviceMap, mockIntl);
 
       expect(utils.roundToDecimals).toHaveBeenCalledWith(1234.5678, 100);
@@ -106,7 +103,6 @@ describe('ReportUtils', () => {
       expect(utils.roundToDecimals).toHaveBeenCalledWith(543.21, 100);
 
       expect(mockIntl.formatNumber).toHaveBeenCalledTimes(3);
-      // Values should be formatted by intl.formatNumber
       expect(mockIntl.formatNumber).toHaveBeenCalledWith(expect.any(Number));
     });
 
@@ -501,7 +497,6 @@ describe('ReportUtils', () => {
         [TOTAL_ENERGY_CONS]: 123.45,
       };
 
-      // Should not throw even with null intl
       expect(() => transformRowData(row, mockDeviceMap, mockIntl)).toThrow();
     });
 
