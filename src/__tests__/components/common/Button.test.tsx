@@ -123,7 +123,14 @@ describe('Button', () => {
 
   test('passes additional button props', () => {
     render(
-      <Button buttonProps={{ 'data-testid': 'custom-button', type: 'submit' }}>
+      <Button
+        buttonProps={
+          {
+            'data-testid': 'custom-button',
+            type: 'submit',
+          } as React.ButtonHTMLAttributes<HTMLButtonElement>
+        }
+      >
         Submit
       </Button>,
     );
