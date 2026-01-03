@@ -13,7 +13,7 @@ export const attributes = [
   REAL_POWER,
 ];
 
-export const attributeMappings = {};
+export const attributeMappings: Record<string, string> = {};
 attributeMappings[TOTAL_REAL_POWER] = REAL_POWER;
 attributeMappings['Average Current'] = AVG_CURRENT;
 attributeMappings['Voltage, Line to Neutral'] = AVG_VOLT;

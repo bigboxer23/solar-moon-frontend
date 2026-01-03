@@ -390,9 +390,8 @@ describe('search service', () => {
         },
       };
 
-      // This will actually throw an error, so let's test that the function
-      // doesn't handle this case properly
-      expect(() => getAggregationValue(mockData, 'test-label')).toThrow();
+      // With TypeScript migration, this now safely returns 0 instead of throwing
+      expect(getAggregationValue(mockData, 'test-label')).toBe(0);
     });
   });
 

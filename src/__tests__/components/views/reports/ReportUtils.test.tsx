@@ -13,9 +13,18 @@ import {
   transformRowData,
 } from '../../../../components/views/reports/ReportUtils';
 
-// Mock @tippyjs/react
 jest.mock('@tippyjs/react', () => {
-  return function MockTippy({ children, content, delay, placement }) {
+  return function MockTippy({
+    children,
+    content,
+    delay,
+    placement,
+  }: {
+    children: React.ReactNode;
+    content: unknown;
+    delay: number;
+    placement: string;
+  }) {
     return (
       <div
         data-content={typeof content === 'string' ? content : 'tooltip'}
@@ -29,7 +38,6 @@ jest.mock('@tippyjs/react', () => {
   };
 });
 
-// Mock utilities
 jest.mock('../../../../utils/Utils', () => ({
   getFormattedTime: jest.fn(),
   roundToDecimals: jest.fn(),
@@ -59,7 +67,7 @@ describe('ReportUtils', () => {
     };
 
     const mockIntl = {
-      formatNumber: jest.fn((value) => value.toFixed(2)),
+      formatNumber: jest.fn((value: number) => value.toFixed(2)),
     };
 
     beforeEach(() => {
@@ -67,10 +75,11 @@ describe('ReportUtils', () => {
 
       utils.getFormattedTime.mockReturnValue('2024-01-15 10:30 AM');
       utils.roundToDecimals.mockImplementation(
-        (value, multiplier) => Math.round(value * multiplier) / multiplier,
+        (value: number, multiplier: number) =>
+          Math.round(value * multiplier) / multiplier,
       );
-      utils.transformMultiLineForHTMLDisplay.mockImplementation((text) =>
-        text.replace(/\n/g, '<br>'),
+      utils.transformMultiLineForHTMLDisplay.mockImplementation(
+        (text: string) => text.replace(/\n/g, '<br>'),
       );
     });
 
@@ -86,7 +95,7 @@ describe('ReportUtils', () => {
       );
       expect(result.time).toBe('2024-01-15 10:30 AM');
       expect(result.timeSort).toBe(
-        Math.round(new Date('2024-01-15T10:30:00Z') / 60000) * 60000,
+        Math.round(new Date('2024-01-15T10:30:00Z').getTime() / 60000) * 60000,
       );
     });
 
@@ -98,7 +107,6 @@ describe('ReportUtils', () => {
         [ENERGY_CONSUMED]: 543.21,
       };
 
-      // transformRowData mutates the original row object and returns it
       transformRowData(row, mockDeviceMap, mockIntl);
 
       expect(utils.roundToDecimals).toHaveBeenCalledWith(1234.5678, 100);
@@ -106,7 +114,6 @@ describe('ReportUtils', () => {
       expect(utils.roundToDecimals).toHaveBeenCalledWith(543.21, 100);
 
       expect(mockIntl.formatNumber).toHaveBeenCalledTimes(3);
-      // Values should be formatted by intl.formatNumber
       expect(mockIntl.formatNumber).toHaveBeenCalledWith(expect.any(Number));
     });
 
@@ -435,7 +442,7 @@ describe('ReportUtils', () => {
       expect(result.timeSort).toBe(expectedTime);
 
       // Verify it rounds to nearest minute
-      expect(result.timeSort % 60000).toBe(0);
+      expect((result.timeSort ?? 0) % 60000).toBe(0);
     });
 
     test('error tooltip integration', () => {
@@ -501,8 +508,10 @@ describe('ReportUtils', () => {
         [TOTAL_ENERGY_CONS]: 123.45,
       };
 
-      // Should not throw even with null intl
-      expect(() => transformRowData(row, mockDeviceMap, mockIntl)).toThrow();
+      expect(() =>
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        transformRowData(row, mockDeviceMap, mockIntl as any),
+      ).toThrow();
     });
 
     test('sortRowData handles missing fields gracefully', () => {
