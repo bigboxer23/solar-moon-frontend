@@ -1,5 +1,6 @@
 import Tippy from '@tippyjs/react';
 import { format } from 'date-fns';
+import type { Dispatch, ReactElement, SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
 import { BsCloudSleet } from 'react-icons/bs';
 import { IoIosSnow, IoMdRainy } from 'react-icons/io';
@@ -9,39 +10,46 @@ import { RiWindyFill } from 'react-icons/ri';
 
 import { noSite } from '../components/views/site-management/SiteManagement';
 import { DAY, HOUR, MONTH, WEEK, YEAR } from '../services/search';
+import type { Device } from '../types/models';
 
 export const TIPPY_DELAY = 500;
 
-export function defaultIfEmpty(defaultValue, value) {
+export function defaultIfEmpty<T>(
+  defaultValue: T,
+  value: T | null | undefined | '',
+): T {
   return value === null || value === undefined || value === ''
     ? defaultValue
     : value;
 }
 
 export function useSearchParamState(
-  defaultValue,
-  key,
-  searchParams,
-  setSearchParams,
-) {
+  defaultValue: string,
+  key: string,
+  searchParams: URLSearchParams,
+  setSearchParams: (params: URLSearchParams) => void,
+): [string, Dispatch<SetStateAction<string>>] {
   const [value, setValue] = useState(() => {
     return defaultIfEmpty(defaultValue, searchParams.get(key));
   });
   useEffect(() => {
     searchParams.set(key, value);
     setSearchParams(searchParams);
-  }, [key, value]);
+  }, [key, value, searchParams, setSearchParams]);
   return [value, setValue];
 }
 
-export function useStickyState(defaultValue, key) {
-  const [value, setValue] = useState(() => {
+export function useStickyState<T>(
+  defaultValue: T,
+  key: string,
+): [T, Dispatch<SetStateAction<T>>] {
+  const [value, setValue] = useState<T>(() => {
     const stickyValue = window.localStorage.getItem(key);
     if (stickyValue === null) {
       return defaultValue;
     }
     try {
-      return JSON.parse(stickyValue);
+      return JSON.parse(stickyValue) as T;
     } catch (e) {
       return defaultValue;
     }
@@ -56,34 +64,39 @@ export function useStickyState(defaultValue, key) {
   return [value, setValue];
 }
 
-export function debounce(fn, ms) {
-  let timer;
-  return (_) => {
-    clearTimeout(timer);
-    timer = setTimeout((_) => {
+export function debounce<T extends (...args: never[]) => void>(
+  fn: T,
+  ms: number,
+): (...args: Parameters<T>) => void {
+  let timer: NodeJS.Timeout | null = null;
+  return (...args: Parameters<T>) => {
+    if (timer) {
+      clearTimeout(timer);
+    }
+    timer = setTimeout(() => {
       timer = null;
-      fn.apply(this, arguments);
+      fn(...args);
     }, ms);
   };
 }
 
-export const getFormattedShortTime = (date) => {
+export const getFormattedShortTime = (date: Date): string => {
   return format(date, 'M/d h:mmaaaaa');
 };
 
-export const getFormattedTime = (date) => {
+export const getFormattedTime = (date: Date): string => {
   return format(date, 'MMM d, yy h:mm aaa');
 };
 
-export const getFormattedDate = (date) => {
+export const getFormattedDate = (date: Date): string => {
   return format(date, 'MMM d, yy');
 };
 
-export const formatXAxisLabelsDay = (value) => {
+export const formatXAxisLabelsDay = (value: number | Date): string => {
   return format(value, 'h:mmaaaaa');
 };
 
-export const formatXAxisLabels = (value, index, ticks) => {
+export const formatXAxisLabels = (value: number | Date): string => {
   const d = new Date(value);
   if (d.getHours() % 6 !== 0 || d.getMinutes() !== 0) {
     return '';
@@ -91,25 +104,36 @@ export const formatXAxisLabels = (value, index, ticks) => {
   return format(d, d.getHours() === 0 ? 'MMM d' : 'ha');
 };
 
-export const getDisplayName = (device) => {
+export const getDisplayName = (device?: Device | null): string | undefined => {
   return device?.name == null ? device?.deviceName : device?.name;
 };
 
-export const findSiteNameFromSiteId = (siteId, devices) => {
+export const findSiteNameFromSiteId = (
+  siteId: string,
+  devices: Device[],
+): string | undefined => {
   if (siteId === noSite) {
     return noSite;
   }
   return getDisplayName(devices.find((d) => d.id === siteId));
 };
 
-export const getDeviceIdToNameMap = (devices) => {
-  return devices.reduce((acc, obj) => {
-    acc[obj.id] = getDisplayName(obj);
-    return acc;
-  }, {});
+export const getDeviceIdToNameMap = (
+  devices: Device[],
+): Record<string, string> => {
+  return devices.reduce(
+    (acc, obj) => {
+      acc[obj.id] = getDisplayName(obj) ?? '';
+      return acc;
+    },
+    {} as Record<string, string>,
+  );
 };
 
-export const compare = (value1, value2) => {
+export const compare = (
+  value1: string | undefined,
+  value2: string | undefined,
+): number => {
   if (value1 === undefined || value2 === undefined) {
     return 0;
   }
@@ -118,7 +142,7 @@ export const compare = (value1, value2) => {
   });
 };
 
-export const sortDevices = (d1, d2) => {
+export const sortDevices = (d1: Device, d2: Device): number => {
   const siteSort = compare(d1.site, d2.site);
   if (siteSort !== 0) {
     return siteSort;
@@ -126,7 +150,7 @@ export const sortDevices = (d1, d2) => {
   return compare(getDisplayName(d1), getDisplayName(d2));
 };
 
-export const sortDevicesWithDisabled = (d1, d2) => {
+export const sortDevicesWithDisabled = (d1: Device, d2: Device): number => {
   const siteSort = compare(d1.site, d2.site);
   if (siteSort !== 0) {
     return siteSort;
@@ -137,13 +161,13 @@ export const sortDevicesWithDisabled = (d1, d2) => {
   return compare(getDisplayName(d1), getDisplayName(d2));
 };
 
-export const getRoundedTimeFromOffset = (offset) => {
+export const getRoundedTimeFromOffset = (offset: number): Date => {
   return offset === HOUR
     ? new Date(new Date().getTime() - offset)
     : getRoundedTime(false, offset === DAY ? 0 : offset);
 };
 
-export const getRoundedTime = (roundedUp, offset) => {
+export const getRoundedTime = (roundedUp: boolean, offset: number): Date => {
   const date = new Date();
   if (!roundedUp) {
     date.setHours(0, 0, 0, 0);
@@ -153,15 +177,16 @@ export const getRoundedTime = (roundedUp, offset) => {
   return date;
 };
 
-export const getFormattedDaysHoursMinutes = (time) => {
+export const getFormattedDaysHoursMinutes = (
+  time: number | undefined,
+): string => {
   if (time === undefined || time === 0) {
     return '';
   }
-  time = time / 1000;
-  const days = ~~(time / 86400);
-  const hours = ~~((time / 3600) % 24);
-  let minutes = ~~((time % 3600) / 60);
-  // let seconds = ~~time % 60;
+  const timeInSeconds = time / 1000;
+  const days = ~~(timeInSeconds / 86400);
+  const hours = ~~((timeInSeconds / 3600) % 24);
+  let minutes = ~~((timeInSeconds % 3600) / 60);
   let formattedTime = '';
   if (days > 0) {
     formattedTime += `${days}d `;
@@ -172,15 +197,15 @@ export const getFormattedDaysHoursMinutes = (time) => {
   if (days === 0 && hours === 0 && minutes === 0) {
     minutes = 1;
   }
-  return `${formattedTime + minutes}m`;
+  return `${formattedTime}${minutes}m`;
 };
 
 // TODO: Expand to include more weather types/night weather, use consistent icons
 export const getWeatherIconWithTippy = (
-  weatherSummary,
-  weatherIcon,
-  precipIntensity = 0,
-) => {
+  weatherSummary: string,
+  weatherIcon: string,
+  precipIntensity: number = 0,
+): ReactElement => {
   const content = (
     <>
       <div>{`${weatherSummary} `}</div>
@@ -198,7 +223,7 @@ export const getWeatherIconWithTippy = (
 };
 
 // https://github.com/Pirate-Weather/pirateweather/blob/ffdf06e415106443b50761ffd403989184dd3ee7/DevPortal/custom-content/content-fragments/Home.md?plain=1#L53
-export const getWeatherIcon = (weatherIcon) => {
+export const getWeatherIcon = (weatherIcon: string): ReactElement | string => {
   if (weatherIcon === 'cloudy') {
     return <MdOutlineWbCloudy className='align-self-center' />;
   } else if (
@@ -222,7 +247,10 @@ export const getWeatherIcon = (weatherIcon) => {
   return weatherIcon;
 };
 
-export const timeIncrementToText = (timeIncrement, short) => {
+export const timeIncrementToText = (
+  timeIncrement: number,
+  short: boolean,
+): string => {
   switch (timeIncrement) {
     case HOUR:
       return short ? 'H' : 'Hour';
@@ -239,7 +267,7 @@ export const timeIncrementToText = (timeIncrement, short) => {
   }
 };
 
-export const formatMessage = function (message) {
+export const formatMessage = function (message: string): string {
   const unixSec = /\d{10}/.exec(message);
   if (unixSec == null) {
     return message;
@@ -249,10 +277,13 @@ export const formatMessage = function (message) {
     Number(unixMS == null ? unixSec : unixMS) * (unixMS == null ? 1000 : 1);
   const finalMatch = unixMS == null ? unixSec : unixMS;
   // Replace timestamp w/local time
-  return message.replaceAll(finalMatch, getFormattedTime(new Date(timestamp)));
+  return message.replace(
+    new RegExp(finalMatch[0], 'g'),
+    getFormattedTime(new Date(timestamp)),
+  );
 };
 
-export const timeLabel = function (startDate, increment) {
+export const timeLabel = function (startDate: Date, increment: number): string {
   return `${getFormattedDate(startDate)} - ${getFormattedDate(
     new Date(Math.min(startDate.getTime() + increment, new Date().getTime())),
   )}`;
@@ -267,11 +298,11 @@ export const timeLabel = function (startDate, increment) {
  * @param setNextDisabled
  */
 export const maybeSetTimeWindow = (
-  startDate,
-  increment,
-  setStartDate,
-  setNextDisabled,
-) => {
+  startDate: Date,
+  increment: number,
+  setStartDate: (date: Date) => void,
+  setNextDisabled: (disabled: boolean) => void,
+): void => {
   const time = startDate.getTime() + increment;
   if (
     (increment === DAY && time < new Date().getTime()) ||
@@ -287,8 +318,11 @@ export const maybeSetTimeWindow = (
   setNextDisabled(!enabled);
 };
 
-export const roundToDecimals = (number, decimals) => {
-  const rounded = Math.round(number * decimals) / decimals;
+export const roundToDecimals = (
+  number: number | string,
+  decimals: number,
+): number | string => {
+  const rounded = Math.round(Number(number) * decimals) / decimals;
   if (Number.isNaN(rounded)) {
     // Handle string inputs for backwards compatibility
     if (typeof number === 'string') {
@@ -303,15 +337,21 @@ export const roundToDecimals = (number, decimals) => {
   return rounded;
 };
 
-export const roundTwoDigit = (number) => {
-  return roundToDecimals(number, 100);
+export const roundTwoDigit = (number: number): number => {
+  return roundToDecimals(number, 100) as number;
 };
 
-export const truncate = (str, n) => {
+export const truncate = (str: string, n: number): string => {
   return str.length > n ? `${str.slice(0, n - 1).trim()}...` : str;
 };
 
-export const getPowerScalingInformation = (power) => {
+export const getPowerScalingInformation = (
+  power: number,
+): {
+  unitPrefix: string;
+  powerValue: number;
+  decimals: number;
+} => {
   if (power > 1000000)
     return { unitPrefix: 'G', powerValue: power / 1000000, decimals: 10 };
   if (power > 1000)
@@ -319,11 +359,11 @@ export const getPowerScalingInformation = (power) => {
   return { unitPrefix: 'k', powerValue: power, decimals: 10 };
 };
 
-export const isXS = (windowSize) => {
+export const isXS = (windowSize: { current: [number, number] }): boolean => {
   return windowSize.current[0] <= 500;
 };
 
-export const getDaysLeftInTrial = (date) => {
+export const getDaysLeftInTrial = (date: number | null | undefined): string => {
   if (date == null || typeof date !== 'number' || isNaN(date)) {
     return '';
   }
@@ -334,7 +374,9 @@ export const getDaysLeftInTrial = (date) => {
   return `${days} day${days > 1 ? 's' : ''} left`;
 };
 
-export const transformMultiLineForHTMLDisplay = function (error) {
+export const transformMultiLineForHTMLDisplay = function (
+  error: string,
+): ReactElement {
   const errors = error.replace(/(?:\r\n|\r|\n)/g, '<br>').split('<br>');
   return (
     <span>
