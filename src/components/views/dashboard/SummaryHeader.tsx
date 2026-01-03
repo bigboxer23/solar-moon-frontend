@@ -1,4 +1,5 @@
 import Tippy from '@tippyjs/react';
+import type { ReactElement } from 'react';
 import { useIntl } from 'react-intl';
 
 import { AVERAGE_CALCULATION } from '../../../utils/HelpText';
@@ -9,12 +10,20 @@ import {
 } from '../../../utils/Utils';
 import FormattedLabel from '../../graphs/FormattedLabel';
 
-export default function SummaryHeader({ dailyOutput, dailyAverageOutput }) {
+interface SummaryHeaderProps {
+  dailyOutput: number;
+  dailyAverageOutput: number;
+}
+
+export default function SummaryHeader({
+  dailyOutput,
+  dailyAverageOutput,
+}: SummaryHeaderProps): ReactElement {
   const intl = useIntl();
   const { unitPrefix, powerValue, decimals } =
     getPowerScalingInformation(dailyOutput);
   const avg = getPowerScalingInformation(dailyAverageOutput);
-  const calculatePercent = (total, average) => {
+  const calculatePercent = (total: number, average: number): number => {
     return Math.abs(Math.round((total / average) * 100));
   };
   return (
@@ -32,7 +41,7 @@ export default function SummaryHeader({ dailyOutput, dailyAverageOutput }) {
               label=''
               separator=' '
               unit={`${unitPrefix}Wh`}
-              value={roundToDecimals(powerValue, decimals)}
+              value={Number(roundToDecimals(powerValue, decimals))}
             />
           </span>
         </Tippy>
@@ -47,7 +56,7 @@ export default function SummaryHeader({ dailyOutput, dailyAverageOutput }) {
               <br />
               <br />
               {`Your daily average is ${intl.formatNumber(
-                roundToDecimals(avg.powerValue, avg.decimals),
+                Number(roundToDecimals(avg.powerValue, avg.decimals)),
               )}
               ${avg.unitPrefix}Wh`}
             </span>

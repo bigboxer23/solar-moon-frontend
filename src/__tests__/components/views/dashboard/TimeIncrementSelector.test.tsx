@@ -1,12 +1,34 @@
 /* eslint-env jest */
 import { fireEvent, render, screen } from '@testing-library/react';
-import React from 'react';
+import type { ReactElement } from 'react';
 
 import TimeIncrementSelector from '../../../../components/views/dashboard/TimeIncrementSelector';
 
+interface IconProps {
+  className?: string;
+}
+
+interface MenuProps {
+  children: React.ReactNode;
+  menuButton: ReactElement;
+  menuClassName: string;
+  onItemClick: (event: { value: string }) => void;
+}
+
+interface MenuButtonProps {
+  children: React.ReactNode;
+  className: string;
+}
+
+interface MenuItemProps {
+  children: React.ReactNode;
+  className: string;
+  value: string;
+}
+
 // Mock react-icons
 jest.mock('react-icons/fa', () => ({
-  FaChevronDown: ({ className }) => (
+  FaChevronDown: ({ className }: IconProps): ReactElement => (
     <span className={className} data-testid='chevron-down-icon'>
       ⬇️
     </span>
@@ -28,13 +50,19 @@ jest.mock('../../../../utils/Utils', () => ({
 
 // Mock @szhsin/react-menu
 jest.mock('@szhsin/react-menu', () => ({
-  Menu: ({ children, menuButton, menuClassName, onItemClick }) => (
+  Menu: ({
+    children,
+    menuButton,
+    menuClassName,
+    onItemClick,
+  }: MenuProps): ReactElement => (
     <div data-menu-class={menuClassName} data-testid='menu'>
       {menuButton}
       <div
         data-testid='menu-items'
-        onClick={(e) => {
-          const value = e.target.getAttribute('data-value');
+        onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+          const target = e.target as HTMLElement;
+          const value = target.getAttribute('data-value');
           if (value && onItemClick) {
             onItemClick({ value });
           }
@@ -44,12 +72,12 @@ jest.mock('@szhsin/react-menu', () => ({
       </div>
     </div>
   ),
-  MenuButton: ({ children, className }) => (
+  MenuButton: ({ children, className }: MenuButtonProps): ReactElement => (
     <button className={className} data-testid='menu-button-component'>
       {children}
     </button>
   ),
-  MenuItem: ({ children, className, value }) => (
+  MenuItem: ({ children, className, value }: MenuItemProps): ReactElement => (
     <div className={className} data-testid='menu-item' data-value={value}>
       {children}
     </div>
@@ -66,15 +94,17 @@ describe('TimeIncrementSelector', () => {
     jest.clearAllMocks();
 
     // Set up the timeIncrementToText mock to return specific values
-    timeIncrementToText.mockImplementation((increment, withS) => {
-      const mapping = {
-        day: withS ? 'Days' : 'Day',
-        week: withS ? 'Weeks' : 'Week',
-        month: withS ? 'Months' : 'Month',
-        year: withS ? 'Years' : 'Year',
-      };
-      return mapping[increment] || increment;
-    });
+    timeIncrementToText.mockImplementation(
+      (increment: string, withS: boolean) => {
+        const mapping: Record<string, string> = {
+          day: withS ? 'Days' : 'Day',
+          week: withS ? 'Weeks' : 'Week',
+          month: withS ? 'Months' : 'Month',
+          year: withS ? 'Years' : 'Year',
+        };
+        return mapping[increment] || increment;
+      },
+    );
   });
 
   test('renders main container with correct CSS class', () => {
@@ -225,7 +255,8 @@ describe('TimeIncrementSelector', () => {
     const menuItems = screen.getAllByTestId('menu-item');
 
     // Click the WEEK menu item
-    fireEvent.click(menuItems[1]);
+    const [, weekItem] = menuItems;
+    if (weekItem) fireEvent.click(weekItem);
     expect(mockSetTimeIncrement).toHaveBeenCalledWith(WEEK);
   });
 
@@ -240,11 +271,13 @@ describe('TimeIncrementSelector', () => {
     const menuItems = screen.getAllByTestId('menu-item');
 
     // Click MONTH item
-    fireEvent.click(menuItems[2]);
+    const [, , monthItem] = menuItems;
+    if (monthItem) fireEvent.click(monthItem);
     expect(mockSetTimeIncrement).toHaveBeenCalledWith(MONTH);
 
     // Click YEAR item
-    fireEvent.click(menuItems[3]);
+    const [, , , yearItem] = menuItems;
+    if (yearItem) fireEvent.click(yearItem);
     expect(mockSetTimeIncrement).toHaveBeenCalledWith(YEAR);
 
     expect(mockSetTimeIncrement).toHaveBeenCalledTimes(2);
@@ -254,7 +287,7 @@ describe('TimeIncrementSelector', () => {
     const { rerender } = render(
       <TimeIncrementSelector
         setTimeIncrement={mockSetTimeIncrement}
-        timeIncrement={DAY}
+        timeIncrement={DAY as unknown as number}
       />,
     );
 
@@ -266,7 +299,7 @@ describe('TimeIncrementSelector', () => {
     rerender(
       <TimeIncrementSelector
         setTimeIncrement={mockSetTimeIncrement}
-        timeIncrement={MONTH}
+        timeIncrement={MONTH as unknown as number}
       />,
     );
 
@@ -279,7 +312,7 @@ describe('TimeIncrementSelector', () => {
     render(
       <TimeIncrementSelector
         setTimeIncrement={mockSetTimeIncrement}
-        timeIncrement={undefined}
+        timeIncrement={undefined as unknown as number}
       />,
     );
 
@@ -304,7 +337,9 @@ describe('TimeIncrementSelector', () => {
     const menuButton = screen.getByTestId('menu-button-component');
     const menuItems = screen.getByTestId('menu-items');
 
-    expect(timeIncrementSelector).toContainElement(menu);
+    if (timeIncrementSelector) {
+      expect(timeIncrementSelector).toContainElement(menu);
+    }
     expect(menu).toContainElement(menuButton);
     expect(menu).toContainElement(menuItems);
   });
@@ -327,11 +362,11 @@ describe('TimeIncrementSelector', () => {
   test('renders correctly with all four time increment options', () => {
     const timeIncrements = [DAY, WEEK, MONTH, YEAR];
 
-    timeIncrements.forEach((timeIncrement) => {
+    timeIncrements.forEach((timeIncrement: string) => {
       const { rerender } = render(
         <TimeIncrementSelector
           setTimeIncrement={mockSetTimeIncrement}
-          timeIncrement={timeIncrement}
+          timeIncrement={timeIncrement as unknown as number}
         />,
       );
 
