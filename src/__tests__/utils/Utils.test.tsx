@@ -53,8 +53,14 @@ const { DAY, HOUR, MONTH, WEEK, YEAR } = require('../../services/search');
 
 // Mock Tippy component
 jest.mock('@tippyjs/react', () => {
-  const MockTippy = ({ children, content }) => (
-    <div data-content={content} data-testid='tippy'>
+  const MockTippy = ({
+    children,
+    content,
+  }: {
+    children: React.ReactNode;
+    content: unknown;
+  }) => (
+    <div data-content={content as string} data-testid='tippy'>
       {children}
     </div>
   );
