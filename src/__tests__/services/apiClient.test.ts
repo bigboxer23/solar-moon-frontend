@@ -1,9 +1,11 @@
 /* eslint-env jest */
 
+import type { AxiosError, AxiosInstance } from 'axios';
+
 describe('apiClient', () => {
-  let mockAxiosInstance;
-  let mockCreate;
-  let mockFetchAuthSession;
+  let mockAxiosInstance: AxiosInstance;
+  let mockCreate: jest.Mock;
+  let mockFetchAuthSession: jest.Mock;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -18,7 +20,7 @@ describe('apiClient', () => {
           use: jest.fn(),
         },
       },
-    };
+    } as unknown as AxiosInstance;
 
     mockCreate = jest.fn(() => mockAxiosInstance);
 
@@ -63,11 +65,13 @@ describe('apiClient', () => {
   });
 
   describe('request interceptor', () => {
-    let requestInterceptor;
+    let requestInterceptor: (config: unknown) => Promise<unknown>;
 
     beforeEach(() => {
       require('../../services/apiClient');
-      const [firstCall] = mockAxiosInstance.interceptors.request.use.mock.calls;
+      const [firstCall] = (
+        mockAxiosInstance.interceptors.request.use as jest.Mock
+      ).mock.calls;
       [requestInterceptor] = firstCall;
     });
 
@@ -77,11 +81,20 @@ describe('apiClient', () => {
         tokens: { accessToken: mockToken },
       });
 
-      const config = { headers: {} };
+      const mockSet = jest.fn();
+      const config = {
+        headers: {
+          set: mockSet,
+        },
+      };
       const result = await requestInterceptor(config);
 
       expect(mockFetchAuthSession).toHaveBeenCalled();
-      expect(result.headers.authorization).toBe(`Bearer ${mockToken}`);
+      expect(mockSet).toHaveBeenCalledWith(
+        'authorization',
+        `Bearer ${mockToken}`,
+      );
+      expect(result).toBe(config);
     });
 
     it('should not add authorization header when JWT token is null', async () => {
@@ -89,35 +102,42 @@ describe('apiClient', () => {
         tokens: { accessToken: null },
       });
 
-      const config = { headers: {} };
-      const result = await requestInterceptor(config);
-
-      expect(mockFetchAuthSession).toHaveBeenCalled();
-      expect(result.headers.authorization).toBeUndefined();
-    });
-
-    it('should preserve existing headers', async () => {
-      const mockToken = 'mock-jwt-token';
-      mockFetchAuthSession.mockResolvedValue({
-        tokens: { accessToken: mockToken },
-      });
-
+      const mockSet = jest.fn();
       const config = {
         headers: {
-          'Custom-Header': 'custom-value',
-          'Content-Type': 'application/json',
+          set: mockSet,
         },
       };
       const result = await requestInterceptor(config);
 
-      expect(result.headers['Custom-Header']).toBe('custom-value');
-      expect(result.headers['Content-Type']).toBe('application/json');
-      expect(result.headers.authorization).toBe(`Bearer ${mockToken}`);
+      expect(mockFetchAuthSession).toHaveBeenCalled();
+      expect(mockSet).not.toHaveBeenCalled();
+      expect(result).toBe(config);
+    });
+
+    it('should not add authorization header when JWT token is undefined', async () => {
+      mockFetchAuthSession.mockResolvedValue({
+        tokens: { accessToken: undefined },
+      });
+
+      const mockSet = jest.fn();
+      const config = {
+        headers: {
+          set: mockSet,
+        },
+      };
+      const result = await requestInterceptor(config);
+
+      expect(mockFetchAuthSession).toHaveBeenCalled();
+      expect(mockSet).not.toHaveBeenCalled();
+      expect(result).toBe(config);
     });
 
     it('should handle request interceptor errors', async () => {
       const requestError = new Error('Request failed');
-      const [firstCall] = mockAxiosInstance.interceptors.request.use.mock.calls;
+      const [firstCall] = (
+        mockAxiosInstance.interceptors.request.use as jest.Mock
+      ).mock.calls;
       const [, errorHandler] = firstCall;
 
       await expect(errorHandler(requestError)).rejects.toBe(requestError);
@@ -125,24 +145,28 @@ describe('apiClient', () => {
   });
 
   describe('response interceptor', () => {
-    let responseInterceptorError;
-    let mockConsoleLog;
-    let originalLocation;
+    let responseInterceptorError: (error: AxiosError) => Promise<never>;
+    let mockConsoleLog: jest.SpyInstance;
+    let originalLocation: Location;
 
     beforeEach(() => {
       require('../../services/apiClient');
-      const [firstCall] =
-        mockAxiosInstance.interceptors.response.use.mock.calls;
+      const [firstCall] = (
+        mockAxiosInstance.interceptors.response.use as jest.Mock
+      ).mock.calls;
       [, responseInterceptorError] = firstCall;
       mockConsoleLog = jest.spyOn(console, 'log').mockImplementation();
 
       originalLocation = window.location;
+      // @ts-expect-error - Mocking window.location
       delete window.location;
-      window.location = { href: '' };
+      // @ts-expect-error - Mocking window.location
+      window.location = { href: '' } as Location;
     });
 
     afterEach(() => {
       mockConsoleLog.mockRestore();
+      // @ts-expect-error - Restoring window.location
       window.location = originalLocation;
     });
 
@@ -152,7 +176,7 @@ describe('apiClient', () => {
           status: 403,
           data: 'No subscription is active',
         },
-      };
+      } as unknown as AxiosError;
 
       expect(() => responseInterceptorError(error)).rejects.toBe(error);
       expect(mockConsoleLog).toHaveBeenCalledWith(error);
@@ -168,7 +192,7 @@ describe('apiClient', () => {
           status: 403,
           data: 'Access denied',
         },
-      };
+      } as unknown as AxiosError;
 
       expect(() => responseInterceptorError(error)).rejects.toBe(error);
       expect(mockConsoleLog).toHaveBeenCalledWith(error);
@@ -184,7 +208,7 @@ describe('apiClient', () => {
           status: 500,
           data: 'Internal server error',
         },
-      };
+      } as unknown as AxiosError;
 
       expect(() => responseInterceptorError(error)).rejects.toBe(error);
       expect(mockConsoleLog).toHaveBeenCalledWith(error);
@@ -195,7 +219,7 @@ describe('apiClient', () => {
     });
 
     it('should handle errors without response object gracefully', () => {
-      const error = { message: 'Network error' };
+      const error = { message: 'Network error' } as AxiosError;
 
       expect(() => responseInterceptorError(error)).rejects.toBe(error);
       expect(mockConsoleLog).toHaveBeenCalledWith(error);
@@ -204,7 +228,7 @@ describe('apiClient', () => {
   });
 
   describe('openSearch instance', () => {
-    let openSearchAxiosInstance;
+    let openSearchAxiosInstance: AxiosInstance;
 
     beforeEach(() => {
       openSearchAxiosInstance = {
@@ -216,7 +240,7 @@ describe('apiClient', () => {
             use: jest.fn(),
           },
         },
-      };
+      } as unknown as AxiosInstance;
 
       mockCreate
         .mockReturnValueOnce(mockAxiosInstance)
@@ -245,32 +269,20 @@ describe('apiClient', () => {
     it('should add Basic authorization header in openSearch request interceptor', async () => {
       require('../../services/apiClient');
 
-      const [firstCall] =
-        openSearchAxiosInstance.interceptors.request.use.mock.calls;
+      const [firstCall] = (
+        openSearchAxiosInstance.interceptors.request.use as jest.Mock
+      ).mock.calls;
       const [openSearchRequestInterceptor] = firstCall;
-      const config = { headers: {} };
-      const result = await openSearchRequestInterceptor(config);
-
-      expect(result.headers.authorization).toBe('Basic ');
-    });
-
-    it('should preserve existing headers in openSearch request interceptor', async () => {
-      require('../../services/apiClient');
-
-      const [firstCall] =
-        openSearchAxiosInstance.interceptors.request.use.mock.calls;
-      const [openSearchRequestInterceptor] = firstCall;
+      const mockSet = jest.fn();
       const config = {
         headers: {
-          'Custom-Header': 'custom-value',
-          'Content-Type': 'application/xml',
+          set: mockSet,
         },
       };
       const result = await openSearchRequestInterceptor(config);
 
-      expect(result.headers['Custom-Header']).toBe('custom-value');
-      expect(result.headers['Content-Type']).toBe('application/xml');
-      expect(result.headers.authorization).toBe('Basic ');
+      expect(mockSet).toHaveBeenCalledWith('authorization', 'Basic ');
+      expect(result).toBe(config);
     });
   });
 });
