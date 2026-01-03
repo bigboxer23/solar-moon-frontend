@@ -1,6 +1,5 @@
 /* eslint-env jest */
 import { fireEvent, render, screen } from '@testing-library/react';
-import React from 'react';
 import { useForm } from 'react-hook-form';
 
 import { ControlledInput, Input } from '../../../components/common/Input';
@@ -11,11 +10,11 @@ describe('Input', () => {
 
     const input = screen.getByRole('textbox');
     expect(input).toBeInTheDocument();
-    expect(container.querySelector('.Input')).toBeInTheDocument();
+    expect(container.querySelector('.Input')!).toBeInTheDocument();
   });
 
   test('applies box variant styles by default', () => {
-    const { container } = render(<Input />);
+    render(<Input />);
 
     const input = screen.getByRole('textbox');
     const wrapper = input.closest('label');
@@ -37,7 +36,7 @@ describe('Input', () => {
   });
 
   test('applies underline variant styles', () => {
-    const { container } = render(<Input variant='underline' />);
+    render(<Input variant='underline' />);
 
     const input = screen.getByRole('textbox');
     const wrapper = input.closest('label');
@@ -51,7 +50,7 @@ describe('Input', () => {
   });
 
   test('renders with label', () => {
-    const { container } = render(<Input label='Email Address' />);
+    render(<Input label='Email Address' />);
 
     const label = screen.getByText('Email Address');
     expect(label).toBeInTheDocument();
@@ -59,9 +58,7 @@ describe('Input', () => {
   });
 
   test('renders with error message', () => {
-    const { container } = render(
-      <Input errorMessage='This field is required' />,
-    );
+    render(<Input errorMessage='This field is required' />);
 
     const error = screen.getByText('This field is required');
     expect(error).toBeInTheDocument();
@@ -72,7 +69,7 @@ describe('Input', () => {
     const prefix = <span data-testid='prefix'>$</span>;
     const suffix = <span data-testid='suffix'>.00</span>;
 
-    const { container } = render(<Input prefix={prefix} suffix={suffix} />);
+    render(<Input prefix={prefix} suffix={suffix} />);
 
     expect(screen.getByTestId('prefix')).toBeInTheDocument();
     expect(screen.getByTestId('suffix')).toBeInTheDocument();
@@ -86,48 +83,42 @@ describe('Input', () => {
   });
 
   test('applies custom input className', () => {
-    const { container } = render(<Input inputClassName='custom-input-field' />);
+    render(<Input inputClassName='custom-input-field' />);
 
     const input = screen.getByRole('textbox');
     expect(input).toHaveClass('custom-input-field');
   });
 
   test('applies custom wrapper className', () => {
-    const { container } = render(
-      <Input inputWrapperClassName='custom-wrapper' />,
-    );
+    render(<Input inputWrapperClassName='custom-wrapper' />);
 
     const wrapper = screen.getByRole('textbox').closest('label');
     expect(wrapper).toHaveClass('custom-wrapper');
   });
 
   test('applies custom label className', () => {
-    const { container } = render(
-      <Input label='Test Label' labelClassName='custom-label' />,
-    );
+    render(<Input label='Test Label' labelClassName='custom-label' />);
 
     const label = screen.getByText('Test Label');
     expect(label).toHaveClass('custom-label');
   });
 
   test('applies custom error className', () => {
-    const { container } = render(
-      <Input errorClassName='custom-error' errorMessage='Error' />,
-    );
+    render(<Input errorClassName='custom-error' errorMessage='Error' />);
 
     const error = screen.getByText('Error');
     expect(error).toHaveClass('custom-error');
   });
 
   test('extends variant styles by default', () => {
-    const { container } = render(<Input inputClassName='extra-class' />);
+    render(<Input inputClassName='extra-class' />);
 
     const input = screen.getByRole('textbox');
     expect(input).toHaveClass('appearance-none', 'extra-class');
   });
 
   test('replaces variant styles when extendVariantStyles is false', () => {
-    const { container } = render(
+    render(
       <Input extendVariantStyles={false} inputClassName='only-this-class' />,
     );
 
@@ -138,7 +129,7 @@ describe('Input', () => {
 
   test('passes input props correctly', () => {
     const mockChange = jest.fn();
-    const { container } = render(
+    render(
       <Input
         inputProps={{
           placeholder: 'Enter text',
@@ -172,14 +163,14 @@ describe('Input', () => {
   });
 
   test('handles null prefix and suffix', () => {
-    const { container } = render(<Input prefix={null} suffix={null} />);
+    render(<Input prefix={null} suffix={null} />);
 
     const input = screen.getByRole('textbox');
     expect(input).toBeInTheDocument();
   });
 
   test('works without any props', () => {
-    const { container } = render(<Input />);
+    render(<Input />);
 
     const input = screen.getByRole('textbox');
     expect(input).toBeInTheDocument();
@@ -187,8 +178,14 @@ describe('Input', () => {
 });
 
 describe('ControlledInput', () => {
-  const TestForm = ({ onSubmit }) => {
-    const { control, handleSubmit } = useForm({
+  type TestFormData = { testField: string };
+
+  const TestForm = ({
+    onSubmit,
+  }: {
+    onSubmit: (data: TestFormData) => void;
+  }) => {
+    const { control, handleSubmit } = useForm<TestFormData>({
       defaultValues: { testField: '' },
     });
 
@@ -206,7 +203,7 @@ describe('ControlledInput', () => {
 
   test('renders controlled input with form integration', () => {
     const mockSubmit = jest.fn();
-    const { container } = render(<TestForm onSubmit={mockSubmit} />);
+    render(<TestForm onSubmit={mockSubmit} />);
 
     const input = screen.getByRole('textbox');
     const label = screen.getByText('Test Field');
@@ -217,7 +214,7 @@ describe('ControlledInput', () => {
 
   test('handles form field changes', () => {
     const mockSubmit = jest.fn();
-    const { container } = render(<TestForm onSubmit={mockSubmit} />);
+    render(<TestForm onSubmit={mockSubmit} />);
 
     const input = screen.getByRole('textbox');
     fireEvent.change(input, { target: { value: 'test input' } });
@@ -227,7 +224,7 @@ describe('ControlledInput', () => {
 
   test('submits form with field value', async () => {
     const mockSubmit = jest.fn();
-    const { container } = render(<TestForm onSubmit={mockSubmit} />);
+    render(<TestForm onSubmit={mockSubmit} />);
 
     const input = screen.getByRole('textbox');
     const submitButton = screen.getByRole('button', { name: 'Submit' });
@@ -240,8 +237,10 @@ describe('ControlledInput', () => {
   });
 
   test('passes additional input props to controlled input', () => {
+    type TestComponentFormData = Record<string, unknown>;
+
     const TestComponent = () => {
-      const { control } = useForm();
+      const { control } = useForm<TestComponentFormData>();
       return (
         <ControlledInput
           control={control}
@@ -252,15 +251,17 @@ describe('ControlledInput', () => {
       );
     };
 
-    const { container } = render(<TestComponent />);
+    render(<TestComponent />);
 
     const input = screen.getByRole('textbox');
     expect(input).toHaveAttribute('placeholder', 'Controlled placeholder');
   });
 
   test('applies custom styling to controlled input', () => {
+    type TestComponentFormData = Record<string, unknown>;
+
     const TestComponent = () => {
-      const { control } = useForm();
+      const { control } = useForm<TestComponentFormData>();
       return (
         <ControlledInput
           className='controlled-custom'

@@ -1,6 +1,6 @@
 /* eslint-env jest */
 import { fireEvent, render, screen } from '@testing-library/react';
-import React from 'react';
+import { Control } from 'react-hook-form';
 
 import Dropdown, {
   ControlledDropdown,
@@ -17,36 +17,44 @@ jest.mock('react-hook-form', () => ({
 }));
 
 jest.mock('@szhsin/react-menu', () => ({
-  Menu: ({ children, menuButton }) => (
+  Menu: (props: { children: React.ReactNode; menuButton: React.ReactNode }) => (
     <div data-testid='menu'>
-      {menuButton}
-      <div data-testid='menu-content'>{children}</div>
+      {props.menuButton}
+      <div data-testid='menu-content'>{props.children}</div>
     </div>
   ),
-  MenuButton: ({ children, className }) => (
-    <button className={className} data-testid='menu-button'>
-      {children}
+  MenuButton: (props: { children: React.ReactNode; className?: string }) => (
+    <button className={props.className} data-testid='menu-button'>
+      {props.children}
     </button>
   ),
-  MenuItem: ({ children, onClick, className }) => (
+  MenuItem: (props: {
+    children: React.ReactNode;
+    onClick?: () => void;
+    className?: string;
+  }) => (
     <div
-      className={className}
+      className={props.className}
       data-testid='menu-item'
-      onClick={onClick}
+      onClick={props.onClick}
       role='menuitem'
     >
-      {children}
+      {props.children}
     </div>
   ),
-  MenuDivider: ({ className }) => (
-    <hr className={className} data-testid='menu-divider' />
+  MenuDivider: (props: { className?: string }) => (
+    <hr className={props.className} data-testid='menu-divider' />
   ),
 }));
 
 // Mock react-icons
 jest.mock('react-icons/fa', () => ({
-  FaChevronDown: ({ className, size }) => (
-    <span className={className} data-size={size} data-testid='chevron-icon'>
+  FaChevronDown: (props: { className?: string; size?: number | string }) => (
+    <span
+      className={props.className}
+      data-size={props.size}
+      data-testid='chevron-icon'
+    >
       ▼
     </span>
   ),
@@ -54,7 +62,7 @@ jest.mock('react-icons/fa', () => ({
 
 // Mock classnames
 jest.mock('classnames', () => {
-  return jest.fn((baseClass, additionalClass) =>
+  return jest.fn((baseClass: string, additionalClass?: string) =>
     [baseClass, additionalClass].filter(Boolean).join(' '),
   );
 });
@@ -107,7 +115,7 @@ describe('Dropdown', () => {
     render(<Dropdown {...defaultProps} onChange={mockOnChange} />);
 
     const menuItems = screen.getAllByTestId('menu-item');
-    fireEvent.click(menuItems[1]);
+    fireEvent.click(menuItems[1]!);
 
     expect(mockOnChange).toHaveBeenCalledWith(mockOptions[1]);
   });
@@ -145,7 +153,7 @@ describe('Dropdown', () => {
   test('renders divider when option has divider property', () => {
     const optionsWithDivider = [
       { value: '1', label: 'Option 1' },
-      { value: 'divider', divider: true },
+      { value: 'divider', label: '', divider: true },
       { value: '2', label: 'Option 2' },
     ];
 
@@ -198,10 +206,10 @@ describe('Dropdown', () => {
 
     const menuItems = screen.getAllByTestId('menu-item');
 
-    fireEvent.click(menuItems[0]);
+    fireEvent.click(menuItems[0]!);
     expect(mockOnChange).toHaveBeenCalledWith(mockOptions[0]);
 
-    fireEvent.click(menuItems[2]);
+    fireEvent.click(menuItems[2]!);
     expect(mockOnChange).toHaveBeenCalledWith(mockOptions[2]);
 
     expect(mockOnChange).toHaveBeenCalledTimes(2);
@@ -222,6 +230,8 @@ describe('Dropdown', () => {
 describe('ControlledDropdown', () => {
   const { useController } = require('react-hook-form');
 
+  type TestFormData = Record<string, unknown>;
+
   const mockOptions = [
     { value: '1', label: 'Option 1' },
     { value: '2', label: 'Option 2' },
@@ -240,7 +250,7 @@ describe('ControlledDropdown', () => {
   test('renders controlled dropdown', () => {
     render(
       <ControlledDropdown
-        control={{}}
+        control={{} as unknown as Control<TestFormData>}
         name='test-dropdown'
         options={mockOptions}
       />,
@@ -250,7 +260,7 @@ describe('ControlledDropdown', () => {
   });
 
   test('uses useController hook with correct parameters', () => {
-    const mockControl = { test: 'control' };
+    const mockControl = { test: 'control' } as unknown as Control<TestFormData>;
 
     render(
       <ControlledDropdown
@@ -277,14 +287,14 @@ describe('ControlledDropdown', () => {
 
     render(
       <ControlledDropdown
-        control={{}}
+        control={{} as unknown as Control<TestFormData>}
         name='test-dropdown'
         options={mockOptions}
       />,
     );
 
     const menuItems = screen.getAllByTestId('menu-item');
-    fireEvent.click(menuItems[1]);
+    fireEvent.click(menuItems[1]!);
 
     expect(mockFieldOnChange).toHaveBeenCalledWith(mockOptions[1]);
   });
@@ -293,7 +303,7 @@ describe('ControlledDropdown', () => {
     render(
       <ControlledDropdown
         className='controlled-class'
-        control={{}}
+        control={{} as unknown as Control<TestFormData>}
         name='test-dropdown'
         options={mockOptions}
         prefixLabel='Controlled'

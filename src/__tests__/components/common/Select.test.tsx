@@ -1,6 +1,6 @@
 /* eslint-env jest */
 import { fireEvent, render, screen } from '@testing-library/react';
-import React from 'react';
+import { Control } from 'react-hook-form';
 
 import { ControlledSelect, Select } from '../../../components/common/Select';
 
@@ -46,18 +46,18 @@ describe('Select', () => {
 
     const options = screen.getAllByRole('option');
     expect(options).toHaveLength(3);
-    expect(options[0]).toHaveTextContent('Option 1');
-    expect(options[1]).toHaveTextContent('Option 2');
-    expect(options[2]).toHaveTextContent('Option 3');
+    expect(options[0]!).toHaveTextContent('Option 1');
+    expect(options[1]!).toHaveTextContent('Option 2');
+    expect(options[2]!).toHaveTextContent('Option 3');
   });
 
   test('renders options with correct values', () => {
     render(<Select {...defaultProps} />);
 
     const options = screen.getAllByRole('option');
-    expect(options[0]).toHaveValue('1');
-    expect(options[1]).toHaveValue('2');
-    expect(options[2]).toHaveValue('3');
+    expect(options[0]!).toHaveValue('1');
+    expect(options[1]!).toHaveValue('2');
+    expect(options[2]!).toHaveValue('3');
   });
 
   test('renders with label when provided', () => {
@@ -256,6 +256,8 @@ describe('Select', () => {
 describe('ControlledSelect', () => {
   const { useController } = require('react-hook-form');
 
+  type TestFormData = Record<string, unknown>;
+
   const mockAttributes = [
     { id: '1', label: 'Option 1' },
     { id: '2', label: 'Option 2' },
@@ -276,7 +278,7 @@ describe('ControlledSelect', () => {
     render(
       <ControlledSelect
         attributes={mockAttributes}
-        control={{}}
+        control={{} as unknown as Control<TestFormData>}
         name='test-controlled'
       />,
     );
@@ -285,7 +287,7 @@ describe('ControlledSelect', () => {
   });
 
   test('uses useController hook with correct parameters', () => {
-    const mockControl = { test: 'control' };
+    const mockControl = { test: 'control' } as unknown as Control<TestFormData>;
 
     render(
       <ControlledSelect
@@ -315,7 +317,7 @@ describe('ControlledSelect', () => {
     render(
       <ControlledSelect
         attributes={mockAttributes}
-        control={{}}
+        control={{} as unknown as Control<TestFormData>}
         inputProps={{ 'data-testid': 'controlled-select' }}
         name='test-controlled'
       />,
@@ -330,7 +332,7 @@ describe('ControlledSelect', () => {
     render(
       <ControlledSelect
         attributes={mockAttributes}
-        control={{}}
+        control={{} as unknown as Control<TestFormData>}
         inputProps={{ 'data-testid': 'merged-select', disabled: true }}
         name='test-controlled'
       />,
@@ -344,7 +346,7 @@ describe('ControlledSelect', () => {
     render(
       <ControlledSelect
         attributes={mockAttributes}
-        control={{}}
+        control={{} as unknown as Control<TestFormData>}
         label='Controlled Label'
         name='test-controlled'
         variant='underline'
@@ -370,7 +372,7 @@ describe('ControlledSelect', () => {
     render(
       <ControlledSelect
         attributes={mockAttributes}
-        control={{}}
+        control={{} as unknown as Control<TestFormData>}
         name='test-controlled'
       />,
     );
