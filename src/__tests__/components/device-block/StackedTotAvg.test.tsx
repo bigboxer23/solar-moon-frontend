@@ -1,6 +1,5 @@
 /* eslint-env jest */
 import { render } from '@testing-library/react';
-import React from 'react';
 import { IntlProvider } from 'react-intl';
 
 import StackedTotAvg from '../../../components/device-block/StackedTotAvg';
@@ -13,7 +12,20 @@ jest.mock('../../../utils/Utils', () => ({
 
 // Mock StackedStatBlock component
 jest.mock('../../../components/device-block/StackedStatBlock', () => {
-  return function MockStackedStatBlock(props) {
+  return function MockStackedStatBlock(props: {
+    upperTitle: string;
+    upperValue: number | null;
+    upperUnit: string;
+    lowerTitle: string;
+    lowerValue: number | null;
+    lowerUnit: string;
+    upperHover?: number | null;
+    upperHoverUnit?: string;
+    lowerHover?: number | null;
+    lowerHoverUnit?: string;
+    className?: string;
+    onClick?: () => void;
+  }) {
     const {
       upperTitle,
       upperValue,
@@ -57,7 +69,7 @@ const {
   roundToDecimals,
 } = require('../../../utils/Utils');
 
-const renderWithIntl = (component) => {
+const renderWithIntl = (component: React.ReactElement) => {
   return render(<IntlProvider locale='en'>{component}</IntlProvider>);
 };
 
@@ -69,7 +81,7 @@ describe('StackedTotAvg', () => {
       powerValue: 15.5,
       decimals: 2,
     });
-    roundToDecimals.mockImplementation((value, decimals) =>
+    roundToDecimals.mockImplementation((value: number, decimals: number) =>
       Number(value.toFixed(decimals)),
     );
   });

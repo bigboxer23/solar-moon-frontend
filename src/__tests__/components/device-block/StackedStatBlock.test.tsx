@@ -1,13 +1,19 @@
 /* eslint-env jest */
 import { fireEvent, render } from '@testing-library/react';
-import React from 'react';
 import { IntlProvider } from 'react-intl';
 
 import StackedStatBlock from '../../../components/device-block/StackedStatBlock';
 
 // Mock dependencies
 jest.mock('@tippyjs/react', () => {
-  return function MockTippy({ children, content, ...props }) {
+  return function MockTippy({
+    children,
+    content,
+    ...props
+  }: {
+    children: React.ReactNode;
+    content: string;
+  }) {
     return (
       <div data-testid='tippy-wrapper' title={content} {...props}>
         {children}
@@ -26,7 +32,7 @@ jest.mock('../../../utils/Utils', () => ({
   TIPPY_DELAY: 300,
 }));
 
-const renderWithIntl = (component) => {
+const renderWithIntl = (component: React.ReactElement) => {
   return render(<IntlProvider locale='en'>{component}</IntlProvider>);
 };
 
@@ -83,7 +89,9 @@ describe('StackedStatBlock', () => {
     );
 
     const component = container.querySelector('.flex.flex-col');
-    fireEvent.click(component);
+    if (component) {
+      fireEvent.click(component);
+    }
 
     expect(mockOnClick).toHaveBeenCalledTimes(1);
   });

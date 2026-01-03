@@ -1,5 +1,6 @@
 import Tippy from '@tippyjs/react';
 import classNames from 'classnames';
+import { ReactElement, ReactNode } from 'react';
 import { FaArrowRight } from 'react-icons/fa';
 import { MdOutlineInfo } from 'react-icons/md';
 import { NavLink } from 'react-router-dom';
@@ -9,6 +10,19 @@ import {
   transformMultiLineForHTMLDisplay,
   truncate,
 } from '../../utils/Utils';
+
+interface DeviceBlockProps {
+  title: string;
+  secondaryTitle?: string;
+  subtitle?: string;
+  statBlocks?: ReactNode[];
+  body?: ReactNode;
+  className?: string;
+  truncationLength?: number;
+  informationalErrors?: string | null;
+  informationalErrorsLink?: string | null;
+  reportLink?: string | null;
+}
 
 export default function DeviceBlock({
   title,
@@ -21,9 +35,9 @@ export default function DeviceBlock({
   informationalErrors = null,
   informationalErrorsLink = null,
   reportLink = null,
-}) {
+}: DeviceBlockProps): ReactElement {
   const truncatedTitle = truncate(title, truncationLength);
-  const truncatedSubtitle = truncate(subtitle, truncationLength);
+  const truncatedSubtitle = truncate(subtitle ?? '', truncationLength);
   const hoverTitle = title.length === truncatedTitle.length ? '' : title;
   const hoverSubtitle =
     subtitle && subtitle.length === truncatedSubtitle.length ? '' : subtitle;
@@ -49,7 +63,7 @@ export default function DeviceBlock({
           >
             <NavLink
               className='flex items-center text-xs text-gray-500 hover:underline dark:text-gray-400'
-              to={informationalErrorsLink}
+              to={informationalErrorsLink ?? ''}
             >
               <MdOutlineInfo className='text-brand-primary' size={18} />
             </NavLink>
@@ -69,7 +83,7 @@ export default function DeviceBlock({
         <div className='flex text-xs text-gray-400'>{secondaryTitle}</div>
       )}
       <div className='my-2 grid grid-cols-2 gap-1 sm:gap-2'>
-        {statBlocks.map((block, i) => block)}
+        {statBlocks.map((block) => block)}
       </div>
       {body && <div>{body}</div>}
     </div>

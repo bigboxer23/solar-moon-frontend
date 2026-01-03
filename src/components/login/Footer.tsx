@@ -1,10 +1,8 @@
-import { useTheme } from '@aws-amplify/ui-react';
+import type { ReactElement } from 'react';
 
 import PageFooter from '../PageFooter';
 
-export function Footer() {
-  const { tokens } = useTheme();
-
+export function Footer(): ReactElement {
   return (
     <div className='mt-8'>
       <PageFooter />

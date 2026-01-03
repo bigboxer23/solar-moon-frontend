@@ -1,17 +1,32 @@
 /* eslint-env jest */
 import { render, screen } from '@testing-library/react';
-import React from 'react';
 
 import { Header } from '../../../components/login/Header';
 
 // Mock AWS Amplify UI components
 jest.mock('@aws-amplify/ui-react', () => ({
-  Flex: ({ children, justifyContent }) => (
+  Flex: ({
+    children,
+    justifyContent,
+  }: {
+    children: React.ReactNode;
+    justifyContent?: string;
+  }) => (
     <div data-justify-content={justifyContent} data-testid='flex'>
       {children}
     </div>
   ),
-  Image: ({ alt, src, style, padding }) => (
+  Image: ({
+    alt,
+    src,
+    style,
+    padding,
+  }: {
+    alt: string;
+    src: string;
+    style?: React.CSSProperties;
+    padding?: string;
+  }) => (
     <img
       alt={alt}
       data-padding={padding}
@@ -33,7 +48,7 @@ jest.mock('@aws-amplify/ui-react', () => ({
 jest.mock('../../../assets/logo.svg', () => 'test-logo.svg');
 
 describe('Header', () => {
-  let mockUseTheme;
+  let mockUseTheme: jest.Mock;
 
   beforeEach(() => {
     mockUseTheme = require('@aws-amplify/ui-react').useTheme;

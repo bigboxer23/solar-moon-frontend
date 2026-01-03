@@ -1,11 +1,19 @@
 import classNames from 'classnames';
+import { ReactElement } from 'react';
+
+interface StackedAlertsInfoProps {
+  activeAlerts: number;
+  resolvedAlerts: number;
+  onClick?: () => void;
+  className?: string;
+}
 
 export default function StackedAlertsInfo({
   activeAlerts,
   resolvedAlerts,
   onClick,
   className,
-}) {
+}: StackedAlertsInfoProps): ReactElement {
   const activeAlertsStyle = classNames('leading-4', {
     'text-red-500': activeAlerts > 0,
     'text-black dark:text-gray-100': activeAlerts === 0,

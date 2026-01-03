@@ -1,12 +1,19 @@
 /* eslint-env jest */
 import { fireEvent, render, screen } from '@testing-library/react';
-import React from 'react';
 
 import { SignInFooter } from '../../../components/login/SignInFooter';
 
 // Mock AWS Amplify UI components
 jest.mock('@aws-amplify/ui-react', () => ({
-  Flex: ({ children, justifyContent, padding }) => (
+  Flex: ({
+    children,
+    justifyContent,
+    padding,
+  }: {
+    children: React.ReactNode;
+    justifyContent?: string;
+    padding?: string;
+  }) => (
     <div
       data-justify-content={justifyContent}
       data-padding={padding}
@@ -15,7 +22,13 @@ jest.mock('@aws-amplify/ui-react', () => ({
       {children}
     </div>
   ),
-  Link: ({ children, onClick }) => (
+  Link: ({
+    children,
+    onClick,
+  }: {
+    children: React.ReactNode;
+    onClick?: () => void;
+  }) => (
     <button data-testid='reset-link' onClick={onClick}>
       {children}
     </button>
@@ -33,9 +46,9 @@ jest.mock('@aws-amplify/ui-react', () => ({
 }));
 
 describe('SignInFooter', () => {
-  let mockUseAuthenticator;
-  let mockUseTheme;
-  let mockToForgotPassword;
+  let mockUseAuthenticator: jest.Mock;
+  let mockUseTheme: jest.Mock;
+  let mockToForgotPassword: jest.Mock;
 
   beforeEach(() => {
     mockToForgotPassword = jest.fn();

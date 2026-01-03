@@ -1,6 +1,7 @@
 import { Flex, Link, useAuthenticator, useTheme } from '@aws-amplify/ui-react';
+import type { ReactElement } from 'react';
 
-export function SignInFooter() {
+export function SignInFooter(): ReactElement {
   const { toForgotPassword } = useAuthenticator();
   const { tokens } = useTheme();
 

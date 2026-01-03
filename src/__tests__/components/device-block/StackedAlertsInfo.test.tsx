@@ -1,6 +1,5 @@
 /* eslint-env jest */
 import { fireEvent, render } from '@testing-library/react';
-import React from 'react';
 
 import StackedAlertsInfo from '../../../components/device-block/StackedAlertsInfo';
 
@@ -97,7 +96,9 @@ describe('StackedAlertsInfo', () => {
     );
 
     const component = container.querySelector('.StackedAlertsInfo');
-    fireEvent.click(component);
+    if (component) {
+      fireEvent.click(component);
+    }
 
     expect(mockOnClick).toHaveBeenCalledTimes(1);
   });
@@ -195,7 +196,9 @@ describe('StackedAlertsInfo', () => {
     );
 
     const component = container.querySelector('.StackedAlertsInfo');
-    fireEvent.click(component);
+    if (component) {
+      fireEvent.click(component);
+    }
 
     expect(mockOnClick).toHaveBeenCalledWith(expect.any(Object));
   });
