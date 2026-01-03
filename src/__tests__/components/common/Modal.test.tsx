@@ -1,6 +1,5 @@
 /* eslint-env jest */
 import { fireEvent, render, screen } from '@testing-library/react';
-import React from 'react';
 
 import Modal, {
   ModalFooter,
@@ -9,7 +8,7 @@ import Modal, {
 
 describe('Modal', () => {
   test('renders nothing when isOpen is false', () => {
-    const { container } = render(
+    render(
       <Modal isOpen={false}>
         <div>Modal content</div>
       </Modal>,
@@ -19,7 +18,7 @@ describe('Modal', () => {
   });
 
   test('renders modal when isOpen is true', () => {
-    const { container } = render(
+    render(
       <Modal isOpen={true}>
         <div>Modal content</div>
       </Modal>,
@@ -30,7 +29,7 @@ describe('Modal', () => {
   });
 
   test('applies default medium size', () => {
-    const { container } = render(
+    render(
       <Modal isOpen={true}>
         <div>Modal content</div>
       </Modal>,
@@ -41,7 +40,7 @@ describe('Modal', () => {
   });
 
   test('applies small size', () => {
-    const { container } = render(
+    render(
       <Modal isOpen={true} size='sm'>
         <div>Modal content</div>
       </Modal>,
@@ -52,7 +51,7 @@ describe('Modal', () => {
   });
 
   test('applies large size', () => {
-    const { container } = render(
+    render(
       <Modal isOpen={true} size='lg'>
         <div>Modal content</div>
       </Modal>,
@@ -63,7 +62,7 @@ describe('Modal', () => {
   });
 
   test('applies modal styling classes', () => {
-    const { container } = render(
+    render(
       <Modal isOpen={true}>
         <div>Modal content</div>
       </Modal>,
@@ -100,7 +99,7 @@ describe('Modal', () => {
   });
 
   test('sets open attribute correctly', () => {
-    const { container } = render(
+    render(
       <Modal isOpen={true}>
         <div>Modal content</div>
       </Modal>,
@@ -111,7 +110,7 @@ describe('Modal', () => {
   });
 
   test('handles children rendering correctly', () => {
-    const { container } = render(
+    render(
       <Modal isOpen={true}>
         <div>First child</div>
         <span>Second child</span>
@@ -131,7 +130,7 @@ describe('Modal', () => {
       </div>
     );
 
-    const { container } = render(<Modal isOpen={true}>{complexChild}</Modal>);
+    render(<Modal isOpen={true}>{complexChild}</Modal>);
 
     expect(screen.getByText('Title')).toBeInTheDocument();
     expect(screen.getByText('Description')).toBeInTheDocument();
@@ -139,7 +138,7 @@ describe('Modal', () => {
   });
 
   test('defaults isOpen to false', () => {
-    const { container } = render(
+    render(
       <Modal>
         <div>Default modal</div>
       </Modal>,
@@ -151,7 +150,7 @@ describe('Modal', () => {
 
 describe('ModalHeader', () => {
   test('renders header with label', () => {
-    const { container } = render(<ModalHeader label='Test Modal' />);
+    render(<ModalHeader label='Test Modal' />);
 
     const header = screen.getByText('Test Modal');
     expect(header).toBeInTheDocument();
@@ -175,25 +174,21 @@ describe('ModalHeader', () => {
 
   test('renders close button when onCloseClick provided', () => {
     const mockClose = jest.fn();
-    const { container } = render(
-      <ModalHeader label='Test Modal' onCloseClick={mockClose} />,
-    );
+    render(<ModalHeader label='Test Modal' onCloseClick={mockClose} />);
 
     const closeButton = screen.getByRole('button');
     expect(closeButton).toBeInTheDocument();
   });
 
   test('does not render close button when onCloseClick not provided', () => {
-    const { container } = render(<ModalHeader label='Test Modal' />);
+    render(<ModalHeader label='Test Modal' />);
 
     expect(screen.queryByRole('button')).not.toBeInTheDocument();
   });
 
   test('calls onCloseClick when close button is clicked', () => {
     const mockClose = jest.fn();
-    const { container } = render(
-      <ModalHeader label='Test Modal' onCloseClick={mockClose} />,
-    );
+    render(<ModalHeader label='Test Modal' onCloseClick={mockClose} />);
 
     const closeButton = screen.getByRole('button');
     fireEvent.click(closeButton);
@@ -202,9 +197,7 @@ describe('ModalHeader', () => {
 
   test('close button has icon variant', () => {
     const mockClose = jest.fn();
-    const { container } = render(
-      <ModalHeader label='Test Modal' onCloseClick={mockClose} />,
-    );
+    render(<ModalHeader label='Test Modal' onCloseClick={mockClose} />);
 
     const closeButton = screen.getByRole('button');
     expect(closeButton).toHaveClass('Button-icon');
@@ -213,22 +206,23 @@ describe('ModalHeader', () => {
   test('handles empty label', () => {
     const { container } = render(<ModalHeader label='' />);
 
-    const header = container.querySelector('h2.ModalHeader');
+    const header = container.querySelector('h2.ModalHeader')!;
     expect(header).toBeInTheDocument();
     expect(header).toHaveTextContent('');
   });
 
   test('handles undefined onCloseClick gracefully', () => {
-    const { container } = render(
-      <ModalHeader label='Test Modal' onCloseClick={undefined} />,
-    );
+    render(<ModalHeader label='Test Modal' onCloseClick={undefined} />);
 
     expect(screen.queryByRole('button')).not.toBeInTheDocument();
   });
 
   test('handles null onCloseClick gracefully', () => {
-    const { container } = render(
-      <ModalHeader label='Test Modal' onCloseClick={null} />,
+    render(
+      <ModalHeader
+        label='Test Modal'
+        onCloseClick={null as unknown as () => void}
+      />,
     );
 
     expect(screen.queryByRole('button')).not.toBeInTheDocument();
@@ -237,7 +231,7 @@ describe('ModalHeader', () => {
 
 describe('ModalFooter', () => {
   test('renders footer with children', () => {
-    const { container } = render(
+    render(
       <ModalFooter>
         <button>Cancel</button>
         <button>Confirm</button>
@@ -290,7 +284,7 @@ describe('ModalFooter', () => {
   });
 
   test('handles empty children', () => {
-    const { container } = render(<ModalFooter />);
+    const { container } = render(<ModalFooter>{undefined}</ModalFooter>);
 
     const footer = container.querySelector('.ModalFooter');
     expect(footer).toBeInTheDocument();
@@ -298,7 +292,7 @@ describe('ModalFooter', () => {
   });
 
   test('handles complex children', () => {
-    const { container } = render(
+    render(
       <ModalFooter>
         <div>
           <span>Left content</span>

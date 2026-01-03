@@ -1,12 +1,21 @@
 /* eslint-env jest */
 import { fireEvent, render, screen } from '@testing-library/react';
-import React from 'react';
 
 import AlertSection from '../../../components/common/AlertSection';
 
 // Mock the Button component
 jest.mock('../../../components/common/Button', () => {
-  return function MockButton({ children, onClick, variant, className }) {
+  return function MockButton({
+    children,
+    onClick,
+    variant,
+    className,
+  }: {
+    children: React.ReactNode;
+    onClick: () => void;
+    variant: string;
+    className: string;
+  }) {
     return (
       <button
         className={className}
@@ -98,7 +107,7 @@ describe('AlertSection', () => {
   test('applies correct CSS classes to container', () => {
     render(<AlertSection {...defaultProps} />);
 
-    const container = screen.getByText('Test Alert').closest('.mt-8');
+    const container = screen.getByText('Test Alert').closest('.mt-8')!;
     expect(container).toHaveClass(
       'mt-8',
       'rounded-lg',
@@ -123,12 +132,11 @@ describe('AlertSection', () => {
   test('renders with proper DOM structure', () => {
     render(<AlertSection {...defaultProps} />);
 
-    const title = screen.getByText('Test Alert');
     const cancelButton = screen.getByText('Cancel');
     const actionButton = screen.getByText('Confirm');
 
     // Check that buttons are in the correct container
-    const buttonContainer = cancelButton.parentElement;
+    const buttonContainer = cancelButton.parentElement!;
     expect(buttonContainer).toContainElement(cancelButton);
     expect(buttonContainer).toContainElement(actionButton);
     expect(buttonContainer).toHaveClass('mt-8', 'flex', 'content-end');

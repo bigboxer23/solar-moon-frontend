@@ -1,6 +1,5 @@
 /* eslint-env jest */
 import { fireEvent, render, screen } from '@testing-library/react';
-import React from 'react';
 import { useForm } from 'react-hook-form';
 
 import { Check, ControlledCheck } from '../../../components/common/Check';
@@ -16,7 +15,7 @@ describe('Check', () => {
   });
 
   test('renders checkbox with label', () => {
-    const { container } = render(
+    render(
       <Check
         id='test-check'
         inputProps={defaultInputProps}
@@ -39,18 +38,14 @@ describe('Check', () => {
 
   test('handles checked state', () => {
     const checkedInputProps = { ...defaultInputProps, value: true };
-    const { container } = render(
-      <Check id='test-check' inputProps={checkedInputProps} />,
-    );
+    render(<Check id='test-check' inputProps={checkedInputProps} />);
 
     const checkbox = screen.getByRole('checkbox');
     expect(checkbox).toBeChecked();
   });
 
   test('handles unchecked state', () => {
-    const { container } = render(
-      <Check id='test-check' inputProps={defaultInputProps} />,
-    );
+    render(<Check id='test-check' inputProps={defaultInputProps} />);
 
     const checkbox = screen.getByRole('checkbox');
     expect(checkbox).not.toBeChecked();
@@ -60,9 +55,7 @@ describe('Check', () => {
     const mockOnChange = jest.fn();
     const inputProps = { ...defaultInputProps, onChange: mockOnChange };
 
-    const { container } = render(
-      <Check id='test-check' inputProps={inputProps} />,
-    );
+    render(<Check id='test-check' inputProps={inputProps} />);
 
     const checkbox = screen.getByRole('checkbox');
     fireEvent.click(checkbox);
@@ -79,13 +72,13 @@ describe('Check', () => {
       />,
     );
 
-    const wrapper = container.querySelector('.Input');
+    const wrapper = container.querySelector('.Input')!;
     fireEvent.click(wrapper);
     expect(mockOnClick).toHaveBeenCalledTimes(1);
   });
 
   test('renders prefix and suffix', () => {
-    const { container } = render(
+    render(
       <Check
         id='test-check'
         inputProps={defaultInputProps}
@@ -99,7 +92,7 @@ describe('Check', () => {
   });
 
   test('displays error message', () => {
-    const { container } = render(
+    render(
       <Check
         errorMessage='This field is required'
         id='test-check'
@@ -124,7 +117,7 @@ describe('Check', () => {
   });
 
   test('applies custom input className', () => {
-    const { container } = render(
+    render(
       <Check
         id='test-check'
         inputClassName='custom-input'
@@ -137,7 +130,7 @@ describe('Check', () => {
   });
 
   test('applies custom label className', () => {
-    const { container } = render(
+    render(
       <Check
         id='test-check'
         inputProps={defaultInputProps}
@@ -151,7 +144,7 @@ describe('Check', () => {
   });
 
   test('extends variant styles by default', () => {
-    const { container } = render(
+    render(
       <Check
         id='test-check'
         inputClassName='custom-input'
@@ -168,7 +161,7 @@ describe('Check', () => {
   });
 
   test('replaces variant styles when extendVariantStyles is false', () => {
-    const { container } = render(
+    render(
       <Check
         extendVariantStyles={false}
         id='test-check'
@@ -188,7 +181,7 @@ describe('Check', () => {
     );
 
     const checkbox = screen.getByRole('checkbox');
-    const label = container.querySelector('label[for="test-check"]');
+    const label = container.querySelector('label[for="test-check"]')!;
 
     expect(checkbox).toHaveAttribute('id', 'test-check');
     expect(label).toHaveAttribute('for', 'test-check');
@@ -201,9 +194,7 @@ describe('Check', () => {
       disabled: true,
     };
 
-    const { container } = render(
-      <Check id='test-check' inputProps={inputProps} />,
-    );
+    render(<Check id='test-check' inputProps={inputProps} />);
 
     const checkbox = screen.getByTestId('custom-checkbox');
     expect(checkbox).toBeDisabled();
@@ -268,7 +259,7 @@ describe('ControlledCheck', () => {
     render(<TestForm />);
 
     const checkbox = screen.getByRole('checkbox');
-    const id = checkbox.getAttribute('id');
+    const id = checkbox.getAttribute('id')!;
     expect(id).toBeTruthy();
     expect(id.length).toBeGreaterThan(0);
   });

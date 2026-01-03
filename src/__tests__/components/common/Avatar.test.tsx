@@ -1,6 +1,5 @@
 /* eslint-env jest */
-import { render, screen } from '@testing-library/react';
-import React from 'react';
+import { render } from '@testing-library/react';
 
 import Avatar from '../../../components/common/Avatar';
 
@@ -57,7 +56,9 @@ describe('Avatar', () => {
   });
 
   test('renders empty avatar when attributes is null', () => {
-    const { container } = render(<Avatar attributes={null} />);
+    const { container } = render(
+      <Avatar attributes={null as unknown as { name: string }} />,
+    );
 
     const avatar = container.querySelector('.Avatar');
     expect(avatar).toHaveTextContent('');

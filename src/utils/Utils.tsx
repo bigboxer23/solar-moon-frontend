@@ -202,13 +202,13 @@ export const getFormattedDaysHoursMinutes = (
 
 // TODO: Expand to include more weather types/night weather, use consistent icons
 export const getWeatherIconWithTippy = (
-  weatherSummary: string,
-  weatherIcon: string,
+  weatherSummary?: string,
+  weatherIcon?: string,
   precipIntensity: number = 0,
 ): ReactElement => {
   const content = (
     <>
-      <div>{`${weatherSummary} `}</div>
+      <div>{`${weatherSummary ?? ''} `}</div>
       <div>
         {precipIntensity > 0 &&
           `Intensity: ${roundToDecimals(precipIntensity, 100)} in/hr`}
@@ -217,7 +217,7 @@ export const getWeatherIconWithTippy = (
   );
   return (
     <Tippy content={content} delay={TIPPY_DELAY} placement='bottom'>
-      <div>{getWeatherIcon(weatherIcon)}</div>
+      <div>{getWeatherIcon(weatherIcon ?? '')}</div>
     </Tippy>
   );
 };

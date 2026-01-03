@@ -73,8 +73,10 @@ const localStorageMock = {
   setItem: jest.fn(),
   removeItem: jest.fn(),
   clear: jest.fn(),
+  length: 0,
+  key: jest.fn(),
 };
-global.localStorage = localStorageMock;
+global.localStorage = localStorageMock as Storage;
 
 describe('Utils', () => {
   beforeEach(() => {
@@ -100,11 +102,11 @@ describe('Utils', () => {
     });
 
     it('returns 0 when value is 0', () => {
-      expect(defaultIfEmpty('default', 0)).toBe(0);
+      expect(defaultIfEmpty('default', 0 as unknown as '')).toBe(0);
     });
 
     it('returns false when value is false', () => {
-      expect(defaultIfEmpty('default', false)).toBe(false);
+      expect(defaultIfEmpty('default', false as unknown as '')).toBe(false);
     });
   });
 
@@ -137,47 +139,53 @@ describe('Utils', () => {
 
   describe('useStickyState', () => {
     it('returns default value when localStorage is empty', () => {
-      jest.spyOn(Storage.prototype, 'getItem').mockReturnValue(null);
+      const getItemSpy = jest
+        .spyOn(Storage.prototype, 'getItem')
+        .mockReturnValue(null);
       const { result } = renderHook(() =>
         useStickyState('default', 'test-key'),
       );
       expect(result.current[0]).toBe('default');
-      Storage.prototype.getItem.mockRestore();
+      getItemSpy.mockRestore();
     });
 
     it('returns parsed value from localStorage when available', () => {
-      jest
+      const getItemSpy = jest
         .spyOn(Storage.prototype, 'getItem')
         .mockReturnValue(JSON.stringify('stored-value'));
       const { result } = renderHook(() =>
         useStickyState('default', 'test-key'),
       );
       expect(result.current[0]).toBe('stored-value');
-      Storage.prototype.getItem.mockRestore();
+      getItemSpy.mockRestore();
     });
 
     it('returns default value when localStorage contains "undefined" string', () => {
-      jest.spyOn(Storage.prototype, 'getItem').mockReturnValue('undefined');
+      const getItemSpy = jest
+        .spyOn(Storage.prototype, 'getItem')
+        .mockReturnValue('undefined');
       const { result } = renderHook(() =>
         useStickyState('default', 'test-key'),
       );
       expect(result.current[0]).toBe('default');
-      Storage.prototype.getItem.mockRestore();
+      getItemSpy.mockRestore();
     });
 
     it('returns default value when localStorage contains corrupted JSON', () => {
-      jest
+      const getItemSpy = jest
         .spyOn(Storage.prototype, 'getItem')
         .mockReturnValue('{invalid json}');
       const { result } = renderHook(() =>
         useStickyState('default', 'test-key'),
       );
       expect(result.current[0]).toBe('default');
-      Storage.prototype.getItem.mockRestore();
+      getItemSpy.mockRestore();
     });
 
     it('stores value in localStorage when updated', () => {
-      jest.spyOn(Storage.prototype, 'getItem').mockReturnValue(null);
+      const getItemSpy = jest
+        .spyOn(Storage.prototype, 'getItem')
+        .mockReturnValue(null);
       const setItemSpy = jest.spyOn(Storage.prototype, 'setItem');
 
       const { result } = renderHook(() =>
@@ -192,18 +200,18 @@ describe('Utils', () => {
         'test-key',
         JSON.stringify('new-value'),
       );
-      Storage.prototype.getItem.mockRestore();
+      getItemSpy.mockRestore();
       setItemSpy.mockRestore();
     });
 
     it('removes value from localStorage when set to null', () => {
-      jest
+      const getItemSpy = jest
         .spyOn(Storage.prototype, 'getItem')
         .mockReturnValue(JSON.stringify('initial'));
       const removeItemSpy = jest.spyOn(Storage.prototype, 'removeItem');
 
       const { result } = renderHook(() =>
-        useStickyState('default', 'test-key'),
+        useStickyState<string | null | undefined>('default', 'test-key'),
       );
 
       act(() => {
@@ -211,18 +219,18 @@ describe('Utils', () => {
       });
 
       expect(removeItemSpy).toHaveBeenCalledWith('test-key');
-      Storage.prototype.getItem.mockRestore();
+      getItemSpy.mockRestore();
       removeItemSpy.mockRestore();
     });
 
     it('removes value from localStorage when set to undefined', () => {
-      jest
+      const getItemSpy = jest
         .spyOn(Storage.prototype, 'getItem')
         .mockReturnValue(JSON.stringify('initial'));
       const removeItemSpy = jest.spyOn(Storage.prototype, 'removeItem');
 
       const { result } = renderHook(() =>
-        useStickyState('default', 'test-key'),
+        useStickyState<string | null | undefined>('default', 'test-key'),
       );
 
       act(() => {
@@ -230,7 +238,7 @@ describe('Utils', () => {
       });
 
       expect(removeItemSpy).toHaveBeenCalledWith('test-key');
-      Storage.prototype.getItem.mockRestore();
+      getItemSpy.mockRestore();
       removeItemSpy.mockRestore();
     });
   });
@@ -256,17 +264,25 @@ describe('Utils', () => {
 
   describe('getDisplayName', () => {
     it('returns name when available', () => {
-      const device = { name: 'Device Name', deviceName: 'device_name' };
+      const device = {
+        id: '1',
+        name: 'Device Name',
+        deviceName: 'device_name',
+      };
       expect(getDisplayName(device)).toBe('Device Name');
     });
 
     it('returns deviceName when name is null', () => {
-      const device = { name: null, deviceName: 'device_name' };
+      const device = {
+        id: '1',
+        name: null as unknown as undefined,
+        deviceName: 'device_name',
+      };
       expect(getDisplayName(device)).toBe('device_name');
     });
 
     it('returns deviceName when name is undefined', () => {
-      const device = { deviceName: 'device_name' };
+      const device = { id: '1', deviceName: 'device_name' };
       expect(getDisplayName(device)).toBe('device_name');
     });
 
@@ -277,7 +293,7 @@ describe('Utils', () => {
 
   describe('findSiteNameFromSiteId', () => {
     const devices = [
-      { id: '1', name: 'Site 1' },
+      { id: '1', name: 'Site 1', deviceName: 'site_1' },
       { id: '2', deviceName: 'Site 2' },
     ];
 
@@ -302,7 +318,7 @@ describe('Utils', () => {
   describe('getDeviceIdToNameMap', () => {
     it('creates correct id to name mapping', () => {
       const devices = [
-        { id: '1', name: 'Device 1' },
+        { id: '1', name: 'Device 1', deviceName: 'device_1' },
         { id: '2', deviceName: 'Device 2' },
       ];
 
@@ -340,16 +356,16 @@ describe('Utils', () => {
   describe('sortDevices', () => {
     it('sorts by site first, then by display name', () => {
       const devices = [
-        { site: 'Site B', name: 'Device A' },
-        { site: 'Site A', name: 'Device B' },
-        { site: 'Site A', name: 'Device A' },
+        { id: '1', site: 'Site B', name: 'Device A', deviceName: 'device_a' },
+        { id: '2', site: 'Site A', name: 'Device B', deviceName: 'device_b' },
+        { id: '3', site: 'Site A', name: 'Device A', deviceName: 'device_a' },
       ];
 
       const sorted = devices.sort(sortDevices);
       expect(sorted).toEqual([
-        { site: 'Site A', name: 'Device A' },
-        { site: 'Site A', name: 'Device B' },
-        { site: 'Site B', name: 'Device A' },
+        { id: '3', site: 'Site A', name: 'Device A', deviceName: 'device_a' },
+        { id: '2', site: 'Site A', name: 'Device B', deviceName: 'device_b' },
+        { id: '1', site: 'Site B', name: 'Device A', deviceName: 'device_a' },
       ]);
     });
   });
@@ -357,47 +373,144 @@ describe('Utils', () => {
   describe('sortDevicesWithDisabled', () => {
     it('sorts disabled devices to the bottom', () => {
       const devices = [
-        { site: 'Site A', name: 'Device B', disabled: true },
-        { site: 'Site A', name: 'Device A', disabled: false },
-        { site: 'Site A', name: 'Device C', disabled: true },
+        {
+          id: '2',
+          site: 'Site A',
+          name: 'Device B',
+          deviceName: 'device_b',
+          disabled: true,
+        },
+        {
+          id: '1',
+          site: 'Site A',
+          name: 'Device A',
+          deviceName: 'device_a',
+          disabled: false,
+        },
+        {
+          id: '3',
+          site: 'Site A',
+          name: 'Device C',
+          deviceName: 'device_c',
+          disabled: true,
+        },
       ];
 
       const sorted = devices.sort(sortDevicesWithDisabled);
       expect(sorted).toEqual([
-        { site: 'Site A', name: 'Device A', disabled: false },
-        { site: 'Site A', name: 'Device B', disabled: true },
-        { site: 'Site A', name: 'Device C', disabled: true },
+        {
+          id: '1',
+          site: 'Site A',
+          name: 'Device A',
+          deviceName: 'device_a',
+          disabled: false,
+        },
+        {
+          id: '2',
+          site: 'Site A',
+          name: 'Device B',
+          deviceName: 'device_b',
+          disabled: true,
+        },
+        {
+          id: '3',
+          site: 'Site A',
+          name: 'Device C',
+          deviceName: 'device_c',
+          disabled: true,
+        },
       ]);
     });
 
     it('sorts by site first, then by disabled status, then by display name', () => {
       const devices = [
-        { site: 'Site B', name: 'Device A', disabled: false },
-        { site: 'Site A', name: 'Device C', disabled: true },
-        { site: 'Site A', name: 'Device A', disabled: false },
-        { site: 'Site A', name: 'Device B', disabled: false },
+        {
+          id: '4',
+          site: 'Site B',
+          name: 'Device A',
+          deviceName: 'device_a',
+          disabled: false,
+        },
+        {
+          id: '3',
+          site: 'Site A',
+          name: 'Device C',
+          deviceName: 'device_c',
+          disabled: true,
+        },
+        {
+          id: '1',
+          site: 'Site A',
+          name: 'Device A',
+          deviceName: 'device_a',
+          disabled: false,
+        },
+        {
+          id: '2',
+          site: 'Site A',
+          name: 'Device B',
+          deviceName: 'device_b',
+          disabled: false,
+        },
       ];
 
       const sorted = devices.sort(sortDevicesWithDisabled);
       expect(sorted).toEqual([
-        { site: 'Site A', name: 'Device A', disabled: false },
-        { site: 'Site A', name: 'Device B', disabled: false },
-        { site: 'Site A', name: 'Device C', disabled: true },
-        { site: 'Site B', name: 'Device A', disabled: false },
+        {
+          id: '1',
+          site: 'Site A',
+          name: 'Device A',
+          deviceName: 'device_a',
+          disabled: false,
+        },
+        {
+          id: '2',
+          site: 'Site A',
+          name: 'Device B',
+          deviceName: 'device_b',
+          disabled: false,
+        },
+        {
+          id: '3',
+          site: 'Site A',
+          name: 'Device C',
+          deviceName: 'device_c',
+          disabled: true,
+        },
+        {
+          id: '4',
+          site: 'Site B',
+          name: 'Device A',
+          deviceName: 'device_a',
+          disabled: false,
+        },
       ]);
     });
 
     it('handles devices without disabled property', () => {
       const devices = [
-        { site: 'Site A', name: 'Device B', disabled: true },
-        { site: 'Site A', name: 'Device A' },
+        {
+          id: '2',
+          site: 'Site A',
+          name: 'Device B',
+          deviceName: 'device_b',
+          disabled: true,
+        },
+        { id: '1', site: 'Site A', name: 'Device A', deviceName: 'device_a' },
       ];
 
       const sorted = devices.sort(sortDevicesWithDisabled);
-      expect(sorted[0]).toEqual({ site: 'Site A', name: 'Device A' });
+      expect(sorted[0]).toEqual({
+        id: '1',
+        site: 'Site A',
+        name: 'Device A',
+        deviceName: 'device_a',
+      });
       expect(sorted[1]).toEqual({
+        id: '2',
         site: 'Site A',
         name: 'Device B',
+        deviceName: 'device_b',
         disabled: true,
       });
     });
@@ -573,7 +686,8 @@ describe('Utils', () => {
   });
 
   describe('maybeSetTimeWindow', () => {
-    let mockSetNextDisabled, mockSetStartDate;
+    let mockSetNextDisabled: jest.Mock;
+    let mockSetStartDate: jest.Mock;
 
     beforeEach(() => {
       mockSetStartDate = jest.fn();
@@ -626,7 +740,9 @@ describe('Utils', () => {
 
     it('returns 0 for numeric NaN values', () => {
       expect(roundToDecimals(NaN, 100)).toBe(0);
-      expect(roundToDecimals(undefined / undefined, 100)).toBe(0);
+      expect(roundToDecimals((undefined as unknown as number) / 0, 100)).toBe(
+        0,
+      );
       expect(roundToDecimals(0 / 0, 100)).toBe(0);
     });
   });
@@ -683,12 +799,12 @@ describe('Utils', () => {
 
   describe('isXS', () => {
     it('returns true for small window sizes', () => {
-      const windowSize = { current: [400, 800] };
+      const windowSize = { current: [400, 800] as [number, number] };
       expect(isXS(windowSize)).toBe(true);
     });
 
     it('returns false for large window sizes', () => {
-      const windowSize = { current: [800, 600] };
+      const windowSize = { current: [800, 600] as [number, number] };
       expect(isXS(windowSize)).toBe(false);
     });
   });
@@ -743,7 +859,7 @@ describe('Utils', () => {
     });
 
     it('returns empty string when date is a string', () => {
-      const result = getDaysLeftInTrial('invalid');
+      const result = getDaysLeftInTrial('invalid' as unknown as number);
       expect(result).toBe('');
     });
   });

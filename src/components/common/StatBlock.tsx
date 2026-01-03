@@ -1,6 +1,19 @@
 import classNames from 'classnames';
+import type { ReactElement, ReactNode } from 'react';
 
-export default function StatBlock({ title, value, className, onClick }) {
+interface StatBlockProps {
+  title: ReactNode;
+  value: ReactNode;
+  className?: string;
+  onClick?: () => void;
+}
+
+export default function StatBlock({
+  title,
+  value,
+  className,
+  onClick,
+}: StatBlockProps): ReactElement {
   const style = classNames('StatBlock flex space-x-2', className, {
     'cursor-pointer': onClick,
   });
