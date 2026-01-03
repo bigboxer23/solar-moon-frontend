@@ -137,32 +137,38 @@ describe('services', () => {
     });
 
     test('updateDevice calls api.post with device data', () => {
-      const device = { id: 'device-123', name: 'Updated Device' };
+      const device = {
+        id: 'device-123',
+        name: 'Updated Device',
+        deviceName: 'Updated Device',
+      };
       updateDevice(device);
       expect(api.post).toHaveBeenCalledWith('devices', device);
     });
 
     test('addDevice calls api.put with device data', () => {
-      const device = { name: 'New Device', type: 'inverter' };
+      const device = { name: 'New Device', deviceName: 'New Device' };
       addDevice(device);
       expect(api.put).toHaveBeenCalledWith('devices', device);
     });
   });
 
   describe('site and overview services', () => {
+    let dateNowSpy: jest.SpyInstance;
+
     beforeEach(() => {
       // Mock Date.now() to return a fixed timestamp
-      jest.spyOn(Date, 'now').mockReturnValue(1672531200000); // 2023-01-01T00:00:00Z
-      getAvgTotalBody.mockReturnValue({
+      dateNowSpy = jest.spyOn(Date, 'now').mockReturnValue(1672531200000); // 2023-01-01T00:00:00Z
+      (getAvgTotalBody as jest.Mock).mockReturnValue({
         type: 'avgTotal',
         startDate: 1672444800000,
         endDate: 1672531200000,
       });
-      getBucketSize.mockReturnValue('1h');
+      (getBucketSize as jest.Mock).mockReturnValue('1h');
     });
 
     afterEach(() => {
-      Date.now.mockRestore();
+      dateNowSpy.mockRestore();
     });
 
     test('getSiteOverview calls api with correct parameters (normal graph)', () => {
@@ -242,7 +248,7 @@ describe('services', () => {
 
   describe('data page services', () => {
     beforeEach(() => {
-      getDataPageBody.mockReturnValue({
+      (getDataPageBody as jest.Mock).mockReturnValue({
         deviceId: 'device-123',
         siteId: 'site-456',
         type: 'data',

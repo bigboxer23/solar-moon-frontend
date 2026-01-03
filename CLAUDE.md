@@ -6,7 +6,7 @@ React frontend for solar monitoring application with AWS Amplify authentication,
 
 ## Key Technologies
 
-- React 18 with functional components and hooks
+- React 19 with functional components and hooks
 - AWS Amplify for authentication and API
 - React Router for navigation
 - Tailwind CSS for styling

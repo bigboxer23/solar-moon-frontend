@@ -86,3 +86,29 @@ export interface CustomerResponse {
 export interface AlarmsResponse {
   alarms: Alarm[];
 }
+
+export interface CheckoutSessionResponse {
+  url: string;
+  sessionId: string;
+}
+
+export interface CheckoutStatusResponse {
+  status: string;
+  customer_email?: string;
+}
+
+export interface BillingPortalSessionResponse {
+  url: string;
+}
+
+export interface StripeSubscription {
+  id: string;
+  status: string;
+  current_period_end: number;
+  current_period_start: number;
+  [key: string]: unknown;
+}
+
+export interface StripeSubscriptionsResponse {
+  subscriptions: StripeSubscription[];
+}
