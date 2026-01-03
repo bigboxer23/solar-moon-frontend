@@ -1,12 +1,11 @@
 /* eslint-env jest */
 import { fireEvent, render, screen } from '@testing-library/react';
-import React from 'react';
 
 import Button from '../../../components/common/Button';
 
 describe('Button', () => {
   test('renders button with children', () => {
-    const { container } = render(<Button>Click me</Button>);
+    render(<Button>Click me</Button>);
 
     const button = screen.getByRole('button');
     expect(button).toBeInTheDocument();
@@ -14,7 +13,7 @@ describe('Button', () => {
   });
 
   test('applies primary variant styles by default', () => {
-    const { container } = render(<Button>Primary</Button>);
+    render(<Button>Primary</Button>);
 
     const button = screen.getByRole('button');
     expect(button).toHaveClass('Button-primary', 'flex');
@@ -26,9 +25,7 @@ describe('Button', () => {
   });
 
   test('applies secondary variant styles', () => {
-    const { container } = render(
-      <Button variant='secondary'>Secondary</Button>,
-    );
+    render(<Button variant='secondary'>Secondary</Button>);
 
     const button = screen.getByRole('button');
     expect(button).toHaveClass('Button-secondary');
@@ -36,9 +33,7 @@ describe('Button', () => {
   });
 
   test('applies outline-primary variant styles', () => {
-    const { container } = render(
-      <Button variant='outline-primary'>Outline Primary</Button>,
-    );
+    render(<Button variant='outline-primary'>Outline Primary</Button>);
 
     const button = screen.getByRole('button');
     expect(button).toHaveClass('Button-outline-primary');
@@ -50,9 +45,7 @@ describe('Button', () => {
   });
 
   test('applies outline-secondary variant styles', () => {
-    const { container } = render(
-      <Button variant='outline-secondary'>Outline Secondary</Button>,
-    );
+    render(<Button variant='outline-secondary'>Outline Secondary</Button>);
 
     const button = screen.getByRole('button');
     expect(button).toHaveClass('Button-outline-secondary');
@@ -60,7 +53,7 @@ describe('Button', () => {
   });
 
   test('applies danger variant styles', () => {
-    const { container } = render(<Button variant='danger'>Danger</Button>);
+    render(<Button variant='danger'>Danger</Button>);
 
     const button = screen.getByRole('button');
     expect(button).toHaveClass('Button-danger');
@@ -68,9 +61,7 @@ describe('Button', () => {
   });
 
   test('applies outline-danger variant styles', () => {
-    const { container } = render(
-      <Button variant='outline-danger'>Outline Danger</Button>,
-    );
+    render(<Button variant='outline-danger'>Outline Danger</Button>);
 
     const button = screen.getByRole('button');
     expect(button).toHaveClass('Button-outline-danger');
@@ -78,7 +69,7 @@ describe('Button', () => {
   });
 
   test('applies text variant styles', () => {
-    const { container } = render(<Button variant='text'>Text Button</Button>);
+    render(<Button variant='text'>Text Button</Button>);
 
     const button = screen.getByRole('button');
     expect(button).toHaveClass('Button-text');
@@ -86,7 +77,7 @@ describe('Button', () => {
   });
 
   test('applies icon variant styles', () => {
-    const { container } = render(<Button variant='icon'>Icon</Button>);
+    render(<Button variant='icon'>Icon</Button>);
 
     const button = screen.getByRole('button');
     expect(button).toHaveClass('Button-icon');
@@ -94,9 +85,7 @@ describe('Button', () => {
   });
 
   test('applies custom className', () => {
-    const { container } = render(
-      <Button className='custom-class'>Custom</Button>,
-    );
+    render(<Button className='custom-class'>Custom</Button>);
 
     const button = screen.getByRole('button');
     expect(button).toHaveClass('custom-class', 'Button-primary', 'flex');
@@ -104,7 +93,7 @@ describe('Button', () => {
 
   test('handles onClick event', () => {
     const mockClick = jest.fn();
-    const { container } = render(<Button onClick={mockClick}>Click me</Button>);
+    render(<Button onClick={mockClick}>Click me</Button>);
 
     const button = screen.getByRole('button');
     fireEvent.click(button);
@@ -112,7 +101,7 @@ describe('Button', () => {
   });
 
   test('applies disabled state', () => {
-    const { container } = render(<Button disabled>Disabled</Button>);
+    render(<Button disabled>Disabled</Button>);
 
     const button = screen.getByRole('button');
     expect(button).toBeDisabled();
@@ -121,7 +110,7 @@ describe('Button', () => {
 
   test('disabled button does not trigger onClick', () => {
     const mockClick = jest.fn();
-    const { container } = render(
+    render(
       <Button disabled onClick={mockClick}>
         Disabled
       </Button>,
@@ -133,7 +122,7 @@ describe('Button', () => {
   });
 
   test('passes additional button props', () => {
-    const { container } = render(
+    render(
       <Button buttonProps={{ 'data-testid': 'custom-button', type: 'submit' }}>
         Submit
       </Button>,
@@ -144,14 +133,14 @@ describe('Button', () => {
   });
 
   test('handles undefined className gracefully', () => {
-    const { container } = render(<Button className={undefined}>Button</Button>);
+    render(<Button className={undefined}>Button</Button>);
 
     const button = screen.getByRole('button');
     expect(button).toHaveClass('Button-primary', 'flex');
   });
 
   test('handles null onClick gracefully', () => {
-    const { container } = render(<Button onClick={null}>Button</Button>);
+    render(<Button onClick={null as unknown as () => void}>Button</Button>);
 
     const button = screen.getByRole('button');
     expect(button).toBeInTheDocument();
@@ -160,7 +149,7 @@ describe('Button', () => {
 
   test('disabled false explicitly works correctly', () => {
     const mockClick = jest.fn();
-    const { container } = render(
+    render(
       <Button disabled={false} onClick={mockClick}>
         Enabled
       </Button>,
@@ -175,7 +164,7 @@ describe('Button', () => {
   });
 
   test('renders with complex children', () => {
-    const { container } = render(
+    render(
       <Button>
         <span>Icon</span> Text
       </Button>,
@@ -183,13 +172,11 @@ describe('Button', () => {
 
     const button = screen.getByRole('button');
     expect(button).toHaveTextContent('Icon Text');
-    expect(button.querySelector('span')).toHaveTextContent('Icon');
+    expect(button.querySelector('span')!).toHaveTextContent('Icon');
   });
 
   test('applies multiple custom classes', () => {
-    const { container } = render(
-      <Button className='class1 class2 class3'>Multiple Classes</Button>,
-    );
+    render(<Button className='class1 class2 class3'>Multiple Classes</Button>);
 
     const button = screen.getByRole('button');
     expect(button).toHaveClass('class1', 'class2', 'class3', 'Button-primary');
@@ -197,7 +184,7 @@ describe('Button', () => {
 
   test('combines buttonProps with default props correctly', () => {
     const mockClick = jest.fn();
-    const { container } = render(
+    render(
       <Button
         buttonProps={{ 'aria-label': 'Custom label', tabIndex: 0 }}
         onClick={mockClick}

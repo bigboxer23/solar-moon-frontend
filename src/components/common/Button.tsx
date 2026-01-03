@@ -1,4 +1,7 @@
 import classNames from 'classnames';
+import type { ButtonHTMLAttributes, ReactElement, ReactNode } from 'react';
+
+import type { ButtonVariant } from '../../types/common';
 
 const primaryButtonClass =
   'bg-brand-primary text-sm text-white rounded-full font-bold py-2 tracking-wide px-5 leading-4 transition-all hover:brightness-110';
@@ -17,6 +20,15 @@ const textButtonClass =
 const iconButtonClass =
   'text-gray-600 transition-all hover:text-black dark:text-gray-100';
 
+interface ButtonProps {
+  children: ReactNode;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  variant?: ButtonVariant;
+  className?: string;
+  disabled?: boolean;
+  buttonProps?: ButtonHTMLAttributes<HTMLButtonElement>;
+}
+
 export default function Button({
   children,
   onClick,
@@ -24,7 +36,7 @@ export default function Button({
   className,
   disabled = false,
   buttonProps = {},
-}) {
+}: ButtonProps): ReactElement {
   const buttonClass = classNames(`Button-${variant} flex`, className, {
     [primaryButtonClass]: variant === 'primary',
     [secondaryButtonClass]: variant === 'secondary',

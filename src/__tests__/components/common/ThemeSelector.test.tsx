@@ -1,12 +1,18 @@
 /* eslint-env jest */
 import { fireEvent, render, screen } from '@testing-library/react';
-import React from 'react';
 
 import ThemeSelector from '../../../components/common/ThemeSelector';
 
 // Mock dependencies
 jest.mock('@tippyjs/react', () => {
-  return function MockTippy({ children, content, ...props }) {
+  return function MockTippy({
+    children,
+    content,
+    ...props
+  }: {
+    children: React.ReactNode;
+    content: string;
+  }) {
     return (
       <div data-testid='tippy-wrapper' title={content} {...props}>
         {children}
@@ -54,11 +60,11 @@ describe('ThemeSelector', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     useStickyState.mockReturnValue([null, mockSetActiveTheme]);
-    document.documentElement.classList.add.mockClear();
-    document.documentElement.classList.remove.mockClear();
+    (document.documentElement.classList.add as jest.Mock).mockClear();
+    (document.documentElement.classList.remove as jest.Mock).mockClear();
 
     // Reset matchMedia to default behavior
-    window.matchMedia.mockImplementation((query) => ({
+    (window.matchMedia as jest.Mock).mockImplementation((query: string) => ({
       matches: false,
       media: query,
       onchange: null,
@@ -108,7 +114,8 @@ describe('ThemeSelector', () => {
     useStickyState.mockReturnValue(['light', mockSetActiveTheme]);
     const { container } = render(<ThemeSelector />);
 
-    const [, lightButton] = container.querySelectorAll('button');
+    const buttons = container.querySelectorAll('button');
+    const lightButton = buttons[1]!;
     expect(lightButton).toHaveClass('bg-gray-500', 'text-gray-100');
   });
 
@@ -116,7 +123,8 @@ describe('ThemeSelector', () => {
     useStickyState.mockReturnValue(['dark', mockSetActiveTheme]);
     const { container } = render(<ThemeSelector />);
 
-    const [, , darkButton] = container.querySelectorAll('button');
+    const buttons = container.querySelectorAll('button');
+    const darkButton = buttons[2]!;
     expect(darkButton).toHaveClass('bg-gray-500', 'text-gray-100');
   });
 
@@ -125,7 +133,7 @@ describe('ThemeSelector', () => {
 
     const systemButton = screen
       .getByTitle('System theme')
-      .querySelector('button');
+      .querySelector('button')!;
     fireEvent.click(systemButton);
 
     expect(mockSetActiveTheme).toHaveBeenCalledWith(null);
@@ -136,7 +144,7 @@ describe('ThemeSelector', () => {
 
     const lightButton = screen
       .getByTitle('Light theme')
-      .querySelector('button');
+      .querySelector('button')!;
     fireEvent.click(lightButton);
 
     expect(mockSetActiveTheme).toHaveBeenCalledWith('light');
@@ -145,7 +153,7 @@ describe('ThemeSelector', () => {
   test('clicking dark theme calls onThemeChange with dark', () => {
     render(<ThemeSelector />);
 
-    const darkButton = screen.getByTitle('Dark theme').querySelector('button');
+    const darkButton = screen.getByTitle('Dark theme').querySelector('button')!;
     fireEvent.click(darkButton);
 
     expect(mockSetActiveTheme).toHaveBeenCalledWith('dark');
@@ -154,7 +162,7 @@ describe('ThemeSelector', () => {
   test('adds dark class to document when dark theme is selected', () => {
     render(<ThemeSelector />);
 
-    const darkButton = screen.getByTitle('Dark theme').querySelector('button');
+    const darkButton = screen.getByTitle('Dark theme').querySelector('button')!;
     fireEvent.click(darkButton);
 
     expect(document.documentElement.classList.add).toHaveBeenCalledWith('dark');
@@ -165,7 +173,7 @@ describe('ThemeSelector', () => {
 
     const lightButton = screen
       .getByTitle('Light theme')
-      .querySelector('button');
+      .querySelector('button')!;
     fireEvent.click(lightButton);
 
     expect(document.documentElement.classList.remove).toHaveBeenCalledWith(
@@ -174,7 +182,7 @@ describe('ThemeSelector', () => {
   });
 
   test('adds dark class when system theme matches dark preference', () => {
-    window.matchMedia.mockImplementation((query) => ({
+    (window.matchMedia as jest.Mock).mockImplementation((query: string) => ({
       matches: query === '(prefers-color-scheme: dark)',
       media: query,
       onchange: null,
@@ -189,14 +197,14 @@ describe('ThemeSelector', () => {
 
     const systemButton = screen
       .getByTitle('System theme')
-      .querySelector('button');
+      .querySelector('button')!;
     fireEvent.click(systemButton);
 
     expect(document.documentElement.classList.add).toHaveBeenCalledWith('dark');
   });
 
   test('removes dark class when system theme matches light preference', () => {
-    window.matchMedia.mockImplementation((query) => ({
+    (window.matchMedia as jest.Mock).mockImplementation((query: string) => ({
       matches: false, // Light preference
       media: query,
       onchange: null,
@@ -211,7 +219,7 @@ describe('ThemeSelector', () => {
 
     const systemButton = screen
       .getByTitle('System theme')
-      .querySelector('button');
+      .querySelector('button')!;
     fireEvent.click(systemButton);
 
     expect(document.documentElement.classList.remove).toHaveBeenCalledWith(
@@ -255,7 +263,9 @@ describe('ThemeSelector', () => {
     useStickyState.mockReturnValue(['light', mockSetActiveTheme]); // Light is active
     const { container } = render(<ThemeSelector />);
 
-    const [systemButton, , darkButton] = container.querySelectorAll('button');
+    const buttons = container.querySelectorAll('button');
+    const systemButton = buttons[0]!;
+    const darkButton = buttons[2]!;
 
     expect(systemButton).toHaveClass(
       'hover:bg-gray-300',
@@ -310,8 +320,8 @@ describe('ThemeSelector', () => {
 
     const lightButton = screen
       .getByTitle('Light theme')
-      .querySelector('button');
-    const darkButton = screen.getByTitle('Dark theme').querySelector('button');
+      .querySelector('button')!;
+    const darkButton = screen.getByTitle('Dark theme').querySelector('button')!;
 
     fireEvent.click(lightButton);
     fireEvent.click(darkButton);

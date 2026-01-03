@@ -1,6 +1,5 @@
 /* eslint-env jest */
 import { fireEvent, render, screen } from '@testing-library/react';
-import React from 'react';
 
 import QuantityPicker from '../../../components/common/QuantityPicker';
 
@@ -27,18 +26,14 @@ describe('QuantityPicker', () => {
   });
 
   test('decrement button is disabled initially at min value', () => {
-    const { container } = render(
-      <QuantityPicker max={10} min={1} setCount={mockSetCount} />,
-    );
+    render(<QuantityPicker max={10} min={1} setCount={mockSetCount} />);
 
     const decrementButton = screen.getByText('–');
     expect(decrementButton).toHaveClass('disabled');
   });
 
   test('increment button is enabled initially', () => {
-    const { container } = render(
-      <QuantityPicker max={10} min={1} setCount={mockSetCount} />,
-    );
+    render(<QuantityPicker max={10} min={1} setCount={mockSetCount} />);
 
     const incrementButton = screen.getByText('＋');
     expect(incrementButton).not.toHaveClass('disabled');
@@ -70,9 +65,7 @@ describe('QuantityPicker', () => {
   });
 
   test('enables decrement button after incrementing from min', () => {
-    const { container } = render(
-      <QuantityPicker max={10} min={1} setCount={mockSetCount} />,
-    );
+    render(<QuantityPicker max={10} min={1} setCount={mockSetCount} />);
 
     const incrementButton = screen.getByText('＋');
     const decrementButton = screen.getByText('–');
@@ -85,9 +78,7 @@ describe('QuantityPicker', () => {
   });
 
   test('disables increment button when reaching max value', () => {
-    const { container } = render(
-      <QuantityPicker max={3} min={1} setCount={mockSetCount} />,
-    );
+    render(<QuantityPicker max={3} min={1} setCount={mockSetCount} />);
 
     const incrementButton = screen.getByText('＋');
 

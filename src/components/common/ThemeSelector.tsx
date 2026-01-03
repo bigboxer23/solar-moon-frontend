@@ -1,14 +1,23 @@
 import Tippy from '@tippyjs/react';
 import classNames from 'classnames';
+import type { ReactElement } from 'react';
 import { LuMoon, LuSun } from 'react-icons/lu';
 import { MdComputer } from 'react-icons/md';
 
 import { TIPPY_DELAY, useStickyState } from '../../utils/Utils';
 
-export default function ThemeSelector({ extended }) {
-  const [activeTheme, setActiveTheme] = useStickyState(null, 'theme');
+type Theme = 'light' | 'dark' | null;
 
-  function onThemeChange(theme) {
+interface ThemeSelectorProps {
+  extended?: boolean;
+}
+
+export default function ThemeSelector({
+  extended,
+}: ThemeSelectorProps): ReactElement {
+  const [activeTheme, setActiveTheme] = useStickyState<Theme>(null, 'theme');
+
+  function onThemeChange(theme: Theme): void {
     setActiveTheme(theme);
 
     if (

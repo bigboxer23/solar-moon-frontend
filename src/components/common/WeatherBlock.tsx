@@ -1,6 +1,21 @@
 import classNames from 'classnames';
+import type { ReactElement } from 'react';
 
-import { getWeatherIcon, getWeatherIconWithTippy } from '../../utils/Utils';
+import { getWeatherIconWithTippy } from '../../utils/Utils';
+
+interface WeatherData {
+  temperature?: number;
+  uvIndex?: number;
+  weatherSummary?: string;
+  weatherIcon?: string;
+  precipitationIntensity?: number;
+}
+
+interface WeatherBlockProps {
+  weather?: WeatherData;
+  className?: string;
+  wrapperClassName?: string;
+}
 
 // TODO: Pretty UV Index
 
@@ -8,7 +23,7 @@ export default function WeatherBlock({
   weather,
   className = '',
   wrapperClassName = '',
-}) {
+}: WeatherBlockProps): ReactElement {
   const style = classNames(
     'WeatherBlock text-black dark:text-gray-100 flex items-center font-bold mt-1',
     className,
@@ -20,7 +35,7 @@ export default function WeatherBlock({
         <div className={style}>
           <div className='flex flex-col justify-end'>
             <span className='flex h-5 justify-end text-lg font-bold leading-5'>
-              {Math.round(weather?.temperature)}
+              {Math.round(weather?.temperature ?? 0)}
             </span>
             <span className='flex h-5 justify-end text-lg font-bold leading-5'>
               {weather?.uvIndex}

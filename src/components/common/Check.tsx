@@ -1,5 +1,14 @@
+import type { ReactElement, ReactNode } from 'react';
+import type { Control, FieldValues, Path } from 'react-hook-form';
 import { useController } from 'react-hook-form';
 import { v4 } from 'uuid';
+
+interface StylesResult {
+  inputStyle: string;
+  inputWrapperStyle: string;
+  labelStyle: string;
+  errorStyle: string;
+}
 
 function buildStyles(
   inputClassName = '',
@@ -7,7 +16,7 @@ function buildStyles(
   labelClassName = '',
   errorClassName = '',
   extendVariantStyles = true,
-) {
+): StylesResult {
   const { inputStyle, wrapperStyle, labelStyle, errorStyle } = {
     inputStyle: 'outline-none switch-checkbox invisible h-0 w-0',
     wrapperStyle: 'flex focus-within:border-brand-primary pb-1 space-x-4',
@@ -32,6 +41,22 @@ function buildStyles(
   };
 }
 
+interface CheckProps {
+  id: string;
+  inputProps: Record<string, unknown>;
+  prefix?: ReactNode;
+  suffix?: ReactNode;
+  className?: string;
+  inputWrapperClassName?: string;
+  inputClassName?: string;
+  label?: ReactNode;
+  labelClassName?: string;
+  errorClassName?: string;
+  errorMessage?: string;
+  extendVariantStyles?: boolean;
+  onClick?: () => void;
+}
+
 export function Check({
   id,
   inputProps,
@@ -46,7 +71,7 @@ export function Check({
   errorMessage,
   extendVariantStyles = true,
   onClick = () => {},
-}) {
+}: CheckProps): ReactElement {
   const { inputStyle, inputWrapperStyle, labelStyle, errorStyle } = buildStyles(
     inputClassName,
     inputWrapperClassName,
@@ -62,7 +87,7 @@ export function Check({
       >
         {label && <div className={labelStyle}>{label}</div>}
         <input
-          checked={inputProps.value ? 'checked' : ''}
+          checked={!!inputProps.value}
           className={inputStyle}
           id={id}
           type='checkbox'
@@ -82,15 +107,25 @@ export function Check({
   );
 }
 
-export function ControlledCheck({
+interface ControlledCheckProps<TFieldValues extends FieldValues> extends Omit<
+  CheckProps,
+  'id' | 'inputProps'
+> {
+  id?: string;
+  control: Control<TFieldValues>;
+  name: Path<TFieldValues>;
+  inputProps?: Record<string, unknown>;
+}
+
+export function ControlledCheck<TFieldValues extends FieldValues>({
   id = v4(),
   control,
   name,
   inputProps,
-  prefix,
-  suffix,
+  prefix: _prefix,
+  suffix: _suffix,
   ...rest
-}) {
+}: ControlledCheckProps<TFieldValues>): ReactElement {
   const { field } = useController({ control, name });
 
   return <Check id={id} inputProps={{ ...inputProps, ...field }} {...rest} />;

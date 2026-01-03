@@ -1,8 +1,8 @@
 /* eslint-env jest */
 import { render, screen } from '@testing-library/react';
-import React from 'react';
 
 import WeatherBlock from '../../../components/common/WeatherBlock';
+import { WeatherData } from '../../../types';
 
 // Mock the utils
 jest.mock('../../../utils/Utils', () => ({
@@ -30,7 +30,7 @@ describe('WeatherBlock', () => {
   });
 
   test('renders weather block with all weather data', () => {
-    const { container } = render(<WeatherBlock weather={mockWeatherData} />);
+    render(<WeatherBlock weather={mockWeatherData} />);
 
     expect(screen.getByText('76')).toBeInTheDocument(); // Rounded temperature
     expect(screen.getByText('8.2')).toBeInTheDocument(); // UV Index
@@ -40,7 +40,9 @@ describe('WeatherBlock', () => {
   });
 
   test('does not render when weather data is null', () => {
-    const { container } = render(<WeatherBlock weather={null} />);
+    const { container } = render(
+      <WeatherBlock weather={null as unknown as WeatherData | undefined} />,
+    );
 
     expect(container.querySelector('.WeatherBlock')).not.toBeInTheDocument();
   });
@@ -162,9 +164,9 @@ describe('WeatherBlock', () => {
   });
 
   test('temperature and UV Index have correct styling', () => {
-    const { container } = render(<WeatherBlock weather={mockWeatherData} />);
+    render(<WeatherBlock weather={mockWeatherData} />);
 
-    const temperatureSpan = screen.getByText('76').closest('span');
+    const temperatureSpan = screen.getByText('76').closest('span')!;
     expect(temperatureSpan).toHaveClass(
       'flex',
       'h-5',
@@ -174,7 +176,7 @@ describe('WeatherBlock', () => {
       'leading-5',
     );
 
-    const uvSpan = screen.getByText('8.2').closest('span');
+    const uvSpan = screen.getByText('8.2').closest('span')!;
     expect(uvSpan).toHaveClass(
       'flex',
       'h-5',
@@ -186,9 +188,9 @@ describe('WeatherBlock', () => {
   });
 
   test('units have correct styling', () => {
-    const { container } = render(<WeatherBlock weather={mockWeatherData} />);
+    render(<WeatherBlock weather={mockWeatherData} />);
 
-    const fahrenheitSpan = screen.getByText('°F').closest('span');
+    const fahrenheitSpan = screen.getByText('°F').closest('span')!;
     expect(fahrenheitSpan).toHaveClass(
       'flex',
       'h-5',
@@ -198,7 +200,7 @@ describe('WeatherBlock', () => {
       'leading-5',
     );
 
-    const uviSpan = screen.getByText('UVI').closest('span');
+    const uviSpan = screen.getByText('UVI').closest('span')!;
     expect(uviSpan).toHaveClass(
       'flex',
       'h-5',
@@ -236,7 +238,7 @@ describe('WeatherBlock', () => {
       weatherSummary: null,
       weatherIcon: null,
       precipitationIntensity: null,
-    };
+    } as unknown as WeatherData;
 
     const { container } = render(<WeatherBlock weather={weatherWithNulls} />);
 
@@ -247,7 +249,10 @@ describe('WeatherBlock', () => {
 
   test('renders empty wrapper when no weather data', () => {
     const { container } = render(
-      <WeatherBlock weather={null} wrapperClassName='test-wrapper' />,
+      <WeatherBlock
+        weather={null as unknown as WeatherData | undefined}
+        wrapperClassName='test-wrapper'
+      />,
     );
 
     expect(container.firstChild).toHaveClass('test-wrapper');
@@ -257,7 +262,7 @@ describe('WeatherBlock', () => {
   test('className defaults to empty string', () => {
     const { container } = render(<WeatherBlock weather={mockWeatherData} />);
 
-    const weatherBlock = container.querySelector('.WeatherBlock');
+    const weatherBlock = container.querySelector('.WeatherBlock')!;
     // Should not have any additional classes from undefined className
     expect(weatherBlock.className).not.toContain('undefined');
   });
