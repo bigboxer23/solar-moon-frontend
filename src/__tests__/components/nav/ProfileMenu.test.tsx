@@ -2,7 +2,7 @@
 import { fetchUserAttributes } from '@aws-amplify/auth';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import React from 'react';
+import { ReactElement } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import ProfileMenu from '../../../components/nav/ProfileMenu';
@@ -23,7 +23,11 @@ jest.mock('../../../utils/Utils', () => ({
 
 // Mock Avatar component
 jest.mock('../../../components/common/Avatar', () => {
-  return function MockAvatar({ attributes }) {
+  return function MockAvatar({
+    attributes,
+  }: {
+    attributes: Record<string, string> | null | undefined;
+  }) {
     return (
       <div data-testid='avatar'>
         Avatar - Email: {attributes?.email || 'No email'}
@@ -41,16 +45,40 @@ jest.mock('../../../components/common/ThemeSelector', () => {
 
 // Mock the react-menu library
 jest.mock('@szhsin/react-menu', () => ({
-  Menu: ({ children, menuButton, ...props }) => (
-    <div data-testid='menu' {...props}>
+  Menu: ({
+    children,
+    menuButton,
+    boundingBoxPadding,
+    gap,
+  }: {
+    children: React.ReactNode;
+    menuButton: React.ReactNode;
+    boundingBoxPadding?: string;
+    gap?: number;
+  }) => (
+    <div
+      data-bounding-box-padding={boundingBoxPadding}
+      data-gap={gap}
+      data-testid='menu'
+    >
       {menuButton}
       <div data-testid='menu-items'>{children}</div>
     </div>
   ),
-  MenuButton: ({ children }) => (
+  MenuButton: ({ children }: { children: React.ReactNode }) => (
     <button data-testid='menu-button'>{children}</button>
   ),
-  MenuItem: ({ children, onClick, disabled, className }) => (
+  MenuItem: ({
+    children,
+    onClick,
+    disabled,
+    className,
+  }: {
+    children: React.ReactNode;
+    onClick?: () => void;
+    disabled?: boolean;
+    className?: string;
+  }) => (
     <div
       aria-disabled={disabled}
       className={className}
@@ -63,7 +91,7 @@ jest.mock('@szhsin/react-menu', () => ({
   ),
 }));
 
-const renderWithRouter = (component) => {
+const renderWithRouter = (component: ReactElement) => {
   return render(<MemoryRouter>{component}</MemoryRouter>);
 };
 
@@ -79,15 +107,15 @@ describe('ProfileMenu', () => {
     jest.clearAllMocks();
 
     // Mock useAuthenticator
-    useAuthenticator.mockReturnValue({
+    (useAuthenticator as jest.Mock).mockReturnValue({
       signOut: mockSignOut,
     });
 
     // Mock fetchUserAttributes
-    fetchUserAttributes.mockResolvedValue(mockUserAttributes);
+    (fetchUserAttributes as jest.Mock).mockResolvedValue(mockUserAttributes);
 
     // Mock getDaysLeftInTrial
-    utils.getDaysLeftInTrial.mockReturnValue('5 days left');
+    (utils.getDaysLeftInTrial as jest.Mock).mockReturnValue('5 days left');
   });
 
   describe('Basic Rendering', () => {
@@ -258,7 +286,7 @@ describe('ProfileMenu', () => {
       const signOutMenuItem = screen
         .getByText('Sign out')
         .closest('[data-testid="menu-item"]');
-      fireEvent.click(signOutMenuItem);
+      fireEvent.click(signOutMenuItem!);
 
       expect(mockSignOut).toHaveBeenCalled();
     });
@@ -299,8 +327,8 @@ describe('ProfileMenu', () => {
       renderWithRouter(<ProfileMenu trialDate={30} />);
 
       const menu = screen.getByTestId('menu');
-      expect(menu).toHaveAttribute('boundingBoxPadding', '12');
-      expect(menu).toHaveAttribute('gap', '12');
+      expect(menu).toHaveAttribute('data-bounding-box-padding', '12');
+      expect(menu).toHaveAttribute('data-gap', '12');
     });
   });
 
