@@ -1,8 +1,12 @@
 /* eslint-env jest */
 import { render, screen } from '@testing-library/react';
-import React from 'react';
+import type { Dispatch, ReactElement, SetStateAction } from 'react';
 
 import Dashboard from '../../../../components/views/dashboard/Dashboard';
+
+interface OverviewProps {
+  setTrialDate?: Dispatch<SetStateAction<Date | null>>;
+}
 
 // Mock utils
 jest.mock('../../../../utils/Utils', () => ({
@@ -11,7 +15,7 @@ jest.mock('../../../../utils/Utils', () => ({
 
 // Mock Overview component
 jest.mock('../../../../components/views/dashboard/Overview', () => {
-  return function MockOverview({ setTrialDate }) {
+  return function MockOverview({ setTrialDate }: OverviewProps): ReactElement {
     return (
       <div data-set-trial-date={!!setTrialDate} data-testid='overview'>
         Overview Component
@@ -21,8 +25,8 @@ jest.mock('../../../../components/views/dashboard/Overview', () => {
 });
 
 // Mock window.location
-delete window.location;
-window.location = { href: '' };
+delete (window as { location?: unknown }).location;
+(window as { location: { href: string } }).location = { href: '' };
 
 describe('Dashboard', () => {
   const { useStickyState } = require('../../../../utils/Utils');

@@ -1,12 +1,42 @@
 /* eslint-env jest */
 import { render, screen } from '@testing-library/react';
-import React from 'react';
+import type { ReactElement, ReactNode } from 'react';
 
 import SummaryHeader from '../../../../components/views/dashboard/SummaryHeader';
 
+interface TippyProps {
+  children: ReactNode;
+  content: string | ReactElement;
+  delay: number | [number, number];
+  placement: string;
+}
+
+interface FormattedLabelProps {
+  className: string;
+  label: string;
+  separator?: string;
+  unit: string;
+  value: number | string;
+}
+
+interface IntlFormatter {
+  formatNumber: jest.Mock<string, [number]>;
+}
+
+interface PowerScalingInfo {
+  unitPrefix: string;
+  powerValue: number;
+  decimals: number;
+}
+
 // Mock Tippy component
 jest.mock('@tippyjs/react', () => {
-  return function MockTippy({ children, content, delay, placement }) {
+  return function MockTippy({
+    children,
+    content,
+    delay,
+    placement,
+  }: TippyProps): ReactElement {
     return (
       <div
         data-content={typeof content === 'string' ? content : 'complex-content'}
@@ -22,9 +52,13 @@ jest.mock('@tippyjs/react', () => {
 
 // Mock react-intl
 jest.mock('react-intl', () => ({
-  useIntl: jest.fn(() => ({
-    formatNumber: jest.fn((number) => number.toLocaleString()),
-  })),
+  useIntl: jest.fn(
+    (): IntlFormatter => ({
+      formatNumber: jest.fn((number: number): string =>
+        number.toLocaleString(),
+      ),
+    }),
+  ),
 }));
 
 // Mock Utils
@@ -48,7 +82,7 @@ jest.mock('../../../../components/graphs/FormattedLabel', () => {
     separator,
     unit,
     value,
-  }) {
+  }: FormattedLabelProps): ReactElement {
     return (
       <span
         className={className}
@@ -71,7 +105,6 @@ describe('SummaryHeader', () => {
   const {
     getPowerScalingInformation,
     roundToDecimals,
-    TIPPY_DELAY,
   } = require('../../../../utils/Utils');
 
   beforeEach(() => {
@@ -79,36 +112,42 @@ describe('SummaryHeader', () => {
 
     // Mock useIntl
     useIntl.mockReturnValue({
-      formatNumber: jest.fn((number) => number.toLocaleString()),
+      formatNumber: jest.fn((number: number): string =>
+        number.toLocaleString(),
+      ),
     });
 
     // Mock getPowerScalingInformation for daily output (larger value)
-    getPowerScalingInformation.mockImplementation((value) => {
-      if (value === 25000) {
+    getPowerScalingInformation.mockImplementation(
+      (value: number): PowerScalingInfo => {
+        if (value === 25000) {
+          return {
+            unitPrefix: 'k',
+            powerValue: 25,
+            decimals: 1,
+          };
+        }
+        if (value === 20000) {
+          return {
+            unitPrefix: 'k',
+            powerValue: 20,
+            decimals: 1,
+          };
+        }
         return {
-          unitPrefix: 'k',
-          powerValue: 25,
-          decimals: 1,
+          unitPrefix: '',
+          powerValue: value,
+          decimals: 0,
         };
-      }
-      if (value === 20000) {
-        return {
-          unitPrefix: 'k',
-          powerValue: 20,
-          decimals: 1,
-        };
-      }
-      return {
-        unitPrefix: '',
-        powerValue: value,
-        decimals: 0,
-      };
-    });
+      },
+    );
 
     // Mock roundToDecimals
-    roundToDecimals.mockImplementation((value, decimals) => {
-      return Number(value.toFixed(decimals));
-    });
+    roundToDecimals.mockImplementation(
+      (value: number, decimals: number): number => {
+        return Number(value.toFixed(decimals));
+      },
+    );
   });
 
   test('renders main container with correct CSS classes', () => {
@@ -271,27 +310,29 @@ describe('SummaryHeader', () => {
   });
 
   test('renders with different power scaling for smaller values', () => {
-    getPowerScalingInformation.mockImplementation((value) => {
-      if (value === 500) {
+    getPowerScalingInformation.mockImplementation(
+      (value: number): PowerScalingInfo => {
+        if (value === 500) {
+          return {
+            unitPrefix: '',
+            powerValue: 500,
+            decimals: 0,
+          };
+        }
+        if (value === 400) {
+          return {
+            unitPrefix: '',
+            powerValue: 400,
+            decimals: 0,
+          };
+        }
         return {
           unitPrefix: '',
-          powerValue: 500,
+          powerValue: value,
           decimals: 0,
         };
-      }
-      if (value === 400) {
-        return {
-          unitPrefix: '',
-          powerValue: 400,
-          decimals: 0,
-        };
-      }
-      return {
-        unitPrefix: '',
-        powerValue: value,
-        decimals: 0,
-      };
-    });
+      },
+    );
 
     render(<SummaryHeader dailyAverageOutput={400} dailyOutput={500} />);
 
@@ -302,7 +343,9 @@ describe('SummaryHeader', () => {
   });
 
   test('formatNumber is called for tooltip content', () => {
-    const mockFormatNumber = jest.fn((number) => number.toLocaleString());
+    const mockFormatNumber = jest.fn((number: number): string =>
+      number.toLocaleString(),
+    );
     useIntl.mockReturnValue({
       formatNumber: mockFormatNumber,
     });
