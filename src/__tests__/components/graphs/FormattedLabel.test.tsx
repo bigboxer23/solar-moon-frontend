@@ -1,12 +1,12 @@
 /* eslint-env jest */
 import { render, screen } from '@testing-library/react';
-import React from 'react';
+import type { ReactElement } from 'react';
 import { IntlProvider } from 'react-intl';
 
 import FormattedLabel from '../../../components/graphs/FormattedLabel';
 
 // Helper to render with IntlProvider
-const renderWithIntl = (component, locale = 'en') => {
+const renderWithIntl = (component: ReactElement, locale = 'en') => {
   return render(
     <IntlProvider locale={locale} messages={{}}>
       {component}
@@ -80,7 +80,7 @@ describe('FormattedLabel', () => {
 
     const span = container.querySelector('span');
     expect(span).toBeInTheDocument();
-    expect(span.tagName).toBe('SPAN');
+    expect(span!.tagName).toBe('SPAN');
   });
 
   test('does not render span when loading', () => {
@@ -134,10 +134,10 @@ describe('FormattedLabel', () => {
   test('handles null props gracefully', () => {
     renderWithIntl(
       <FormattedLabel
-        className={null}
-        label={null}
-        separator={null}
-        unit={null}
+        className={undefined}
+        label={undefined}
+        separator={undefined}
+        unit={undefined}
         value={100}
       />,
     );
@@ -158,7 +158,7 @@ describe('FormattedLabel', () => {
 
     // Should render just the text "Loading", not in a span
     expect(container.textContent).toBe('Loading');
-    expect(container.firstChild.nodeType).toBe(Node.TEXT_NODE);
+    expect(container.firstChild!.nodeType).toBe(Node.TEXT_NODE);
   });
 
   test('renders with different locale formatting', () => {
