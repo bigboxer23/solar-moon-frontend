@@ -183,7 +183,7 @@ export const getFormattedDaysHoursMinutes = (
   if (time === undefined || time === 0) {
     return '';
   }
-  let timeInSeconds = time / 1000;
+  const timeInSeconds = time / 1000;
   const days = ~~(timeInSeconds / 86400);
   const hours = ~~((timeInSeconds / 3600) % 24);
   let minutes = ~~((timeInSeconds % 3600) / 60);

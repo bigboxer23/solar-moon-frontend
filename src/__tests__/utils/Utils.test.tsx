@@ -1,6 +1,5 @@
 /* eslint-env jest */
 import { act, render, renderHook, screen } from '@testing-library/react';
-import { format } from 'date-fns';
 import React from 'react';
 
 import {
