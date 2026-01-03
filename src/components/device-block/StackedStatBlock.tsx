@@ -1,8 +1,24 @@
 import Tippy from '@tippyjs/react';
 import classNames from 'classnames';
+import { ReactElement } from 'react';
 import { FormattedNumber, useIntl } from 'react-intl';
 
 import { roundTwoDigit, TIPPY_DELAY } from '../../utils/Utils';
+
+interface StackedStatBlockProps {
+  lowerValue: number | null | undefined;
+  upperValue: number | null | undefined;
+  className?: string;
+  onClick?: () => void;
+  upperTitle: string;
+  lowerTitle: string;
+  upperUnit: string;
+  lowerUnit: string;
+  upperHover?: number | null;
+  upperHoverUnit?: string;
+  lowerHover?: number | null;
+  lowerHoverUnit?: string;
+}
 
 export default function StackedStatBlock({
   lowerValue,
@@ -17,13 +33,17 @@ export default function StackedStatBlock({
   upperHoverUnit = '',
   lowerHover = -1,
   lowerHoverUnit = '',
-}) {
+}: StackedStatBlockProps): ReactElement {
   const intl = useIntl();
   const style = classNames('flex flex-col', className, {
     'cursor-pointer': onClick,
   });
 
-  const getInternalContent = (title, value, unit) => {
+  const getInternalContent = (
+    title: string,
+    value: number | null | undefined,
+    unit: string,
+  ): ReactElement => {
     const roundedValue =
       value !== null && value !== undefined ? roundTwoDigit(value) : null;
     return (
@@ -41,7 +61,13 @@ export default function StackedStatBlock({
     );
   };
 
-  const getContent = (title, value, unit, hover, hoverUnit) => {
+  const getContent = (
+    title: string,
+    value: number | null | undefined,
+    unit: string,
+    hover: number | null | undefined,
+    hoverUnit: string,
+  ): ReactElement => {
     if (hover === -1 || hoverUnit === unit) {
       return getInternalContent(title, value, unit);
     }

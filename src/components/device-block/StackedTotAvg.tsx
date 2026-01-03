@@ -1,9 +1,20 @@
 import classNames from 'classnames';
+import { ReactElement } from 'react';
 
 import { getPowerScalingInformation, roundToDecimals } from '../../utils/Utils';
 import StackedStatBlock from './StackedStatBlock';
 
-export default function StackedTotAvg({ total, avg, className }) {
+interface StackedTotAvgProps {
+  total: number;
+  avg: number;
+  className?: string;
+}
+
+export default function StackedTotAvg({
+  total,
+  avg,
+  className,
+}: StackedTotAvgProps): ReactElement {
   const style = classNames('StackedTotAvg', className);
   const { unitPrefix, powerValue, decimals } =
     getPowerScalingInformation(total);
@@ -17,7 +28,7 @@ export default function StackedTotAvg({ total, avg, className }) {
       upperHoverUnit='kWh'
       upperTitle='Total:'
       upperUnit={`${unitPrefix}Wh`}
-      upperValue={roundToDecimals(powerValue, decimals)}
+      upperValue={roundToDecimals(powerValue, decimals) as number}
     />
   );
 }

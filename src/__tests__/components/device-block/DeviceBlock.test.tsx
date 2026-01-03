@@ -1,13 +1,19 @@
 /* eslint-env jest */
 import { render } from '@testing-library/react';
-import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import DeviceBlock from '../../../components/device-block/DeviceBlock';
 
 // Mock dependencies
 jest.mock('@tippyjs/react', () => {
-  return function MockTippy({ children, content, ...props }) {
+  return function MockTippy({
+    children,
+    content,
+    ...props
+  }: {
+    children: React.ReactNode;
+    content: string;
+  }) {
     return (
       <div data-testid='tippy-wrapper' title={content} {...props}>
         {children}
@@ -18,8 +24,8 @@ jest.mock('@tippyjs/react', () => {
 
 jest.mock('../../../utils/Utils', () => ({
   TIPPY_DELAY: 300,
-  transformMultiLineForHTMLDisplay: jest.fn((text) => `<p>${text}</p>`),
-  truncate: jest.fn((text, length) =>
+  transformMultiLineForHTMLDisplay: jest.fn((text: string) => `<p>${text}</p>`),
+  truncate: jest.fn((text: string, length: number) =>
     text.length > length ? `${text.substring(0, length)}...` : text,
   ),
 }));
@@ -29,20 +35,20 @@ const {
   truncate,
 } = require('../../../utils/Utils');
 
-const renderWithRouter = (component) => {
+const renderWithRouter = (component: React.ReactElement) => {
   return render(<MemoryRouter>{component}</MemoryRouter>);
 };
 
 describe('DeviceBlock', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    truncate.mockImplementation((text, length) =>
+    truncate.mockImplementation((text: string, length: number) =>
       text && text.length > length
         ? `${text.substring(0, length)}...`
         : text || '',
     );
     transformMultiLineForHTMLDisplay.mockImplementation(
-      (text) => `<p>${text}</p>`,
+      (text: string) => `<p>${text}</p>`,
     );
   });
 
@@ -188,7 +194,7 @@ describe('DeviceBlock', () => {
     expect(statBlocksContainer).toBeInTheDocument();
 
     // There should be no additional div after the stat blocks container
-    const bodyDiv = statBlocksContainer.nextElementSibling;
+    const bodyDiv = statBlocksContainer?.nextElementSibling;
     expect(bodyDiv).toBeNull();
   });
 

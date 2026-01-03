@@ -1,12 +1,19 @@
 /* eslint-env jest */
 import { render, screen } from '@testing-library/react';
-import React from 'react';
 
 import { SignInHeader } from '../../../components/login/SignInHeader';
 
 // Mock AWS Amplify UI components
 jest.mock('@aws-amplify/ui-react', () => ({
-  Heading: ({ children, level, padding }) => (
+  Heading: ({
+    children,
+    level,
+    padding,
+  }: {
+    children: React.ReactNode;
+    level?: number;
+    padding?: string;
+  }) => (
     <h3 data-level={level} data-padding={padding} data-testid='heading'>
       {children}
     </h3>
@@ -21,7 +28,7 @@ jest.mock('@aws-amplify/ui-react', () => ({
 }));
 
 describe('SignInHeader', () => {
-  let mockUseTheme;
+  let mockUseTheme: jest.Mock;
 
   beforeEach(() => {
     mockUseTheme = require('@aws-amplify/ui-react').useTheme;

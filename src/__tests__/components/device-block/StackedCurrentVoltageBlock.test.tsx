@@ -1,12 +1,24 @@
 /* eslint-env jest */
 import { render } from '@testing-library/react';
-import React from 'react';
 
 import StackedCurrentVoltageBlock from '../../../components/device-block/StackedCurrentVoltageBlock';
 
 // Mock StackedStatBlock component
 jest.mock('../../../components/device-block/StackedStatBlock', () => {
-  return function MockStackedStatBlock(props) {
+  return function MockStackedStatBlock(props: {
+    upperTitle: string;
+    upperValue: number | null;
+    upperUnit: string;
+    lowerTitle: string;
+    lowerValue: number | null;
+    lowerUnit: string;
+    className?: string;
+    onClick?: () => void;
+    upperHover?: number | null;
+    upperHoverUnit?: string;
+    lowerHover?: number | null;
+    lowerHoverUnit?: string;
+  }) {
     const {
       upperTitle,
       upperValue,
