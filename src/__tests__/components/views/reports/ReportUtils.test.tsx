@@ -509,6 +509,7 @@ describe('ReportUtils', () => {
       };
 
       expect(() =>
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         transformRowData(row, mockDeviceMap, mockIntl as any),
       ).toThrow();
     });

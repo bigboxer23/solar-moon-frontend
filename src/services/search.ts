@@ -241,11 +241,12 @@ const safeParseHits = function (
   if (isDataStale(data)) {
     return 0;
   }
-  const hit = data.hits.hits[0];
+  const [hit] = data.hits.hits;
   if (hit && hit.fields) {
     const field = hit.fields[fieldName];
     if (field && Array.isArray(field) && field.length > 0) {
-      return Number(field[0]);
+      const [firstValue] = field;
+      return Number(firstValue);
     }
   }
   return 0;
@@ -253,7 +254,7 @@ const safeParseHits = function (
 
 const isDataStale = function (data: SearchResponse): boolean {
   try {
-    const hit = data.hits.hits[0];
+    const [hit] = data.hits.hits;
     if (!hit?.fields?.['@timestamp']) {
       return false;
     }
