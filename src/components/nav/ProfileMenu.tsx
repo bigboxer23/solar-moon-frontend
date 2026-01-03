@@ -1,15 +1,27 @@
 import { fetchUserAttributes } from '@aws-amplify/auth';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { Menu, MenuButton, MenuItem } from '@szhsin/react-menu';
-import { useEffect, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import { getDaysLeftInTrial } from '../../utils/Utils';
 import Avatar from '../common/Avatar';
 import ThemeSelector from '../common/ThemeSelector';
 
-export default function ProfileMenu({ trialDate }) {
-  const [userAttributes, setUserAttributes] = useState(null);
+interface ProfileMenuProps {
+  trialDate: number;
+}
+
+interface UserAttributes {
+  name?: string;
+}
+
+export default function ProfileMenu({
+  trialDate,
+}: ProfileMenuProps): ReactElement {
+  const [userAttributes, setUserAttributes] = useState<UserAttributes | null>(
+    null,
+  );
 
   const { signOut } = useAuthenticator((context) => [context.user]);
   const menuItemClassName =
@@ -19,7 +31,9 @@ export default function ProfileMenu({ trialDate }) {
     'flex items-center space-x-2 text-text-primary dark:bg-gray-700 px-4 py-1 cursor-pointer';
 
   useEffect(() => {
-    fetchUserAttributes().then((attributes) => setUserAttributes(attributes));
+    fetchUserAttributes().then((attributes) =>
+      setUserAttributes(attributes ?? null),
+    );
   }, []);
 
   return (
@@ -34,7 +48,7 @@ export default function ProfileMenu({ trialDate }) {
         gap={12}
         menuButton={
           <MenuButton>
-            <Avatar attributes={userAttributes} />
+            <Avatar attributes={userAttributes ?? undefined} />
           </MenuButton>
         }
         menuClassName='bg-white dark:bg-gray-700 shadow-panel rounded-md py-2 w-36'

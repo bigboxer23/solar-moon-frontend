@@ -1,11 +1,11 @@
 /* eslint-env jest */
 import { render } from '@testing-library/react';
-import React from 'react';
+import { ReactElement } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import PageTitle from '../../../components/nav/PageTitleRoute';
 
-const renderWithRouter = (component, initialEntries = ['/']) => {
+const renderWithRouter = (component: ReactElement, initialEntries = ['/']) => {
   return render(
     <MemoryRouter initialEntries={initialEntries}>{component}</MemoryRouter>,
   );
@@ -67,19 +67,19 @@ describe('PageTitle', () => {
   });
 
   test('handles undefined title', () => {
-    renderWithRouter(<PageTitle title={undefined} />);
+    renderWithRouter(<PageTitle title={undefined as unknown as string} />);
 
     expect(document.title).toBe('undefined');
   });
 
   test('handles null title', () => {
-    renderWithRouter(<PageTitle title={null} />);
+    renderWithRouter(<PageTitle title={null as unknown as string} />);
 
     expect(document.title).toBe('null');
   });
 
   test('handles numeric title', () => {
-    renderWithRouter(<PageTitle title={123} />);
+    renderWithRouter(<PageTitle title={123 as unknown as string} />);
 
     expect(document.title).toBe('123');
   });
@@ -156,10 +156,10 @@ describe('PageTitle', () => {
   });
 
   test('handles boolean title values', () => {
-    renderWithRouter(<PageTitle title={true} />);
+    renderWithRouter(<PageTitle title={true as unknown as string} />);
     expect(document.title).toBe('true');
 
-    renderWithRouter(<PageTitle title={false} />);
+    renderWithRouter(<PageTitle title={false as unknown as string} />);
     expect(document.title).toBe('false');
   });
 

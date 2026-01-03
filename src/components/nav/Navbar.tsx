@@ -1,19 +1,24 @@
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import classNames from 'classnames';
-import { useEffect, useRef, useState } from 'react';
+import { ReactElement, useEffect, useRef, useState } from 'react';
 import { FaBars } from 'react-icons/fa';
 import { FaXmark } from 'react-icons/fa6';
 import { LuSun } from 'react-icons/lu';
 import { MdOutlineInfo } from 'react-icons/md';
-import { NavLink, useLocation } from 'react-router-dom';
+import { Location, NavLink, useLocation } from 'react-router-dom';
 import { useOnClickOutside } from 'usehooks-ts';
 
+// @ts-ignore - SVG import handled by webpack
 import logo from '../../assets/logo.svg';
-import { getDaysLeftInTrial, useStickyState } from '../../utils/Utils';
+import { getDaysLeftInTrial } from '../../utils/Utils';
 import ProfileMenu from './ProfileMenu';
 
+interface NavbarProps {
+  trialDate: number;
+}
+
 // TODO: break this up, it's a mess (break out the slider menu at least)
-export default function Navbar({ trialDate }) {
+export default function Navbar({ trialDate }: NavbarProps): ReactElement {
   const separatorStyle =
     'text-gray-400 text-lg text-decoration-none font-bold hidden lg:block dark:text-brand-secondary';
   const linkStyle =
@@ -26,11 +31,11 @@ export default function Navbar({ trialDate }) {
   const slideMenuActiveLinkStyle =
     'text-black dark:text-gray-100 font-bold text-2xl border-b-2 border-text-primary dark:border-gray-100 text-decoration-none border-black w-fit';
 
-  const [slideMenuOpen, setSlideMenuOpen] = useState(false);
+  const [slideMenuOpen, setSlideMenuOpen] = useState<boolean>(false);
 
-  const menuRef = useRef(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
-  useOnClickOutside(menuRef, () => {
+  useOnClickOutside(menuRef as React.RefObject<HTMLElement>, () => {
     if (slideMenuOpen) {
       setSlideMenuOpen(false);
     }
@@ -42,9 +47,9 @@ export default function Navbar({ trialDate }) {
     setSlideMenuOpen(false);
   }, [location]);
 
-  const { user, signOut } = useAuthenticator((context) => [context.user]);
+  const { signOut } = useAuthenticator((context) => [context.user]);
 
-  function getPageName(location) {
+  function getPageName(location: Location): string {
     const path = location.pathname;
     const pathArray = path.split('/');
 

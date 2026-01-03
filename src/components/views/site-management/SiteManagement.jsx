@@ -95,9 +95,9 @@ const SiteManagement = ({ setTrialDate }) => {
 
   const getSiteSelectionLabel = (siteId) => {
     return (
-      <div className='whitespace-nowrap'>
+      <div className='flex items-center whitespace-nowrap'>
         {findSiteNameFromSiteId(siteId, devices)}
-        <span className='pl-0.5 text-sm text-gray-400'>
+        <span className='pl-1 text-sm text-gray-400'>
           {'  '}
           {getDeviceCountFromSite(siteId)}
         </span>

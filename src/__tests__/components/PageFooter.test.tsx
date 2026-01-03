@@ -1,6 +1,5 @@
 /* eslint-env jest */
 import { render, screen } from '@testing-library/react';
-import React from 'react';
 
 import PageFooter from '../../components/PageFooter';
 
@@ -37,11 +36,11 @@ describe('PageFooter', () => {
     const { container } = render(<PageFooter />);
 
     const footer = container.querySelector('.Footer2');
-    const paragraph = footer.querySelector('p');
+    const paragraph = footer!.querySelector('p');
 
     expect(footer).toBeInTheDocument();
     expect(paragraph).toBeInTheDocument();
-    expect(paragraph.parentElement).toBe(footer);
+    expect(paragraph!.parentElement).toBe(footer);
   });
 
   test('contains year in copyright text', () => {
@@ -50,8 +49,8 @@ describe('PageFooter', () => {
     const paragraph = container.querySelector('p');
     const currentYear = new Date().getFullYear();
 
-    expect(paragraph.textContent).toContain(currentYear.toString());
-    expect(paragraph.textContent).toMatch(
+    expect(paragraph!.textContent).toContain(currentYear.toString());
+    expect(paragraph!.textContent).toMatch(
       /Copyright © \d{4} Solar Moon Analytics, LLC/,
     );
   });
@@ -88,7 +87,7 @@ describe('PageFooter', () => {
     const { container } = render(<PageFooter />);
 
     const paragraph = container.querySelector('p');
-    expect(paragraph.textContent).toMatch(
+    expect(paragraph!.textContent).toMatch(
       /^Copyright © \d{4} Solar Moon Analytics, LLC$/,
     );
   });

@@ -1,7 +1,7 @@
 /* eslint-env jest */
 import { useAuthenticator } from '@aws-amplify/ui-react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import React from 'react';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { ReactElement } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import Navbar from '../../../components/nav/Navbar';
@@ -23,7 +23,7 @@ jest.mock('../../../utils/Utils', () => ({
 
 // Mock ProfileMenu component
 jest.mock('../../../components/nav/ProfileMenu', () => {
-  return function MockProfileMenu({ trialDate }) {
+  return function MockProfileMenu({ trialDate }: { trialDate: number }) {
     return (
       <div data-testid='profile-menu'>
         Profile Menu - Trial Date: {trialDate}
@@ -32,7 +32,7 @@ jest.mock('../../../components/nav/ProfileMenu', () => {
   };
 });
 
-const renderWithRouter = (component, initialRoute = '/') => {
+const renderWithRouter = (component: ReactElement, initialRoute = '/') => {
   return render(
     <MemoryRouter initialEntries={[initialRoute]}>{component}</MemoryRouter>,
   );
@@ -46,16 +46,16 @@ describe('Navbar', () => {
     jest.clearAllMocks();
 
     // Mock useAuthenticator
-    useAuthenticator.mockReturnValue({
+    (useAuthenticator as jest.Mock).mockReturnValue({
       user: mockUser,
       signOut: mockSignOut,
     });
 
     // Mock getDaysLeftInTrial
-    utils.getDaysLeftInTrial.mockReturnValue('5 days left');
+    (utils.getDaysLeftInTrial as jest.Mock).mockReturnValue('5 days left');
 
     // Mock useStickyState
-    utils.useStickyState.mockReturnValue(['', jest.fn()]);
+    (utils.useStickyState as jest.Mock).mockReturnValue(['', jest.fn()]);
   });
 
   describe('Desktop Navigation', () => {
@@ -128,7 +128,7 @@ describe('Navbar', () => {
       expect(hamburgerContainer).toBeInTheDocument();
 
       // Check for SVG element (React icons render as SVG)
-      const hamburgerIcon = hamburgerContainer.querySelector('svg');
+      const hamburgerIcon = hamburgerContainer!.querySelector('svg');
       expect(hamburgerIcon).toBeInTheDocument();
     });
 
@@ -138,8 +138,8 @@ describe('Navbar', () => {
       const hamburgerContainer = document.querySelector(
         '.mr-6.flex.items-center.justify-center',
       );
-      const hamburgerIcon = hamburgerContainer.querySelector('svg');
-      fireEvent.click(hamburgerIcon);
+      const hamburgerIcon = hamburgerContainer!.querySelector('svg');
+      fireEvent.click(hamburgerIcon!);
 
       // Check if slide menu is visible (not translated away)
       const slideMenu = document.querySelector('.Navbar2SlideMenu');
@@ -153,8 +153,8 @@ describe('Navbar', () => {
       const hamburgerContainer = document.querySelector(
         '.mr-6.flex.items-center.justify-center',
       );
-      const hamburgerIcon = hamburgerContainer.querySelector('svg');
-      fireEvent.click(hamburgerIcon);
+      const hamburgerIcon = hamburgerContainer!.querySelector('svg');
+      fireEvent.click(hamburgerIcon!);
 
       // Then close it
       const closeButton = screen.getByRole('button', { name: 'close menu' });
@@ -172,8 +172,8 @@ describe('Navbar', () => {
       const hamburgerContainer = document.querySelector(
         '.mr-6.flex.items-center.justify-center',
       );
-      const hamburgerIcon = hamburgerContainer.querySelector('svg');
-      fireEvent.click(hamburgerIcon);
+      const hamburgerIcon = hamburgerContainer!.querySelector('svg');
+      fireEvent.click(hamburgerIcon!);
     });
 
     test('renders all navigation links in slide menu', () => {
@@ -217,8 +217,8 @@ describe('Navbar', () => {
       const hamburgerContainer = document.querySelector(
         '.mr-6.flex.items-center.justify-center',
       );
-      const hamburgerIcon = hamburgerContainer.querySelector('svg');
-      fireEvent.click(hamburgerIcon);
+      const hamburgerIcon = hamburgerContainer!.querySelector('svg');
+      fireEvent.click(hamburgerIcon!);
 
       expect(screen.getByText('5 days left in trial')).toBeInTheDocument();
       expect(utils.getDaysLeftInTrial).toHaveBeenCalledWith(30);
@@ -231,8 +231,8 @@ describe('Navbar', () => {
       const hamburgerContainer = document.querySelector(
         '.mr-6.flex.items-center.justify-center',
       );
-      const hamburgerIcon = hamburgerContainer.querySelector('svg');
-      fireEvent.click(hamburgerIcon);
+      const hamburgerIcon = hamburgerContainer!.querySelector('svg');
+      fireEvent.click(hamburgerIcon!);
 
       expect(screen.queryByText(/in trial/)).not.toBeInTheDocument();
     });
@@ -300,8 +300,8 @@ describe('Navbar', () => {
       const hamburgerContainer = document.querySelector(
         '.mr-6.flex.items-center.justify-center',
       );
-      const hamburgerIcon = hamburgerContainer.querySelector('svg');
-      fireEvent.click(hamburgerIcon);
+      const hamburgerIcon = hamburgerContainer!.querySelector('svg');
+      fireEvent.click(hamburgerIcon!);
 
       const reportsLinks = screen.getAllByRole('link', {
         name: 'Reports',
@@ -350,8 +350,8 @@ describe('Navbar', () => {
       const hamburgerContainer = document.querySelector(
         '.mr-6.flex.items-center.justify-center',
       );
-      const hamburgerIcon = hamburgerContainer.querySelector('svg');
-      fireEvent.click(hamburgerIcon);
+      const hamburgerIcon = hamburgerContainer!.querySelector('svg');
+      fireEvent.click(hamburgerIcon!);
 
       const closeButton = screen.getByRole('button', { name: 'close menu' });
       expect(closeButton).toHaveAttribute('aria-label', 'close menu');
