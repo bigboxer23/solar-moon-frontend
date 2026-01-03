@@ -123,9 +123,7 @@ describe('Button', () => {
 
   test('passes additional button props', () => {
     render(
-      <Button
-        buttonProps={{ 'data-testid': 'custom-button', type: 'submit' } as any}
-      >
+      <Button buttonProps={{ 'data-testid': 'custom-button', type: 'submit' }}>
         Submit
       </Button>,
     );

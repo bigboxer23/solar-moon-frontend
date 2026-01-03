@@ -2,6 +2,7 @@
 import { render, screen } from '@testing-library/react';
 
 import WeatherBlock from '../../../components/common/WeatherBlock';
+import { WeatherData } from '../../../types';
 
 // Mock the utils
 jest.mock('../../../utils/Utils', () => ({
@@ -40,16 +41,14 @@ describe('WeatherBlock', () => {
 
   test('does not render when weather data is null', () => {
     const { container } = render(
-      <WeatherBlock weather={null as unknown as any} />,
+      <WeatherBlock weather={null as unknown as WeatherData | undefined} />,
     );
 
     expect(container.querySelector('.WeatherBlock')).not.toBeInTheDocument();
   });
 
   test('does not render when weather data is undefined', () => {
-    const { container } = render(
-      <WeatherBlock weather={undefined as unknown as any} />,
-    );
+    const { container } = render(<WeatherBlock weather={undefined} />);
 
     expect(container.querySelector('.WeatherBlock')).not.toBeInTheDocument();
   });
@@ -216,7 +215,7 @@ describe('WeatherBlock', () => {
     const partialWeather = {
       temperature: 70,
       // Missing uvIndex, weatherSummary, etc.
-    } as any;
+    };
 
     render(<WeatherBlock weather={partialWeather} />);
 
@@ -239,7 +238,7 @@ describe('WeatherBlock', () => {
       weatherSummary: null,
       weatherIcon: null,
       precipitationIntensity: null,
-    } as any;
+    } as unknown as WeatherData;
 
     const { container } = render(<WeatherBlock weather={weatherWithNulls} />);
 
@@ -251,7 +250,7 @@ describe('WeatherBlock', () => {
   test('renders empty wrapper when no weather data', () => {
     const { container } = render(
       <WeatherBlock
-        weather={null as unknown as any}
+        weather={null as unknown as WeatherData | undefined}
         wrapperClassName='test-wrapper'
       />,
     );
