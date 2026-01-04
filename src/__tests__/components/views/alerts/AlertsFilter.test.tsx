@@ -1,6 +1,6 @@
 /* eslint-env jest */
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import React from 'react';
+import type { ReactElement, ReactNode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import AlertsFilter from '../../../../components/views/alerts/AlertsFilter';
@@ -19,6 +19,13 @@ jest.mock('../../../../components/common/Button', () => {
     className,
     variant,
     buttonProps,
+  }: {
+    children: ReactNode;
+    onClick?: () => void;
+    disabled?: boolean;
+    className?: string;
+    variant?: string;
+    buttonProps?: { 'aria-label'?: string; title?: string };
   }) {
     return (
       <button
@@ -37,7 +44,17 @@ jest.mock('../../../../components/common/Button', () => {
 });
 
 jest.mock('../../../../components/common/Dropdown', () => {
-  return function MockDropdown({ onChange, options, prefixLabel, value }) {
+  return function MockDropdown({
+    onChange,
+    options,
+    prefixLabel,
+    value,
+  }: {
+    onChange: (option: { value: string; label: string }) => void;
+    options: Array<{ value: string; label: string }>;
+    prefixLabel: string;
+    value: { value: string; label: string };
+  }) {
     return (
       <div data-prefix-label={prefixLabel} data-testid='dropdown'>
         <select
@@ -46,7 +63,7 @@ jest.mock('../../../../components/common/Dropdown', () => {
             const selectedOption = options.find(
               (opt) => opt.value === e.target.value,
             );
-            onChange(selectedOption);
+            if (selectedOption) onChange(selectedOption);
           }}
           value={value.value}
         >
@@ -71,7 +88,7 @@ jest.mock('react-icons/fa6', () => ({
   FaRotate: () => <div data-testid='rotate-icon'>Rotate</div>,
 }));
 
-const renderWithRouter = (component) => {
+const renderWithRouter = (component: ReactElement) => {
   return render(<MemoryRouter>{component}</MemoryRouter>);
 };
 
