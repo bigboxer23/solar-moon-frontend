@@ -709,7 +709,6 @@ describe('Reports', () => {
         expect(screen.queryByTestId('loader')).not.toBeInTheDocument();
       });
 
-      const initialCallCount = services.getDataPage.mock.calls.length;
       const dataGrid = screen.getByTestId('data-grid');
 
       // Mock scroll event to bottom
@@ -724,9 +723,7 @@ describe('Reports', () => {
       fireEvent.scroll(dataGrid, scrollEvent);
 
       await waitFor(() => {
-        expect(services.getDataPage).toHaveBeenCalledTimes(
-          initialCallCount + 1,
-        );
+        expect(services.getDataPage).toHaveBeenCalledTimes(2); // Initial + scroll load
       });
     });
 
@@ -749,7 +746,6 @@ describe('Reports', () => {
 
       const dataGrid = screen.getByTestId('data-grid');
 
-      // First scroll triggers loading (which never resolves)
       const scrollEvent = {
         currentTarget: {
           scrollTop: 1000,
@@ -758,19 +754,14 @@ describe('Reports', () => {
         },
       };
 
+      // First scroll triggers loading
       fireEvent.scroll(dataGrid, scrollEvent);
-
-      // Record call count after first scroll
-      await waitFor(() => {
-        expect(services.getDataPage.mock.calls.length).toBeGreaterThan(1);
-      });
-      const callsAfterFirstScroll = services.getDataPage.mock.calls.length;
 
       // Second scroll while still loading should not trigger another request
       fireEvent.scroll(dataGrid, scrollEvent);
 
-      // Should not increase call count since loading=true
-      expect(services.getDataPage).toHaveBeenCalledTimes(callsAfterFirstScroll);
+      // Should still only be called twice (initial + first scroll, second scroll ignored)
+      expect(services.getDataPage).toHaveBeenCalledTimes(2);
     });
 
     test('does not load more data when all data is loaded', async () => {
@@ -803,13 +794,7 @@ describe('Reports', () => {
       fireEvent.scroll(dataGrid, scrollEvent);
 
       // Should not call getDataPage again since rows.length === total
-      // Multiple calls may occur from useEffect dependencies during initial render
-      expect(services.getDataPage.mock.calls.length).toBeGreaterThanOrEqual(1);
-      const callsBeforeScroll = services.getDataPage.mock.calls.length;
-
-      // Scroll again - should not trigger new calls
-      fireEvent.scroll(dataGrid, scrollEvent);
-      expect(services.getDataPage).toHaveBeenCalledTimes(callsBeforeScroll);
+      expect(services.getDataPage).toHaveBeenCalledTimes(1);
     });
   });
 
