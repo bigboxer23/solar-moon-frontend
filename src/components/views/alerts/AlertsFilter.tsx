@@ -1,3 +1,4 @@
+import type { ReactElement, ReactNode } from 'react';
 import { useEffect, useState } from 'react';
 import { FaRotate } from 'react-icons/fa6';
 import { useSearchParams } from 'react-router-dom';
@@ -7,15 +8,38 @@ import Button from '../../common/Button';
 import Dropdown from '../../common/Dropdown';
 import Spinner from '../../common/Spinner';
 
+interface DropdownOption {
+  value: string;
+  label: string | ReactNode;
+  deviceName?: string;
+  site?: string;
+  siteName?: string;
+}
+
+interface FilterParams {
+  siteId: string;
+  deviceId: string;
+  start: Date | null;
+  end: Date | null;
+}
+
+interface AlertsFilterProps {
+  handleFilterChange: (params: FilterParams) => void;
+  availableSites: DropdownOption[];
+  availableDevices: DropdownOption[];
+  refreshSearch: boolean;
+  setRefreshSearch: (value: boolean) => void;
+}
+
 export default function AlertsFilter({
   handleFilterChange,
   availableSites,
   availableDevices,
   refreshSearch,
   setRefreshSearch,
-}) {
+}: AlertsFilterProps): ReactElement {
   const [searchParams, setSearchParams] = useSearchParams();
-  const allOption = { value: ALL, label: ALL };
+  const allOption: DropdownOption = { value: ALL, label: ALL };
 
   const searchParamSite = searchParams.get('siteId');
   const searchParamDevice = searchParams.get('deviceId');
@@ -37,9 +61,13 @@ export default function AlertsFilter({
     searchParamSite != null || searchParamDevice != null,
   );
 
-  const [siteIdValue, setSiteIdValue] = useState(defaultSite);
-  const [deviceIdValue, setDeviceIdValue] = useState(defaultDevice);
-  const [dateValue, setDateValue] = useState([defaultStart, defaultEnd]);
+  const [siteIdValue, setSiteIdValue] = useState<DropdownOption>(defaultSite);
+  const [deviceIdValue, setDeviceIdValue] =
+    useState<DropdownOption>(defaultDevice);
+  const [dateValue, setDateValue] = useState<[Date | null, Date | null]>([
+    defaultStart,
+    defaultEnd,
+  ]);
 
   useEffect(() => {
     handleFilterChange({
@@ -61,7 +89,7 @@ export default function AlertsFilter({
 
   // Update search params when filters change
   useEffect(() => {
-    const searchParams = {};
+    const searchParams: Record<string, string | null> = {};
     if (siteIdValue.value !== ALL) {
       searchParams.siteId = siteIdValue.value;
     }
@@ -74,7 +102,7 @@ export default function AlertsFilter({
       searchParams.end = null;
     }
 
-    setSearchParams(searchParams);
+    setSearchParams(searchParams as Record<string, string>);
   }, [deviceIdValue, siteIdValue]);
 
   function resetFilters() {
@@ -85,13 +113,13 @@ export default function AlertsFilter({
     setDirty(false);
   }
 
-  function handleSiteFilterChange(siteOption) {
+  function handleSiteFilterChange(siteOption: DropdownOption) {
     setSiteIdValue(siteOption);
     setDeviceIdValue(allOption);
     setDirty(true);
   }
 
-  function handleDeviceFilterChange(deviceOption) {
+  function handleDeviceFilterChange(deviceOption: DropdownOption) {
     setDeviceIdValue(deviceOption);
     setDirty(true);
   }
@@ -108,25 +136,46 @@ export default function AlertsFilter({
       )}
 
       <Dropdown
-        onChange={handleSiteFilterChange}
-        options={[allOption, ...availableSites]}
+        onChange={
+          handleSiteFilterChange as (option: {
+            value: string;
+            label: string;
+          }) => void
+        }
+        options={
+          [allOption, ...availableSites] as Array<{
+            value: string;
+            label: string;
+          }>
+        }
         prefixLabel='Site'
-        value={siteIdValue}
+        value={siteIdValue as { value: string; label: string }}
       />
       <Dropdown
-        onChange={handleDeviceFilterChange}
-        options={[
-          allOption,
-          ...availableDevices.filter((d) => {
-            return (
-              siteIdValue.label === ALL ||
-              d.site === siteIdValue.value ||
-              d.name === ALL
-            );
-          }),
-        ]}
+        onChange={
+          handleDeviceFilterChange as (option: {
+            value: string;
+            label: string;
+          }) => void
+        }
+        options={
+          [
+            allOption,
+            ...availableDevices.filter((d) => {
+              const siteLabel =
+                typeof siteIdValue.label === 'string'
+                  ? siteIdValue.label
+                  : siteIdValue.value;
+              return (
+                siteLabel === ALL ||
+                d.site === siteIdValue.value ||
+                d.deviceName === ALL
+              );
+            }),
+          ] as Array<{ value: string; label: string }>
+        }
         prefixLabel='Device'
-        value={deviceIdValue}
+        value={deviceIdValue as { value: string; label: string }}
       />
       <Button
         buttonProps={{

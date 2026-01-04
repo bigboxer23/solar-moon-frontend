@@ -1,6 +1,6 @@
 /* eslint-env jest */
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import React from 'react';
+import type { ReactElement } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import Alerts from '../../../../components/views/alerts/Alerts';
@@ -31,7 +31,13 @@ jest.mock('../../../../components/common/Loader', () => {
 });
 
 jest.mock('../../../../components/views/alerts/Alert', () => {
-  return function MockAlert({ alert, active }) {
+  return function MockAlert({
+    alert,
+    active,
+  }: {
+    alert: { deviceId: string; deviceName?: string; message: string };
+    active?: boolean;
+  }) {
     return (
       <div
         data-active={active}
@@ -49,9 +55,19 @@ jest.mock('../../../../components/views/alerts/AlertsFilter', () => {
     handleFilterChange,
     availableDevices,
     availableSites,
-    refreshSearch,
     setRefreshSearch,
-    reloadData,
+  }: {
+    handleFilterChange: (params: {
+      deviceId: string;
+      siteId: string;
+      start: Date | null;
+      end: Date | null;
+    }) => void;
+    availableDevices: unknown[];
+    availableSites: unknown[];
+    refreshSearch: boolean;
+    setRefreshSearch: (value: boolean) => void;
+    reloadData?: () => void;
   }) {
     return (
       <div data-testid='alerts-filter'>
@@ -81,7 +97,7 @@ jest.mock('../../../../components/views/alerts/AlertsFilter', () => {
   };
 });
 
-const renderWithRouter = (component) => {
+const renderWithRouter = (component: ReactElement) => {
   return render(<MemoryRouter>{component}</MemoryRouter>);
 };
 

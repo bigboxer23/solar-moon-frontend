@@ -1,6 +1,7 @@
 import Tippy from '@tippyjs/react';
 import classNames from 'classnames';
 import { formatDistance } from 'date-fns';
+import type { ReactElement } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import { HOUR } from '../../../services/search';
@@ -11,7 +12,24 @@ import {
   TIPPY_DELAY,
 } from '../../../utils/Utils';
 
-export default function Alert({ alert, active }) {
+interface AlertData {
+  alarmId: string;
+  deviceId: string;
+  deviceName?: string;
+  deviceSite?: string;
+  message: string;
+  startDate: number;
+  endDate: number;
+  state: number;
+  siteId?: string;
+}
+
+interface AlertProps {
+  alert: AlertData;
+  active?: boolean;
+}
+
+export default function Alert({ alert, active }: AlertProps): ReactElement {
   const timeSinceAlert = formatDistance(alert.startDate, new Date(), {
     addSuffix: true,
   });
@@ -58,7 +76,7 @@ export default function Alert({ alert, active }) {
       <div className='mb-1 flex flex-row justify-between space-x-1 text-xs italic sm:mb-0 sm:flex-col sm:items-end'>
         {alert.state === 1 && (
           <Tippy
-            content={`Starting at ${getFormattedTime(alert.startDate)}`}
+            content={`Starting at ${getFormattedTime(new Date(alert.startDate))}`}
             delay={TIPPY_DELAY}
             placement='top'
           >
@@ -68,15 +86,15 @@ export default function Alert({ alert, active }) {
         {alert.state === 0 && (
           <>
             <Tippy
-              content={`Ending at ${getFormattedTime(alert.endDate)}`}
+              content={`Ending at ${getFormattedTime(new Date(alert.endDate))}`}
               delay={TIPPY_DELAY}
               placement='top'
             >
               <div> Resolved {timeSinceResolved}</div>
             </Tippy>
             <Tippy
-              content={`${getFormattedTime(alert.startDate)} to ${getFormattedTime(
-                alert.endDate,
+              content={`${getFormattedTime(new Date(alert.startDate))} to ${getFormattedTime(
+                new Date(alert.endDate),
               )}`}
               delay={TIPPY_DELAY}
               placement='top'

@@ -1,13 +1,21 @@
 /* eslint-env jest */
 import { render, screen } from '@testing-library/react';
-import React from 'react';
+import type { ReactElement, ReactNode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import Alert from '../../../../components/views/alerts/Alert';
 
 // Mock external dependencies
 jest.mock('@tippyjs/react', () => {
-  return function MockTippy({ children, content, ...props }) {
+  return function MockTippy({
+    children,
+    content,
+    ...props
+  }: {
+    children: ReactNode;
+    content: string;
+    [key: string]: unknown;
+  }) {
     return (
       <div data-testid='tippy-wrapper' title={content} {...props}>
         {children}
@@ -41,7 +49,7 @@ jest.mock('date-fns', () => ({
   }),
 }));
 
-const renderWithRouter = (component) => {
+const renderWithRouter = (component: ReactElement) => {
   return render(<MemoryRouter>{component}</MemoryRouter>);
 };
 
@@ -90,14 +98,14 @@ describe('Alert', () => {
     });
 
     test('renders alert without device name using device ID', () => {
-      const alertWithoutName = { ...mockActiveAlert, deviceName: null };
+      const alertWithoutName = { ...mockActiveAlert, deviceName: undefined };
       renderWithRouter(<Alert active alert={alertWithoutName} />);
 
       expect(screen.getByText('device-456')).toBeInTheDocument();
     });
 
     test('renders alert without site information', () => {
-      const alertWithoutSite = { ...mockActiveAlert, deviceSite: null };
+      const alertWithoutSite = { ...mockActiveAlert, deviceSite: undefined };
       renderWithRouter(<Alert active alert={alertWithoutSite} />);
 
       expect(screen.queryByText(/Site:/)).not.toBeInTheDocument();
@@ -351,7 +359,7 @@ describe('Alert', () => {
         },
       ];
 
-      testCases.forEach(({ alert, active, expectResolved }, index) => {
+      testCases.forEach(({ alert, active, expectResolved }) => {
         const { unmount } = renderWithRouter(
           <Alert active={active} alert={alert} />,
         );
