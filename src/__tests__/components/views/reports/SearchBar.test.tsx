@@ -1,6 +1,5 @@
 /* eslint-env jest */
 import { fireEvent, render, screen } from '@testing-library/react';
-import React from 'react';
 
 // Import after all mocks are set up
 import SearchBar from '../../../../components/views/reports/SearchBar';
@@ -20,7 +19,7 @@ jest.mock('@wojtekmaj/react-daterange-picker', () => {
   return function MockDateRangePicker({
     onChange,
     value,
-    calendarIcon,
+    _calendarIcon,
     clearIcon,
     className,
   }) {
@@ -157,7 +156,7 @@ describe('SearchBar', () => {
     utils.getDisplayName.mockImplementation(
       (device) => device?.name || device?.deviceName || 'Unknown',
     );
-    utils.getRoundedTime.mockImplementation((isEnd, period) => {
+    utils.getRoundedTime.mockImplementation((isEnd, _period) => {
       if (isEnd) return new Date('2024-01-31');
       return new Date('2024-01-01');
     });

@@ -1,7 +1,9 @@
 import 'react-data-grid/lib/styles.css';
 
 import Tippy from '@tippyjs/react';
+import type { ReactElement } from 'react';
 import { useEffect, useRef, useState } from 'react';
+import type { Column, DataGridHandle, RenderCellProps } from 'react-data-grid';
 import { DataGrid } from 'react-data-grid';
 import { FaArrowLeft } from 'react-icons/fa';
 import { useIntl } from 'react-intl';
@@ -9,6 +11,7 @@ import { NavLink, useSearchParams } from 'react-router-dom';
 
 import { ALL, DAY } from '../../../services/search';
 import { getDataPage, getDevices } from '../../../services/services';
+import type { Device } from '../../../types/models';
 import {
   getDeviceIdToNameMap,
   getFormattedShortTime,
@@ -27,6 +30,7 @@ import {
   DISPLAY_NAME,
   ENERGY_CONSUMED,
   INFORMATIONAL_ERROR,
+  type RowData,
   SITE_ID_KEYWORD,
   sortRowData,
   TOTAL_ENERGY_CONS,
@@ -35,8 +39,11 @@ import {
 } from './ReportUtils';
 import SearchBar from './SearchBar';
 
-const Reports = () => {
-  const windowSize = useRef([window.innerWidth, window.innerHeight]);
+export default function Reports(): ReactElement {
+  const windowSize = useRef<[number, number]>([
+    window.innerWidth,
+    window.innerHeight,
+  ]);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const [loading, setLoading] = useState(true);
@@ -55,36 +62,44 @@ const Reports = () => {
     setSearchParams,
   );
 
-  const [start, setStart] = useSearchParamState(
-    getRoundedTime(false, DAY).getTime(),
+  const [startStr, setStartStr] = useSearchParamState(
+    getRoundedTime(false, DAY).getTime().toString(),
     'start',
     searchParams,
     setSearchParams,
   );
-  const [end, setEnd] = useSearchParamState(
-    getRoundedTime(true, 0).getTime(),
+  const start = Number(startStr);
+  const setStart = (value: number) => setStartStr(value.toString());
+
+  const [endStr, setEndStr] = useSearchParamState(
+    getRoundedTime(true, 0).getTime().toString(),
     'end',
     searchParams,
     setSearchParams,
   );
+  const end = Number(endStr);
+  const setEnd = (value: number) => setEndStr(value.toString());
   const [filterErrors, setFilterErrors] = useSearchParamState(
     'false',
     'err',
     searchParams,
     setSearchParams,
   );
-  const [devices, setDevices] = useState([]);
-  const [deviceMap, setDeviceMap] = useState({});
-  const [rows, setRows] = useState([]);
+  const [devices, setDevices] = useState<Device[]>([]);
+  const [deviceMap, setDeviceMap] = useState<Record<string, string>>({});
+  const [rows, setRows] = useState<RowData[]>([]);
   const [total, setTotal] = useState(-1);
   const [refreshSearch, setRefreshSearch] = useState(false);
-  const gridRef = useRef(null);
+  const gridRef = useRef<DataGridHandle>(null);
 
   const intl = useIntl();
   useEffect(() => {
     getDevices().then(({ data }) => {
-      setDevices(data);
-      setDeviceMap(getDeviceIdToNameMap(data));
+      const devicesList = Array.isArray(data)
+        ? data
+        : (data as { devices?: Device[] })?.devices || [];
+      setDevices(devicesList);
+      setDeviceMap(getDeviceIdToNameMap(devicesList));
       setInit(true);
     });
   }, []);
@@ -94,44 +109,44 @@ const Reports = () => {
       return;
     }
     fetchData(0, (rows) => setRows(rows), true);
-  }, [devices]);
+  }, [devices, init]);
 
-  const WeatherRowRenderer = (row) => {
+  const WeatherRowRenderer = (row: RenderCellProps<RowData>) => {
+    const temp = row.row['temperature'] as number | undefined;
+    const uv = row.row['uvIndex'] as number | undefined;
+    const precip = row.row['precipitationIntensity'] as number | undefined;
+    const cloud = row.row['cloudCover'] as number | undefined;
+    const weatherIcon = row.row['weatherIcon.keyword'] as string[] | undefined;
+
     const content = (
       <>
         <div>
           {`${row.row['weatherSummary.keyword']} `}
-          {row.row['temperature'] && `${Math.round(row.row['temperature'])}°F`}
+          {temp && `${Math.round(temp)}°F`}
         </div>
+        <div>{uv && `UV Index: ${roundTwoDigit(uv)}`}</div>
         <div>
-          {row.row['uvIndex'] &&
-            `UV Index: ${roundTwoDigit(row.row['uvIndex'])}`}
+          {precip! > 0 &&
+            `Precipitation: ${roundToDecimals(precip!, 100)} in/hr`}
         </div>
-        <div>
-          {row.row['precipitationIntensity'] > 0 &&
-            `Precipitation: ${roundToDecimals(row.row['precipitationIntensity'], 100)} in/hr`}
-        </div>
-        <div>
-          {row.row['cloudCover'] &&
-            `Cloud Cover: ${roundTwoDigit(row.row['cloudCover'])}`}
-        </div>
+        <div>{cloud && `Cloud Cover: ${roundTwoDigit(cloud)}`}</div>
       </>
     );
     return (
       <Tippy content={content} delay={TIPPY_DELAY} placement='top'>
         <div className='flex h-full items-center justify-center'>
-          {getWeatherIcon(
-            row.row['weatherIcon.keyword'] && row.row['weatherIcon.keyword'][0],
-          )}
+          {getWeatherIcon(weatherIcon?.[0] || '')}
         </div>
       </Tippy>
     );
   };
 
-  const timeRowRenderer = (row) => {
+  const timeRowRenderer = (row: RenderCellProps<RowData>) => {
+    const timestamp = row.row['@timestamp'] as number | undefined;
+    const time = row.row['time'] as string | undefined;
     return isXS(windowSize)
-      ? getFormattedShortTime(new Date(row.row['@timestamp']))
-      : row.row['time'];
+      ? getFormattedShortTime(new Date(timestamp!))
+      : time;
   };
 
   const getSitesWidth = () => {
@@ -146,7 +161,7 @@ const Reports = () => {
     return isXS(windowSize) ? 95 : 150;
   };
 
-  const columns = [
+  const columns: Column<RowData>[] = [
     {
       key: 'weatherSummary.keyword',
       name: (
@@ -228,7 +243,11 @@ const Reports = () => {
     fetchData(0, (rows) => setRows(rows), true);
   }, [refreshSearch]);
 
-  const fetchData = (offset, rowSetter, shouldScrollToTop) => {
+  const fetchData = (
+    offset: number,
+    rowSetter: (rows: RowData[]) => void,
+    shouldScrollToTop: boolean,
+  ) => {
     setLoading(true);
     setSubLoad(offset > 0);
     setTotal(shouldScrollToTop ? -1 : total);
@@ -236,8 +255,8 @@ const Reports = () => {
       deviceId === ALL ? null : deviceId,
       siteId === ALL ? null : siteId,
       filterErrors,
-      start,
-      end,
+      start.toString(),
+      end.toString(),
       offset,
       500,
       [
@@ -254,10 +273,16 @@ const Reports = () => {
         setLoading(false);
         setSubLoad(false);
         setRefreshSearch(false);
-        setTotal(data.hits.total.value);
+        setTotal(data.hits.total?.value ?? 0);
         rowSetter(
           data.hits.hits
-            .map((row) => transformRowData(row.fields, deviceMap, intl))
+            .map((row: { fields: unknown }) =>
+              transformRowData(
+                row.fields as Record<string, unknown>,
+                deviceMap,
+                intl,
+              ),
+            )
             .sort(sortRowData),
         );
         if (shouldScrollToTop) {
@@ -283,15 +308,15 @@ const Reports = () => {
   };
 
   const scrollToTop = () => {
-    gridRef.current.scrollToCell({ rowIdx: 0, idx: 0 });
+    gridRef.current?.scrollToCell({ rowIdx: 0, idx: 0 });
   };
 
-  async function handleScroll(event) {
+  async function handleScroll(event: React.UIEvent<HTMLDivElement>) {
     if (loading || !isAtBottom(event) || rows.length === total) return;
     fetchData(rows.length, (r) => setRows([...rows, ...r]), false);
   }
 
-  const isAtBottom = ({ currentTarget }) => {
+  const isAtBottom = ({ currentTarget }: React.UIEvent<HTMLDivElement>) => {
     return (
       currentTarget.scrollTop + 10 >=
       currentTarget.scrollHeight - currentTarget.clientHeight
@@ -359,6 +384,4 @@ const Reports = () => {
       </div>
     </main>
   );
-};
-
-export default Reports;
+}
