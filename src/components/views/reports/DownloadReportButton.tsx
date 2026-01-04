@@ -1,5 +1,6 @@
+import type { ReactElement } from 'react';
 import { useState } from 'react';
-import { jsons2csv } from 'react-csv/lib/core';
+import { toCSV as jsons2csv } from 'react-csv/lib/core';
 import { FaDownload } from 'react-icons/fa';
 import { useIntl } from 'react-intl';
 import { toast, ToastContainer } from 'react-toastify';
@@ -17,7 +18,22 @@ import {
   transformRowData,
 } from './ReportUtils';
 
-const DownloadReportButton = ({
+interface DownloadReportButtonProps {
+  siteId: string;
+  deviceId: string;
+  filterErrors: string;
+  start: number;
+  end: number;
+  timeFormatter: (date: Date) => string;
+  deviceMap: Record<string, string>;
+}
+
+interface CsvHeader {
+  key: string;
+  label: string;
+}
+
+export default function DownloadReportButton({
   siteId,
   deviceId,
   filterErrors,
@@ -25,14 +41,14 @@ const DownloadReportButton = ({
   end,
   timeFormatter,
   deviceMap,
-}) => {
+}: DownloadReportButtonProps): ReactElement {
   const [downloading, setDownloading] = useState(false);
   const [buttonTitle, setButtonTitle] = useState('Download');
   const [percent, setPercent] = useState(0);
 
   const intl = useIntl();
 
-  const headers = [
+  const headers: CsvHeader[] = [
     { key: 'time', label: 'Time' },
     { key: SITE_ID_KEYWORD, label: 'Site' },
     { key: DEVICE_ID_KEYWORD, label: 'Display Name' },
@@ -64,7 +80,7 @@ const DownloadReportButton = ({
     return `${fileName}.csv`;
   };
 
-  const updateStatus = (downloading, percent) => {
+  const updateStatus = (downloading: boolean, percent: number) => {
     setDownloading(downloading);
     if (percent === 100) {
       setButtonTitle('Download');
@@ -90,14 +106,14 @@ const DownloadReportButton = ({
   };
 
   const fetchDownload = (
-    localDevice,
-    localSite,
-    localFilterErrors,
-    localEnd,
-    csv,
-    interval,
-    steps,
-    index,
+    localDevice: string | null,
+    localSite: string | null,
+    localFilterErrors: string,
+    localEnd: number,
+    csv: unknown[],
+    interval: number,
+    steps: number,
+    index: number,
   ) => {
     if (start >= localEnd) {
       finalizeDownload(csv);
@@ -108,15 +124,15 @@ const DownloadReportButton = ({
       localDevice,
       localSite,
       localFilterErrors,
-      Math.max(start, localEnd - interval + 1),
-      localEnd,
+      Math.max(start, localEnd - interval + 1).toString(),
+      localEnd.toString(),
       0,
       10000,
       null,
     )
       .then(({ data }) => {
         updateStatus(true, steps * index);
-        if (data.hits.total.value === 0) {
+        if (data.hits.total?.value === 0) {
           finalizeDownload(csv);
           return;
         }
@@ -126,8 +142,12 @@ const DownloadReportButton = ({
           localFilterErrors,
           localEnd - interval,
           csv.concat(
-            data.hits.hits.map((row) =>
-              transformRowData(row.fields, deviceMap, intl),
+            data.hits.hits.map((row: { fields: unknown }) =>
+              transformRowData(
+                row.fields as Record<string, unknown>,
+                deviceMap,
+                intl,
+              ),
             ),
           ),
           interval,
@@ -135,14 +155,14 @@ const DownloadReportButton = ({
           index,
         );
       })
-      .catch((e) => {
+      .catch(() => {
         updateError();
       });
   };
 
-  const finalizeDownload = (data) => {
+  const finalizeDownload = (data: unknown[]) => {
     const url = window.URL.createObjectURL(
-      new Blob([jsons2csv(data, headers, ',', '"')]),
+      new Blob([jsons2csv(data as object[], headers, ',', '"')]),
     );
     const link = document.createElement('a');
     link.href = url;
@@ -159,8 +179,8 @@ const DownloadReportButton = ({
       deviceId === ALL ? null : deviceId,
       siteId === ALL ? null : siteId,
       filterErrors,
-      start,
-      end,
+      start.toString(),
+      end.toString(),
       0,
       10000,
     )
@@ -176,7 +196,7 @@ const DownloadReportButton = ({
           0,
         );
       })
-      .catch((e) => {
+      .catch(() => {
         updateError();
       });
   };
@@ -209,5 +229,4 @@ const DownloadReportButton = ({
       />
     </Button>
   );
-};
-export default DownloadReportButton;
+}

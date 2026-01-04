@@ -1,9 +1,10 @@
-import 'react-day-picker/style.css';
-import '@wojtekmaj/react-daterange-picker/dist/DateRangePicker.css';
 import 'react-calendar/dist/Calendar.css';
+import '@wojtekmaj/react-daterange-picker/dist/DateRangePicker.css';
+import 'react-day-picker/style.css';
 
 import DateRangePicker from '@wojtekmaj/react-daterange-picker';
 import classNames from 'classnames';
+import type { ReactElement } from 'react';
 import { useState } from 'react';
 import { FaSearch } from 'react-icons/fa';
 import { FaRotate } from 'react-icons/fa6';
@@ -16,6 +17,7 @@ import {
 } from 'react-icons/md';
 
 import { ALL } from '../../../services/search';
+import type { Device } from '../../../types/models';
 import {
   getDisplayName,
   getRoundedTime,
@@ -26,7 +28,27 @@ import { Check } from '../../common/Check';
 import Dropdown from '../../common/Dropdown';
 import Spinner from '../../common/Spinner';
 
-const SearchBar = ({
+interface SearchBarProps {
+  devices?: Device[];
+  siteId: string;
+  setSiteId: (value: string) => void;
+  deviceId: string;
+  setDeviceId: (value: string) => void;
+  start: number;
+  setStart: (value: number) => void;
+  end: number;
+  setEnd: (value: number) => void;
+  defaultSearchPeriod: number;
+  refreshSearch: boolean;
+  setRefreshSearch: (value: boolean) => void;
+  filterErrors: string;
+  setFilterErrors: (value: string) => void;
+}
+
+type DateValue = Date | null;
+type DateRangeValue = [DateValue, DateValue];
+
+export default function SearchBar({
   devices = [],
   siteId,
   setSiteId,
@@ -41,12 +63,12 @@ const SearchBar = ({
   setRefreshSearch,
   filterErrors,
   setFilterErrors,
-}) => {
+}: SearchBarProps): ReactElement {
   const [searchActive, setSearchActive] = useState(
     deviceId !== ALL || siteId !== ALL || filterErrors === 'true',
   );
 
-  const [value, setValue] = useState([
+  const [value, setValue] = useState<DateRangeValue>([
     new Date(Number(start)),
     new Date(Number(end)),
   ]);
@@ -63,16 +85,16 @@ const SearchBar = ({
     setSearchActive(true);
   };
 
-  const dateChanged = (date) => {
-    if (date === null) {
-      date = [
-        getRoundedTime(false, defaultSearchPeriod),
-        getRoundedTime(true, 0),
-      ];
+  const dateChanged = (date: DateRangeValue | null) => {
+    const finalDate: DateRangeValue = date ?? [
+      getRoundedTime(false, defaultSearchPeriod),
+      getRoundedTime(true, 0),
+    ];
+    setValue(finalDate);
+    if (finalDate[0] && finalDate[1]) {
+      setStart(finalDate[0].getTime());
+      setEnd(finalDate[1].getTime());
     }
-    setValue(date);
-    setStart(date[0].getTime());
-    setEnd(date[1].getTime());
   };
 
   const allOption = { value: ALL, label: ALL };
@@ -128,7 +150,6 @@ const SearchBar = ({
       >
         <div className='ml-2 flex flex-wrap items-center space-x-4 sm:ml-6'>
           <DateRangePicker
-            calendarClassName='shadow-panel'
             calendarIcon={null}
             calendarProps={{
               calendarType: 'gregory',
@@ -144,10 +165,11 @@ const SearchBar = ({
               prevLabel: (
                 <MdOutlineKeyboardArrowLeft className='w-full text-lg' />
               ),
+              className: 'shadow-panel',
             }}
             className='mr-6 sm:mr-0'
             clearIcon={<MdClear aria-label='clear date search' />}
-            onChange={dateChanged}
+            onChange={dateChanged as (value: unknown) => void}
             value={value}
           />
           <Dropdown
@@ -161,20 +183,31 @@ const SearchBar = ({
           />
           <Dropdown
             onChange={(option) => setDeviceId(option.value)}
-            options={[allOption, ...deviceOptions]}
+            options={
+              [allOption, ...deviceOptions] as Array<{
+                value: string;
+                label: string;
+              }>
+            }
             prefixLabel='Device'
-            value={deviceOptions.find((option) => option.value === deviceId)}
+            value={
+              deviceOptions.find((option) => option.value === deviceId) as {
+                value: string;
+                label: string;
+              }
+            }
           />
           <Check
             extendVariantStyles={false}
+            id='errors'
             inputProps={{
               value: filterErrors === 'true',
               onChange: () => {},
+              name: 'errors',
             }}
             inputWrapperClassName='flex focus-within:border-brand-primary space-x-1'
             label='Errors:'
             labelClassName='font-bold dark:text-gray-100'
-            name='errors'
             onClick={() => setFilterErrors(`${!(filterErrors === 'true')}`)}
           />
           <Button
@@ -184,7 +217,6 @@ const SearchBar = ({
             }}
             disabled={refreshSearch}
             onClick={() => setRefreshSearch(true)}
-            title='Refresh Data'
             variant='icon'
           >
             {refreshSearch && <Spinner />}
@@ -205,9 +237,12 @@ const SearchBar = ({
       </div>
       {!searchActive && (
         <Button
+          buttonProps={{
+            title: 'Search',
+            'aria-label': 'Search',
+          }}
           className='ml-auto mr-4'
           onClick={() => loadSearches()}
-          title='Search'
           variant='primary'
         >
           <FaSearch className='mr-2' />
@@ -216,5 +251,4 @@ const SearchBar = ({
       )}
     </div>
   );
-};
-export default SearchBar;
+}

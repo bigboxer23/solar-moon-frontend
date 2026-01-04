@@ -172,8 +172,8 @@ export function getDownloadPageSize(
   end: string,
   offset: number,
   size: number,
-): Promise<AxiosResponse<SearchResponse>> {
-  return api.post<SearchResponse>(
+): Promise<AxiosResponse<number>> {
+  return api.post<number>(
     'download',
     getDataPageBody(
       deviceId,

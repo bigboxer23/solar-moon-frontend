@@ -264,7 +264,7 @@ const isDataStale = function (data: SearchResponse): boolean {
       new Date(String(timestampValue)).getTime() <
       new Date().getTime() - FORTY_FIVE
     );
-  } catch (e) {
+  } catch {
     return false;
   }
 };

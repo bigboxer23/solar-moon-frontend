@@ -50,7 +50,7 @@ export function useStickyState<T>(
     }
     try {
       return JSON.parse(stickyValue) as T;
-    } catch (e) {
+    } catch {
       return defaultValue;
     }
   });

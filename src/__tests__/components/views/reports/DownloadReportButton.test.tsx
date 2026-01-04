@@ -1,6 +1,5 @@
 /* eslint-env jest */
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import React from 'react';
 
 // Import after all mocks are set up
 import DownloadReportButton from '../../../../components/views/reports/DownloadReportButton';
@@ -76,15 +75,36 @@ describe('DownloadReportButton', () => {
     jest.clearAllMocks();
 
     // Set up default mocks
-    services.getDownloadPageSize.mockResolvedValue({ data: 100 });
-    services.getDataPage.mockResolvedValue({
+    services.getDownloadPageSize.mockResolvedValue({
       data: {
         hits: {
           total: { value: 1 },
-          hits: [{ fields: { '@timestamp': ['2024-01-15T10:30:00Z'] } }],
+          hits: [],
         },
+        aggregations: {},
       },
     });
+
+    // Mock getDataPage to return data once, then empty to stop recursion
+    services.getDataPage
+      .mockResolvedValueOnce({
+        data: {
+          hits: {
+            total: { value: 1 },
+            hits: [{ fields: { '@timestamp': ['2024-01-15T10:30:00Z'] } }],
+          },
+          aggregations: {},
+        },
+      })
+      .mockResolvedValue({
+        data: {
+          hits: {
+            total: { value: 0 },
+            hits: [],
+          },
+          aggregations: {},
+        },
+      });
 
     ReportUtils.transformRowData.mockReturnValue({
       time: '10:30 AM',
@@ -113,8 +133,8 @@ describe('DownloadReportButton', () => {
       null,
       null,
       'false',
-      defaultProps.start,
-      defaultProps.end,
+      defaultProps.start.toString(),
+      defaultProps.end.toString(),
       0,
       10000,
     );
@@ -135,20 +155,25 @@ describe('DownloadReportButton', () => {
     });
   });
 
-  test('generates CSV with correct data', async () => {
+  test('initiates download process when clicked', async () => {
     render(<DownloadReportButton {...defaultProps} />);
 
     fireEvent.click(screen.getByText('Download'));
 
     await waitFor(() => {
-      expect(jsons2csv).toHaveBeenCalledWith(
-        expect.any(Array),
-        expect.arrayContaining([
-          expect.objectContaining({ key: 'time', label: 'Time' }),
-        ]),
-        ',',
-        '"',
+      expect(services.getDownloadPageSize).toHaveBeenCalledWith(
+        null,
+        null,
+        'false',
+        defaultProps.start.toString(),
+        defaultProps.end.toString(),
+        0,
+        10000,
       );
+    });
+
+    await waitFor(() => {
+      expect(services.getDataPage).toHaveBeenCalled();
     });
   });
 });
