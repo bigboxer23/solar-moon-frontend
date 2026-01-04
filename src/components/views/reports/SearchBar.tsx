@@ -165,6 +165,7 @@ export default function SearchBar({
               prevLabel: (
                 <MdOutlineKeyboardArrowLeft className='w-full text-lg' />
               ),
+              className: 'shadow-panel',
             }}
             className='mr-6 sm:mr-0'
             clearIcon={<MdClear aria-label='clear date search' />}
@@ -202,6 +203,7 @@ export default function SearchBar({
             inputProps={{
               value: filterErrors === 'true',
               onChange: () => {},
+              name: 'errors',
             }}
             inputWrapperClassName='flex focus-within:border-brand-primary space-x-1'
             label='Errors:'
@@ -235,6 +237,10 @@ export default function SearchBar({
       </div>
       {!searchActive && (
         <Button
+          buttonProps={{
+            title: 'Search',
+            'aria-label': 'Search',
+          }}
           className='ml-auto mr-4'
           onClick={() => loadSearches()}
           variant='primary'
