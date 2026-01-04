@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import type { ReactElement } from 'react';
 import { useState } from 'react';
 import { Bar, Line } from 'react-chartjs-2';
 import {
@@ -11,6 +12,8 @@ import {
 } from 'react-icons/md';
 
 import { DAY, GROUPED_BAR } from '../../../services/search';
+import type { StackedChartDataPoint } from '../../../types/chart';
+import type { Device } from '../../../types/models';
 import {
   formatXAxisLabels,
   formatXAxisLabelsDay,
@@ -23,6 +26,16 @@ import {
 } from '../../../utils/Utils';
 import { tooltipPlugin } from '../../common/graphPlugins';
 
+interface SiteDetailsGraphProps {
+  graphData: StackedChartDataPoint[];
+  devices: Device[];
+  graphType: string;
+  setGraphType: (type: string) => void;
+  timeIncrement: number;
+  setStartDate: (date: Date) => void;
+  startDate: Date;
+}
+
 export default function SiteDetailsGraph({
   graphData,
   devices,
@@ -31,7 +44,7 @@ export default function SiteDetailsGraph({
   timeIncrement,
   setStartDate,
   startDate,
-}) {
+}: SiteDetailsGraphProps): ReactElement {
   const [nextDisabled, setNextDisabled] = useState(true);
 
   if (!graphData) {
@@ -48,16 +61,19 @@ export default function SiteDetailsGraph({
     .map((name) => {
       const data = graphData.filter((d) => d.name === name);
       const dataSet = {
-        label: truncate(name, 15),
+        label: truncate(name ?? '', 15),
         data: data,
         fill: false,
         categoryPercentage: 0.76,
-        barThickness: 'flex',
+        barThickness: 'flex' as const,
         barPercentage: 1,
       };
       if (graphType === GROUPED_BAR) {
-        dataSet.skipNull = true;
-        dataSet.clip = { left: 50, top: 0, right: 50, bottom: 0 };
+        return {
+          ...dataSet,
+          skipNull: true,
+          clip: { left: 50, top: 0, right: 50, bottom: 0 },
+        };
       }
       return dataSet;
     });
@@ -70,7 +86,7 @@ export default function SiteDetailsGraph({
     responsive: true,
     maintainAspectRatio: false,
     interaction: {
-      mode: 'index',
+      mode: 'index' as const,
       intersect: false,
     },
     elements: {
@@ -80,26 +96,34 @@ export default function SiteDetailsGraph({
     },
     plugins: {
       legend: {
-        position: 'bottom',
+        position: 'bottom' as const,
       },
       tooltip: {
         backgroundColor: '#fff',
         titleColor: '#000',
         bodyColor: '#000',
         boxPadding: 8,
-        titleAlign: 'center',
-        bodyAlign: 'center',
+        titleAlign: 'center' as const,
+        bodyAlign: 'center' as const,
         callbacks: {
-          title: (context) => {
-            const [{ dataIndex, datasetIndex }] = context;
-            const { date } = data.datasets[datasetIndex].data[dataIndex];
-            return getFormattedTime(date);
+          title: (context: { dataIndex: number; datasetIndex: number }[]) => {
+            const [first] = context;
+            if (!first) return '';
+            const { dataIndex, datasetIndex } = first;
+            const dataset = data.datasets[datasetIndex];
+            if (!dataset || !dataset.data) return '';
+            const point = (dataset.data as StackedChartDataPoint[])[dataIndex];
+            if (!point) return '';
+            return getFormattedTime(new Date(point.date));
           },
-          label: (context) => {
-            const siteLabel = truncate(context.dataset.label, 15);
+          label: (context: {
+            dataset: { label?: string };
+            formattedValue: string;
+          }) => {
+            const siteLabel = truncate(context.dataset.label ?? '', 15);
             let label = context.formattedValue || '';
             if (label) {
-              label = `${roundTwoDigit(label)} kW`;
+              label = `${roundTwoDigit(Number(label))} kW`;
             }
             return `${siteLabel} ${label}`;
           },
@@ -109,7 +133,7 @@ export default function SiteDetailsGraph({
     scales: {
       x: {
         stacked: graphType !== GROUPED_BAR,
-        type: 'time',
+        type: 'time' as const,
         ticks: {
           callback:
             timeIncrement === DAY ? formatXAxisLabelsDay : formatXAxisLabels,
@@ -225,10 +249,18 @@ export default function SiteDetailsGraph({
         </div>
         <div className='h-72'>
           {(graphType === 'line' || graphType === 'overview') && (
-            <Line data={data} options={options} plugins={[tooltipPlugin]} />
+            <Line
+              data={data as never}
+              options={options as never}
+              plugins={[tooltipPlugin] as never}
+            />
           )}
           {graphType !== 'line' && graphType !== 'overview' && (
-            <Bar data={data} options={options} plugins={[tooltipPlugin]} />
+            <Bar
+              data={data as never}
+              options={options as never}
+              plugins={[tooltipPlugin] as never}
+            />
           )}
         </div>
       </div>

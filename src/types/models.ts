@@ -39,7 +39,7 @@ export interface Alarm {
   message: string;
   timestamp: number;
   severity?: 'warning' | 'error' | 'info';
-  state?: string;
+  state?: number;
   acknowledged?: boolean;
 }
 

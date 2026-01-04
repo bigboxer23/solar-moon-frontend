@@ -18,6 +18,7 @@ export default [
       'node_modules/**',
       'build/**',
       'src/graphql/**',
+      'src/types/react-csv-core.d.ts',
     ],
   },
 
