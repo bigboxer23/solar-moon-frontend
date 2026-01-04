@@ -1,3 +1,4 @@
+import type { WeatherData } from './chart';
 import type { Alarm, Customer, Device, Mapping, Subscription } from './models';
 
 export interface ApiResponse<T> {
@@ -61,10 +62,20 @@ export interface OverviewData {
 }
 
 export interface SiteOverviewData {
-  timeSeries?: unknown[];
-  alarms?: Alarm[];
-  weather?: unknown;
-  [key: string]: unknown;
+  site: Device;
+  devices: Device[];
+  alarms: Alarm[];
+  timeSeries: SearchResponse;
+  weather?: WeatherData;
+  total?: SearchResponse;
+  avg?: SearchResponse;
+  weeklyMaxPower?: SearchResponse;
+  deviceAvg?: unknown;
+  deviceTotals?: unknown;
+  deviceWeeklyMaxPower?: unknown;
+  deviceTimeSeries?: unknown;
+  localTime?: string;
+  trialDate?: unknown;
 }
 
 export interface MappingsResponse {

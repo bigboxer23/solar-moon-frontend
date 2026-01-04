@@ -1,6 +1,7 @@
+import type { ReactElement } from 'react';
 import { useEffect, useState } from 'react';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
-import { NavLink, redirect, useMatch, useNavigate } from 'react-router-dom';
+import { NavLink, useMatch, useNavigate } from 'react-router-dom';
 
 import {
   AVG_AGGREGATION,
@@ -15,6 +16,14 @@ import {
   TOTAL_AGGREGATION,
 } from '../../../services/search';
 import { getSiteOverview } from '../../../services/services';
+import type {
+  Alarm,
+  ChartDataPoint,
+  Device,
+  SearchResponse,
+  SiteOverviewData,
+  StackedChartDataPoint,
+} from '../../../types';
 import {
   getDeviceIdToNameMap,
   getDisplayName,
@@ -32,11 +41,19 @@ import TimeIncrementSelector from '../dashboard/TimeIncrementSelector';
 import SiteDetailsGraph from './SiteDetailsGraph';
 import SiteDevicesOverview from './SiteDevicesOverview';
 
-export default function SiteDetails({ setTrialDate }) {
-  const [siteData, setSiteData] = useState({});
+interface SiteDetailsProps {
+  setTrialDate: (date: number | null) => void;
+}
+
+export default function SiteDetails({
+  setTrialDate,
+}: SiteDetailsProps): ReactElement {
+  const [siteData, setSiteData] = useState<SiteOverviewData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [devices, setDevices] = useState([]);
-  const [graphData, setGraphData] = useState();
+  const [devices, setDevices] = useState<Device[]>([]);
+  const [graphData, setGraphData] = useState<
+    ChartDataPoint[] | StackedChartDataPoint[] | undefined
+  >();
   const [timeIncrement, setTimeIncrement] = useStickyState(
     DAY,
     'dashboard.time',
@@ -47,17 +64,17 @@ export default function SiteDetails({ setTrialDate }) {
   const [graphType, setGraphType] = useStickyState('bar', 'graph.type');
   const match = useMatch('/sites/:siteId');
   const siteId = match?.params?.siteId;
-  const [activeSiteAlerts, setActiveSiteAlerts] = useState([]);
-  const [resolvedSiteAlerts, setResolvedSiteAlerts] = useState([]);
+  const [activeSiteAlerts, setActiveSiteAlerts] = useState<Alarm[]>([]);
+  const [resolvedSiteAlerts, setResolvedSiteAlerts] = useState<Alarm[]>([]);
   const navigate = useNavigate();
 
-  if (!siteId) {
-    return redirect('/');
-  }
-
   useEffect(() => {
+    if (!siteId) {
+      navigate('/');
+      return;
+    }
     loadSiteOverview(siteId, timeIncrement, startDate, graphType, null);
-  }, [timeIncrement, startDate]);
+  }, [siteId, timeIncrement, startDate]);
 
   /**
    * Switching between graph types doesn't need to re-fetch data from server unless we're moving to or from
@@ -65,7 +82,8 @@ export default function SiteDetails({ setTrialDate }) {
    *
    * If that type of change is detected, do the load, then set graph type
    */
-  const setGraphTypeWrapper = (graphTypeToSet) => {
+  const setGraphTypeWrapper = (graphTypeToSet: string) => {
+    if (!siteId) return;
     if (graphTypeToSet === GROUPED_BAR || graphType === GROUPED_BAR) {
       loadSiteOverview(siteId, timeIncrement, startDate, graphTypeToSet, () =>
         setGraphType(graphTypeToSet),
@@ -75,43 +93,69 @@ export default function SiteDetails({ setTrialDate }) {
     setGraphType(graphTypeToSet);
   };
 
-  const loadSiteOverview = (site, time, start, type, callback) => {
-    getSiteOverview(site, start, time, type).then(({ data }) => {
-      if (data === null) {
-        navigate('/');
-        return;
-      }
-      setSiteData(data);
-      document.title = `SMA Dashboard (${data.site.name})`;
-      setDevices(
-        data.devices
-          .filter((device) => device.site === data.site.name)
-          .sort(sortDevices),
-      );
-      setActiveSiteAlerts(data.alarms.filter((d) => d.state > 0));
-      setResolvedSiteAlerts(data.alarms.filter((d) => d.state === 0));
-      const bucketSize = getBucketSize(time, type);
-      setGraphData(
-        data.site.subtraction
-          ? parseSearchReturn(data.timeSeries, bucketSize)
-          : parseStackedTimeSeriesData(
-              data.timeSeries,
-              getDeviceIdToNameMap(data.devices),
-              bucketSize,
-            ),
-      );
-      setTrialDate(data.trialDate);
-      setLoading(false);
-      if (callback) {
-        callback();
-      }
-    });
+  const loadSiteOverview = (
+    site: string,
+    time: number,
+    start: Date,
+    type: string,
+    callback: (() => void) | null,
+  ) => {
+    getSiteOverview(site, start, time, type).then(
+      ({ data }: { data: SiteOverviewData | null }) => {
+        if (data === null) {
+          navigate('/');
+          return;
+        }
+        setSiteData(data);
+        document.title = `SMA Dashboard (${data.site.name})`;
+        setDevices(
+          data.devices
+            .filter((device) => device.site === data.site.name)
+            .sort(sortDevices),
+        );
+        setActiveSiteAlerts(
+          data.alarms.filter((d) => d.state !== undefined && d.state > 0),
+        );
+        setResolvedSiteAlerts(
+          data.alarms.filter((d) => d.state !== undefined && d.state === 0),
+        );
+        const bucketSize = getBucketSize(time, type);
+        setGraphData(
+          data.site.subtraction
+            ? parseSearchReturn(data.timeSeries, bucketSize)
+            : parseStackedTimeSeriesData(
+                data.timeSeries,
+                getDeviceIdToNameMap(data.devices),
+                bucketSize,
+              ),
+        );
+        const convertTrialDate = (trialDate: unknown): number | null => {
+          if (typeof trialDate === 'number') return trialDate;
+          if (typeof trialDate === 'string')
+            return new Date(trialDate).getTime();
+          return null;
+        };
+        setTrialDate(convertTrialDate(data.trialDate));
+        setLoading(false);
+        if (callback) {
+          callback();
+        }
+      },
+    );
   };
 
-  const setTimeIncrementWrapper = (timeIncrement) => {
+  const setTimeIncrementWrapper = (timeIncrement: number) => {
     setTimeIncrement(timeIncrement);
     setStartDate(new Date(getRoundedTimeFromOffset(timeIncrement)));
   };
+
+  if (!siteId) {
+    return (
+      <div className='flex w-full items-center justify-center p-6'>
+        <Loader />
+      </div>
+    );
+  }
 
   if (loading) {
     return (
@@ -144,7 +188,7 @@ export default function SiteDetails({ setTrialDate }) {
         <div className='mb-4 flex justify-between'>
           <div className='flex flex-col'>
             <span className='text-lg font-bold text-black dark:text-gray-100'>
-              {getDisplayName(siteData.site)}
+              {getDisplayName(siteData?.site)}
             </span>
             <span className='text-sm text-gray-500 dark:text-gray-400'>
               {siteData?.site?.city &&
@@ -160,8 +204,11 @@ export default function SiteDetails({ setTrialDate }) {
         <div className='mb-4 flex justify-between'>
           <div className='flex flex-col md:flex-row md:items-center md:space-x-6'>
             <CurrentPowerBlock
-              currentPower={parseCurrentPower(siteData?.weeklyMaxPower)}
-              max={parseMaxData(siteData?.weeklyMaxPower)}
+              className=''
+              currentPower={parseCurrentPower(
+                siteData?.weeklyMaxPower as SearchResponse,
+              )}
+              max={parseMaxData(siteData?.weeklyMaxPower as SearchResponse)}
             />
             <WeatherBlock
               className='pr-2'
@@ -178,19 +225,19 @@ export default function SiteDetails({ setTrialDate }) {
           <div className='flex flex-col space-x-4 md:flex-row'>
             <PowerBlock
               className='hidden md:flex'
-              power={getAggregationValue(siteData.total, TOTAL_AGGREGATION)}
+              power={getAggregationValue(siteData?.total, TOTAL_AGGREGATION)}
               title='total'
               unit='Wh'
             />
             <PowerBlock
               className='hidden md:flex'
-              power={getAggregationValue(siteData.avg, AVG_AGGREGATION)}
+              power={getAggregationValue(siteData?.avg, AVG_AGGREGATION)}
               title='average'
             />
             <StackedTotAvg
-              avg={getAggregationValue(siteData.avg, AVG_AGGREGATION)}
+              avg={getAggregationValue(siteData?.avg, AVG_AGGREGATION)}
               className='ml-auto block items-end md:hidden'
-              total={getAggregationValue(siteData.total, TOTAL_AGGREGATION)}
+              total={getAggregationValue(siteData?.total, TOTAL_AGGREGATION)}
             />
             <StackedAlertsInfo
               activeAlerts={activeSiteAlerts.length}
@@ -202,7 +249,7 @@ export default function SiteDetails({ setTrialDate }) {
         </div>
         <SiteDetailsGraph
           devices={devices}
-          graphData={graphData}
+          graphData={graphData as StackedChartDataPoint[]}
           graphType={graphType}
           setGraphType={setGraphTypeWrapper}
           setStartDate={setStartDate}

@@ -11,7 +11,7 @@ import * as utils from '../../../../utils/Utils';
 
 // Mock child components
 jest.mock('../../../../components/common/CurrentPowerBlock', () => {
-  return function MockCurrentPowerBlock({ currentPower, max, activeAlert }) {
+  return function MockCurrentPowerBlock({ currentPower, max, _activeAlert }) {
     return (
       <div data-testid='current-power-block'>
         Current: {currentPower}, Max: {max}
@@ -37,7 +37,7 @@ jest.mock('../../../../components/common/PowerBlock', () => {
 });
 
 jest.mock('../../../../components/common/WeatherBlock', () => {
-  return function MockWeatherBlock({ weather, className, wrapperClassName }) {
+  return function MockWeatherBlock({ weather, className, _wrapperClassName }) {
     return (
       <div className={className} data-testid='weather-block'>
         Weather: {weather?.temp}°F, {weather?.condition}
@@ -96,12 +96,12 @@ jest.mock(
 jest.mock('../../../../components/views/site-details/SiteDetailsGraph', () => {
   return function MockSiteDetailsGraph({
     devices,
-    graphData,
+    _graphData,
     graphType,
     setGraphType,
-    startDate,
+    _startDate,
     setStartDate,
-    timeIncrement,
+    _timeIncrement,
   }) {
     return (
       <div data-testid='site-details-graph'>
@@ -123,11 +123,11 @@ jest.mock(
       devices,
       activeSiteAlerts,
       resolvedSiteAlerts,
-      avgData,
-      totalData,
-      maxData,
-      timeSeriesData,
-      timeIncrement,
+      _avgData,
+      _totalData,
+      _maxData,
+      _timeSeriesData,
+      _timeIncrement,
     }) {
       return (
         <div data-testid='site-devices-overview'>
@@ -266,7 +266,7 @@ describe('SiteDetails', () => {
 
     // Mock search service functions
     searchService.getAggregationValue.mockImplementation(
-      (data, type) => data?.value || 0,
+      (data, _type) => data?.value || 0,
     );
     searchService.getBucketSize.mockReturnValue('1m');
     searchService.parseMaxData.mockImplementation((data) => data?.max || 0);
@@ -275,7 +275,7 @@ describe('SiteDetails', () => {
     );
     searchService.parseSearchReturn.mockImplementation((data) => data);
     searchService.parseStackedTimeSeriesData.mockImplementation(
-      (data, nameMap) => data,
+      (data, _nameMap) => data,
     );
 
     // Mock successful service call
@@ -289,14 +289,14 @@ describe('SiteDetails', () => {
   });
 
   describe('Route Handling', () => {
-    test('renders without site ID redirects', () => {
+    test('renders loader when no site ID', () => {
       renderWithProviders(
         <SiteDetails setTrialDate={mockSetTrialDate} />,
         '/sites/',
       );
 
-      // Component should redirect when there's no siteId, so no loader should be present
-      expect(screen.queryByTestId('loader')).not.toBeInTheDocument();
+      // Component shows a loader while it redirects when there's no siteId
+      expect(screen.getByTestId('loader')).toBeInTheDocument();
     });
 
     test('extracts site ID from route parameters', async () => {
@@ -359,7 +359,10 @@ describe('SiteDetails', () => {
       renderWithProviders(<SiteDetails setTrialDate={mockSetTrialDate} />);
 
       await waitFor(() => {
-        expect(mockSetTrialDate).toHaveBeenCalledWith('2024-12-31');
+        // Trial date should be converted from string to timestamp
+        expect(mockSetTrialDate).toHaveBeenCalledWith(
+          new Date('2024-12-31').getTime(),
+        );
       });
     });
 

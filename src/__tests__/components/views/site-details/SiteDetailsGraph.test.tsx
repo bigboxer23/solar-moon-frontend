@@ -840,7 +840,7 @@ describe('SiteDetailsGraph', () => {
 
       // Each dataset should represent data for a specific device
       expect(chartData.datasets).toHaveLength(2);
-      chartData.datasets.forEach((dataset, index) => {
+      chartData.datasets.forEach((dataset, _index) => {
         expect(dataset.data).toBeDefined();
         expect(Array.isArray(dataset.data)).toBe(true);
       });
@@ -856,7 +856,7 @@ describe('SiteDetailsGraph', () => {
         isSite: i % 5 === 0, // Every 5th device is a site
       }));
 
-      const largeGraphData = largeDeviceList.flatMap((device, deviceIndex) =>
+      const largeGraphData = largeDeviceList.flatMap((device, _deviceIndex) =>
         Array.from({ length: 10 }, (_, i) => ({
           name: device.name,
           date: Date.now() - i * 3600000,
