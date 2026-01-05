@@ -1,3 +1,6 @@
+import type { ReactElement } from 'react';
+
+// @ts-ignore - JPG import handled by webpack
 import exampleSite from '../../../assets/docs/exampleSite.jpg';
 import {
   SITE_HELP_TEXT1,
@@ -7,13 +10,19 @@ import {
 import Button from '../../common/Button';
 import Modal, { ModalFooter, ModalHeader } from '../../common/Modal';
 
+interface NewSiteExampleDialogProps {
+  show: boolean;
+  setShow: (show: boolean) => void;
+  showSiteCreation: (show: boolean) => void;
+}
+
 export default function NewSiteExampleDialog({
   show,
   setShow,
   showSiteCreation,
-}) {
+}: NewSiteExampleDialogProps): ReactElement {
   return (
-    <Modal className='NewSiteDialog' isOpen={show} size='lg'>
+    <Modal isOpen={show} size='lg'>
       <ModalHeader
         label='Creating a Site'
         onCloseClick={() => setShow(false)}
@@ -37,7 +46,6 @@ export default function NewSiteExampleDialog({
             setShow(false);
             showSiteCreation(true);
           }}
-          type='submit'
           variant='primary'
         >
           Create first site

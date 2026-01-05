@@ -85,7 +85,7 @@ describe('Site', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    getDevices.mockResolvedValue({ data: [] });
+    getDevices.mockResolvedValue({ data: { devices: [] } });
     deleteDevice.mockResolvedValue();
   });
 
@@ -179,7 +179,7 @@ describe('Site', () => {
     const newDevicesData = [
       { id: 'remaining-device', name: 'Remaining Device' },
     ];
-    getDevices.mockResolvedValue({ data: newDevicesData });
+    getDevices.mockResolvedValue({ data: { devices: newDevicesData } });
 
     render(<Site {...defaultProps} />);
 

@@ -1,5 +1,7 @@
+import type { ReactElement } from 'react';
 import { FiExternalLink } from 'react-icons/fi';
 
+// @ts-ignore - JPG import handled by webpack
 import exampleDevice from '../../../assets/docs/exampleDevice.jpg';
 import {
   DEVICE_HELP_TEXT1,
@@ -10,13 +12,19 @@ import {
 import Button from '../../common/Button';
 import Modal, { ModalFooter, ModalHeader } from '../../common/Modal';
 
+interface NewDeviceExampleDialogProps {
+  show: boolean;
+  setShow: (show: boolean) => void;
+  showDeviceCreation: (show: boolean) => void;
+}
+
 export default function NewDeviceExampleDialog({
   show,
   setShow,
   showDeviceCreation,
-}) {
+}: NewDeviceExampleDialogProps): ReactElement {
   return (
-    <Modal className='NewSiteDialog' isOpen={show} size='lg'>
+    <Modal isOpen={show} size='lg'>
       <ModalHeader
         label='Creating a Device'
         onCloseClick={() => setShow(false)}
@@ -56,7 +64,6 @@ export default function NewDeviceExampleDialog({
             setShow(false);
             showDeviceCreation(true);
           }}
-          type='submit'
           variant='primary'
         >
           Create first device

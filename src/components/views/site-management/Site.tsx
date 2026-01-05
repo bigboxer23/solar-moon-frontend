@@ -1,7 +1,9 @@
+import type { ReactElement } from 'react';
 import { useState } from 'react';
 import { AiOutlineDelete } from 'react-icons/ai';
 
 import { deleteDevice, getDevices } from '../../../services/services';
+import type { Device as DeviceType } from '../../../types';
 import { sortDevicesWithDisabled } from '../../../utils/Utils';
 import AlertSection from '../../common/AlertSection';
 import Button from '../../common/Button';
@@ -10,24 +12,40 @@ import Device from './Device';
 import SiteAttributes from './SiteAttributes';
 import { noSite } from './SiteManagement';
 
-const Site = ({ data, devices, setDevices, setActiveSiteId }) => {
+interface SiteProps {
+  data: DeviceType;
+  devices: DeviceType[];
+  setDevices: (
+    devices: DeviceType[] | ((prev: DeviceType[]) => DeviceType[]),
+  ) => void;
+  setActiveSiteId: (siteId: string) => void;
+}
+
+const Site = ({
+  data,
+  devices,
+  setDevices,
+  setActiveSiteId,
+}: SiteProps): ReactElement => {
   const [site] = useState(data);
   const [loading, setLoading] = useState(false);
   const [deleteSiteWarning, setDeleteSiteWarning] = useState(false);
+
   const removeSite = () => {
     setLoading(true);
     deleteDevice(site.id)
       .then(() => {
         getDevices().then(({ data }) => {
-          setDevices(data);
+          setDevices(data.devices);
           setActiveSiteId(noSite);
           setLoading(false);
         });
       })
-      .catch((e) => {
+      .catch((_e) => {
         setLoading(false);
       });
   };
+
   return (
     <div className='space-y-6'>
       {devices
@@ -79,4 +97,5 @@ const Site = ({ data, devices, setDevices, setActiveSiteId }) => {
     </div>
   );
 };
+
 export default Site;
