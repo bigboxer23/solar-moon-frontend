@@ -59,7 +59,7 @@ describe('Device', () => {
     jest.clearAllMocks();
     findSiteNameFromSiteId.mockReturnValue('Test Site');
     updateDevice.mockResolvedValue({
-      data: { device: { ...mockDeviceData, id: 'device-1' } },
+      data: { ...mockDeviceData, id: 'device-1' },
     });
     deleteDevice.mockResolvedValue();
   });

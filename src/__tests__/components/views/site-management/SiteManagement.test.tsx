@@ -290,10 +290,10 @@ describe('SiteManagement', () => {
       data: mockSubscriptionInfo,
     });
     services.getDevice.mockResolvedValue({
-      data: { device: { id: 'device-1', notificationsDisabled: false } },
+      data: { id: 'device-1', notificationsDisabled: false },
     });
     services.updateDevice.mockResolvedValue({
-      data: { device: { id: 'device-1', notificationsDisabled: true } },
+      data: { id: 'device-1', notificationsDisabled: true },
     });
   });
 

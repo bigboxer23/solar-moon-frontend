@@ -88,8 +88,8 @@ export default function NewSiteDialog({
       site: site.name,
     })
       .then(({ data }) => {
-        setDevices((devices) => [...devices, data.device]);
-        setActiveSiteId(data.device.id);
+        setDevices((devices) => [...devices, data]);
+        setActiveSiteId(data.id);
         setVersion((v) => v + 1);
         setShow(false);
         setLoading(false);

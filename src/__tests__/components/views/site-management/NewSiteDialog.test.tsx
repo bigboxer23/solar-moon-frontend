@@ -33,12 +33,10 @@ describe('NewSiteDialog', () => {
     jest.clearAllMocks();
     addDevice.mockResolvedValue({
       data: {
-        device: {
-          id: 'new-site-1',
-          name: 'New Site',
-          deviceName: 'New Site',
-          site: 'New Site',
-        },
+        id: 'new-site-1',
+        name: 'New Site',
+        deviceName: 'New Site',
+        site: 'New Site',
       },
     });
   });

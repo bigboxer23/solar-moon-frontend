@@ -54,12 +54,10 @@ describe('NewDeviceDialog', () => {
     });
     addDevice.mockResolvedValue({
       data: {
-        device: {
-          id: 'new-device-1',
-          deviceName: 'new-device',
-          name: 'New Device',
-          siteId: 'site-1',
-        },
+        id: 'new-device-1',
+        deviceName: 'new-device',
+        name: 'New Device',
+        siteId: 'site-1',
       },
     });
   });

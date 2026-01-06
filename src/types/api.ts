@@ -82,10 +82,6 @@ export interface MappingsResponse {
   mappings: Mapping[];
 }
 
-export interface DeviceResponse {
-  device: Device;
-}
-
 export interface CustomerResponse {
   customer: Customer;
 }

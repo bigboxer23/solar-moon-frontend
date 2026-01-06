@@ -60,7 +60,7 @@ const SiteManagement = ({
     searchParams.delete('disable');
     setSearchParams(searchParams);
     getDevice(disableNotifications).then(({ data }) => {
-      updateDevice({ ...data.device, notificationsDisabled: true }).then(() => {
+      updateDevice({ ...data, notificationsDisabled: true }).then(() => {
         loadDevices();
       });
     });

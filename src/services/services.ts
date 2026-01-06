@@ -6,7 +6,6 @@ import type {
   CheckoutSessionResponse,
   CheckoutStatusResponse,
   CustomerResponse,
-  DeviceResponse,
   MappingsResponse,
   OverviewData,
   SearchResponse,
@@ -99,10 +98,8 @@ export function getSiteOverview(
   return api.post<SiteOverviewData>(`sites/${siteId}`, body);
 }
 
-export function getDevice(
-  deviceId: string,
-): Promise<AxiosResponse<DeviceResponse>> {
-  return api.get<DeviceResponse>(`devices/${deviceId}`);
+export function getDevice(deviceId: string): Promise<AxiosResponse<Device>> {
+  return api.get<Device>(`devices/${deviceId}`);
 }
 
 export function deleteDevice(deviceId: string): Promise<AxiosResponse<void>> {
@@ -111,14 +108,14 @@ export function deleteDevice(deviceId: string): Promise<AxiosResponse<void>> {
 
 export function updateDevice(
   device: Partial<Device> & { id: string },
-): Promise<AxiosResponse<DeviceResponse>> {
-  return api.post<DeviceResponse>('devices', device);
+): Promise<AxiosResponse<Device>> {
+  return api.post<Device>('devices', device);
 }
 
 export function addDevice(
   device: Omit<Device, 'id'>,
-): Promise<AxiosResponse<DeviceResponse>> {
-  return api.put<DeviceResponse>('devices', device);
+): Promise<AxiosResponse<Device>> {
+  return api.put<Device>('devices', device);
 }
 
 export function getAlarmData(): Promise<AxiosResponse<AlarmsResponse>> {

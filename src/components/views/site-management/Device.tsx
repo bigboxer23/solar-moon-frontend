@@ -74,10 +74,7 @@ const Device = ({ data, devices, setDevices }: DeviceProps): ReactElement => {
       site: findSiteNameFromSiteId(formData.siteId, devices),
     })
       .then(({ data }) => {
-        setDevices([
-          ...devices.filter((d) => d.id !== data.device.id),
-          data.device,
-        ]);
+        setDevices([...devices.filter((d) => d.id !== data.id), data]);
         setLoading(false);
       })
       .catch((_e) => {

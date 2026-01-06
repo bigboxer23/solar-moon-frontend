@@ -67,7 +67,7 @@ export default function NewDeviceDialog({
       site: findSiteNameFromSiteId(device.siteId, devices),
     })
       .then(({ data }) => {
-        setDevices((devices) => [...devices, data.device]);
+        setDevices((devices) => [...devices, data]);
         setVersion((v) => v + 1);
         setShow(false);
         setLoading(false);
