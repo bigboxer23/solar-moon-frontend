@@ -82,7 +82,7 @@ jest.mock('../../../../components/common/Loader', () => {
 });
 
 jest.mock('../../../../components/views/site-management/Site', () => {
-  return function MockSite({ data, devices, setActiveSiteId, setDevices }) {
+  return function MockSite({ data, devices, setActiveSiteId }) {
     return (
       <div data-testid={`site-${data.id}`}>
         <div>Site: {data.name}</div>
@@ -160,7 +160,6 @@ jest.mock(
     return function MockNewDeviceDialog({
       show,
       setShow,
-      devices,
       setDevices,
       siteId,
       setVersion,

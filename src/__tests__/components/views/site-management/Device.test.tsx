@@ -315,9 +315,6 @@ describe('Device', () => {
     const deleteButton = screen.getByRole('button', { name: /delete device/i });
     fireEvent.click(deleteButton);
 
-    const allDeleteButtons = screen.getAllByRole('button', {
-      name: /delete device/i,
-    });
     const [, confirmDeleteButton] = screen.getAllByRole('button', {
       name: /delete device/i,
     });
@@ -346,9 +343,6 @@ describe('Device', () => {
     const deleteButton = screen.getByRole('button', { name: /delete device/i });
     fireEvent.click(deleteButton);
 
-    const allDeleteButtons = screen.getAllByRole('button', {
-      name: /delete device/i,
-    });
     const [, confirmDeleteButton] = screen.getAllByRole('button', {
       name: /delete device/i,
     });

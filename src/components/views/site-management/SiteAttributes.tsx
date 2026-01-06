@@ -1,14 +1,37 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import type { ReactElement } from 'react';
 import { useState } from 'react';
+import type { Control } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
 import { getDevices, updateDevice } from '../../../services/services';
+import type { Device } from '../../../types';
 import Button from '../../common/Button';
 import { ControlledInput } from '../../common/Input';
 import Spinner from '../../common/Spinner';
 
-const SiteAttributes = ({ data, setDevices, setActiveSiteId }) => {
+interface SiteFormData {
+  id: string;
+  name: string;
+  city?: string;
+  state?: string;
+  country?: string;
+  latitude?: number;
+  longitude?: number;
+}
+
+interface SiteAttributesProps {
+  data: Device;
+  setDevices: (devices: Device[] | ((prev: Device[]) => Device[])) => void;
+  setActiveSiteId: (siteId: string) => void;
+}
+
+const SiteAttributes = ({
+  data,
+  setDevices,
+  setActiveSiteId,
+}: SiteAttributesProps): ReactElement => {
   const yupSchema = yup
     .object()
     .shape({
@@ -21,18 +44,18 @@ const SiteAttributes = ({ data, setDevices, setActiveSiteId }) => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<SiteFormData>({
     mode: 'onBlur',
-    resolver: yupResolver(yupSchema),
-    defaultValues: data,
+    resolver: yupResolver(yupSchema) as never,
+    defaultValues: data as SiteFormData,
   });
 
-  const update = (site) => {
+  const update = (site: SiteFormData) => {
     setLoading(true);
     updateDevice(
       maybeUpdateLocation({ ...site, displayName: site.name, site: site.name }),
     )
-      .then((d) => {
+      .then((_d) => {
         // setDevice(d.data);
         setActiveSiteId(site.id);
         // Fetch all new devices b/c site change cascades down to devices (potentially)
@@ -41,19 +64,21 @@ const SiteAttributes = ({ data, setDevices, setActiveSiteId }) => {
           setLoading(false);
         });
       })
-      .catch((e) => {
+      .catch((_e) => {
         setLoading(false);
       });
   };
 
-  const maybeUpdateLocation = (site) => {
+  const maybeUpdateLocation = (
+    site: SiteFormData & { displayName: string; site: string },
+  ) => {
     if (
-      site.city !== null &&
-      site.state !== null &&
-      site.country !== null &&
+      site.city !== undefined &&
+      site.state !== undefined &&
+      site.country !== undefined &&
       (site.city !== data.city ||
         site.state !== data.state ||
-        site.country !== data.country)
+        site.country !== (data as { country?: string }).country)
     ) {
       return {
         ...site,
@@ -69,42 +94,38 @@ const SiteAttributes = ({ data, setDevices, setActiveSiteId }) => {
       <form className='w-full' onSubmit={handleSubmit(update)}>
         <ControlledInput
           className='mb-6'
-          control={control}
+          control={control as unknown as Control}
           errorMessage={errors.name?.message}
           label='Display Name'
           name='name'
-          type='text'
           variant='underline'
         />
         <div className='flex'>
           <div className='grow'>
             <ControlledInput
               className='grow-1 mb-6'
-              control={control}
+              control={control as unknown as Control}
               errorMessage={errors.city?.message}
               label='City'
               name='city'
-              type='text'
               variant='underline'
             />
           </div>
           <ControlledInput
             className='mb-6 ms-6'
-            control={control}
+            control={control as unknown as Control}
             errorMessage={errors.state?.message}
             label='State, Province, or Region'
             name='state'
-            type='text'
             variant='underline'
           />
         </div>
         <ControlledInput
           className='mb-6'
-          control={control}
+          control={control as unknown as Control}
           errorMessage={errors.country?.message}
           label='Country'
           name='country'
-          type='text'
           variant='underline'
         />
         <div className='flex items-center'>
@@ -119,7 +140,6 @@ const SiteAttributes = ({ data, setDevices, setActiveSiteId }) => {
           <Button
             disabled={loading}
             onClick={() => handleSubmit(update)}
-            type='button'
             variant='primary'
           >
             {loading && <Spinner className='button-icon' />}

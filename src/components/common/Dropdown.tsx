@@ -8,6 +8,7 @@ import { FaChevronDown } from 'react-icons/fa';
 export interface DropdownOption {
   value: string;
   label: string;
+  element?: React.JSX.Element;
   icon?: ReactNode;
   divider?: boolean;
 }
@@ -38,7 +39,7 @@ export default function Dropdown({
             {prefixLabel && (
               <span className='mr-2 font-bold'>{prefixLabel}:</span>
             )}
-            {value?.label}
+            {value?.element || value?.label}
             <FaChevronDown className='ml-2' size='14' />
           </MenuButton>
         }
@@ -61,10 +62,10 @@ export default function Dropdown({
               {option.icon !== undefined ? (
                 <div className='flex items-center'>
                   {option.icon}
-                  {option.label}
+                  {option.element || option.label}
                 </div>
               ) : (
-                option.label
+                option.element || option.label
               )}
             </MenuItem>
           );

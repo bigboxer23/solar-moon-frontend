@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import type { ReactElement } from 'react';
 import { useEffect, useState } from 'react';
 import {
   MdAddCircle,
@@ -13,6 +14,7 @@ import {
   getSubscriptionInformation,
   updateDevice,
 } from '../../../services/services';
+import type { Device } from '../../../types';
 import {
   findSiteNameFromSiteId,
   sortDevices,
@@ -28,9 +30,16 @@ import NewSiteExampleDialog from './NewSiteExampleDialog';
 import Site from './Site';
 
 export const noSite = 'No Site';
-const SiteManagement = ({ setTrialDate }) => {
+
+interface SiteManagementProps {
+  setTrialDate: (date: number | undefined) => void;
+}
+
+const SiteManagement = ({
+  setTrialDate,
+}: SiteManagementProps): ReactElement => {
   const [loading, setLoading] = useState(true);
-  const [devices, setDevices] = useState([]);
+  const [devices, setDevices] = useState<Device[]>([]);
   const [devicesAllowed, setDevicesAllowed] = useState(0);
   const [activeSiteId, setActiveSiteId] = useStickyState('', 'site.management');
   const [showNewSite, setShowNewSite] = useState(false);
@@ -79,7 +88,7 @@ const SiteManagement = ({ setTrialDate }) => {
           setActiveSiteId(data.find((device) => device.isSite)?.id || noSite);
         }
       })
-      .catch((e) => {
+      .catch((_e) => {
         setLoading(false);
       });
     getSubscriptionInformation().then(({ data }) => {
@@ -89,14 +98,14 @@ const SiteManagement = ({ setTrialDate }) => {
     });
   };
 
-  const getDeviceCountFromSite = (siteId) => {
+  const getDeviceCountFromSite = (siteId: string): string => {
     return `${devices.filter((device) => device.siteId === siteId).length || ''}`;
   };
 
-  const getSiteSelectionLabel = (siteId) => {
+  const getSiteSelectionLabel = (siteId: string): React.JSX.Element => {
     return (
       <div className='flex items-center whitespace-nowrap'>
-        {findSiteNameFromSiteId(siteId, devices)}
+        {findSiteNameFromSiteId(siteId, devices) || ''}
         <span className='pl-1 text-sm text-gray-400'>
           {'  '}
           {getDeviceCountFromSite(siteId)}
@@ -111,17 +120,19 @@ const SiteManagement = ({ setTrialDate }) => {
         .sort(sortDevices)
         .map((site) => {
           return {
-            label: getSiteSelectionLabel(site.id),
+            element: getSiteSelectionLabel(site.id),
+            label: site.id,
             value: site.id,
           };
         }),
       {
-        label: getSiteSelectionLabel(noSite),
+        element: getSiteSelectionLabel(noSite),
+        label: noSite,
         value: noSite,
       },
       ...(subscriptionAvailable
         ? [
-            { divider: true, value: 'divider' },
+            { divider: true, value: 'divider', label: '' },
             {
               label: 'New Site',
               value: '-1',
@@ -157,20 +168,21 @@ const SiteManagement = ({ setTrialDate }) => {
               options={getSiteSelectItems()}
               prefixLabel='Manage'
               value={{
-                label: getSiteSelectionLabel(activeSiteId),
+                element: getSiteSelectionLabel(activeSiteId),
+                label: activeSiteId,
                 value: activeSiteId,
               }}
             />
             <div className='grow' />
             <Button
+              buttonProps={{
+                title: subscriptionAvailable
+                  ? 'Increase the number of seats to add more devices'
+                  : 'New Device',
+              }}
               className='ms-6'
               disabled={!subscriptionAvailable}
               onClick={() => setShowNewDevice(true)}
-              title={
-                subscriptionAvailable
-                  ? 'Increase the number of seats to add more devices'
-                  : 'New Device'
-              }
               variant='primary'
             >
               <div className='flex items-center'>
@@ -200,7 +212,16 @@ const SiteManagement = ({ setTrialDate }) => {
           )}
         </div>
         {loading && <Loader className='self-center' />}
-        {[...devices, { id: noSite, name: noSite, isSite: '1', virtual: true }]
+        {[
+          ...devices,
+          {
+            id: noSite,
+            name: noSite,
+            isSite: '1',
+            virtual: true,
+            deviceName: noSite,
+          },
+        ]
           .filter((device) => device.isSite)
           .filter((site) => site.id === activeSiteId)
           .map((site) => {

@@ -1,12 +1,15 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import type { ReactElement } from 'react';
 import { useState } from 'react';
+import type { Control } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { v4 } from 'uuid';
 import * as yup from 'yup';
 
 import { deleteDevice, updateDevice } from '../../../services/services';
-import { findSiteNameFromSiteId, getDisplayName } from '../../../utils/Utils';
+import type { Device as DeviceType } from '../../../types';
+import { findSiteNameFromSiteId } from '../../../utils/Utils';
 import AlertSection from '../../common/AlertSection';
 import Button from '../../common/Button';
 import { ControlledCheck } from '../../common/Check';
@@ -15,11 +18,33 @@ import { ControlledSelect } from '../../common/Select';
 import Spinner from '../../common/Spinner';
 import { noSite } from './SiteManagement';
 
-const Device = ({ data, devices, setDevices }) => {
+interface DeviceFormData {
+  id: string;
+  deviceName: string;
+  name?: string;
+  siteId: string;
+  notificationsEnabled: boolean;
+  enabled: boolean;
+}
+
+interface DeviceProps {
+  data: DeviceType;
+  devices: DeviceType[];
+  setDevices: (
+    devices: DeviceType[] | ((prev: DeviceType[]) => DeviceType[]),
+  ) => void;
+}
+
+const Device = ({ data, devices, setDevices }: DeviceProps): ReactElement => {
   const yupSchema = yup
     .object()
     .shape({
+      id: yup.string().required(),
       deviceName: yup.string().required('This field is required'),
+      name: yup.string().optional(),
+      siteId: yup.string().required(),
+      notificationsEnabled: yup.boolean().required(),
+      enabled: yup.boolean().required(),
     })
     .required();
 
@@ -30,28 +55,29 @@ const Device = ({ data, devices, setDevices }) => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<DeviceFormData>({
     mode: 'onBlur',
-    resolver: yupResolver(yupSchema),
+    resolver: yupResolver(yupSchema) as never,
     defaultValues: {
       ...data,
       notificationsEnabled: !data.notificationsDisabled,
       enabled: !data.disabled,
     },
   });
-  const update = (data) => {
+
+  const update = (formData: DeviceFormData) => {
     setLoading(true);
     updateDevice({
-      ...data,
-      notificationsDisabled: !data.notificationsEnabled,
-      disabled: !data.enabled,
-      site: findSiteNameFromSiteId(data.siteId, devices),
+      ...formData,
+      notificationsDisabled: !formData.notificationsEnabled,
+      disabled: !formData.enabled,
+      site: findSiteNameFromSiteId(formData.siteId, devices),
     })
       .then(({ data }) => {
         setDevices([...devices.filter((d) => d.id !== data.id), data]);
         setLoading(false);
       })
-      .catch((e) => {
+      .catch((_e) => {
         setLoading(false);
       });
   };
@@ -62,7 +88,7 @@ const Device = ({ data, devices, setDevices }) => {
       .then(() => {
         setDevices((devices) => devices.filter((d) => d.id !== data.id));
       })
-      .catch((e) => {
+      .catch((_e) => {
         setLoading(false);
       });
   };
@@ -80,7 +106,7 @@ const Device = ({ data, devices, setDevices }) => {
         <div className='grow' />
         <div title='Disable this device. Alerting will not trigger and device will not be included in site roll up.'>
           <ControlledCheck
-            control={control}
+            control={control as unknown as Control}
             errorMessage={errors.enabled?.message}
             id={v4()}
             name='enabled'
@@ -94,20 +120,18 @@ const Device = ({ data, devices, setDevices }) => {
         >
           <ControlledInput
             className='mb-6'
-            control={control}
+            control={control as unknown as Control}
             errorMessage={errors.deviceName?.message}
             label='Device Name'
             name='deviceName'
-            type='text'
             variant='underline'
           />
           <ControlledInput
             className='mb-6'
-            control={control}
+            control={control as unknown as Control}
             errorMessage={errors.name?.message}
             label='Display Name'
             name='name'
-            type='text'
             variant='underline'
           />
           <ControlledSelect
@@ -116,28 +140,26 @@ const Device = ({ data, devices, setDevices }) => {
                 .filter((d) => d.isSite)
                 .map((site) => {
                   return {
-                    label: findSiteNameFromSiteId(site.id, devices),
+                    label: findSiteNameFromSiteId(site.id, devices) || '',
                     id: site.id,
                   };
                 }),
               { label: noSite, id: noSite },
             ]}
-            control={control}
-            errorMessage={errors.site?.message}
+            control={control as unknown as Control}
+            errorMessage={errors.siteId?.message}
             label='Site'
             name='siteId'
-            type='text'
             variant='underline'
             wrapperClassName='mb-6'
           />
 
           <ControlledCheck
-            control={control}
+            control={control as unknown as Control}
             errorMessage={errors.notificationsEnabled?.message}
             id={v4()}
             label='Notifications'
             name='notificationsEnabled'
-            wrapperClassName='mb-6'
           />
         </form>
         <div className='mt-2 flex justify-end'>
@@ -145,7 +167,6 @@ const Device = ({ data, devices, setDevices }) => {
             className=' flex items-center'
             disabled={loading}
             onClick={handleSubmit(update)}
-            type='button'
             variant='primary'
           >
             {loading && <Spinner className='button-icon' />}
@@ -159,7 +180,6 @@ const Device = ({ data, devices, setDevices }) => {
             className='position-relative  ms-2 w-auto'
             disabled={loading}
             onClick={() => setDeleteDeviceWarning(true)}
-            type='button'
             variant='secondary'
           >
             <AiOutlineDelete className='mb-[2px] size-4 font-bold' />

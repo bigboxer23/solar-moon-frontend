@@ -1,9 +1,12 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import type { ReactElement } from 'react';
 import { useState } from 'react';
+import type { Control } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
 import { addDevice } from '../../../services/services';
+import type { Device } from '../../../types';
 import {
   SITE_HELP_TEXT1,
   SITE_HELP_TEXT2,
@@ -15,17 +18,45 @@ import { ControlledInput } from '../../common/Input';
 import Modal, { ModalFooter, ModalHeader } from '../../common/Modal';
 import Spinner from '../../common/Spinner';
 
+interface NewSiteFormData {
+  virtual: boolean;
+  virtualIndex: string;
+  isSite: string;
+  name: string;
+  city: string;
+  state: string;
+  country: string;
+  latitude: number;
+  longitude: number;
+}
+
+interface NewSiteDialogProps {
+  show: boolean;
+  setShow: (show: boolean) => void;
+  setDevices: (devices: Device[] | ((prev: Device[]) => Device[])) => void;
+  setActiveSiteId: (siteId: string) => void;
+  setVersion: (version: number | ((prev: number) => number)) => void;
+}
+
 export default function NewSiteDialog({
   show,
   setShow,
   setDevices,
   setActiveSiteId,
   setVersion,
-}) {
+}: NewSiteDialogProps): ReactElement {
   const yupSchema = yup
     .object()
     .shape({
+      virtual: yup.boolean().required(),
+      virtualIndex: yup.string().required(),
+      isSite: yup.string().required(),
       name: yup.string().required('Site name is required'),
+      city: yup.string(),
+      state: yup.string(),
+      country: yup.string(),
+      latitude: yup.number().required(),
+      longitude: yup.number().required(),
     })
     .required();
 
@@ -34,9 +65,9 @@ export default function NewSiteDialog({
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<NewSiteFormData>({
     mode: 'onBlur',
-    resolver: yupResolver(yupSchema),
+    resolver: yupResolver(yupSchema) as never,
     defaultValues: {
       virtual: true,
       virtualIndex: 'true',
@@ -49,7 +80,7 @@ export default function NewSiteDialog({
       longitude: -1,
     },
   });
-  const createNewSite = (site) => {
+  const createNewSite = (site: NewSiteFormData) => {
     setLoading(true);
     addDevice({
       ...site,
@@ -63,12 +94,12 @@ export default function NewSiteDialog({
         setShow(false);
         setLoading(false);
       })
-      .catch((e) => {
+      .catch((_e) => {
         setLoading(false);
       });
   };
   return (
-    <Modal className='NewSiteDialog' isOpen={show}>
+    <Modal isOpen={show}>
       <ModalHeader
         label={
           <div className='flex items-center'>
@@ -85,52 +116,46 @@ export default function NewSiteDialog({
         <div className='px-6 pt-5'>
           <ControlledInput
             className='mb-6'
-            control={control}
+            control={control as unknown as Control}
             errorMessage={errors.name?.message}
             label='Name'
             name='name'
-            type='text'
             variant='underline'
           />
           <div className='flex space-x-6'>
             <div className='grow'>
               <ControlledInput
                 className='grow-1 mb-6'
-                control={control}
+                control={control as unknown as Control}
                 errorMessage={errors.city?.message}
                 label='City'
                 name='city'
-                type='text'
                 variant='underline'
               />
             </div>
             <ControlledInput
               className='mb-6'
-              control={control}
+              control={control as unknown as Control}
               errorMessage={errors.state?.message}
               label='State, Province, or Region'
               name='state'
-              type='text'
               variant='underline'
             />
           </div>
           <ControlledInput
             className='mb-6'
-            control={control}
+            control={control as unknown as Control}
             errorMessage={errors.country?.message}
             label='Country'
             name='country'
-            type='text'
             variant='underline'
           />
           {/* Needed so pressing enter to submit works*/}
-          <Button className='hidden' type='submit' variant='primary'></Button>
         </div>
         <ModalFooter className='space-x-2'>
           <Button
             disabled={loading}
             onClick={handleSubmit(createNewSite)}
-            type='submit'
             variant='primary'
           >
             {loading && <Spinner className='button-icon' />}
