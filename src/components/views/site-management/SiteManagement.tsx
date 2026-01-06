@@ -82,12 +82,10 @@ const SiteManagement = ({
   const loadDevices = () => {
     getDevices()
       .then(({ data }) => {
-        setDevices(data.devices);
+        setDevices(data);
         setLoading(false);
         if (activeSiteId === '') {
-          setActiveSiteId(
-            data.devices.find((device) => device.isSite)?.id || noSite,
-          );
+          setActiveSiteId(data.find((device) => device.isSite)?.id || noSite);
         }
       })
       .catch((_e) => {
@@ -104,10 +102,16 @@ const SiteManagement = ({
     return `${devices.filter((device) => device.siteId === siteId).length || ''}`;
   };
 
-  const getSiteSelectionLabel = (siteId: string): string => {
-    const siteName = findSiteNameFromSiteId(siteId, devices) || '';
-    const deviceCount = getDeviceCountFromSite(siteId);
-    return `${siteName}  ${deviceCount}`;
+  const getSiteSelectionLabel = (siteId: string): React.JSX.Element => {
+    return (
+      <div className='flex items-center whitespace-nowrap'>
+        {findSiteNameFromSiteId(siteId, devices) || ''}
+        <span className='pl-1 text-sm text-gray-400'>
+          {'  '}
+          {getDeviceCountFromSite(siteId)}
+        </span>
+      </div>
+    );
   };
   const getSiteSelectItems = () => {
     return [
@@ -116,12 +120,14 @@ const SiteManagement = ({
         .sort(sortDevices)
         .map((site) => {
           return {
-            label: getSiteSelectionLabel(site.id),
+            element: getSiteSelectionLabel(site.id),
+            label: site.id,
             value: site.id,
           };
         }),
       {
-        label: getSiteSelectionLabel(noSite),
+        element: getSiteSelectionLabel(noSite),
+        label: noSite,
         value: noSite,
       },
       ...(subscriptionAvailable
@@ -162,7 +168,8 @@ const SiteManagement = ({
               options={getSiteSelectItems()}
               prefixLabel='Manage'
               value={{
-                label: getSiteSelectionLabel(activeSiteId),
+                element: getSiteSelectionLabel(activeSiteId),
+                label: activeSiteId,
                 value: activeSiteId,
               }}
             />

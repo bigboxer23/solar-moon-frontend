@@ -7,7 +7,6 @@ import type {
   CheckoutStatusResponse,
   CustomerResponse,
   DeviceResponse,
-  DevicesResponse,
   MappingsResponse,
   OverviewData,
   SearchResponse,
@@ -78,8 +77,8 @@ export function getStripeSubscriptions(): Promise<
   return api.get<StripeSubscriptionsResponse>('billing/subscriptions');
 }
 
-export function getDevices(): Promise<AxiosResponse<DevicesResponse>> {
-  return api.get<DevicesResponse>('devices');
+export function getDevices(): Promise<AxiosResponse<Device[]>> {
+  return api.get<Device[]>('devices');
 }
 
 export function getSiteOverview(

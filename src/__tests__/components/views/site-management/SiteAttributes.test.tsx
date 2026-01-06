@@ -33,7 +33,7 @@ describe('SiteAttributes', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     updateDevice.mockResolvedValue({ data: { ...mockSiteData } });
-    getDevices.mockResolvedValue({ data: { devices: [] } });
+    getDevices.mockResolvedValue({ data: [] });
   });
 
   test('renders site attributes form', () => {
@@ -186,7 +186,7 @@ describe('SiteAttributes', () => {
 
   test('updates devices list after successful update', async () => {
     const newDevicesData = [{ id: 'device-1', name: 'Test Device' }];
-    getDevices.mockResolvedValue({ data: { devices: newDevicesData } });
+    getDevices.mockResolvedValue({ data: newDevicesData });
 
     render(<SiteAttributes {...defaultProps} />);
 

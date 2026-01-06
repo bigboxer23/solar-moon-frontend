@@ -36,7 +36,7 @@ const Site = ({
     deleteDevice(site.id)
       .then(() => {
         getDevices().then(({ data }) => {
-          setDevices(data.devices);
+          setDevices(data);
           setActiveSiteId(noSite);
           setLoading(false);
         });

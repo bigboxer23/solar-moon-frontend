@@ -95,11 +95,8 @@ export default function Reports(): ReactElement {
   const intl = useIntl();
   useEffect(() => {
     getDevices().then(({ data }) => {
-      const devicesList = Array.isArray(data)
-        ? data
-        : (data as { devices?: Device[] })?.devices || [];
-      setDevices(devicesList);
-      setDeviceMap(getDeviceIdToNameMap(devicesList));
+      setDevices(data || []);
+      setDeviceMap(getDeviceIdToNameMap(data || []));
       setInit(true);
     });
   }, []);

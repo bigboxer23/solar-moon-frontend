@@ -60,7 +60,7 @@ const SiteAttributes = ({
         setActiveSiteId(site.id);
         // Fetch all new devices b/c site change cascades down to devices (potentially)
         getDevices().then(({ data }) => {
-          setDevices(data.devices);
+          setDevices(data);
           setLoading(false);
         });
       })

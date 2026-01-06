@@ -285,7 +285,7 @@ describe('SiteManagement', () => {
     });
 
     // Mock successful service calls
-    services.getDevices.mockResolvedValue({ data: { devices: mockDevices } });
+    services.getDevices.mockResolvedValue({ data: mockDevices });
     services.getSubscriptionInformation.mockResolvedValue({
       data: mockSubscriptionInfo,
     });
@@ -571,7 +571,7 @@ describe('SiteManagement', () => {
     });
 
     test('falls back to "No Site" when no sites exist', async () => {
-      services.getDevices.mockResolvedValue({ data: { devices: [] } });
+      services.getDevices.mockResolvedValue({ data: [] });
       const mockSetActiveSiteId = jest.fn();
       utils.useStickyState.mockImplementation((defaultValue, key) => {
         if (key === 'site.management') {
@@ -598,7 +598,7 @@ describe('SiteManagement', () => {
 
   describe('Example Dialogs', () => {
     test('shows new site example dialog when no devices exist', async () => {
-      services.getDevices.mockResolvedValue({ data: { devices: [] } });
+      services.getDevices.mockResolvedValue({ data: [] });
 
       renderWithProviders(<SiteManagement setTrialDate={mockSetTrialDate} />);
 
@@ -617,7 +617,7 @@ describe('SiteManagement', () => {
       const onlySites = [
         { id: 'site-1', name: 'Site A', isSite: true, siteId: 'site-1' },
       ];
-      services.getDevices.mockResolvedValue({ data: { devices: onlySites } });
+      services.getDevices.mockResolvedValue({ data: onlySites });
 
       renderWithProviders(<SiteManagement setTrialDate={mockSetTrialDate} />);
 
@@ -633,7 +633,7 @@ describe('SiteManagement', () => {
     });
 
     test('new site example dialog can trigger site creation', async () => {
-      services.getDevices.mockResolvedValue({ data: { devices: [] } });
+      services.getDevices.mockResolvedValue({ data: [] });
 
       renderWithProviders(<SiteManagement setTrialDate={mockSetTrialDate} />);
 
@@ -656,7 +656,7 @@ describe('SiteManagement', () => {
       const onlySites = [
         { id: 'site-1', name: 'Site A', isSite: true, siteId: 'site-1' },
       ];
-      services.getDevices.mockResolvedValue({ data: { devices: onlySites } });
+      services.getDevices.mockResolvedValue({ data: onlySites });
 
       renderWithProviders(<SiteManagement setTrialDate={mockSetTrialDate} />);
 
@@ -678,7 +678,7 @@ describe('SiteManagement', () => {
 
   describe('Empty State', () => {
     test('shows empty state message when no devices', async () => {
-      services.getDevices.mockResolvedValue({ data: { devices: [] } });
+      services.getDevices.mockResolvedValue({ data: [] });
 
       renderWithProviders(<SiteManagement setTrialDate={mockSetTrialDate} />);
 

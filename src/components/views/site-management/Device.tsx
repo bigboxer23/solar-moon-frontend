@@ -137,36 +137,33 @@ const Device = ({ data, devices, setDevices }: DeviceProps): ReactElement => {
             name='name'
             variant='underline'
           />
-          <div className='mb-6'>
-            <ControlledSelect
-              attributes={[
-                ...devices
-                  .filter((d) => d.isSite)
-                  .map((site) => {
-                    return {
-                      label: findSiteNameFromSiteId(site.id, devices) || '',
-                      id: site.id,
-                    };
-                  }),
-                { label: noSite, id: noSite },
-              ]}
-              control={control as unknown as Control}
-              errorMessage={errors.siteId?.message}
-              label='Site'
-              name='siteId'
-              variant='underline'
-            />
-          </div>
+          <ControlledSelect
+            attributes={[
+              ...devices
+                .filter((d) => d.isSite)
+                .map((site) => {
+                  return {
+                    label: findSiteNameFromSiteId(site.id, devices) || '',
+                    id: site.id,
+                  };
+                }),
+              { label: noSite, id: noSite },
+            ]}
+            control={control as unknown as Control}
+            errorMessage={errors.siteId?.message}
+            label='Site'
+            name='siteId'
+            variant='underline'
+            wrapperClassName='mb-6'
+          />
 
-          <div className='mb-6'>
-            <ControlledCheck
-              control={control as unknown as Control}
-              errorMessage={errors.notificationsEnabled?.message}
-              id={v4()}
-              label='Notifications'
-              name='notificationsEnabled'
-            />
-          </div>
+          <ControlledCheck
+            control={control as unknown as Control}
+            errorMessage={errors.notificationsEnabled?.message}
+            id={v4()}
+            label='Notifications'
+            name='notificationsEnabled'
+          />
         </form>
         <div className='mt-2 flex justify-end'>
           <Button

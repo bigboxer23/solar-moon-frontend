@@ -86,10 +86,6 @@ export interface DeviceResponse {
   device: Device;
 }
 
-export interface DevicesResponse {
-  devices: Device[];
-}
-
 export interface CustomerResponse {
   customer: Customer;
 }
