@@ -2,7 +2,8 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { updatePassword } from 'aws-amplify/auth';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import type { Control } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import { MdOutlinePassword } from 'react-icons/md';
 import { toast, ToastContainer } from 'react-toastify';
@@ -12,7 +13,13 @@ import Button from '../../common/Button';
 import { ControlledInput } from '../../common/Input';
 import Spinner from '../../common/Spinner';
 
-const ChangePassword = () => {
+interface ChangePasswordFormData {
+  oldPassword: string;
+  newPassword: string;
+  confirmNewPassword: string;
+}
+
+const ChangePassword = (): React.ReactElement => {
   const yupSchema = yup
     .object()
     .shape({
@@ -31,14 +38,14 @@ const ChangePassword = () => {
     })
     .required();
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<ChangePasswordFormData>({
     mode: 'onBlur',
-    resolver: yupResolver(yupSchema),
+    resolver: yupResolver(yupSchema) as never,
     defaultValues: {
       oldPassword: '',
       newPassword: '',
@@ -46,11 +53,14 @@ const ChangePassword = () => {
     },
   });
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: ChangePasswordFormData): void => {
     changePassword(data.oldPassword, data.newPassword);
   };
 
-  async function changePassword(oldPassword, newPassword) {
+  async function changePassword(
+    oldPassword: string,
+    newPassword: string,
+  ): Promise<void> {
     setLoading(true);
     try {
       await updatePassword({
@@ -94,7 +104,7 @@ const ChangePassword = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <ControlledInput
             className='mb-6'
-            control={control}
+            control={control as unknown as Control}
             errorMessage={errors.oldPassword?.message}
             inputProps={{
               placeholder: 'Old Password',
@@ -106,7 +116,7 @@ const ChangePassword = () => {
           />
           <ControlledInput
             className='mb-6'
-            control={control}
+            control={control as unknown as Control}
             errorMessage={errors.newPassword?.message}
             inputProps={{
               placeholder: 'New Password',
@@ -118,7 +128,7 @@ const ChangePassword = () => {
           />
           <ControlledInput
             className='mb-6'
-            control={control}
+            control={control as unknown as Control}
             errorMessage={errors.confirmNewPassword?.message}
             inputProps={{
               placeholder: 'Confirm New Password',
@@ -129,9 +139,9 @@ const ChangePassword = () => {
             variant='underline'
           />
           <Button
+            buttonProps={{ type: 'submit' }}
             className='ml-auto mt-4'
             disabled={loading}
-            type='submit'
             variant='primary'
           >
             {!loading && <MdOutlinePassword className='button-icon' />}

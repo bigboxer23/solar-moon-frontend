@@ -1,6 +1,8 @@
+import React from 'react';
+
 import ThemeSelector from '../../common/ThemeSelector';
 
-export default function Appearance() {
+export default function Appearance(): React.ReactElement {
   return (
     <div className='fade-in my-8 flex w-[40rem] max-w-full flex-col bg-white p-6 shadow-panel dark:bg-gray-800 sm:hidden sm:rounded-lg sm:p-8'>
       <div className='mb-8 flex w-full justify-between'>

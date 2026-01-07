@@ -53,11 +53,6 @@ jest.mock('../../../../components/common/AlertSection', () => {
 describe('DeleteAccount', () => {
   const mockSignOut = jest.fn();
   const mockNavigate = jest.fn();
-  const mockCustomerData = {
-    customerId: '12345',
-    email: 'test@example.com',
-    name: 'Test User',
-  };
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -70,7 +65,7 @@ describe('DeleteAccount', () => {
   });
 
   test('renders delete account section with title and button', () => {
-    render(<DeleteAccount customerData={mockCustomerData} />);
+    render(<DeleteAccount />);
 
     const titleElements = screen.getAllByText('Delete Account');
     expect(titleElements).toHaveLength(2); // Title and button text
@@ -81,7 +76,7 @@ describe('DeleteAccount', () => {
   });
 
   test('shows warning dialog when delete button is clicked', () => {
-    render(<DeleteAccount customerData={mockCustomerData} />);
+    render(<DeleteAccount />);
 
     const deleteButton = screen.getByRole('button', {
       name: /delete account/i,
@@ -95,7 +90,7 @@ describe('DeleteAccount', () => {
   });
 
   test('hides warning dialog when cancel is clicked', () => {
-    render(<DeleteAccount customerData={mockCustomerData} />);
+    render(<DeleteAccount />);
 
     // Show the dialog
     const deleteButton = screen.getByRole('button', {
@@ -115,7 +110,7 @@ describe('DeleteAccount', () => {
   test('calls deleteCustomer, signOut, and navigate when confirmed', async () => {
     deleteCustomer.mockResolvedValue();
 
-    render(<DeleteAccount customerData={mockCustomerData} />);
+    render(<DeleteAccount />);
 
     // Show the dialog
     const deleteButton = screen.getByRole('button', {
@@ -128,7 +123,7 @@ describe('DeleteAccount', () => {
     fireEvent.click(confirmButton);
 
     await waitFor(() => {
-      expect(deleteCustomer).toHaveBeenCalledWith('12345');
+      expect(deleteCustomer).toHaveBeenCalledWith();
     });
 
     await waitFor(() => {
@@ -144,7 +139,7 @@ describe('DeleteAccount', () => {
     const error = new Error('Deletion failed');
     deleteCustomer.mockRejectedValue(error);
 
-    render(<DeleteAccount customerData={mockCustomerData} />);
+    render(<DeleteAccount />);
 
     // Show the dialog
     const deleteButton = screen.getByRole('button', {
@@ -157,7 +152,7 @@ describe('DeleteAccount', () => {
     fireEvent.click(confirmButton);
 
     await waitFor(() => {
-      expect(deleteCustomer).toHaveBeenCalledWith('12345');
+      expect(deleteCustomer).toHaveBeenCalledWith();
     });
 
     // Should stop deleting on error - get the original delete button (first one)
@@ -177,7 +172,7 @@ describe('DeleteAccount', () => {
   test('disables delete button and shows spinner while deleting', async () => {
     deleteCustomer.mockImplementation(() => new Promise(() => {})); // Never resolves
 
-    render(<DeleteAccount customerData={mockCustomerData} />);
+    render(<DeleteAccount />);
 
     // Show the dialog
     const deleteButton = screen.getByRole('button', {
@@ -198,9 +193,7 @@ describe('DeleteAccount', () => {
   });
 
   test('applies correct CSS classes and styling', () => {
-    const { container } = render(
-      <DeleteAccount customerData={mockCustomerData} />,
-    );
+    const { container } = render(<DeleteAccount />);
 
     const mainContainer = container.querySelector('.fade-in');
     expect(mainContainer).toHaveClass(
@@ -218,7 +211,7 @@ describe('DeleteAccount', () => {
   });
 
   test('passes correct props to AlertSection', () => {
-    render(<DeleteAccount customerData={mockCustomerData} />);
+    render(<DeleteAccount />);
 
     const deleteButton = screen.getByRole('button', {
       name: /delete account/i,

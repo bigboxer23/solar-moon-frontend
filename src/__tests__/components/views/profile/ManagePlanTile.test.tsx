@@ -146,7 +146,7 @@ describe('ManagePlanTile', () => {
     getStripeSubscriptions.mockResolvedValue({
       data: [{ quantity: 1, interval: 'month' }],
     });
-    getUserPortalSession.mockResolvedValue({ data: mockPortalUrl });
+    getUserPortalSession.mockResolvedValue({ data: { url: mockPortalUrl } });
 
     render(<ManagePlanTile />);
 

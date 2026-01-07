@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MdOutlineSubscriptions } from 'react-icons/md';
 
 import {
@@ -6,21 +6,22 @@ import {
   getSubscriptionInformation,
   getUserPortalSession,
 } from '../../../services/services';
+import type { BillingPortalSessionResponse } from '../../../types/api';
 import { getDaysLeftInTrial } from '../../../utils/Utils';
 import Button from '../../common/Button';
 import Loader from '../../common/Loader';
 import Spinner from '../../common/Spinner';
 
-export default function ManagePlanTile() {
-  const [billingLoading, setBillingLoading] = useState(false);
-  const [quantity, setQuantity] = useState(0);
-  const [period, setPeriod] = useState('');
-  const [periodShort, setPeriodShort] = useState('');
-  const [price, setPrice] = useState(40);
-  const [loading, setLoading] = useState(true);
-  const [invalid, setInvalid] = useState(false);
-  const [trialMode, setTrialMode] = useState(false);
-  const [trialDaysLeft, setTrialDaysLeft] = useState(90);
+export default function ManagePlanTile(): React.ReactElement {
+  const [billingLoading, setBillingLoading] = useState<boolean>(false);
+  const [quantity, setQuantity] = useState<number>(0);
+  const [period, setPeriod] = useState<string>('');
+  const [periodShort, setPeriodShort] = useState<string>('');
+  const [price, setPrice] = useState<number>(40);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [invalid, setInvalid] = useState<boolean>(false);
+  const [trialMode, setTrialMode] = useState<boolean>(false);
+  const [trialDaysLeft, setTrialDaysLeft] = useState<string>('90 days left');
 
   useEffect(() => {
     getStripeSubscriptions().then(({ data }) => {
@@ -36,21 +37,25 @@ export default function ManagePlanTile() {
         });
         return;
       }
-      setQuantity(data[0].quantity);
-      setPeriod(data[0].interval === 'month' ? 'Monthly' : 'Yearly');
-      setPeriodShort(data[0].interval === 'month' ? 'mo' : 'yr');
-      setPrice(data[0].interval === 'month' ? 40 : 432);
+      const [subscription] = data;
+      if (subscription) {
+        setQuantity(subscription.quantity || 0);
+        setPeriod(subscription.interval === 'month' ? 'Monthly' : 'Yearly');
+        setPeriodShort(subscription.interval === 'month' ? 'mo' : 'yr');
+        setPrice(subscription.interval === 'month' ? 40 : 432);
+      }
       setLoading(false);
     });
   }, []);
-  const gotoPortal = () => {
+
+  const gotoPortal = (): void => {
     setBillingLoading(true);
     getUserPortalSession()
-      .then(({ data }) => {
+      .then(({ data }: { data: BillingPortalSessionResponse }) => {
         setBillingLoading(false);
-        window.location.href = data;
+        window.location.href = data.url;
       })
-      .catch((e) => {
+      .catch(() => {
         setBillingLoading(false);
       });
   };
@@ -84,10 +89,10 @@ export default function ManagePlanTile() {
           <div className='grow-1' />
           <div>
             <Button
+              buttonProps={{ type: 'button' }}
               className='ml-auto mt-3'
               disabled={billingLoading}
               onClick={() => gotoPortal()}
-              type='button'
               variant='primary'
             >
               {!billingLoading && (
@@ -116,10 +121,10 @@ export default function ManagePlanTile() {
           <div className='grow-1' />
           <div>
             <Button
+              buttonProps={{ type: 'button' }}
               className='ml-auto mt-3'
               disabled={billingLoading}
               onClick={() => (window.location.href = '/pricing')}
-              type='button'
               variant='primary'
             >
               {!billingLoading && (
@@ -135,10 +140,10 @@ export default function ManagePlanTile() {
         <div className='flex flex-col dark:text-gray-100'>
           No Active Plan
           <Button
+            buttonProps={{ type: 'button' }}
             className='ml-auto mt-3'
             disabled={billingLoading}
             onClick={() => (window.location.href = '/pricing')}
-            type='button'
             variant='primary'
           >
             {!billingLoading && (

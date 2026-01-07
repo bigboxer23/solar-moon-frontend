@@ -1,5 +1,5 @@
 import { useAuthenticator } from '@aws-amplify/ui-react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { TbUserCancel } from 'react-icons/tb';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,9 +8,9 @@ import AlertSection from '../../common/AlertSection';
 import Button from '../../common/Button';
 import Spinner from '../../common/Spinner';
 
-export default function DeleteAccount({ customerData }) {
-  const [deleteAcctWarning, setDeleteAcctWarning] = useState(false);
-  const [deleting, setDeleting] = useState(false);
+export default function DeleteAccount(): React.ReactElement {
+  const [deleteAcctWarning, setDeleteAcctWarning] = useState<boolean>(false);
+  const [deleting, setDeleting] = useState<boolean>(false);
   const navigate = useNavigate();
   const { signOut } = useAuthenticator((context) => [context.user]);
 
@@ -22,11 +22,10 @@ export default function DeleteAccount({ customerData }) {
         </span>
       </div>
       <Button
+        buttonProps={{ id: 'deleteAccountButton', type: 'button' }}
         className='ml-auto '
         disabled={deleting}
-        id='deleteAccountButton'
         onClick={() => setDeleteAcctWarning(true)}
-        type='button'
         variant='danger'
       >
         {!deleting && <TbUserCancel className='button-icon' />}
@@ -37,12 +36,12 @@ export default function DeleteAccount({ customerData }) {
         buttonTitle='Delete Account'
         onClick={() => {
           setDeleting(true);
-          deleteCustomer(customerData.customerId)
+          deleteCustomer()
             .then(() => {
               signOut();
               navigate('/');
             })
-            .catch((e) => setDeleting(false));
+            .catch(() => setDeleting(false));
         }}
         setShow={setDeleteAcctWarning}
         show={deleteAcctWarning}
