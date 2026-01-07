@@ -38,7 +38,7 @@ jest.mock('../../../../components/views/profile/ManagePlanTile', () => {
 });
 
 jest.mock('../../../../components/views/profile/APIInformation', () => {
-  return function MockAPIInformation({ customerData, setCustomerData }) {
+  return function MockAPIInformation({ customerData }) {
     return (
       <div data-testid='api-information'>
         API Info for {customerData?.email || 'unknown'}
@@ -54,12 +54,8 @@ jest.mock('../../../../components/views/profile/ChangePassword', () => {
 });
 
 jest.mock('../../../../components/views/profile/DeleteAccount', () => {
-  return function MockDeleteAccount({ customerData }) {
-    return (
-      <div data-testid='delete-account'>
-        Delete Account for {customerData?.email || 'unknown'}
-      </div>
-    );
+  return function MockDeleteAccount() {
+    return <div data-testid='delete-account'>Delete Account</div>;
   };
 });
 
@@ -127,9 +123,7 @@ describe('Profile', () => {
     expect(
       screen.getByText('API Info for test@example.com'),
     ).toBeInTheDocument();
-    expect(
-      screen.getByText('Delete Account for test@example.com'),
-    ).toBeInTheDocument();
+    expect(screen.getByText('Delete Account')).toBeInTheDocument();
   });
 
   test('sets trial date from subscription information', async () => {

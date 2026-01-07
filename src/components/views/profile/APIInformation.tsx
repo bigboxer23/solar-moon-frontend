@@ -1,24 +1,34 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { MdOutlineDelete } from 'react-icons/md';
 
 import { updateCustomer as updateRemoteCustomer } from '../../../services/services';
+import type { Customer } from '../../../types/models';
 import AlertSection from '../../common/AlertSection';
 import Button from '../../common/Button';
 import CopyButton from '../../common/CopyButton';
 import { Input } from '../../common/Input';
 import Spinner from '../../common/Spinner';
 
-export default function APIInformation({ customerData, setCustomerData }) {
-  const [accessKeyWarning, setAccessKeyWarning] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const updateCustomer = (dataToUpdate) => {
+interface APIInformationProps {
+  customerData: Customer;
+  setCustomerData: (data: Customer) => void;
+}
+
+export default function APIInformation({
+  customerData,
+  setCustomerData,
+}: APIInformationProps): React.ReactElement {
+  const [accessKeyWarning, setAccessKeyWarning] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const updateCustomer = (dataToUpdate?: Customer): void => {
     setLoading(true);
     updateRemoteCustomer(dataToUpdate != null ? dataToUpdate : customerData)
       .then(({ data }) => {
         setCustomerData(data);
         setLoading(false);
       })
-      .catch((e) => {
+      .catch(() => {
         setLoading(false);
       });
   };
@@ -36,6 +46,7 @@ export default function APIInformation({ customerData, setCustomerData }) {
           inputProps={{
             readOnly: true,
             value: customerData?.accessKey || '',
+            type: 'text',
           }}
           label='Access Key'
           suffix={
@@ -44,14 +55,12 @@ export default function APIInformation({ customerData, setCustomerData }) {
               title='Copy Access Key'
             />
           }
-          type='text'
           variant='underline'
         />
         <Button
+          buttonProps={{ id: 'revokeAccessKey', type: 'button' }}
           className='ml-auto mt-4'
-          id='revokeAccessKey'
           onClick={() => setAccessKeyWarning(true)}
-          type='button'
           variant='danger'
         >
           {!loading && <MdOutlineDelete className='button-icon' />}

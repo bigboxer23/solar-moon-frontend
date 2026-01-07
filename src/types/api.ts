@@ -78,17 +78,15 @@ export interface SiteOverviewData {
   trialDate?: unknown;
 }
 
-export interface MappingsResponse {
-  mappings: Mapping[];
-}
+export type DeviceResponse = Device;
 
-export interface CustomerResponse {
-  customer: Customer;
-}
+export type DevicesResponse = Device[];
 
-export interface AlarmsResponse {
-  alarms: Alarm[];
-}
+export type MappingsResponse = Mapping[];
+
+export type CustomerResponse = Customer;
+
+export type AlarmsResponse = Alarm[];
 
 export interface CheckoutSessionResponse {
   url: string;
@@ -109,9 +107,9 @@ export interface StripeSubscription {
   status: string;
   current_period_end: number;
   current_period_start: number;
+  quantity?: number;
+  interval?: 'month' | 'year';
   [key: string]: unknown;
 }
 
-export interface StripeSubscriptionsResponse {
-  subscriptions: StripeSubscription[];
-}
+export type StripeSubscriptionsResponse = StripeSubscription[];

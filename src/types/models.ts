@@ -31,6 +31,9 @@ export interface Customer {
   zip?: string;
   country?: string;
   timezone?: string;
+  customerId?: string;
+  accessKey?: string;
+  defaultTimezone?: string;
 }
 
 export interface Alarm {

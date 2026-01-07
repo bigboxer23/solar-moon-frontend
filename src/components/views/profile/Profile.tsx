@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   getCustomer,
   getSubscriptionInformation,
 } from '../../../services/services';
+import type { Customer } from '../../../types/models';
 import Loader from '../../common/Loader';
 import APIInformation from './APIInformation';
 import Appearance from './Appearance';
@@ -12,22 +13,30 @@ import CustomerInformation from './CustomerInformation';
 import DeleteAccount from './DeleteAccount';
 import ManagePlanTile from './ManagePlanTile';
 
-export default function Profile({ setTrialDate }) {
-  const [loading, setLoading] = useState(true);
-  const [customerData, setCustomerData] = useState({});
+interface ProfileProps {
+  setTrialDate: (date: number | undefined) => void;
+}
+
+export default function Profile({
+  setTrialDate,
+}: ProfileProps): React.ReactElement {
+  const [loading, setLoading] = useState<boolean>(true);
+  const [customerData, setCustomerData] = useState<Customer>({} as Customer);
+
   useEffect(() => {
     getCustomer()
       .then(({ data }) => {
         setLoading(false);
         setCustomerData(data);
       })
-      .catch((e) => {
+      .catch(() => {
         setLoading(false);
+        setCustomerData({} as Customer);
       });
     getSubscriptionInformation().then(({ data }) => {
       setTrialDate(data?.joinDate);
     });
-  }, []);
+  }, [setTrialDate]);
 
   return (
     <main className='flex max-w-full flex-col items-center'>
@@ -42,7 +51,7 @@ export default function Profile({ setTrialDate }) {
             setCustomerData={setCustomerData}
           />
           <ChangePassword />
-          <DeleteAccount customerData={customerData} />
+          <DeleteAccount />
         </div>
       )}
     </main>

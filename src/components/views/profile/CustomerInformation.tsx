@@ -2,11 +2,23 @@ import React, { useState } from 'react';
 import { allTimezones, useTimezoneSelect } from 'react-timezone-select';
 
 import { updateCustomer } from '../../../services/services';
+import type { Customer } from '../../../types/models';
 import { Input } from '../../common/Input';
 import { Select } from '../../common/Select';
 
-export default function CustomerInformation({ customer }) {
-  const [selectedTimezone, setSelectedTimezone] = useState(
+interface CustomerInformationProps {
+  customer: Customer;
+}
+
+interface TimezoneOption {
+  value: string;
+  label: string;
+}
+
+export default function CustomerInformation({
+  customer,
+}: CustomerInformationProps): React.ReactElement {
+  const [selectedTimezone, setSelectedTimezone] = useState<string>(
     customer?.defaultTimezone ||
       Intl.DateTimeFormat().resolvedOptions().timeZone,
   );
@@ -17,7 +29,7 @@ export default function CustomerInformation({ customer }) {
     timezones,
   });
 
-  const updateTimeZone = (timezone) => {
+  const updateTimeZone = (timezone: TimezoneOption): void => {
     setSelectedTimezone(timezone.value);
     updateCustomer({ ...customer, defaultTimezone: timezone.value });
   };
@@ -32,25 +44,31 @@ export default function CustomerInformation({ customer }) {
       <form>
         <Input
           className='mb-6'
-          inputProps={{ readOnly: true, value: customer?.email || '' }}
+          inputProps={{
+            readOnly: true,
+            value: customer?.email || '',
+            type: 'text',
+          }}
           label='Email Address'
-          type='text'
           variant='underline'
         />
 
         <Input
           className='mb-4'
-          inputProps={{ readOnly: true, value: customer?.name || '' }}
+          inputProps={{
+            readOnly: true,
+            value: customer?.name || '',
+            type: 'text',
+          }}
           label='Name'
-          type='text'
           variant='underline'
         />
         <Select
-          attributes={options.map((tz) => {
+          attributes={options.map((tz: TimezoneOption) => {
             return { label: tz.label, id: tz.value };
           })}
           inputProps={{
-            onChange: (e) =>
+            onChange: (e: React.ChangeEvent<HTMLSelectElement>) =>
               updateTimeZone(parseTimezone(e.currentTarget.value)),
             value: selectedTimezone,
           }}
