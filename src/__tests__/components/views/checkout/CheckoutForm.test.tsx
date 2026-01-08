@@ -10,7 +10,7 @@ jest.mock('@stripe/react-stripe-js', () => ({
   EmbeddedCheckout: () => (
     <div data-testid='embedded-checkout'>Embedded Checkout</div>
   ),
-  EmbeddedCheckoutProvider: ({ children }) => (
+  EmbeddedCheckoutProvider: ({ children }: { children: React.ReactNode }) => (
     <div data-testid='embedded-checkout-provider'>{children}</div>
   ),
 }));
@@ -26,7 +26,7 @@ jest.mock('../../../../services/services', () => ({
 
 // Mock components
 jest.mock('../../../../components/common/Loader', () => {
-  return function MockLoader({ className }) {
+  return function MockLoader({ className }: { className?: string }) {
     return (
       <div className={className} data-testid='loader'>
         Loading...
@@ -36,7 +36,7 @@ jest.mock('../../../../components/common/Loader', () => {
 });
 
 jest.mock('../../../../components/nav/HeaderBar', () => {
-  return function MockHeaderBar({ headerText }) {
+  return function MockHeaderBar({ headerText }: { headerText: string }) {
     return <div data-testid='header-bar'>{headerText}</div>;
   };
 });
@@ -47,7 +47,7 @@ jest.mock('react-icons/fa', () => ({
 }));
 
 const renderWithRouter = (
-  component,
+  component: React.ReactElement,
   initialRoute = '/checkout?price=plan1&count=1',
 ) => {
   return render(
@@ -153,24 +153,24 @@ describe('CheckoutForm', () => {
   });
 
   test('applies correct CSS classes to main container', async () => {
-    let container;
+    let container: HTMLElement;
     await act(async () => {
       const { container: testContainer } = renderWithRouter(<CheckoutForm />);
       container = testContainer;
     });
 
-    const main = container.querySelector('main');
+    const main = container!.querySelector('main');
     expect(main).toHaveClass('flex', 'w-full', 'flex-col', 'py-8');
   });
 
   test('applies correct CSS classes to back link container', async () => {
-    let container;
+    let container: HTMLElement;
     await act(async () => {
       const { container: testContainer } = renderWithRouter(<CheckoutForm />);
       container = testContainer;
     });
 
-    const linkContainer = container.querySelector('.fade-in');
+    const linkContainer = container!.querySelector('.fade-in');
     expect(linkContainer).toHaveClass(
       'fade-in',
       'ml-6',

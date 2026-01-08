@@ -89,8 +89,9 @@ export type CustomerResponse = Customer;
 export type AlarmsResponse = Alarm[];
 
 export interface CheckoutSessionResponse {
-  url: string;
-  sessionId: string;
+  url?: string;
+  sessionId?: string;
+  clientSecret: string;
 }
 
 export interface CheckoutStatusResponse {

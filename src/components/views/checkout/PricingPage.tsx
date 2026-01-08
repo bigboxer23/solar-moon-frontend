@@ -11,41 +11,44 @@ import {
 import HeaderBar from '../../nav/HeaderBar';
 import PriceTile from './PriceTile';
 
-export default function PricingPage() {
+export default function PricingPage(): React.ReactElement {
   const navigate = useNavigate();
-  const [monCount, setMonCount] = useState(1);
-  const [yearCount, setYearCount] = useState(1);
-  const [trialAvailable, setTrialAvailable] = useState(false);
-  const [trialOver, setTrialOver] = useState(false);
+  const [monCount, setMonCount] = useState<number>(1);
+  const [yearCount, setYearCount] = useState<number>(1);
+  const [trialAvailable, setTrialAvailable] = useState<boolean>(false);
+  const [trialOver, setTrialOver] = useState<boolean>(false);
 
-  const { user, signOut } = useAuthenticator((context) => [context.user]);
+  const { signOut } = useAuthenticator((context) => [context.user]);
 
   useEffect(() => {
     getSubscriptionInformation().then(({ data }) => {
       setTrialAvailable(
-        data?.packs === 0 && data?.joinDate >= new Date().getTime() - MONTH * 3,
+        data?.packs === 0 &&
+          (data?.joinDate ?? 0) >= new Date().getTime() - MONTH * 3,
       );
       setTrialOver(
-        data?.packs === -1 && data?.joinDate < new Date().getTime() - MONTH * 3,
+        data?.packs === -1 &&
+          (data?.joinDate ?? 0) < new Date().getTime() - MONTH * 3,
       );
     });
   }, []);
 
-  const checkoutClicked = (price, count) => {
+  const checkoutClicked = (price: string, count: number): void => {
     navigate({
       pathname: '/checkout',
       search: createSearchParams({
         price: price,
-        count: count,
+        count: count.toString(),
       }).toString(),
     });
   };
 
-  const trialClicked = (price, count) => {
+  const trialClicked = (_price: string, _count: number): void => {
     activateTrial().then(() => {
       navigate('/manage');
     });
   };
+
   return (
     <div className='pricing-page'>
       <HeaderBar
@@ -79,7 +82,7 @@ export default function PricingPage() {
               label2='for first 90 days'
               label3='Free!'
               price={0}
-              priceId={process.env.REACT_APP_PRICE_MO}
+              priceId={process.env.REACT_APP_PRICE_MO as string}
               setCount={setMonCount}
               showBottomContent={false}
             />
@@ -91,7 +94,7 @@ export default function PricingPage() {
             label2='per mo'
             label3=''
             price={40}
-            priceId={process.env.REACT_APP_PRICE_MO}
+            priceId={process.env.REACT_APP_PRICE_MO as string}
             setCount={setMonCount}
           />
           <PriceTile
@@ -101,7 +104,7 @@ export default function PricingPage() {
             label2='per yr'
             label3='Save 10%'
             price={432}
-            priceId={process.env.REACT_APP_PRICE_YR}
+            priceId={process.env.REACT_APP_PRICE_YR as string}
             setCount={setYearCount}
           />
         </div>

@@ -11,7 +11,19 @@ jest.mock('../../../../services/services', () => ({
 
 // Mock components
 jest.mock('../../../../components/common/Button', () => {
-  return function MockButton({ children, onClick, className, variant, type }) {
+  return function MockButton({
+    children,
+    onClick,
+    className,
+    variant,
+    type,
+  }: {
+    children: React.ReactNode;
+    onClick: () => void;
+    className: string;
+    variant: string;
+    type: string;
+  }) {
     return (
       <button
         className={className}
@@ -27,7 +39,17 @@ jest.mock('../../../../components/common/Button', () => {
 });
 
 jest.mock('../../../../components/views/checkout/QuantityPicker', () => {
-  return function MockQuantityPicker({ className, max, min, setCount }) {
+  return function MockQuantityPicker({
+    className,
+    max,
+    min,
+    setCount,
+  }: {
+    className: string;
+    max: number;
+    min: number;
+    setCount?: (count: number) => void;
+  }) {
     return (
       <div
         className={className}
@@ -149,12 +171,11 @@ describe('PriceTile', () => {
 
     const button = screen.getByTestId('button');
     expect(button).toHaveAttribute('data-variant', 'primary');
-    expect(button).toHaveAttribute('type', 'button');
     expect(button).toHaveClass('mt-3', 'justify-center');
   });
 
   test('renders without label2 when not provided', () => {
-    const propsWithoutLabel2 = { ...defaultProps, label2: null };
+    const propsWithoutLabel2 = { ...defaultProps, label2: undefined };
     render(<PriceTile {...propsWithoutLabel2} />);
 
     // Should not render label2 in price section

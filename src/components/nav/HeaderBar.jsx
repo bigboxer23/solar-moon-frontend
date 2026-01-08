@@ -1,5 +1,10 @@
 import logo from '../../assets/logo.svg';
 
+/**
+ * @param {Object} props
+ * @param {string} props.headerText
+ * @param {React.ReactNode} [props.leftContent]
+ */
 export default function HeaderBar({ headerText, leftContent }) {
   return (
     <div
