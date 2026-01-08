@@ -1,6 +1,18 @@
-import { activateTrial } from '../../../services/services';
 import Button from '../../common/Button';
 import QuantityPicker from './QuantityPicker';
+
+interface PriceTileProps {
+  label: string;
+  label2?: string;
+  label3?: string;
+  count: number;
+  setCount: (count: number) => void;
+  priceId: string;
+  price: number;
+  checkoutClicked: (priceId: string, count: number) => void;
+  buttonText?: string;
+  showBottomContent?: boolean;
+}
 
 function PriceTile({
   label,
@@ -13,7 +25,7 @@ function PriceTile({
   checkoutClicked,
   buttonText = 'Choose plan',
   showBottomContent = true,
-}) {
+}: PriceTileProps): React.ReactElement {
   return (
     <div className='PriceTile fade-in grow-1 m-3 my-8 me-2 ms-2 flex min-h-[17rem] w-full max-w-[17rem] flex-col rounded-lg bg-white p-8 shadow-panel dark:bg-gray-800 sm:me-5 sm:ms-5 '>
       <div className='flex h-full flex-col'>
@@ -65,9 +77,9 @@ function PriceTile({
           </>
         )}
         <Button
+          buttonProps={{ type: 'button' }}
           className='mt-3 justify-center'
           onClick={() => checkoutClicked(priceId, count)}
-          type='button'
           variant='primary'
         >
           {buttonText}

@@ -2,16 +2,28 @@ import { useEffect, useState } from 'react';
 
 import Button from '../../common/Button';
 
-function QuantityPicker({ min, max, setCount, className }) {
-  const [disableDec, setDisableDec] = useState(true);
-  const [disableInc, setDisableInc] = useState(false);
-  const [value, setValue] = useState(min);
+interface QuantityPickerProps {
+  min: number;
+  max: number;
+  setCount: (count: number) => void;
+  className?: string;
+}
+
+function QuantityPicker({
+  min,
+  max,
+  setCount,
+  className,
+}: QuantityPickerProps): React.ReactElement {
+  const [disableDec, setDisableDec] = useState<boolean>(true);
+  const [disableInc, setDisableInc] = useState<boolean>(false);
+  const [value, setValue] = useState<number>(min);
 
   useEffect(() => {
     setCount(value);
-  }, [value]);
+  }, [value, setCount]);
 
-  const increment = () => {
+  const increment = (): void => {
     const plusState = value + 1;
     if (value < max) {
       setValue(plusState);
@@ -24,7 +36,7 @@ function QuantityPicker({ min, max, setCount, className }) {
     }
   };
 
-  const decrement = () => {
+  const decrement = (): void => {
     const minusState = value - 1;
     if (value > min) {
       setValue(minusState);

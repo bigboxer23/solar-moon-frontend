@@ -18,10 +18,13 @@ jest.mock('../../../../components/common/Loader', () => {
 });
 
 // Mock window.location.search
-delete window.location;
-window.location = { search: '' };
+delete (window as { location?: Location }).location;
+(window as { location: { search: string } }).location = { search: '' };
 
-const renderWithRouter = (component, initialRoute = '/return') => {
+const renderWithRouter = (
+  component: React.ReactElement,
+  initialRoute = '/return',
+) => {
   return render(
     <MemoryRouter initialEntries={[initialRoute]}>{component}</MemoryRouter>,
   );
@@ -42,6 +45,7 @@ describe('CheckoutReturn', () => {
   });
 
   test('shows loader initially while fetching status', async () => {
+    window.location.search = '?session_id=test_session_123';
     checkoutStatus.mockImplementation(() => new Promise(() => {})); // Never resolves
 
     await act(async () => {
@@ -134,20 +138,20 @@ describe('CheckoutReturn', () => {
       renderWithRouter(<CheckoutReturn />);
     });
 
-    expect(checkoutStatus).toHaveBeenCalledWith(null);
+    expect(checkoutStatus).not.toHaveBeenCalled();
   });
 
   test('applies correct CSS classes to main container', async () => {
     window.location.search = '?session_id=test_session_123';
 
-    let container;
+    let container: HTMLElement;
     await act(async () => {
       const { container: testContainer } = renderWithRouter(<CheckoutReturn />);
       container = testContainer;
     });
 
     await waitFor(() => {
-      const mainContainer = container.querySelector(
+      const mainContainer = container!.querySelector(
         '.my-8.flex.max-w-full.flex-col.items-center',
       );
       expect(mainContainer).toBeInTheDocument();
@@ -157,14 +161,14 @@ describe('CheckoutReturn', () => {
   test('applies correct CSS classes to success panel', async () => {
     window.location.search = '?session_id=test_session_123';
 
-    let container;
+    let container: HTMLElement;
     await act(async () => {
       const { container: testContainer } = renderWithRouter(<CheckoutReturn />);
       container = testContainer;
     });
 
     await waitFor(() => {
-      const successPanel = container.querySelector('main');
+      const successPanel = container!.querySelector('main');
       expect(successPanel).toHaveClass(
         'fade-in',
         'my-8',

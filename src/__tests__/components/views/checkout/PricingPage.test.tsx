@@ -22,7 +22,13 @@ jest.mock('../../../../services/search', () => ({
 
 // Mock components
 jest.mock('../../../../components/nav/HeaderBar', () => {
-  return function MockHeaderBar({ headerText, leftContent }) {
+  return function MockHeaderBar({
+    headerText,
+    leftContent,
+  }: {
+    headerText: string;
+    leftContent?: React.ReactNode;
+  }) {
     return (
       <div data-testid='header-bar'>
         <span>{headerText}</span>
@@ -38,8 +44,15 @@ jest.mock('../../../../components/views/checkout/PriceTile', () => {
     buttonText,
     checkoutClicked,
     count,
-    price,
+    price: _price,
     priceId,
+  }: {
+    label: string;
+    buttonText?: string;
+    checkoutClicked: (priceId: string, count: number) => void;
+    count: number;
+    price: number;
+    priceId: string;
   }) {
     return (
       <div data-label={label} data-testid={`price-tile-${label.toLowerCase()}`}>
@@ -57,7 +70,13 @@ jest.mock('../../../../components/views/checkout/PriceTile', () => {
 
 // Mock react-icons
 jest.mock('react-icons/fa', () => ({
-  FaArrowLeft: ({ onClick, title }) => (
+  FaArrowLeft: ({
+    onClick,
+    title,
+  }: {
+    onClick?: () => void;
+    title?: string;
+  }) => (
     <span data-testid='arrow-left-icon' onClick={onClick} title={title}>
       ←
     </span>
@@ -69,7 +88,7 @@ const mockNavigate = jest.fn();
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useNavigate: () => mockNavigate,
-  createSearchParams: (params) => ({
+  createSearchParams: (params: Record<string, string>) => ({
     toString: () =>
       Object.entries(params)
         .map(([k, v]) => `${k}=${v}`)
@@ -77,7 +96,7 @@ jest.mock('react-router-dom', () => ({
   }),
 }));
 
-const renderWithRouter = (component) => {
+const renderWithRouter = (component: React.ReactElement) => {
   return render(<MemoryRouter>{component}</MemoryRouter>);
 };
 
@@ -107,7 +126,7 @@ describe('PricingPage', () => {
       },
     });
 
-    activateTrial.mockResolvedValue();
+    activateTrial.mockResolvedValue({});
 
     process.env.REACT_APP_PRICE_MO = 'price_monthly_123';
     process.env.REACT_APP_PRICE_YR = 'price_yearly_123';

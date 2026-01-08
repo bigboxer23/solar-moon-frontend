@@ -12,6 +12,12 @@ jest.mock('../../../../components/common/Button', () => {
     className,
     variant,
     disabled,
+  }: {
+    children: React.ReactNode;
+    onClick: () => void;
+    className: string;
+    variant: string;
+    disabled: boolean;
   }) {
     return (
       <button
@@ -331,6 +337,6 @@ describe('Checkout QuantityPicker', () => {
     const picker = container.querySelector('.quantity-picker');
     expect(picker).toHaveClass('quantity-picker', 'flex', 'self-end');
     // This component has a bug where it renders "undefined" when className is not provided
-    expect(picker.className).toContain('undefined');
+    expect(picker?.className).toContain('undefined');
   });
 });

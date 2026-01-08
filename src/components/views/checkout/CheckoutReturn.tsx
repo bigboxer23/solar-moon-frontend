@@ -4,26 +4,32 @@ import { Navigate } from 'react-router-dom';
 import { checkoutStatus } from '../../../services/services';
 import Loader from '../../common/Loader';
 
-const Return = () => {
-  const [status, setStatus] = useState(null);
-  const [customerEmail, setCustomerEmail] = useState('');
-  const [loading, setLoading] = useState(true);
+const Return = (): React.ReactElement => {
+  const [status, setStatus] = useState<string | null>(null);
+  const [customerEmail, setCustomerEmail] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const sessionId = new URLSearchParams(window.location.search).get(
-      'session_id',
-    );
+    const sessionId: string | null = new URLSearchParams(
+      window.location.search,
+    ).get('session_id');
+
+    if (!sessionId) {
+      setLoading(false);
+      return;
+    }
 
     checkoutStatus(sessionId)
       .then(({ data }) => {
         setStatus(data.status);
         setLoading(false);
-        setCustomerEmail(data.customer_email);
+        setCustomerEmail(data.customer_email || '');
       })
-      .catch((e) => {
+      .catch(() => {
         setLoading(false);
       });
   }, []);
+
   if (status === 'open') {
     return <Navigate to='/checkout' />;
   }

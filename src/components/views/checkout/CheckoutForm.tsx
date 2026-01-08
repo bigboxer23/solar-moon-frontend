@@ -2,7 +2,7 @@ import {
   EmbeddedCheckout,
   EmbeddedCheckoutProvider,
 } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
+import { loadStripe, Stripe } from '@stripe/stripe-js';
 import { useEffect, useState } from 'react';
 import { FaArrowLeft } from 'react-icons/fa';
 import { NavLink, useSearchParams } from 'react-router-dom';
@@ -11,25 +11,30 @@ import { checkout } from '../../../services/services';
 import Loader from '../../common/Loader';
 import HeaderBar from '../../nav/HeaderBar';
 
-const CheckoutForm = () => {
-  const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK);
-  const [loading, setLoading] = useState(true);
+const CheckoutForm = (): React.ReactElement => {
+  const stripePromise: Promise<Stripe | null> = loadStripe(
+    process.env.REACT_APP_STRIPE_PK as string,
+  );
+  const [loading, setLoading] = useState<boolean>(true);
 
-  const [clientSecret, setClientSecret] = useState('');
+  const [clientSecret, setClientSecret] = useState<string>('');
 
   const [searchParams] = useSearchParams();
 
   useEffect(() => {
     // Create a Checkout Session as soon as the page loads
-    checkout(searchParams.get('price'), Number(searchParams.get('count')))
+    checkout(
+      searchParams.get('price') as string,
+      Number(searchParams.get('count')),
+    )
       .then(({ data }) => {
         setLoading(false);
         setClientSecret(data.clientSecret);
       })
-      .catch((e) => {
+      .catch(() => {
         setLoading(false);
       });
-  }, []);
+  }, [searchParams]);
 
   return (
     <div>
