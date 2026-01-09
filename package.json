@@ -26,7 +26,7 @@
     "react-hook-form": "^7.62.0",
     "react-icons": "^5.5.0",
     "react-intl": "^7.1.11",
-    "react-router-dom": "^7.10.1",
+    "react-router-dom": "^7.12.0",
     "react-select": "^5.10.2",
     "react-timezone-select": "^3.2.7",
     "react-toastify": "^11.0.5",
