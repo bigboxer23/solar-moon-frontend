@@ -1,4 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import type { ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 import { MdKey } from 'react-icons/md';
 import * as yup from 'yup';
@@ -8,23 +9,33 @@ import Button from '../../common/Button';
 import { ControlledInput } from '../../common/Input';
 import HeaderBar from '../../nav/HeaderBar';
 
+interface LockFormData {
+  AccessCode: string;
+}
+
 const yupSchema = yup
   .object()
   .shape({
     AccessCode: yup
       .string()
       .required('This field is required')
-      .matches(process.env.REACT_APP_ACCESS_CODE, 'Invalid access code'),
+      .matches(
+        new RegExp(process.env.REACT_APP_ACCESS_CODE || ''),
+        'Invalid access code',
+      ),
   })
   .required();
 
-export const LockPage = () => {
-  const [_, setUnlocked] = useStickyState(null, 'unlock.code');
+export const LockPage = (): ReactElement => {
+  const [_unlocked, setUnlocked] = useStickyState<string | null>(
+    null,
+    'unlock.code',
+  );
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<LockFormData>({
     mode: 'onBlur',
     resolver: yupResolver(yupSchema),
     defaultValues: {
@@ -32,7 +43,7 @@ export const LockPage = () => {
     },
   });
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: LockFormData) => {
     setUnlocked(data.AccessCode);
     window.location.href = '/';
   };
@@ -52,15 +63,17 @@ export const LockPage = () => {
             control={control}
             errorMessage={errors.AccessCode?.message}
             inputProps={{
+              type: 'password',
               placeholder: 'Enter Access Code',
             }}
             name='AccessCode'
-            type='password'
             variant='underline'
           />
           <Button
+            buttonProps={{
+              type: 'submit',
+            }}
             className='mt-8 justify-center'
-            type='submit'
             variant='primary'
           >
             <MdKey className='button-icon' />
