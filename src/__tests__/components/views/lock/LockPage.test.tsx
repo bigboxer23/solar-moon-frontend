@@ -1,6 +1,5 @@
 /* eslint-env jest */
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 
 import { LockPage } from '../../../../components/views/lock/LockPage';
@@ -12,14 +11,26 @@ jest.mock('../../../../utils/Utils', () => ({
 
 // Mock components
 jest.mock('../../../../components/common/Button', () => {
-  return function MockButton({ children, onClick, className, variant, type }) {
+  return function MockButton({
+    children,
+    onClick,
+    className,
+    variant,
+    buttonProps,
+  }: {
+    children: React.ReactNode;
+    onClick?: () => void;
+    className?: string;
+    variant?: string;
+    buttonProps?: Record<string, unknown>;
+  }) {
     return (
       <button
         className={className}
         data-testid='submit-button'
         data-variant={variant}
         onClick={onClick}
-        type={type}
+        type={buttonProps?.type as string}
       >
         {children}
       </button>
@@ -29,12 +40,16 @@ jest.mock('../../../../components/common/Button', () => {
 
 jest.mock('../../../../components/common/Input', () => ({
   ControlledInput: ({
-    control,
     errorMessage,
     inputProps,
     name,
-    type,
     variant,
+  }: {
+    control: unknown;
+    errorMessage?: string;
+    inputProps?: { placeholder?: string; type?: string };
+    name: string;
+    variant?: string;
   }) => (
     <div data-testid='controlled-input'>
       <input
@@ -42,7 +57,7 @@ jest.mock('../../../../components/common/Input', () => ({
         data-variant={variant}
         name={name}
         placeholder={inputProps?.placeholder}
-        type={type}
+        type={inputProps?.type}
       />
       {errorMessage && <div data-testid='error-message'>{errorMessage}</div>}
     </div>
@@ -50,14 +65,14 @@ jest.mock('../../../../components/common/Input', () => ({
 }));
 
 jest.mock('../../../../components/nav/HeaderBar', () => {
-  return function MockHeaderBar({ headerText }) {
+  return function MockHeaderBar({ headerText }: { headerText: string }) {
     return <div data-testid='header-bar'>{headerText}</div>;
   };
 });
 
 // Mock react-icons
 jest.mock('react-icons/md', () => ({
-  MdKey: ({ className }) => (
+  MdKey: ({ className }: { className?: string }) => (
     <span className={className} data-testid='key-icon'>
       🔑
     </span>
@@ -65,8 +80,8 @@ jest.mock('react-icons/md', () => ({
 }));
 
 // Mock window.location
-delete window.location;
-window.location = { href: '' };
+delete (window as { location?: Location }).location;
+(window as { location: { href: string } }).location = { href: '' };
 
 describe('LockPage', () => {
   const { useStickyState } = require('../../../../utils/Utils');
