@@ -3,22 +3,28 @@ import { FaArrowLeft } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
 
 import { deleteMapping, getMappings } from '../../../services/services';
+import type { Mapping as MappingType } from '../../../types/models';
 import { MAPPING_HELP_TEXT } from '../../../utils/HelpText';
 import Help from '../../common/Help';
 import AddMapping from './AddMapping';
 import MappingBlock from './MappingBlock';
 import { attributeMappings } from './MappingConstants';
 
+interface MappingWithReadOnly extends MappingType {
+  readOnly?: boolean;
+}
+
 export default function Mapping() {
-  const [mappings, setMappings] = useState([]);
+  const [mappings, setMappings] = useState<MappingType[]>([]);
+
   useEffect(() => {
     getMappings().then(({ data }) => {
       setMappings(data);
     });
   }, []);
 
-  const delMapping = (mappingName) => {
-    deleteMapping(mappingName).then(({ data }) => {
+  const delMapping = (mappingName: string) => {
+    deleteMapping(mappingName).then(() => {
       getMappings().then(({ data }) => {
         setMappings(data);
       });
@@ -55,7 +61,7 @@ export default function Mapping() {
                   sensitivity: 'accent',
                 }),
               )
-              .map((m) => {
+              .map((m: MappingWithReadOnly) => {
                 return (
                   <MappingBlock
                     attribute={m.attribute}

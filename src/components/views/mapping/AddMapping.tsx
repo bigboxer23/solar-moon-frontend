@@ -5,13 +5,24 @@ import { MdOutlineAddCircle } from 'react-icons/md';
 import * as yup from 'yup';
 
 import { addMapping } from '../../../services/services';
+import type { Mapping } from '../../../types/models';
 import Button from '../../common/Button';
 import { ControlledInput } from '../../common/Input';
 import { ControlledSelect } from '../../common/Select';
 import Spinner from '../../common/Spinner';
 import { attributeMappings, attributes } from './MappingConstants';
 
-export default function AddMapping({ mappings, setMappings }) {
+interface AddMappingProps {
+  mappings: Mapping[];
+  setMappings: (mappings: Mapping[]) => void;
+}
+
+interface MappingFormData {
+  mappingName: string;
+  attribute: string;
+}
+
+export default function AddMapping({ mappings, setMappings }: AddMappingProps) {
   const yupSchema = yup
     .object()
     .shape({
@@ -19,7 +30,9 @@ export default function AddMapping({ mappings, setMappings }) {
         .string()
         .required('This field is required')
         .test('mappingNameValidator', 'Already added', (value) => {
-          const compare = (d) => {
+          if (!value) return true;
+
+          const compare = (d: { mappingName: string }) => {
             return (
               d.mappingName.localeCompare(value.trim(), undefined, {
                 sensitivity: 'accent',
@@ -44,15 +57,17 @@ export default function AddMapping({ mappings, setMappings }) {
           }
           return mappings.find(compare) === undefined;
         }),
+      attribute: yup.string().required('This field is required'),
     })
     .required();
+
   const [loading, setLoading] = useState(false);
   const {
     control,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm({
+  } = useForm<MappingFormData>({
     mode: 'onBlur',
     resolver: yupResolver(yupSchema),
     defaultValues: {
@@ -61,7 +76,7 @@ export default function AddMapping({ mappings, setMappings }) {
     },
   });
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: MappingFormData) => {
     setLoading(true);
     addMapping(data.attribute, data.mappingName.trim())
       .then(() => {
@@ -87,31 +102,30 @@ export default function AddMapping({ mappings, setMappings }) {
         control={control}
         errorMessage={errors.mappingName?.message}
         inputProps={{
+          type: 'text',
           placeholder: 'Voltage | Current | PF',
         }}
         label='Mapping Name'
         name='mappingName'
-        type='text'
         variant='underline'
       />
       <div className='mx-8 font-bold'>{'->'}</div>
       <ControlledSelect
         attributes={attributes.map((m) => ({ label: m, id: m }))}
         control={control}
-        errorMessage={errors.attributes?.message}
+        errorMessage={errors.attribute?.message}
         label='Attribute'
         name='attribute'
-        type='text'
         variant='underline'
       />
       <Button
         buttonProps={{
+          id: 'add-mapping-button',
+          type: 'submit',
           title: 'Add Attribute',
         }}
         className='ms-3'
         disabled={loading}
-        id='add-mapping-button'
-        type='submit'
         variant='outline-secondary'
       >
         {!loading && <MdOutlineAddCircle />}

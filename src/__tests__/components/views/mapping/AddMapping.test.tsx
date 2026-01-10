@@ -1,9 +1,11 @@
 /* eslint-env jest */
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import type { AxiosResponse } from 'axios';
 import React from 'react';
 
 import AddMapping from '../../../../components/views/mapping/AddMapping';
 import { addMapping } from '../../../../services/services';
+import type { Mapping } from '../../../../types/models';
 
 jest.mock('../../../../services/services', () => ({
   addMapping: jest.fn(),
@@ -28,10 +30,12 @@ jest.mock('../../../../components/views/mapping/MappingConstants', () => ({
   },
 }));
 
+const mockAddMapping = addMapping as jest.MockedFunction<typeof addMapping>;
+
 describe('AddMapping', () => {
   const mockSetMappings = jest.fn();
 
-  const existingMappings = [
+  const existingMappings: Mapping[] = [
     { mappingName: 'Existing Mapping', attribute: 'Current' },
   ];
 
@@ -42,7 +46,7 @@ describe('AddMapping', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    addMapping.mockResolvedValue();
+    mockAddMapping.mockResolvedValue({ data: undefined } as AxiosResponse);
   });
 
   test('renders form with mapping name input', () => {
@@ -143,7 +147,10 @@ describe('AddMapping', () => {
     fireEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(addMapping).toHaveBeenCalledWith('Average Current', 'New Mapping');
+      expect(mockAddMapping).toHaveBeenCalledWith(
+        'Average Current',
+        'New Mapping',
+      );
     });
   });
 
@@ -190,7 +197,7 @@ describe('AddMapping', () => {
     fireEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(addMapping).toHaveBeenCalledWith(
+      expect(mockAddMapping).toHaveBeenCalledWith(
         'Average Current',
         'Trimmed Mapping',
       );
@@ -205,7 +212,7 @@ describe('AddMapping', () => {
   });
 
   test('shows spinner when loading', async () => {
-    addMapping.mockImplementation(() => new Promise(() => {})); // Never resolving promise
+    mockAddMapping.mockImplementation(() => new Promise(() => {})); // Never resolving promise
 
     render(<AddMapping {...defaultProps} />);
 
@@ -221,7 +228,7 @@ describe('AddMapping', () => {
   });
 
   test('disables button when loading', async () => {
-    addMapping.mockImplementation(() => new Promise(() => {})); // Never resolving promise
+    mockAddMapping.mockImplementation(() => new Promise(() => {})); // Never resolving promise
 
     render(<AddMapping {...defaultProps} />);
 
@@ -237,7 +244,7 @@ describe('AddMapping', () => {
   });
 
   test('handles submission error gracefully', async () => {
-    addMapping.mockRejectedValue(new Error('Submission failed'));
+    mockAddMapping.mockRejectedValue(new Error('Submission failed'));
 
     render(<AddMapping {...defaultProps} />);
 
@@ -248,7 +255,7 @@ describe('AddMapping', () => {
     fireEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(addMapping).toHaveBeenCalled();
+      expect(mockAddMapping).toHaveBeenCalled();
     });
 
     // Should not update mappings list if submission failed
@@ -259,7 +266,7 @@ describe('AddMapping', () => {
     const { container } = render(<AddMapping {...defaultProps} />);
 
     const mappingNameInput = screen.getByLabelText(/mapping name/i);
-    const form = container.querySelector('form');
+    const form = container.querySelector('form')!;
 
     fireEvent.change(mappingNameInput, {
       target: { value: 'Form Submit Test' },
@@ -267,7 +274,7 @@ describe('AddMapping', () => {
     fireEvent.submit(form);
 
     await waitFor(() => {
-      expect(addMapping).toHaveBeenCalledWith(
+      expect(mockAddMapping).toHaveBeenCalledWith(
         'Average Current',
         'Form Submit Test',
       );
@@ -314,7 +321,7 @@ describe('AddMapping', () => {
     fireEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(addMapping).toHaveBeenCalledWith('Voltage', 'Voltage Test');
+      expect(mockAddMapping).toHaveBeenCalledWith('Voltage', 'Voltage Test');
     });
   });
 });

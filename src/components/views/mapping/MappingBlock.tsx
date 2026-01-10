@@ -4,12 +4,19 @@ import { MdLock, MdOutlineDelete } from 'react-icons/md';
 import Button from '../../common/Button';
 import Spinner from '../../common/Spinner';
 
+interface MappingBlockProps {
+  attribute: string;
+  mappingName: string;
+  showDelete: boolean;
+  deleteMapping: (mappingName: string) => void;
+}
+
 export default function MappingBlock({
   attribute,
   mappingName,
   showDelete,
   deleteMapping,
-}) {
+}: MappingBlockProps) {
   const [loading, setLoading] = useState(false);
 
   return (
