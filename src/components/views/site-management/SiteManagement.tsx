@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import type { ReactElement } from 'react';
+import type { Dispatch, ReactElement, SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
 import {
   MdAddCircle,
@@ -32,7 +32,7 @@ import Site from './Site';
 export const noSite = 'No Site';
 
 interface SiteManagementProps {
-  setTrialDate: (date: number | undefined) => void;
+  setTrialDate: Dispatch<SetStateAction<number>>;
 }
 
 const SiteManagement = ({
@@ -92,7 +92,7 @@ const SiteManagement = ({
         setLoading(false);
       });
     getSubscriptionInformation().then(({ data }) => {
-      setTrialDate(data?.joinDate);
+      setTrialDate(data?.joinDate ?? -1);
       setDevicesAllowed(data?.packs === -1 ? 10 : data?.packs * 20); // -1 === trial
       setSubscriptionAvailable(data?.packs * 20 > devices.length);
     });

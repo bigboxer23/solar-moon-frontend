@@ -1,4 +1,4 @@
-import type { ReactElement } from 'react';
+import type { Dispatch, ReactElement, SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { NavLink, useMatch, useNavigate } from 'react-router-dom';
@@ -42,7 +42,7 @@ import SiteDetailsGraph from './SiteDetailsGraph';
 import SiteDevicesOverview from './SiteDevicesOverview';
 
 interface SiteDetailsProps {
-  setTrialDate: (date: number | null) => void;
+  setTrialDate: Dispatch<SetStateAction<number>>;
 }
 
 export default function SiteDetails({
@@ -135,7 +135,7 @@ export default function SiteDetails({
             return new Date(trialDate).getTime();
           return null;
         };
-        setTrialDate(convertTrialDate(data.trialDate));
+        setTrialDate(convertTrialDate(data.trialDate) ?? -1);
         setLoading(false);
         if (callback) {
           callback();

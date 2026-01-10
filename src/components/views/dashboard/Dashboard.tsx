@@ -5,7 +5,7 @@ import { useStickyState } from '../../../utils/Utils';
 import Overview from './Overview';
 
 interface DashboardProps {
-  setTrialDate?: Dispatch<SetStateAction<Date | null>>;
+  setTrialDate?: Dispatch<SetStateAction<number>>;
 }
 
 export default function Dashboard({
