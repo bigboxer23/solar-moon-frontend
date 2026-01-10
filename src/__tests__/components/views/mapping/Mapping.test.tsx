@@ -1,10 +1,12 @@
 /* eslint-env jest */
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import type { AxiosResponse } from 'axios';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import Mapping from '../../../../components/views/mapping/Mapping';
 import { deleteMapping, getMappings } from '../../../../services/services';
+import type { Mapping as MappingType } from '../../../../types/models';
 
 jest.mock('../../../../services/services', () => ({
   deleteMapping: jest.fn(),
@@ -21,13 +23,19 @@ jest.mock('../../../../utils/HelpText', () => ({
 
 // Mock child components
 jest.mock('../../../../components/common/Help', () => {
-  return function MockHelp({ content }) {
+  return function MockHelp({ content }: { content: string }) {
     return <div data-testid='help-component'>{content}</div>;
   };
 });
 
 jest.mock('../../../../components/views/mapping/AddMapping', () => {
-  return function MockAddMapping({ mappings, setMappings }) {
+  return function MockAddMapping({
+    mappings,
+    setMappings,
+  }: {
+    mappings: MappingType[];
+    setMappings: (mappings: MappingType[]) => void;
+  }) {
     return (
       <div data-testid='add-mapping-component'>
         <button
@@ -51,6 +59,11 @@ jest.mock('../../../../components/views/mapping/MappingBlock', () => {
     attribute,
     showDelete,
     deleteMapping,
+  }: {
+    mappingName: string;
+    attribute: string;
+    showDelete: boolean;
+    deleteMapping: (mappingName: string) => void;
   }) {
     return (
       <div data-testid={`mapping-block-${mappingName}`}>
@@ -72,22 +85,34 @@ jest.mock('../../../../components/views/mapping/MappingConstants', () => ({
   },
 }));
 
-const renderWithRouter = (component, initialRoute = '/mapping') => {
+const mockGetMappings = getMappings as jest.MockedFunction<typeof getMappings>;
+const mockDeleteMapping = deleteMapping as jest.MockedFunction<
+  typeof deleteMapping
+>;
+
+const renderWithRouter = (
+  component: React.ReactElement,
+  initialRoute = '/mapping',
+) => {
   return render(
     <MemoryRouter initialEntries={[initialRoute]}>{component}</MemoryRouter>,
   );
 };
 
 describe('Mapping', () => {
-  const mockMappings = [
+  const mockMappings: MappingType[] = [
     { mappingName: 'Custom Mapping 1', attribute: 'Voltage' },
     { mappingName: 'Custom Mapping 2', attribute: 'Real Power' },
   ];
 
   beforeEach(() => {
     jest.clearAllMocks();
-    getMappings.mockResolvedValue({ data: mockMappings });
-    deleteMapping.mockResolvedValue({ data: {} });
+    mockGetMappings.mockResolvedValue({
+      data: mockMappings,
+    } as AxiosResponse<MappingType[]>);
+    mockDeleteMapping.mockResolvedValue({
+      data: undefined,
+    } as AxiosResponse<void>);
   });
 
   test('renders mapping page layout', async () => {
@@ -115,7 +140,7 @@ describe('Mapping', () => {
     renderWithRouter(<Mapping />);
 
     await waitFor(() => {
-      expect(getMappings).toHaveBeenCalled();
+      expect(mockGetMappings).toHaveBeenCalled();
     });
   });
 
@@ -182,15 +207,15 @@ describe('Mapping', () => {
     const customMapping1Block = screen.getByTestId(
       'mapping-block-Custom Mapping 1',
     );
-    const deleteButton = customMapping1Block.querySelector('button');
+    const deleteButton = customMapping1Block.querySelector('button')!;
     fireEvent.click(deleteButton);
 
     await waitFor(() => {
-      expect(deleteMapping).toHaveBeenCalledWith('Custom Mapping 1');
+      expect(mockDeleteMapping).toHaveBeenCalledWith('Custom Mapping 1');
     });
 
     await waitFor(() => {
-      expect(getMappings).toHaveBeenCalledTimes(2); // Once on mount, once after delete
+      expect(mockGetMappings).toHaveBeenCalledTimes(2); // Once on mount, once after delete
     });
   });
 
@@ -257,7 +282,9 @@ describe('Mapping', () => {
   });
 
   test('handles empty mappings array', async () => {
-    getMappings.mockResolvedValue({ data: [] });
+    mockGetMappings.mockResolvedValue({
+      data: [],
+    } as AxiosResponse<MappingType[]>);
 
     renderWithRouter(<Mapping />);
 
@@ -284,7 +311,7 @@ describe('Mapping', () => {
     renderWithRouter(<Mapping />);
 
     await waitFor(() => {
-      expect(getMappings).toHaveBeenCalled();
+      expect(mockGetMappings).toHaveBeenCalled();
     });
 
     // Component should render all expected elements

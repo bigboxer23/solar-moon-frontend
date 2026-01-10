@@ -169,7 +169,7 @@ describe('MappingBlock', () => {
 
     const mappingNameDiv = screen
       .getByText('Current')
-      .closest('.MappingBlock')
+      .closest('.MappingBlock')!
       .querySelector('.font-extrabold');
     expect(mappingNameDiv).toHaveTextContent('');
   });
@@ -184,7 +184,7 @@ describe('MappingBlock', () => {
 
     const attributeDiv = screen
       .getByText('Test Mapping')
-      .closest('.MappingBlock')
+      .closest('.MappingBlock')!
       .querySelector('.italic');
     expect(attributeDiv).toHaveTextContent('');
   });
