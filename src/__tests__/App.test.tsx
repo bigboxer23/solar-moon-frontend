@@ -9,7 +9,7 @@ jest.mock('react-router-dom', () => {
   const actualModule = jest.requireActual('react-router-dom');
   return {
     ...actualModule,
-    BrowserRouter: ({ children }) => children,
+    BrowserRouter: ({ children }: { children: React.ReactNode }) => children,
   };
 });
 
@@ -20,7 +20,7 @@ jest.mock('aws-amplify', () => ({
 }));
 
 jest.mock('@aws-amplify/ui-react', () => ({
-  Authenticator: ({ children }) => (
+  Authenticator: ({ children }: { children: React.ReactNode }) => (
     <div data-testid='authenticator'>{children}</div>
   ),
 }));
@@ -41,14 +41,16 @@ jest.mock('../components/login/SignInFooter', () => ({
 
 jest.mock('../components/nav/Navbar', () => ({
   __esModule: true,
-  default: ({ trialDate }) => (
+  default: ({ trialDate }: { trialDate: number }) => (
     <div data-testid='navbar'>Navbar {trialDate}</div>
   ),
 }));
 
 jest.mock('../components/nav/PageTitleRoute', () => ({
   __esModule: true,
-  default: ({ title }) => <div data-testid='page-title'>{title}</div>,
+  default: ({ title }: { title: string }) => (
+    <div data-testid='page-title'>{title}</div>
+  ),
 }));
 
 jest.mock('../components/PageFooter', () => ({
@@ -58,7 +60,7 @@ jest.mock('../components/PageFooter', () => ({
 
 jest.mock('../components/views/dashboard/Dashboard', () => ({
   __esModule: true,
-  default: ({ setTrialDate }) => (
+  default: ({ setTrialDate }: { setTrialDate?: (date: number) => void }) => (
     <div
       data-testid='dashboard'
       onClick={() => setTrialDate && setTrialDate(123)}
@@ -75,7 +77,7 @@ jest.mock('../components/views/reports/Reports', () => ({
 
 jest.mock('../components/views/alerts/Alerts', () => ({
   __esModule: true,
-  default: ({ setTrialDate }) => (
+  default: ({ setTrialDate }: { setTrialDate?: (date: number) => void }) => (
     <div data-testid='alerts' onClick={() => setTrialDate && setTrialDate(456)}>
       Alerts
     </div>
@@ -84,7 +86,7 @@ jest.mock('../components/views/alerts/Alerts', () => ({
 
 jest.mock('../components/views/profile/Profile', () => ({
   __esModule: true,
-  default: ({ setTrialDate }) => (
+  default: ({ setTrialDate }: { setTrialDate?: (date: number) => void }) => (
     <div
       data-testid='profile'
       onClick={() => setTrialDate && setTrialDate(789)}
@@ -96,7 +98,7 @@ jest.mock('../components/views/profile/Profile', () => ({
 
 jest.mock('../components/views/site-details/SiteDetails', () => ({
   __esModule: true,
-  default: ({ setTrialDate }) => (
+  default: ({ setTrialDate }: { setTrialDate?: (date: number) => void }) => (
     <div
       data-testid='site-details'
       onClick={() => setTrialDate && setTrialDate(101112)}
@@ -108,7 +110,7 @@ jest.mock('../components/views/site-details/SiteDetails', () => ({
 
 jest.mock('../components/views/site-management/SiteManagement', () => ({
   __esModule: true,
-  default: ({ setTrialDate }) => (
+  default: ({ setTrialDate }: { setTrialDate?: (date: number) => void }) => (
     <div
       data-testid='site-management'
       onClick={() => setTrialDate && setTrialDate(131415)}

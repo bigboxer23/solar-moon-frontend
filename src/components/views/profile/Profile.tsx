@@ -1,3 +1,4 @@
+import type { Dispatch, SetStateAction } from 'react';
 import React, { useEffect, useState } from 'react';
 
 import {
@@ -14,7 +15,7 @@ import DeleteAccount from './DeleteAccount';
 import ManagePlanTile from './ManagePlanTile';
 
 interface ProfileProps {
-  setTrialDate: (date: number | undefined) => void;
+  setTrialDate: Dispatch<SetStateAction<number>>;
 }
 
 export default function Profile({
@@ -34,7 +35,7 @@ export default function Profile({
         setCustomerData({} as Customer);
       });
     getSubscriptionInformation().then(({ data }) => {
-      setTrialDate(data?.joinDate);
+      setTrialDate(data?.joinDate ?? -1);
     });
   }, [setTrialDate]);
 

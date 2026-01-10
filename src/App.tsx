@@ -16,6 +16,7 @@ import {
   Title,
   Tooltip,
 } from 'chart.js';
+import type { ReactElement } from 'react';
 import { IntlProvider } from 'react-intl';
 import {
   BrowserRouter as Router,
@@ -58,7 +59,8 @@ ChartJS.register(
 );
 
 Amplify.configure(awsExports);
-function App() {
+
+function App(): ReactElement {
   const components = {
     Header,
     SignIn: {
@@ -67,7 +69,7 @@ function App() {
     Footer,
   };
 
-  const [trialDate, setTrialDate] = useStickyState(-1, 'trialDate');
+  const [trialDate, setTrialDate] = useStickyState<number>(-1, 'trialDate');
 
   return (
     <IntlProvider locale={navigator.language}>
