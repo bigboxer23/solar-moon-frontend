@@ -1,3 +1,4 @@
+import { ReactElement } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import {
@@ -12,6 +13,8 @@ import {
   parseSearchReturn,
   TOTAL_AGGREGATION,
 } from '../../../services/search';
+import type { SearchResponse } from '../../../types/api';
+import type { Alarm, Device } from '../../../types/models';
 import { getDisplayName, getRoundedTimeFromOffset } from '../../../utils/Utils';
 import CurrentPowerBlock from '../../common/CurrentPowerBlock';
 import DeviceBlock from '../../device-block/DeviceBlock';
@@ -19,6 +22,22 @@ import StackedAlertsInfo from '../../device-block/StackedAlertsInfo';
 import StackedCurrentVoltageBlock from '../../device-block/StackedCurrentVoltageBlock';
 import StackedTotAvg from '../../device-block/StackedTotAvg';
 import MiniChart from '../../graphs/MiniChart';
+
+interface SiteDevicesOverviewProps {
+  devices: Device[];
+  activeSiteAlerts: Alarm[];
+  resolvedSiteAlerts: Alarm[];
+  avgData: Record<string, SearchResponse>;
+  totalData: Record<string, SearchResponse>;
+  timeSeriesData: Record<string, SearchResponse>;
+  maxData: Record<string, SearchResponse>;
+  timeIncrement: number;
+}
+
+const emptySearchResponse: SearchResponse = {
+  aggregations: {},
+  hits: { hits: [] },
+};
 
 export default function SiteDevicesOverview({
   devices,
@@ -29,7 +48,7 @@ export default function SiteDevicesOverview({
   timeSeriesData,
   maxData,
   timeIncrement,
-}) {
+}: SiteDevicesOverviewProps): ReactElement {
   const navigate = useNavigate();
   const bucketSize = getBucketSize(timeIncrement, 'avgTotal');
 
@@ -40,23 +59,29 @@ export default function SiteDevicesOverview({
           {devices.length} Devices
         </div>
         <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
-          {devices.map((device, i) => {
+          {devices.map((device) => {
             const activeAlerts = activeSiteAlerts.filter(
               (d) => d.deviceId === device.id,
             ).length;
-            const reportLink = `/reports?deviceId=${device.id}&siteId=${device.siteId}&start=${getRoundedTimeFromOffset(timeIncrement).getTime()}&end=${new Date().getTime()}`;
+            const reportLink = `/reports?deviceId=${device.id}&siteId=${device.siteId ?? ''}&start=${getRoundedTimeFromOffset(timeIncrement).getTime()}&end=${new Date().getTime()}`;
+            const deviceTimeSeriesData =
+              timeSeriesData[device.id] ?? emptySearchResponse;
+            const deviceMaxData = maxData[device.id] ?? emptySearchResponse;
+            const deviceAvgData = avgData[device.id] ?? emptySearchResponse;
+            const deviceTotalData = totalData[device.id] ?? emptySearchResponse;
+
             return (
               <DeviceBlock
                 body={
                   <MiniChart
                     graphData={parseSearchReturn(
-                      timeSeriesData[device.id],
+                      deviceTimeSeriesData,
                       bucketSize,
                     )}
                   />
                 }
                 informationalErrors={getInformationalErrorInfo(
-                  timeSeriesData[device.id],
+                  deviceTimeSeriesData,
                 )}
                 informationalErrorsLink={`${reportLink}&err=true`}
                 key={device.id}
@@ -64,26 +89,23 @@ export default function SiteDevicesOverview({
                 statBlocks={[
                   <CurrentPowerBlock
                     activeAlert={activeAlerts > 0}
-                    currentPower={parseCurrentPower(maxData[device.id])}
+                    currentPower={parseCurrentPower(deviceMaxData)}
                     key={0}
-                    max={parseMaxData(maxData[device.id])}
+                    max={parseMaxData(deviceMaxData)}
                   />,
                   <StackedTotAvg
-                    avg={getAggregationValue(
-                      avgData[device.id],
-                      AVG_AGGREGATION,
-                    )}
+                    avg={getAggregationValue(deviceAvgData, AVG_AGGREGATION)}
                     className='items-end'
                     key={1}
                     total={getAggregationValue(
-                      totalData[device.id],
+                      deviceTotalData,
                       TOTAL_AGGREGATION,
                     )}
                   />,
                   <StackedCurrentVoltageBlock
-                    current={parseCurrentAmperage(maxData[device.id])}
+                    current={parseCurrentAmperage(deviceMaxData)}
                     key={2}
-                    voltage={parseCurrentVoltage(maxData[device.id])}
+                    voltage={parseCurrentVoltage(deviceMaxData)}
                   />,
                   <StackedAlertsInfo
                     activeAlerts={
@@ -100,7 +122,7 @@ export default function SiteDevicesOverview({
                   />,
                 ]}
                 subtitle={device.deviceName}
-                title={getDisplayName(device)}
+                title={getDisplayName(device) ?? ''}
                 truncationLength={20}
               />
             );

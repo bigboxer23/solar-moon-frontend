@@ -11,7 +11,15 @@ import * as utils from '../../../../utils/Utils';
 
 // Mock child components
 jest.mock('../../../../components/common/CurrentPowerBlock', () => {
-  return function MockCurrentPowerBlock({ currentPower, max, activeAlert }) {
+  return function MockCurrentPowerBlock({
+    currentPower,
+    max,
+    activeAlert,
+  }: {
+    currentPower: number;
+    max: number;
+    activeAlert?: boolean;
+  }) {
     return (
       <div data-testid='current-power-block'>
         Current: {currentPower}, Max: {max}, Alert: {activeAlert?.toString()}
@@ -33,7 +41,17 @@ jest.mock('../../../../components/common/Loader', () => {
 });
 
 jest.mock('../../../../components/common/PowerBlock', () => {
-  return function MockPowerBlock({ power, title, unit, className }) {
+  return function MockPowerBlock({
+    power,
+    title,
+    unit,
+    className,
+  }: {
+    power: number;
+    title: string;
+    unit?: string;
+    className?: string;
+  }) {
     return (
       <div className={className} data-testid={`power-block-${title}`}>
         {title}: {power} {unit}
@@ -43,7 +61,17 @@ jest.mock('../../../../components/common/PowerBlock', () => {
 });
 
 jest.mock('../../../../components/common/StatBlock', () => {
-  return function MockStatBlock({ title, value, onClick, className }) {
+  return function MockStatBlock({
+    title,
+    value,
+    onClick,
+    className,
+  }: {
+    title: string;
+    value: number;
+    onClick?: () => void;
+    className?: string;
+  }) {
     return (
       <div
         className={className}
@@ -62,6 +90,11 @@ jest.mock('../../../../components/device-block/StackedAlertsInfo', () => {
     resolvedAlerts,
     onClick,
     className,
+  }: {
+    activeAlerts: number;
+    resolvedAlerts: number;
+    onClick?: () => void;
+    className?: string;
   }) {
     return (
       <div
@@ -76,7 +109,15 @@ jest.mock('../../../../components/device-block/StackedAlertsInfo', () => {
 });
 
 jest.mock('../../../../components/device-block/StackedTotAvg', () => {
-  return function MockStackedTotAvg({ total, avg, className }) {
+  return function MockStackedTotAvg({
+    total,
+    avg,
+    className,
+  }: {
+    total: number;
+    avg: number;
+    className?: string;
+  }) {
     return (
       <div className={className} data-testid='stacked-tot-avg'>
         Total: {total}, Avg: {avg}
@@ -87,11 +128,17 @@ jest.mock('../../../../components/device-block/StackedTotAvg', () => {
 
 jest.mock('../../../../components/views/dashboard/OverviewChart', () => {
   return function MockOverviewChart({
-    overviewData,
-    sitesData,
+    _overviewData,
+    _sitesData,
     timeIncrement,
     startDate,
     setStartDate,
+  }: {
+    _overviewData: unknown;
+    _sitesData: unknown;
+    timeIncrement: number;
+    startDate: Date;
+    setStartDate: (date: Date) => void;
   }) {
     return (
       <div data-testid='overview-chart'>
@@ -110,8 +157,14 @@ jest.mock('../../../../components/views/dashboard/OverviewSiteList', () => {
     sites,
     devices,
     alerts,
-    sitesGraphData,
-    timeIncrement,
+    _sitesGraphData,
+    _timeIncrement,
+  }: {
+    sites: unknown[];
+    devices: unknown[];
+    alerts: unknown[];
+    _sitesGraphData: unknown;
+    _timeIncrement: number;
   }) {
     return (
       <div data-testid='overview-site-list'>
@@ -123,7 +176,13 @@ jest.mock('../../../../components/views/dashboard/OverviewSiteList', () => {
 });
 
 jest.mock('../../../../components/views/dashboard/SummaryHeader', () => {
-  return function MockSummaryHeader({ dailyAverageOutput, dailyOutput }) {
+  return function MockSummaryHeader({
+    dailyAverageOutput,
+    dailyOutput,
+  }: {
+    dailyAverageOutput: number;
+    dailyOutput: number;
+  }) {
     return (
       <div data-testid='summary-header'>
         Daily Avg: {dailyAverageOutput}, Daily Total: {dailyOutput}
@@ -138,6 +197,9 @@ jest.mock(
     return function MockTimeIncrementSelector({
       timeIncrement,
       setTimeIncrement,
+    }: {
+      timeIncrement: number;
+      setTimeIncrement: (value: string) => void;
     }) {
       return (
         <div data-testid='time-increment-selector'>
@@ -176,7 +238,7 @@ jest.mock('react-router-dom', () => ({
   useNavigate: () => mockNavigate,
 }));
 
-const renderWithProviders = (component) => {
+const renderWithProviders = (component: React.ReactElement) => {
   return render(
     <BrowserRouter>
       <IntlProvider locale='en' messages={{}}>
@@ -191,34 +253,88 @@ describe('Overview', () => {
 
   const mockOverviewData = {
     devices: [
-      { id: 1, name: 'Device 1', isSite: false, site: 'Site A' },
-      { id: 2, name: 'Site A', isSite: true, site: 'Site A' },
-      { id: 3, name: 'Device 2', isSite: false, site: 'Site B' },
-      { id: 4, name: 'Site B', isSite: true, site: 'Site B' },
+      {
+        id: '1',
+        name: 'Device 1',
+        deviceName: 'Device 1',
+        isSite: false,
+        site: 'Site A',
+      },
+      {
+        id: '2',
+        name: 'Site A',
+        deviceName: 'Site A',
+        isSite: true,
+        site: 'Site A',
+      },
+      {
+        id: '3',
+        name: 'Device 2',
+        deviceName: 'Device 2',
+        isSite: false,
+        site: 'Site B',
+      },
+      {
+        id: '4',
+        name: 'Site B',
+        deviceName: 'Site B',
+        isSite: true,
+        site: 'Site B',
+      },
     ],
     alarms: [
-      { id: 1, state: 1, message: 'Active alarm' },
-      { id: 2, state: 0, message: 'Resolved alarm' },
-      { id: 3, state: 2, message: 'Critical alarm' },
+      {
+        id: '1',
+        deviceId: 'd1',
+        message: 'Active alarm',
+        timestamp: 1234567890,
+        state: 1,
+      },
+      {
+        id: '2',
+        deviceId: 'd2',
+        message: 'Resolved alarm',
+        timestamp: 1234567890,
+        state: 0,
+      },
+      {
+        id: '3',
+        deviceId: 'd3',
+        message: 'Critical alarm',
+        timestamp: 1234567890,
+        state: 2,
+      },
     ],
     overall: {
       avg: { value: 250 },
       total: { value: 1500 },
-      timeSeries: [{ time: '2024-01-01', value: 100 }],
+      timeSeries: { aggregations: {}, hits: { hits: [] } },
       dailyEnergyConsumedTotal: { value: 800 },
       dailyEnergyConsumedAverage: 400,
     },
     sitesOverviewData: {
       'Site A': {
-        weeklyMaxPower: { current: 150, max: 200 },
+        timeSeries: { aggregations: {}, hits: { hits: [] } },
+        weeklyMaxPower: {
+          aggregations: { current: { value: 150 }, max: { value: 200 } },
+          hits: { hits: [] },
+        },
+        avg: { value: 250 },
+        total: { value: 1500 },
       },
       'Site B': {
-        weeklyMaxPower: { current: 100, max: 180 },
+        timeSeries: { aggregations: {}, hits: { hits: [] } },
+        weeklyMaxPower: {
+          aggregations: { current: { value: 100 }, max: { value: 180 } },
+          hits: { hits: [] },
+        },
+        avg: { value: 200 },
+        total: { value: 1200 },
       },
     },
     subscription: {
       customerId: 'test-customer-id',
-      joinDate: '2024-12-31',
+      joinDate: 1704067200000,
       manualSubscriptionDate: 0,
       packs: 0,
     },
@@ -228,28 +344,36 @@ describe('Overview', () => {
     jest.clearAllMocks();
 
     // Mock utility functions
-    utils.useStickyState.mockImplementation((defaultValue) => [
+    (utils.useStickyState as jest.Mock).mockImplementation((defaultValue) => [
       defaultValue,
       jest.fn(),
     ]);
-    utils.getRoundedTimeFromOffset.mockReturnValue(
+    (utils.getRoundedTimeFromOffset as jest.Mock).mockReturnValue(
       new Date('2024-01-01').getTime(),
     );
-    utils.sortDevices.mockImplementation((a, b) =>
-      a.name.localeCompare(b.name),
+    (utils.sortDevices as jest.Mock).mockImplementation((a, b) =>
+      (a.name || '').localeCompare(b.name || ''),
     );
 
     // Mock search service functions
-    searchService.getAggregationValue.mockImplementation(
-      (data, type) => data?.value || 0,
+    (searchService.getAggregationValue as jest.Mock).mockImplementation(
+      (data, _type) => data?.value || 0,
     );
-    searchService.parseMaxData.mockImplementation((data) => data?.max || 0);
-    searchService.parseCurrentPower.mockImplementation(
-      (data) => data?.current || 0,
+    (searchService.parseMaxData as jest.Mock).mockImplementation((data) => {
+      const maxValue = data?.aggregations?.max?.value;
+      return maxValue || 0;
+    });
+    (searchService.parseCurrentPower as jest.Mock).mockImplementation(
+      (data) => {
+        const currentValue = data?.aggregations?.current?.value;
+        return currentValue || 0;
+      },
     );
 
     // Mock successful service call
-    services.getOverviewData.mockResolvedValue({ data: mockOverviewData });
+    (services.getOverviewData as jest.Mock).mockResolvedValue({
+      data: mockOverviewData,
+    });
   });
 
   describe('Loading States', () => {
@@ -260,7 +384,9 @@ describe('Overview', () => {
     });
 
     test('shows error state on API failure', async () => {
-      services.getOverviewData.mockRejectedValue(new Error('API Error'));
+      (services.getOverviewData as jest.Mock).mockRejectedValue(
+        new Error('API Error'),
+      );
 
       renderWithProviders(<Overview setTrialDate={mockSetTrialDate} />);
 
@@ -287,7 +413,9 @@ describe('Overview', () => {
 
     test('calls getOverviewData with correct parameters', async () => {
       const mockStartDate = new Date('2024-01-01');
-      utils.getRoundedTimeFromOffset.mockReturnValue(mockStartDate.getTime());
+      (utils.getRoundedTimeFromOffset as jest.Mock).mockReturnValue(
+        mockStartDate.getTime(),
+      );
 
       renderWithProviders(<Overview setTrialDate={mockSetTrialDate} />);
 
@@ -303,7 +431,7 @@ describe('Overview', () => {
       renderWithProviders(<Overview setTrialDate={mockSetTrialDate} />);
 
       await waitFor(() => {
-        expect(mockSetTrialDate).toHaveBeenCalledWith('2024-12-31');
+        expect(mockSetTrialDate).toHaveBeenCalledWith(1704067200000);
       });
     });
   });
@@ -424,7 +552,10 @@ describe('Overview', () => {
   describe('Time Increment Changes', () => {
     test('updates time increment and refetches data', async () => {
       const mockSetTimeIncrement = jest.fn();
-      utils.useStickyState.mockReturnValue(['day', mockSetTimeIncrement]);
+      (utils.useStickyState as jest.Mock).mockReturnValue([
+        'day',
+        mockSetTimeIncrement,
+      ]);
 
       renderWithProviders(<Overview setTrialDate={mockSetTrialDate} />);
 
@@ -440,7 +571,10 @@ describe('Overview', () => {
 
     test('updates start date when time increment changes', async () => {
       const mockSetTimeIncrement = jest.fn();
-      utils.useStickyState.mockReturnValue(['day', mockSetTimeIncrement]);
+      (utils.useStickyState as jest.Mock).mockReturnValue([
+        'day',
+        mockSetTimeIncrement,
+      ]);
 
       renderWithProviders(<Overview setTrialDate={mockSetTrialDate} />);
 
@@ -459,11 +593,13 @@ describe('Overview', () => {
   describe('No Devices Redirect', () => {
     test('redirects to manage page when no devices', async () => {
       const noDevicesData = { ...mockOverviewData, devices: [] };
-      services.getOverviewData.mockResolvedValue({ data: noDevicesData });
+      (services.getOverviewData as jest.Mock).mockResolvedValue({
+        data: noDevicesData,
+      });
 
       // Mock window.location.href
-      delete window.location;
-      window.location = { href: '' };
+      delete (window as { location?: unknown }).location;
+      (window as { location: { href: string } }).location = { href: '' };
 
       renderWithProviders(<Overview setTrialDate={mockSetTrialDate} />);
 

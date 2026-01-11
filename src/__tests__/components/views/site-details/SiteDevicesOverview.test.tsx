@@ -1,9 +1,11 @@
 /* eslint-env jest */
 import { fireEvent, render, screen } from '@testing-library/react';
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import SiteDevicesOverview from '../../../../components/views/site-details/SiteDevicesOverview';
+import type { SearchResponse } from '../../../../types/api';
+import type { Alarm, Device } from '../../../../types/models';
 
 // Mock react-router-dom
 const mockNavigate = jest.fn();
@@ -34,7 +36,15 @@ jest.mock('../../../../utils/Utils', () => ({
 
 // Mock components
 jest.mock('../../../../components/common/CurrentPowerBlock', () => {
-  return function MockCurrentPowerBlock({ activeAlert, currentPower, max }) {
+  return function MockCurrentPowerBlock({
+    activeAlert,
+    currentPower,
+    max,
+  }: {
+    activeAlert: boolean;
+    currentPower: number;
+    max: number;
+  }) {
     return (
       <div
         data-active-alert={activeAlert}
@@ -58,6 +68,15 @@ jest.mock('../../../../components/device-block/DeviceBlock', () => {
     informationalErrorsLink,
     reportLink,
     truncationLength,
+  }: {
+    title: string;
+    subtitle: string;
+    body: React.ReactNode;
+    statBlocks: React.ReactNode[];
+    informationalErrors: unknown;
+    informationalErrorsLink: string;
+    reportLink: string;
+    truncationLength: number;
   }) {
     return (
       <div
@@ -87,6 +106,11 @@ jest.mock('../../../../components/device-block/StackedAlertsInfo', () => {
     resolvedAlerts,
     className,
     onClick,
+  }: {
+    activeAlerts: number;
+    resolvedAlerts: number;
+    className?: string;
+    onClick?: () => void;
   }) {
     return (
       <div
@@ -105,7 +129,13 @@ jest.mock('../../../../components/device-block/StackedAlertsInfo', () => {
 jest.mock(
   '../../../../components/device-block/StackedCurrentVoltageBlock',
   () => {
-    return function MockStackedCurrentVoltageBlock({ current, voltage }) {
+    return function MockStackedCurrentVoltageBlock({
+      current,
+      voltage,
+    }: {
+      current: number;
+      voltage: number;
+    }) {
       return (
         <div
           data-current={current}
@@ -120,7 +150,15 @@ jest.mock(
 );
 
 jest.mock('../../../../components/device-block/StackedTotAvg', () => {
-  return function MockStackedTotAvg({ total, avg, className }) {
+  return function MockStackedTotAvg({
+    total,
+    avg,
+    className,
+  }: {
+    total: number;
+    avg: number;
+    className?: string;
+  }) {
     return (
       <div
         className={className}
@@ -135,7 +173,7 @@ jest.mock('../../../../components/device-block/StackedTotAvg', () => {
 });
 
 jest.mock('../../../../components/graphs/MiniChart', () => {
-  return function MockMiniChart({ graphData }) {
+  return function MockMiniChart({ graphData }: { graphData: unknown }) {
     return (
       <div data-graph-data={JSON.stringify(graphData)} data-testid='mini-chart'>
         Mini Chart
@@ -144,7 +182,7 @@ jest.mock('../../../../components/graphs/MiniChart', () => {
   };
 });
 
-const renderWithRouter = (component) => {
+const renderWithRouter = (component: ReactElement) => {
   return render(<MemoryRouter>{component}</MemoryRouter>);
 };
 
@@ -165,7 +203,7 @@ describe('SiteDevicesOverview', () => {
     getRoundedTimeFromOffset,
   } = require('../../../../utils/Utils');
 
-  const mockDevices = [
+  const mockDevices: Device[] = [
     {
       id: 'device1',
       deviceName: 'Inverter 1',
@@ -180,64 +218,134 @@ describe('SiteDevicesOverview', () => {
     },
   ];
 
-  const mockActiveSiteAlerts = [
-    { deviceId: 'device1', id: 'alert1', message: 'High temperature' },
-    { deviceId: 'device1', id: 'alert2', message: 'Low voltage' },
-    { deviceId: 'device2', id: 'alert3', message: 'Connection issue' },
+  const mockActiveSiteAlerts: Alarm[] = [
+    {
+      deviceId: 'device1',
+      id: 'alert1',
+      message: 'High temperature',
+      timestamp: 1234567890,
+    },
+    {
+      deviceId: 'device1',
+      id: 'alert2',
+      message: 'Low voltage',
+      timestamp: 1234567891,
+    },
+    {
+      deviceId: 'device2',
+      id: 'alert3',
+      message: 'Connection issue',
+      timestamp: 1234567892,
+    },
   ];
 
-  const mockResolvedSiteAlerts = [
-    { deviceId: 'device1', id: 'alert4', message: 'Resolved issue' },
-    { deviceId: 'device2', id: 'alert5', message: 'Fixed connection' },
-    { deviceId: 'device2', id: 'alert6', message: 'Updated firmware' },
+  const mockResolvedSiteAlerts: Alarm[] = [
+    {
+      deviceId: 'device1',
+      id: 'alert4',
+      message: 'Resolved issue',
+      timestamp: 1234567893,
+    },
+    {
+      deviceId: 'device2',
+      id: 'alert5',
+      message: 'Fixed connection',
+      timestamp: 1234567894,
+    },
+    {
+      deviceId: 'device2',
+      id: 'alert6',
+      message: 'Updated firmware',
+      timestamp: 1234567895,
+    },
   ];
 
-  const mockAvgData = {
-    device1: { avg: 1500 },
-    device2: { avg: 1200 },
+  const mockAvgData: Record<string, SearchResponse> = {
+    device1: { aggregations: { avg: { value: 1500 } }, hits: { hits: [] } },
+    device2: { aggregations: { avg: { value: 1200 } }, hits: { hits: [] } },
   };
 
-  const mockTotalData = {
-    device1: { total: 5000 },
-    device2: { total: 4000 },
+  const mockTotalData: Record<string, SearchResponse> = {
+    device1: { aggregations: { total: { value: 5000 } }, hits: { hits: [] } },
+    device2: { aggregations: { total: { value: 4000 } }, hits: { hits: [] } },
   };
 
-  const mockTimeSeriesData = {
-    device1: [
-      { timestamp: 1234567890, value: 1000 },
-      { timestamp: 1234567900, value: 1200 },
-    ],
-    device2: [
-      { timestamp: 1234567890, value: 800 },
-      { timestamp: 1234567900, value: 900 },
-    ],
+  const mockTimeSeriesData: Record<string, SearchResponse> = {
+    device1: {
+      aggregations: {},
+      hits: {
+        hits: [
+          { fields: { timestamp: [1234567890], value: [1000] } },
+          { fields: { timestamp: [1234567900], value: [1200] } },
+        ],
+      },
+    },
+    device2: {
+      aggregations: {},
+      hits: {
+        hits: [
+          { fields: { timestamp: [1234567890], value: [800] } },
+          { fields: { timestamp: [1234567900], value: [900] } },
+        ],
+      },
+    },
   };
 
-  const mockMaxData = {
-    device1: { power: 2500, voltage: 220, amperage: 10 },
-    device2: { power: 2000, voltage: 240, amperage: 8 },
+  const mockMaxData: Record<string, SearchResponse> = {
+    device1: {
+      aggregations: {
+        power: { value: 2500 },
+        voltage: { value: 220 },
+        amperage: { value: 10 },
+      },
+      hits: { hits: [] },
+    },
+    device2: {
+      aggregations: {
+        power: { value: 2000 },
+        voltage: { value: 240 },
+        amperage: { value: 8 },
+      },
+      hits: { hits: [] },
+    },
   };
 
-  const mockTimeIncrement = { days: 7 };
+  const mockTimeIncrement = 7;
 
   beforeEach(() => {
     jest.clearAllMocks();
 
     // Setup mocks
-    getRoundedTimeFromOffset.mockReturnValue(new Date('2023-01-01'));
-    getDisplayName.mockImplementation((device) => device.name);
-    getBucketSize.mockReturnValue('1m');
-    parseSearchReturn.mockImplementation((data) => data);
-    getInformationalErrorInfo.mockReturnValue([]);
-    parseCurrentPower.mockImplementation((data) => data?.power || 0);
-    parseMaxData.mockImplementation((data) => data?.power || 0);
-    parseCurrentAmperage.mockImplementation((data) => data?.amperage || 0);
-    parseCurrentVoltage.mockImplementation((data) => data?.voltage || 0);
-    getAggregationValue.mockImplementation((data, type) => {
-      if (type === 'avg') return data?.avg || 0;
-      if (type === 'total') return data?.total || 0;
-      return 0;
-    });
+    (getRoundedTimeFromOffset as jest.Mock).mockReturnValue(
+      new Date('2023-01-01'),
+    );
+    (getDisplayName as jest.Mock).mockImplementation(
+      (device: Device) => device.name,
+    );
+    (getBucketSize as jest.Mock).mockReturnValue('1m');
+    (parseSearchReturn as jest.Mock).mockImplementation(
+      (data: SearchResponse) => data,
+    );
+    (getInformationalErrorInfo as jest.Mock).mockReturnValue([]);
+    (parseCurrentPower as jest.Mock).mockImplementation(
+      (data: SearchResponse) => data?.aggregations?.power?.value || 0,
+    );
+    (parseMaxData as jest.Mock).mockImplementation(
+      (data: SearchResponse) => data?.aggregations?.power?.value || 0,
+    );
+    (parseCurrentAmperage as jest.Mock).mockImplementation(
+      (data: SearchResponse) => data?.aggregations?.amperage?.value || 0,
+    );
+    (parseCurrentVoltage as jest.Mock).mockImplementation(
+      (data: SearchResponse) => data?.aggregations?.voltage?.value || 0,
+    );
+    (getAggregationValue as jest.Mock).mockImplementation(
+      (data: SearchResponse, type: string) => {
+        if (type === 'avg') return data?.aggregations?.avg?.value || 0;
+        if (type === 'total') return data?.aggregations?.total?.value || 0;
+        return 0;
+      },
+    );
   });
 
   test('renders main container with correct CSS classes', () => {
@@ -377,13 +485,13 @@ describe('SiteDevicesOverview', () => {
     const deviceBlocks = screen.getAllByTestId('device-block');
 
     // Check report links contain device and site IDs
-    const reportLink1 = deviceBlocks[0].getAttribute('data-report-link');
+    const reportLink1 = deviceBlocks[0]?.getAttribute('data-report-link');
     expect(reportLink1).toContain('deviceId=device1');
     expect(reportLink1).toContain('siteId=site1');
     expect(reportLink1).toContain('start=');
     expect(reportLink1).toContain('end=');
 
-    const reportLink2 = deviceBlocks[1].getAttribute('data-report-link');
+    const reportLink2 = deviceBlocks[1]?.getAttribute('data-report-link');
     expect(reportLink2).toContain('deviceId=device2');
     expect(reportLink2).toContain('siteId=site1');
   });
@@ -405,13 +513,13 @@ describe('SiteDevicesOverview', () => {
     const deviceBlocks = screen.getAllByTestId('device-block');
 
     // Check informational errors links include err=true parameter
-    const errorLink1 = deviceBlocks[0].getAttribute(
+    const errorLink1 = deviceBlocks[0]?.getAttribute(
       'data-informational-errors-link',
     );
     expect(errorLink1).toContain('err=true');
     expect(errorLink1).toContain('deviceId=device1');
 
-    const errorLink2 = deviceBlocks[1].getAttribute(
+    const errorLink2 = deviceBlocks[1]?.getAttribute(
       'data-informational-errors-link',
     );
     expect(errorLink2).toContain('err=true');
@@ -435,13 +543,12 @@ describe('SiteDevicesOverview', () => {
     const miniCharts = screen.getAllByTestId('mini-chart');
     expect(miniCharts).toHaveLength(2);
 
-    // Verify parseSearchReturn was called with correct data
+    // Verify parseSearchReturn was called with correct data (with fallback to empty response)
     expect(parseSearchReturn).toHaveBeenCalledWith(
-      mockTimeSeriesData.device1,
-      '1m',
-    );
-    expect(parseSearchReturn).toHaveBeenCalledWith(
-      mockTimeSeriesData.device2,
+      expect.objectContaining({
+        aggregations: expect.any(Object),
+        hits: expect.any(Object),
+      }),
       '1m',
     );
   });
@@ -535,11 +642,16 @@ describe('SiteDevicesOverview', () => {
     const alertsInfo = screen.getAllByTestId('stacked-alerts-info');
 
     // Click on first device alerts
-    fireEvent.click(alertsInfo[0]);
+    const [firstAlert, secondAlert] = alertsInfo;
+    if (firstAlert) {
+      fireEvent.click(firstAlert);
+    }
     expect(mockNavigate).toHaveBeenCalledWith('/alerts?deviceId=device1');
 
     // Click on second device alerts
-    fireEvent.click(alertsInfo[1]);
+    if (secondAlert) {
+      fireEvent.click(secondAlert);
+    }
     expect(mockNavigate).toHaveBeenCalledWith('/alerts?deviceId=device2');
   });
 

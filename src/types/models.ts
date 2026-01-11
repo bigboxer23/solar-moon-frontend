@@ -39,6 +39,7 @@ export interface Customer {
 export interface Alarm {
   id: string;
   deviceId: string;
+  siteId?: string;
   message: string;
   timestamp: number;
   severity?: 'warning' | 'error' | 'info';

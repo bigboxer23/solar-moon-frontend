@@ -7,13 +7,17 @@ import CopyButton from '../../../components/common/CopyButton';
 
 jest.mock('usehooks-ts');
 
+const mockUseCopyToClipboard = useCopyToClipboard as jest.MockedFunction<
+  typeof useCopyToClipboard
+>;
+
 describe('CopyButton', () => {
   const mockCopy = jest.fn();
 
   beforeEach(() => {
     jest.clearAllMocks();
     jest.useFakeTimers();
-    useCopyToClipboard.mockReturnValue([null, mockCopy]);
+    mockUseCopyToClipboard.mockReturnValue([null, mockCopy]);
   });
 
   afterEach(() => {
@@ -96,7 +100,9 @@ describe('CopyButton', () => {
 
   test('applies correct CSS classes', () => {
     const mockDataSrc = jest.fn(() => 'test data');
-    const { container } = render(<CopyButton dataSrc={mockDataSrc} />);
+    const { container: _container } = render(
+      <CopyButton dataSrc={mockDataSrc} />,
+    );
 
     const button = screen.getByRole('button');
     expect(button).toHaveClass('copy-button', 'relative', 'w-auto');
@@ -104,7 +110,9 @@ describe('CopyButton', () => {
 
   test('uses icon button variant', () => {
     const mockDataSrc = jest.fn(() => 'test data');
-    const { container } = render(<CopyButton dataSrc={mockDataSrc} />);
+    const { container: _container } = render(
+      <CopyButton dataSrc={mockDataSrc} />,
+    );
 
     const button = screen.getByRole('button');
     expect(button).toHaveClass('Button-icon');
@@ -122,7 +130,9 @@ describe('CopyButton', () => {
 
   test('handles multiple rapid clicks', () => {
     const mockDataSrc = jest.fn(() => 'test data');
-    const { container } = render(<CopyButton dataSrc={mockDataSrc} />);
+    const { container: _container } = render(
+      <CopyButton dataSrc={mockDataSrc} />,
+    );
 
     const button = screen.getByRole('button');
 

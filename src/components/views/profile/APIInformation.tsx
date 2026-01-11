@@ -51,7 +51,7 @@ export default function APIInformation({
           label='Access Key'
           suffix={
             <CopyButton
-              dataSrc={() => customerData?.accessKey}
+              dataSrc={() => customerData?.accessKey ?? ''}
               title='Copy Access Key'
             />
           }

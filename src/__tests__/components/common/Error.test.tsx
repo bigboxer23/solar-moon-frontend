@@ -19,7 +19,7 @@ describe('Error', () => {
   });
 
   test('renders error message', () => {
-    const { container } = render(<Error />);
+    const { container: _container } = render(<Error />);
 
     expect(
       screen.getByText(/We're sorry, there's some trouble loading/),
@@ -30,7 +30,7 @@ describe('Error', () => {
   });
 
   test('renders reload button', () => {
-    const { container } = render(<Error />);
+    const { container: _container } = render(<Error />);
 
     const button = screen.getByRole('button', { name: 'here' });
     expect(button).toBeInTheDocument();
@@ -55,7 +55,7 @@ describe('Error', () => {
   });
 
   test('applies button styling classes', () => {
-    const { container } = render(<Error />);
+    const { container: _container } = render(<Error />);
 
     const button = screen.getByRole('button', { name: 'here' });
     expect(button).toHaveClass('font-bold', 'text-gray-400', 'underline');
@@ -90,7 +90,9 @@ describe('Error', () => {
   });
 
   test('handles null className gracefully', () => {
-    const { container } = render(<Error className={null} />);
+    const { container } = render(
+      <Error className={null as unknown as string} />,
+    );
 
     const errorWrapper = container.querySelector('.Error');
     expect(errorWrapper).toHaveClass('Error');
@@ -113,7 +115,7 @@ describe('Error', () => {
   });
 
   test('reloads page when button is clicked', () => {
-    const { container } = render(<Error />);
+    const { container: _container } = render(<Error />);
 
     const button = screen.getByRole('button', { name: 'here' });
     fireEvent.click(button);
@@ -122,7 +124,7 @@ describe('Error', () => {
   });
 
   test('contains proper error message structure', () => {
-    const { container } = render(<Error />);
+    const { container: _container } = render(<Error />);
 
     expect(screen.getByText(/We're sorry/)).toBeInTheDocument();
     expect(screen.getByText(/trouble loading your data/)).toBeInTheDocument();
@@ -134,8 +136,8 @@ describe('Error', () => {
     const { container } = render(<Error />);
 
     const errorDiv = container.querySelector('.Error');
-    const paragraph = errorDiv.querySelector('p');
-    const button = paragraph.querySelector('button');
+    const paragraph = errorDiv!.querySelector('p');
+    const button = paragraph!.querySelector('button');
 
     expect(errorDiv).toBeInTheDocument();
     expect(paragraph).toBeInTheDocument();
@@ -143,12 +145,12 @@ describe('Error', () => {
   });
 
   test('button is wrapped in span', () => {
-    const { container } = render(<Error />);
+    const { container: _container } = render(<Error />);
 
     const button = screen.getByRole('button', { name: 'here' });
     const span = button.parentElement;
 
-    expect(span.tagName).toBe('SPAN');
+    expect(span!.tagName).toBe('SPAN');
   });
 
   test('contains line break in message', () => {
@@ -173,14 +175,14 @@ describe('Error', () => {
   });
 
   test('button onClick function is defined', () => {
-    const { container } = render(<Error />);
+    const { container: _container } = render(<Error />);
 
     const button = screen.getByRole('button', { name: 'here' });
     expect(button.onclick).toBeDefined();
   });
 
   test('reloadPage function sets correct href', () => {
-    const { container } = render(<Error />);
+    const { container: _container } = render(<Error />);
 
     const button = screen.getByRole('button', { name: 'here' });
 

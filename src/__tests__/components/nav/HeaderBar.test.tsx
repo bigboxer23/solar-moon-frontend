@@ -1,6 +1,5 @@
 /* eslint-env jest */
 import { render, screen } from '@testing-library/react';
-import React from 'react';
 
 import HeaderBar from '../../../components/nav/HeaderBar';
 
@@ -41,7 +40,7 @@ describe('HeaderBar', () => {
       expect(leftContentContainer).toBeInTheDocument();
 
       // Should only contain the logo
-      const logo = leftContentContainer.querySelector('img[alt="brand"]');
+      const logo = leftContentContainer?.querySelector('img[alt="brand"]');
       expect(logo).toBeInTheDocument();
     });
   });
@@ -216,7 +215,7 @@ describe('HeaderBar', () => {
       expect(mainContainer).toBeInTheDocument();
 
       // Should have left section with content and logo
-      const leftSection = mainContainer.querySelector(
+      const leftSection = mainContainer?.querySelector(
         '.flex.items-center.justify-center',
       );
       expect(leftSection).toBeInTheDocument();
@@ -224,7 +223,7 @@ describe('HeaderBar', () => {
       expect(leftSection).toContainElement(screen.getByAltText('brand'));
 
       // Should have header text section
-      const headerSection = mainContainer.querySelector(
+      const headerSection = mainContainer?.querySelector(
         '.ms-4.flex.items-center',
       );
       expect(headerSection).toBeInTheDocument();
@@ -235,15 +234,15 @@ describe('HeaderBar', () => {
       render(<HeaderBar headerText='Test Page' />);
 
       const mainContainer = document.querySelector('.Navbar');
-      const leftSection = mainContainer.querySelector(
+      const leftSection = mainContainer?.querySelector(
         '.flex.items-center.justify-center',
       );
-      const headerSection = mainContainer.querySelector(
+      const headerSection = mainContainer?.querySelector(
         '.ms-4.flex.items-center',
       );
 
       // Left section should only contain logo
-      expect(leftSection.children).toHaveLength(1);
+      expect(leftSection?.children).toHaveLength(1);
       expect(leftSection).toContainElement(screen.getByAltText('brand'));
 
       // Header section should contain header text
@@ -253,7 +252,11 @@ describe('HeaderBar', () => {
 
   describe('Integration', () => {
     test('works with different types of left content', () => {
-      const testCases = [
+      const testCases: Array<{
+        content: React.ReactElement;
+        testId: string | null;
+        text: string;
+      }> = [
         { content: <button>Button</button>, testId: null, text: 'Button' },
         {
           content: <div data-testid='div-content'>Div Content</div>,

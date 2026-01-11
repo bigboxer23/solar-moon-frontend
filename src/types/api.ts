@@ -1,5 +1,5 @@
 import type { WeatherData } from './chart';
-import type { Alarm, Customer, Device, Mapping, Subscription } from './models';
+import type { Alarm, Customer, Device, Mapping } from './models';
 
 export interface ApiResponse<T> {
   data: T;
@@ -53,12 +53,36 @@ export interface SearchResponse {
   };
 }
 
+export interface OverviewDataOverall {
+  avg: SearchAggregation;
+  total: SearchAggregation;
+  timeSeries: SearchResponse;
+  dailyEnergyConsumedTotal: SearchAggregation;
+  dailyEnergyConsumedAverage: number;
+}
+
+export interface SitesOverviewData {
+  [siteName: string]: {
+    timeSeries: SearchResponse;
+    weeklyMaxPower: SearchResponse;
+    avg: SearchAggregation;
+    total: SearchAggregation;
+    weather?: WeatherData;
+  };
+}
+
 export interface OverviewData {
-  devices?: Device[];
-  alarms?: Alarm[];
+  devices: Device[];
+  alarms: Alarm[];
+  overall: OverviewDataOverall;
+  sitesOverviewData: SitesOverviewData;
+  subscription?: {
+    joinDate?: number | string;
+    customerId?: string;
+    manualSubscriptionDate?: number;
+    packs?: number;
+  };
   customer?: Customer;
-  subscription?: Subscription;
-  [key: string]: unknown;
 }
 
 export interface SiteOverviewData {
@@ -70,10 +94,10 @@ export interface SiteOverviewData {
   total?: SearchResponse;
   avg?: SearchResponse;
   weeklyMaxPower?: SearchResponse;
-  deviceAvg?: unknown;
-  deviceTotals?: unknown;
-  deviceWeeklyMaxPower?: unknown;
-  deviceTimeSeries?: unknown;
+  deviceAvg?: Record<string, SearchResponse>;
+  deviceTotals?: Record<string, SearchResponse>;
+  deviceWeeklyMaxPower?: Record<string, SearchResponse>;
+  deviceTimeSeries?: Record<string, SearchResponse>;
   localTime?: string;
   trialDate?: unknown;
 }

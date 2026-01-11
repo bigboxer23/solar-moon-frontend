@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import type { Dispatch, SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,6 +12,12 @@ import {
   TOTAL_AGGREGATION,
 } from '../../../services/search';
 import { getOverviewData } from '../../../services/services';
+import type {
+  OverviewDataOverall,
+  SearchResponse,
+  SitesOverviewData,
+} from '../../../types/api';
+import type { Alarm, Device } from '../../../types/models';
 import {
   getRoundedTimeFromOffset,
   sortDevices,
@@ -28,12 +35,20 @@ import OverviewSiteList from './OverviewSiteList';
 import SummaryHeader from './SummaryHeader';
 import TimeIncrementSelector from './TimeIncrementSelector';
 
-export default function Overview({ setTrialDate }) {
+interface DeviceWithDevices extends Device {
+  devices?: Device[];
+}
+
+interface OverviewProps {
+  setTrialDate?: Dispatch<SetStateAction<number>>;
+}
+
+export default function Overview({ setTrialDate }: OverviewProps) {
   const [error, setError] = useState(false);
-  const [sites, setSites] = useState([]);
-  const [devices, setDevices] = useState([]);
-  const [activeAlerts, setActiveAlerts] = useState([]);
-  const [resolvedAlerts, setResolvedAlerts] = useState([]);
+  const [sites, setSites] = useState<DeviceWithDevices[]>([]);
+  const [devices, setDevices] = useState<Device[]>([]);
+  const [activeAlerts, setActiveAlerts] = useState<Alarm[]>([]);
+  const [resolvedAlerts, setResolvedAlerts] = useState<Alarm[]>([]);
   const [timeIncrement, setTimeIncrement] = useStickyState(
     DAY,
     'dashboard.time',
@@ -43,8 +58,10 @@ export default function Overview({ setTrialDate }) {
   );
   const [totalOutput, setTotalOutput] = useState(0);
   const [averageOutput, setAverageOutput] = useState(0);
-  const [overallTimeSeries, setOverallTimeSeries] = useState(null);
-  const [sitesGraphData, setSitesGraphData] = useState(null);
+  const [overallTimeSeries, setOverallTimeSeries] =
+    useState<SearchResponse | null>(null);
+  const [sitesGraphData, setSitesGraphData] =
+    useState<SitesOverviewData | null>(null);
   const [dailyOutputTotal, setDailyOutputTotal] = useState(0);
   const [dailyAverageOutput, setDailyAverageOutput] = useState(0);
   const [maxPower, setMaxPower] = useState(0);
@@ -67,47 +84,55 @@ export default function Overview({ setTrialDate }) {
         setOverallTimeSeries(data.overall.timeSeries);
         setSitesGraphData(data.sitesOverviewData);
         handleSummaryHeader(data.overall);
-        setTrialDate(data.subscription?.joinDate || -1);
+        setTrialDate?.(
+          typeof data.subscription?.joinDate === 'number'
+            ? data.subscription.joinDate
+            : -1,
+        );
         setLoading(false);
       })
-      .catch((e) => {
+      .catch((_e) => {
         setLoading(false);
         setError(true);
       });
-  }, [timeIncrement, startDate]);
+  }, [timeIncrement, startDate, setTrialDate]);
 
-  const handleSummaryHeader = (data) => {
+  const handleSummaryHeader = (data: OverviewDataOverall) => {
     setDailyOutputTotal(
       getAggregationValue(data.dailyEnergyConsumedTotal, TOTAL_AGGREGATION),
     );
     setDailyAverageOutput(data.dailyEnergyConsumedAverage);
   };
 
-  const handleOverviewTotal = (avg, total) => {
+  const handleOverviewTotal = (
+    avg: { value?: number },
+    total: { value?: number },
+  ) => {
     setTotalOutput(getAggregationValue(total, TOTAL_AGGREGATION));
     setAverageOutput(getAggregationValue(avg, AVG_AGGREGATION));
   };
 
-  const handleAlarms = (data) => {
+  const handleAlarms = (data: Alarm[]) => {
     setResolvedAlerts(data.filter((d) => d.state === 0));
-    setActiveAlerts(data.filter((d) => d.state > 0));
+    setActiveAlerts(data.filter((d) => d.state !== undefined && d.state > 0));
   };
 
-  const handleMax = (data) => {
+  const handleMax = (data: SitesOverviewData) => {
     let max = 0;
     let currentPower = 0;
-    Object.entries(data).forEach(([siteName, data]) => {
-      max += parseMaxData(data?.weeklyMaxPower);
-      currentPower += parseCurrentPower(data?.weeklyMaxPower);
+    Object.entries(data).forEach(([_siteName, siteData]) => {
+      max += parseMaxData(siteData?.weeklyMaxPower);
+      currentPower += parseCurrentPower(siteData?.weeklyMaxPower);
     });
     setMaxPower(max);
     setCurrentPower(currentPower);
   };
-  const handleDevices = (data) => {
+
+  const handleDevices = (data: Device[]) => {
     const sites = data.filter((d) => d.isSite).sort(sortDevices);
     const devices = data.filter((d) => !d.isSite);
 
-    const mappedSites = sites.map((s) => {
+    const mappedSites: DeviceWithDevices[] = sites.map((s) => {
       return {
         ...s,
         devices: devices.filter((d) => d.site === s.name),
@@ -118,7 +143,7 @@ export default function Overview({ setTrialDate }) {
     setSites(mappedSites);
   };
 
-  const setTimeIncrementWrapper = (timeIncrement) => {
+  const setTimeIncrementWrapper = (timeIncrement: number) => {
     setTimeIncrement(timeIncrement);
     setStartDate(new Date(getRoundedTimeFromOffset(timeIncrement)));
   };
@@ -194,8 +219,7 @@ export default function Overview({ setTrialDate }) {
         <OverviewChart
           overviewData={overallTimeSeries}
           setStartDate={setStartDate}
-          sites={sites}
-          sitesData={sitesGraphData}
+          sitesData={sitesGraphData ?? {}}
           startDate={startDate}
           timeIncrement={timeIncrement}
         />

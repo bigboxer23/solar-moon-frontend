@@ -1,6 +1,15 @@
 import classNames from 'classnames';
+import type { ReactElement } from 'react';
 
 import { getPowerScalingInformation, roundToDecimals } from '../../utils/Utils';
+
+interface PowerBlockProps {
+  className?: string;
+  power: number;
+  title: string;
+  unit?: string;
+  activeAlert?: boolean;
+}
 
 export default function PowerBlock({
   className,
@@ -8,7 +17,7 @@ export default function PowerBlock({
   title,
   unit = 'W',
   activeAlert = false,
-}) {
+}: PowerBlockProps): ReactElement {
   const { unitPrefix, powerValue, decimals } =
     getPowerScalingInformation(power);
   return (

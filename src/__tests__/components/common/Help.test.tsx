@@ -89,8 +89,8 @@ describe('Help', () => {
     const { container } = render(<Help content={content} />);
 
     const svgIcon = container.querySelector('svg');
-    const divContainer = svgIcon.parentElement;
-    expect(divContainer.tagName).toBe('DIV');
+    const divContainer = svgIcon!.parentElement;
+    expect(divContainer!.tagName).toBe('DIV');
     expect(svgIcon).toBeInTheDocument();
   });
 
@@ -107,7 +107,9 @@ describe('Help', () => {
 
   test('handles null className', () => {
     const content = 'Help text';
-    const { container } = render(<Help className={null} content={content} />);
+    const { container } = render(
+      <Help className={null as unknown as string} content={content} />,
+    );
 
     const svgIcon = container.querySelector('svg');
     expect(svgIcon).toHaveClass('cursor-pointer', 'text-gray-400');
@@ -116,7 +118,9 @@ describe('Help', () => {
 
   test('handles falsy className values', () => {
     const content = 'Help text';
-    const { container } = render(<Help className={false} content={content} />);
+    const { container } = render(
+      <Help className={false as unknown as string} content={content} />,
+    );
 
     const svgIcon = container.querySelector('svg');
     expect(svgIcon).toHaveClass('cursor-pointer', 'text-gray-400');

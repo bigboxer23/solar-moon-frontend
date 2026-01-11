@@ -1,4 +1,10 @@
-export default function Error({ className = '' }) {
+import type { ReactElement } from 'react';
+
+interface ErrorProps {
+  className?: string;
+}
+
+export default function Error({ className = '' }: ErrorProps): ReactElement {
   const reloadPage = function () {
     window.location.href = '/';
   };
