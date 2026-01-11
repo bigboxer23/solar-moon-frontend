@@ -6,13 +6,14 @@ React frontend for solar monitoring application with AWS Amplify authentication,
 
 ## Key Technologies
 
-- React 19 with functional components and hooks
-- AWS Amplify for authentication and API
-- React Router for navigation
-- Tailwind CSS for styling
-- Jest + React Testing Library for testing
-- Chart.js/Recharts for data visualization
-- ESLint + Prettier for code quality
+- **TypeScript 5.9** with strict mode enabled
+- **React 19** with functional components and hooks
+- **AWS Amplify** for authentication and API
+- **React Router v6** for navigation
+- **Tailwind CSS** for styling
+- **Jest + React Testing Library** for testing
+- **Chart.js/Recharts** for data visualization
+- **ESLint 9 + Prettier** for code quality
 
 ## Project Structure
 
@@ -32,6 +33,60 @@ src/
 ├── utils/              # Utility functions and helpers
 └── __tests__/          # Test files (mirrors src structure)
 ```
+
+## TypeScript Configuration
+
+### Strict Mode
+The project uses TypeScript with comprehensive strict checking:
+- All strict flags enabled (`strict: true`)
+- `noUncheckedIndexedAccess` for array/object safety
+- `noImplicitReturns` for exhaustive function returns
+- `noFallthroughCasesInSwitch` for switch statement safety
+
+### Type Patterns
+
+#### Component Props
+```typescript
+interface ButtonProps {
+  children: React.ReactNode;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  variant?: 'primary' | 'secondary' | 'danger';
+  disabled?: boolean;
+}
+```
+
+#### API Functions
+```typescript
+export function getDevices(): Promise<AxiosResponse<Device[]>> {
+  return api.get<Device[]>('devices');
+}
+```
+
+#### Custom Hooks
+```typescript
+export function useStickyState<T>(
+  defaultValue: T,
+  key: string
+): [T, Dispatch<SetStateAction<T>>]
+```
+
+#### State Setters as Props
+```typescript
+interface ComponentProps {
+  setData?: Dispatch<SetStateAction<DataType>>;
+}
+
+// Use optional chaining when calling
+setData?.(newValue);
+```
+
+### Type Safety Guidelines
+- Use explicit types for component props and function parameters
+- Avoid `any` except for Chart.js compatibility (documented in code)
+- Use type guards for union types
+- Prefer interfaces over types for object shapes
+- Use non-null assertions (`!`) only after explicit filtering/checks
+- Provide fallback values with nullish coalescing (`??`)
 
 ## Development Commands
 
@@ -64,8 +119,8 @@ npm run build
 
 ### Navigation Testing
 
-```javascript
-const renderWithRouter = (component, initialRoute = '/') => {
+```typescript
+const renderWithRouter = (component: React.ReactElement, initialRoute = '/') => {
   return render(
     <MemoryRouter initialEntries={[initialRoute]}>{component}</MemoryRouter>,
   );
@@ -74,7 +129,7 @@ const renderWithRouter = (component, initialRoute = '/') => {
 
 ### Common Mocks
 
-```javascript
+```typescript
 // AWS Amplify
 jest.mock('@aws-amplify/auth', () => ({
   fetchUserAttributes: jest.fn(),
@@ -84,20 +139,29 @@ jest.mock('@aws-amplify/ui-react', () => ({
   useAuthenticator: jest.fn(),
 }));
 
-// External libraries
-jest.mock('@szhsin/react-menu', () => ({
-  /* mock implementation */
-}));
+// Type-safe mock functions
+import { jest } from '@jest/globals';
+const mockFn = jest.fn() as jest.MockedFunction<typeof originalFunction>;
 ```
+
+### TypeScript in Tests
+- Use `.tsx` extension for test files with JSX
+- Type mock functions properly: `jest.fn() as jest.MockedFunction<typeof fn>`
+- Prefix unused destructured variables with `_` (e.g., `const { container: _container }`)
+- Use `@ts-expect-error` for intentional type mismatches in test mocks
 
 ## Code Style Guidelines
 
 - Use functional components with hooks
 - Prefer `const` declarations
 - Use array destructuring (`const [first] = array`) instead of index access
+- Define explicit TypeScript interfaces for all component props
+- Use optional chaining (`?.`) for optional callbacks and properties
+- Prefix unused variables with underscore (`_variable`)
 - Follow existing component patterns for props and state management
 - Use Tailwind CSS classes consistently
 - Keep components focused and testable
+- Avoid `any` type except where documented (Chart.js compatibility)
 
 ## Authentication Flow
 
@@ -163,6 +227,9 @@ jest.mock('@szhsin/react-menu', () => ({
 - ESLint prefer-destructuring rule (use array destructuring)
 - Icon rendering in tests (use SVG selectors instead of class names)
 - Mock persistence between tests (reset in beforeEach)
+- TypeScript errors in tests: Ensure mock functions are properly typed
+- Chart.js type compatibility: Use `as any` with documentation comment
+- Unused variable errors: Prefix with `_` to satisfy ESLint rules
 
 ## Performance Considerations
 
