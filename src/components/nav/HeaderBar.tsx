@@ -1,11 +1,14 @@
+import type { ReactNode } from 'react';
+
+// @ts-ignore - SVG import handled by webpack
 import logo from '../../assets/logo.svg';
 
-/**
- * @param {Object} props
- * @param {string} props.headerText
- * @param {React.ReactNode} [props.leftContent]
- */
-export default function HeaderBar({ headerText, leftContent }) {
+interface HeaderBarProps {
+  headerText?: string;
+  leftContent?: ReactNode;
+}
+
+export default function HeaderBar({ headerText, leftContent }: HeaderBarProps) {
   return (
     <div
       className='

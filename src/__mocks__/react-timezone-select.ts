@@ -1,10 +1,22 @@
-export const allTimezones = {
+interface TimezoneOption {
+  label: string;
+  value: string;
+}
+
+interface ParsedTimezone {
+  value: string;
+}
+
+export const allTimezones: Record<string, string> = {
   'America/New_York': 'America/New_York',
   'Europe/London': 'Europe/London',
   'Asia/Tokyo': 'Asia/Tokyo',
 };
 
-export const useTimezoneSelect = () => ({
+export const useTimezoneSelect = (): {
+  options: TimezoneOption[];
+  parseTimezone: (value: string) => ParsedTimezone;
+} => ({
   options: [
     { label: '(GMT-5:00) Eastern Time - New York', value: 'America/New_York' },
     {
@@ -13,5 +25,5 @@ export const useTimezoneSelect = () => ({
     },
     { label: '(GMT+9:00) Japan Standard Time - Tokyo', value: 'Asia/Tokyo' },
   ],
-  parseTimezone: (value) => ({ value }),
+  parseTimezone: (value: string): ParsedTimezone => ({ value }),
 });

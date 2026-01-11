@@ -1,6 +1,7 @@
 import { TOTAL_REAL_POWER } from '../components/views/reports/ReportUtils';
 import type {
   ChartDataPoint,
+  SearchAggregation,
   SearchBody,
   SearchBucket,
   SearchResponse,
@@ -157,12 +158,18 @@ export function parseSearchReturn(
 }
 
 export function getAggregationValue(
-  data: SearchResponse | undefined,
+  data: SearchResponse | SearchAggregation | undefined,
   label: string,
 ): number {
-  return data !== undefined
-    ? Math.round(data.aggregations[label]?.value ?? 0)
-    : 0;
+  if (data === undefined) return 0;
+
+  // Check if it's a SearchResponse (has aggregations property)
+  if ('aggregations' in data) {
+    return Math.round(data.aggregations[label]?.value ?? 0);
+  }
+
+  // Otherwise it's a SearchAggregation (has value property directly)
+  return Math.round(data.value ?? 0);
 }
 
 export function getInformationalErrorInfo(data: SearchResponse): string | null {

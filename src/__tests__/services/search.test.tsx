@@ -478,7 +478,7 @@ describe('search service', () => {
         },
       };
 
-      const deviceIdToName = {
+      const deviceIdToName: Record<string, string> = {
         device1: 'Device One',
         device2: 'Device Two',
       };

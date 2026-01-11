@@ -10,7 +10,7 @@ describe('ProgressCircle', () => {
 
     const svg = container.querySelector('.ProgressCircle');
     expect(svg).toBeInTheDocument();
-    expect(svg.tagName).toBe('svg');
+    expect(svg!.tagName).toBe('svg');
   });
 
   test('has correct SVG attributes', () => {
@@ -146,7 +146,9 @@ describe('ProgressCircle', () => {
   });
 
   test('handles undefined percent gracefully', () => {
-    const { container } = render(<ProgressCircle />);
+    const { container } = render(
+      <ProgressCircle percent={undefined as unknown as number} />,
+    );
 
     const progressCircle = container.querySelector('.progress-tracker');
     expect(progressCircle).toBeInTheDocument();

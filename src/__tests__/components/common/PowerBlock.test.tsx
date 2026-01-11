@@ -172,7 +172,9 @@ describe('PowerBlock', () => {
   });
 
   test('unit prefix has gray styling', () => {
-    const { container } = render(<PowerBlock power={1500} title='test' />);
+    const { container: _container } = render(
+      <PowerBlock power={1500} title='test' />,
+    );
 
     const unitPrefix = screen.getByText('kW');
     expect(unitPrefix).toHaveClass('text-gray-400');

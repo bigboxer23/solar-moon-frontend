@@ -1,5 +1,6 @@
+// Chart.js type compatibility requires `any` in several places
 import classNames from 'classnames';
-import { format } from 'date-fns';
+import type { ReactElement } from 'react';
 import { useEffect, useState } from 'react';
 import { Bar, Line } from 'react-chartjs-2';
 import {
@@ -16,6 +17,8 @@ import {
   parseAndCondenseStackedTimeSeriesData,
   parseSearchReturn,
 } from '../../../services/search';
+import type { SearchResponse, SitesOverviewData } from '../../../types/api';
+import type { ChartDataPoint } from '../../../types/chart';
 import {
   formatXAxisLabels,
   formatXAxisLabelsDay,
@@ -27,16 +30,26 @@ import {
 } from '../../../utils/Utils';
 import { tooltipPlugin } from '../../common/graphPlugins';
 
+interface OverviewChartProps {
+  overviewData: SearchResponse | null;
+  sitesData: SitesOverviewData;
+  timeIncrement: number;
+  setStartDate: (date: Date) => void;
+  startDate: Date;
+}
+
+type GraphType = 'overview' | 'stacked-line' | 'stacked-bar';
+
 export default function OverviewChart({
   overviewData,
   sitesData,
   timeIncrement,
   setStartDate,
   startDate,
-}) {
+}: OverviewChartProps): ReactElement | null {
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState([]);
-  const [graphType, setGraphType] = useStickyState(
+  const [data, setData] = useState<ChartDataPoint[]>([]);
+  const [graphType, setGraphType] = useStickyState<GraphType>(
     'overview',
     'overview.graph',
   );
@@ -63,10 +76,10 @@ export default function OverviewChart({
 
   const bucketSize = getBucketSize(timeIncrement, 'avgTotal');
   const sitesDataset = {
-    datasets: Object.entries(sitesData).map(([siteName, data]) => {
+    datasets: Object.entries(sitesData).map(([siteName, siteData]) => {
       return {
         label: siteName,
-        data: parseSearchReturn(data.timeSeries, bucketSize),
+        data: parseSearchReturn(siteData.timeSeries, bucketSize),
       };
     }),
   };
@@ -75,12 +88,12 @@ export default function OverviewChart({
     responsive: true,
     maintainAspectRatio: false,
     interaction: {
-      mode: 'index',
+      mode: 'index' as const,
       intersect: false,
     },
     scales: {
       x: {
-        type: 'time',
+        type: 'time' as const,
         ticks: {
           stepSize: 6,
           callback:
@@ -109,18 +122,20 @@ export default function OverviewChart({
         bodyColor: '#000',
         displayColors: false,
         boxPadding: 8,
-        titleAlign: 'center',
-        bodyAlign: 'center',
+        titleAlign: 'center' as const,
+        bodyAlign: 'center' as const,
         callbacks: {
-          title: (context) => {
-            const [{ dataIndex }] = context;
-            const { date } = overallDataset.datasets[0].data[dataIndex];
-            return getFormattedTime(date);
+          title: (context: { dataIndex: number }[]) => {
+            const dataIndex = context[0]?.dataIndex ?? 0;
+            const { date } = overallDataset.datasets[0]?.data[dataIndex] ?? {
+              date: new Date(),
+            };
+            return getFormattedTime(new Date(date));
           },
-          label: (context) => {
+          label: (context: { formattedValue: string }) => {
             let label = context.formattedValue || '';
             if (label) {
-              label = `${roundTwoDigit(label)} kW`;
+              label = `${roundTwoDigit(parseFloat(label))} kW`;
             }
             return label;
           },
@@ -137,12 +152,12 @@ export default function OverviewChart({
     responsive: true,
     maintainAspectRatio: false,
     interaction: {
-      mode: 'index',
+      mode: 'index' as const,
       intersect: false,
     },
     scales: {
       x: {
-        type: 'time',
+        type: 'time' as const,
         stacked: true,
         ticks: {
           stepSize: 6,
@@ -165,24 +180,26 @@ export default function OverviewChart({
     },
     plugins: {
       legend: {
-        position: 'bottom',
+        position: 'bottom' as const,
       },
       tooltip: {
         backgroundColor: '#fff',
         titleColor: '#000',
         bodyColor: '#000',
         boxPadding: 8,
-        titleAlign: 'center',
+        titleAlign: 'center' as const,
         callbacks: {
-          title: (context) => {
-            const [{ dataIndex }] = context;
-            const { date } = overallDataset.datasets[0].data[dataIndex];
-            return getFormattedTime(date);
+          title: (context: { dataIndex: number }[]) => {
+            const dataIndex = context[0]?.dataIndex ?? 0;
+            const { date } = overallDataset.datasets[0]?.data[dataIndex] ?? {
+              date: new Date(),
+            };
+            return getFormattedTime(new Date(date));
           },
-          label: (context) => {
+          label: (context: { formattedValue: string }) => {
             let label = context.formattedValue || '';
             if (label) {
-              label = `${roundTwoDigit(label)} kW`;
+              label = `${roundTwoDigit(parseFloat(label))} kW`;
             }
             return label;
           },
@@ -282,22 +299,22 @@ export default function OverviewChart({
         {graphType === 'overview' && (
           <Line
             data={overallDataset}
-            options={overallOptions}
+            options={overallOptions as any} // Chart.js type compatibility
             plugins={[tooltipPlugin]}
           />
         )}
         {graphType === 'stacked-line' && (
           <Line
             data={sitesDataset}
-            options={sitesOptions}
+            options={sitesOptions as any} // Chart.js type compatibility
             plugins={[tooltipPlugin]}
           />
         )}
         {graphType === 'stacked-bar' && (
           <Bar
             data={sitesDataset}
-            options={sitesOptions}
-            plugins={[tooltipPlugin]}
+            options={sitesOptions as any} // Chart.js type compatibility
+            plugins={[tooltipPlugin] as any} // Chart.js type compatibility
           />
         )}
       </div>

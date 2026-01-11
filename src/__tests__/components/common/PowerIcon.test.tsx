@@ -179,7 +179,9 @@ describe('PowerIcon', () => {
   });
 
   test('handles undefined percent gracefully', () => {
-    const { container } = render(<PowerIcon />);
+    const { container } = render(
+      <PowerIcon percent={undefined as unknown as number} />,
+    );
 
     const powerIcon = container.querySelector('.PowerIcon');
     expect(powerIcon).toBeInTheDocument();

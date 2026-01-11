@@ -1,7 +1,17 @@
 import classNames from 'classnames';
+import type { ReactElement } from 'react';
 
-export default function PowerIcon({ percent, activeAlert = false }) {
-  const getColor = (percent) => {
+interface PowerIconProps {
+  percent: number;
+  max?: number | null;
+  activeAlert?: boolean;
+}
+
+export default function PowerIcon({
+  percent,
+  activeAlert = false,
+}: PowerIconProps): ReactElement {
+  const getColor = (percent: number): string => {
     if (percent < 15) return 'bg-red-500';
     if (percent > 95) return 'bg-green-500';
     return 'bg-brand-primary';

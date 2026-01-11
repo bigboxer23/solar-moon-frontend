@@ -1,9 +1,15 @@
+import type { ChartOptions } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 
+import type { ChartDataPoint } from '../../types/chart';
 import { getFormattedTime } from '../../utils/Utils';
 import { tooltipPlugin } from '../common/graphPlugins';
 
-export default function MiniChart({ graphData }) {
+interface MiniChartProps {
+  graphData?: ChartDataPoint[] | null;
+}
+
+export default function MiniChart({ graphData }: MiniChartProps) {
   const data = {
     datasets: [
       {
@@ -14,7 +20,7 @@ export default function MiniChart({ graphData }) {
     ],
   };
 
-  const options = {
+  const options: ChartOptions<'line'> = {
     responsive: true,
     maintainAspectRatio: false,
     interaction: {
@@ -44,9 +50,22 @@ export default function MiniChart({ graphData }) {
         bodyAlign: 'center',
         callbacks: {
           title: (context) => {
-            const [{ dataIndex, datasetIndex }] = context;
-            const { date } = data.datasets[datasetIndex].data[dataIndex];
-            return getFormattedTime(date);
+            const [firstItem] = context;
+            if (!firstItem) return '';
+            const { dataIndex, datasetIndex } = firstItem;
+            const dataPoint = data.datasets[datasetIndex]?.data?.[dataIndex];
+            if (
+              !dataPoint ||
+              typeof dataPoint !== 'object' ||
+              !('date' in dataPoint)
+            ) {
+              return '';
+            }
+            const chartDataPoint = dataPoint as ChartDataPoint;
+            const dateValue = chartDataPoint.date;
+            const dateObj =
+              dateValue instanceof Date ? dateValue : new Date(dateValue);
+            return getFormattedTime(dateObj);
           },
           label: (context) => {
             let label = context.formattedValue || '';

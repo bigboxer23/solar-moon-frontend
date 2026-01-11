@@ -7,7 +7,15 @@ import CurrentPowerBlock from '../../../components/common/CurrentPowerBlock';
 
 // Mock the child components
 jest.mock('../../../components/common/PowerBlock', () => {
-  return function MockPowerBlock({ power, title, activeAlert }) {
+  return function MockPowerBlock({
+    power,
+    title,
+    activeAlert,
+  }: {
+    power: number;
+    title: string;
+    activeAlert: boolean;
+  }) {
     return (
       <div data-testid='power-block'>
         Power: {power}, Title: {title}, Alert: {activeAlert.toString()}
@@ -17,7 +25,15 @@ jest.mock('../../../components/common/PowerBlock', () => {
 });
 
 jest.mock('../../../components/common/PowerIcon', () => {
-  return function MockPowerIcon({ percent, max, activeAlert }) {
+  return function MockPowerIcon({
+    percent,
+    max,
+    activeAlert,
+  }: {
+    percent: number;
+    max: number | null;
+    activeAlert: boolean;
+  }) {
     return (
       <div data-testid='power-icon'>
         Percent: {percent}, Max: {max}, Alert: {activeAlert.toString()}
@@ -28,7 +44,15 @@ jest.mock('../../../components/common/PowerIcon', () => {
 
 // Mock Tippy
 jest.mock('@tippyjs/react', () => {
-  return function MockTippy({ children, content, ...props }) {
+  return function MockTippy({
+    children,
+    content,
+    ...props
+  }: {
+    children: React.ReactNode;
+    content: string;
+    [key: string]: unknown;
+  }) {
     return (
       <div data-testid='tippy-wrapper' title={content} {...props}>
         {children}
@@ -37,7 +61,7 @@ jest.mock('@tippyjs/react', () => {
   };
 });
 
-const renderWithIntl = (component) => {
+const renderWithIntl = (component: React.ReactElement) => {
   return render(
     <IntlProvider locale='en' messages={{}}>
       {component}

@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react';
 import { useState } from 'react';
 import { BiCopy } from 'react-icons/bi';
 import { BsCheckLg } from 'react-icons/bs';
@@ -5,7 +6,12 @@ import { useCopyToClipboard } from 'usehooks-ts';
 
 import Button from './Button';
 
-const CopyButton = (props) => {
+interface CopyButtonProps {
+  dataSrc: () => string;
+  title?: string;
+}
+
+const CopyButton = ({ dataSrc, title }: CopyButtonProps): ReactElement => {
   const [_, copy] = useCopyToClipboard();
   const [copied, setCopied] = useState(false);
 
@@ -16,13 +22,12 @@ const CopyButton = (props) => {
 
   return (
     <Button
-      buttonProps={{ title: props.title }}
+      buttonProps={{ title }}
       className='copy-button relative w-auto'
       onClick={() => {
-        copy(props.dataSrc());
+        copy(dataSrc());
         setCopyState();
       }}
-      type='button'
       variant='icon'
     >
       <BiCopy

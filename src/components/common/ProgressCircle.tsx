@@ -1,4 +1,12 @@
-export default function ProgressCircle({ percent }) {
+import type { ReactElement } from 'react';
+
+interface ProgressCircleProps {
+  percent: number;
+}
+
+export default function ProgressCircle({
+  percent,
+}: ProgressCircleProps): ReactElement {
   return (
     <svg
       className='ProgressCircle'
