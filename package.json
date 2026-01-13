@@ -87,6 +87,7 @@
     "react-scripts": "5.0.1",
     "stylelint": "^16.24.0",
     "stylelint-prettier": "^5.0.2",
+    "type-coverage": "^2.29.7",
     "typescript": "^5.9.3"
   },
   "jest": {
