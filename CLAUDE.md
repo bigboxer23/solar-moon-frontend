@@ -37,7 +37,9 @@ src/
 ## TypeScript Configuration
 
 ### Strict Mode
+
 The project uses TypeScript with comprehensive strict checking:
+
 - All strict flags enabled (`strict: true`)
 - `noUncheckedIndexedAccess` for array/object safety
 - `noImplicitReturns` for exhaustive function returns
@@ -46,6 +48,7 @@ The project uses TypeScript with comprehensive strict checking:
 ### Type Patterns
 
 #### Component Props
+
 ```typescript
 interface ButtonProps {
   children: React.ReactNode;
@@ -56,6 +59,7 @@ interface ButtonProps {
 ```
 
 #### API Functions
+
 ```typescript
 export function getDevices(): Promise<AxiosResponse<Device[]>> {
   return api.get<Device[]>('devices');
@@ -63,14 +67,16 @@ export function getDevices(): Promise<AxiosResponse<Device[]>> {
 ```
 
 #### Custom Hooks
+
 ```typescript
 export function useStickyState<T>(
   defaultValue: T,
-  key: string
-): [T, Dispatch<SetStateAction<T>>]
+  key: string,
+): [T, Dispatch<SetStateAction<T>>];
 ```
 
 #### State Setters as Props
+
 ```typescript
 interface ComponentProps {
   setData?: Dispatch<SetStateAction<DataType>>;
@@ -81,6 +87,7 @@ setData?.(newValue);
 ```
 
 ### Type Safety Guidelines
+
 - Use explicit types for component props and function parameters
 - Avoid `any` except for Chart.js compatibility (documented in code)
 - Use type guards for union types
@@ -145,6 +152,7 @@ const mockFn = jest.fn() as jest.MockedFunction<typeof originalFunction>;
 ```
 
 ### TypeScript in Tests
+
 - Use `.tsx` extension for test files with JSX
 - Type mock functions properly: `jest.fn() as jest.MockedFunction<typeof fn>`
 - Prefix unused destructured variables with `_` (e.g., `const { container: _container }`)
