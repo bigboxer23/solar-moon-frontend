@@ -37,10 +37,11 @@
     "yup": "^1.7.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "dev": "vite",
+    "start": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx && stylelint \"**/*.{css,scss}\"",
     "lint-fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix && stylelint \"**/*.{css,scss}\" --fix"
   },
@@ -75,6 +76,7 @@
     "@types/uuid": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^8.52.0",
     "@typescript-eslint/parser": "^8.52.0",
+    "@vitejs/plugin-react": "^5.1.2",
     "baseline-browser-mapping": "^2.9.3",
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
@@ -88,7 +90,9 @@
     "stylelint": "^16.24.0",
     "stylelint-prettier": "^5.0.2",
     "type-coverage": "^2.29.7",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1",
+    "vite-tsconfig-paths": "^6.0.4"
   },
   "jest": {
     "collectCoverageFrom": [

@@ -13,7 +13,7 @@ import HeaderBar from '../../nav/HeaderBar';
 
 const CheckoutForm = (): React.ReactElement => {
   const stripePromise: Promise<Stripe | null> = loadStripe(
-    process.env.REACT_APP_STRIPE_PK as string,
+    import.meta.env.VITE_STRIPE_PK as string,
   );
   const [loading, setLoading] = useState<boolean>(true);
 
