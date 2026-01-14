@@ -92,7 +92,7 @@ describe('LockPage', () => {
     window.location.href = '';
 
     // Reset environment variable
-    delete process.env.REACT_APP_ACCESS_CODE;
+    delete process.env.VITE_ACCESS_CODE;
 
     // Default mock
     useStickyState.mockReturnValue([null, mockSetUnlocked]);
@@ -100,7 +100,7 @@ describe('LockPage', () => {
 
   afterEach(() => {
     // Clean up environment variable
-    delete process.env.REACT_APP_ACCESS_CODE;
+    delete process.env.VITE_ACCESS_CODE;
   });
 
   test('renders main container with correct CSS classes', () => {
@@ -250,7 +250,7 @@ describe('LockPage', () => {
   });
 
   test('environment variable affects component behavior', () => {
-    process.env.REACT_APP_ACCESS_CODE = 'test123';
+    process.env.VITE_ACCESS_CODE = 'test123';
 
     render(<LockPage />);
 

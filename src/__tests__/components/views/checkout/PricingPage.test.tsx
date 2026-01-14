@@ -128,8 +128,8 @@ describe('PricingPage', () => {
 
     activateTrial.mockResolvedValue({});
 
-    process.env.REACT_APP_PRICE_MO = 'price_monthly_123';
-    process.env.REACT_APP_PRICE_YR = 'price_yearly_123';
+    process.env.VITE_PRICE_MO = 'price_monthly_123';
+    process.env.VITE_PRICE_YR = 'price_yearly_123';
   });
 
   test('renders header bar with correct text', () => {

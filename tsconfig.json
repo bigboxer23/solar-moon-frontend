@@ -36,5 +36,13 @@
     "baseUrl": "src"
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "build", "src/graphql", "src/aws-exports.js"]
+  "exclude": [
+    "node_modules",
+    "build",
+    "src/graphql",
+    "src/aws-exports.js",
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx",
+    "src/__tests__"
+  ]
 }

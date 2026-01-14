@@ -15,8 +15,8 @@ export default function Dashboard({
 
   const maybeRedirect = (): boolean => {
     if (
-      process.env.REACT_APP_ACCESS_CODE &&
-      process.env.REACT_APP_ACCESS_CODE !== unlocked
+      process.env.VITE_ACCESS_CODE &&
+      process.env.VITE_ACCESS_CODE !== unlocked
     ) {
       window.location.href = '/lock';
       return true;
