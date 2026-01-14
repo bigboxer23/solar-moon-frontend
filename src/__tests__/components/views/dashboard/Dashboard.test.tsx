@@ -37,7 +37,7 @@ describe('Dashboard', () => {
     window.location.href = '';
 
     // Reset environment variable
-    delete process.env.REACT_APP_ACCESS_CODE;
+    delete process.env.VITE_ACCESS_CODE;
 
     // Default mock: no unlock code stored
     useStickyState.mockReturnValue([null, jest.fn()]);
@@ -45,7 +45,7 @@ describe('Dashboard', () => {
 
   afterEach(() => {
     // Clean up environment variable
-    delete process.env.REACT_APP_ACCESS_CODE;
+    delete process.env.VITE_ACCESS_CODE;
   });
 
   test('renders main container with correct CSS classes', () => {
@@ -74,7 +74,7 @@ describe('Dashboard', () => {
   });
 
   test('does not redirect when access code matches unlocked code', () => {
-    process.env.REACT_APP_ACCESS_CODE = 'secret123';
+    process.env.VITE_ACCESS_CODE = 'secret123';
     useStickyState.mockReturnValue(['secret123', jest.fn()]);
 
     render(<Dashboard setTrialDate={mockSetTrialDate} />);
@@ -84,7 +84,7 @@ describe('Dashboard', () => {
   });
 
   test('redirects to /lock when access code is required but not unlocked', () => {
-    process.env.REACT_APP_ACCESS_CODE = 'secret123';
+    process.env.VITE_ACCESS_CODE = 'secret123';
     useStickyState.mockReturnValue([null, jest.fn()]);
 
     render(<Dashboard setTrialDate={mockSetTrialDate} />);
@@ -93,7 +93,7 @@ describe('Dashboard', () => {
   });
 
   test('redirects to /lock when access code does not match unlocked code', () => {
-    process.env.REACT_APP_ACCESS_CODE = 'secret123';
+    process.env.VITE_ACCESS_CODE = 'secret123';
     useStickyState.mockReturnValue(['wrongcode', jest.fn()]);
 
     render(<Dashboard setTrialDate={mockSetTrialDate} />);
@@ -108,7 +108,7 @@ describe('Dashboard', () => {
   });
 
   test('handles empty string access code', () => {
-    process.env.REACT_APP_ACCESS_CODE = '';
+    process.env.VITE_ACCESS_CODE = '';
     useStickyState.mockReturnValue([null, jest.fn()]);
 
     render(<Dashboard setTrialDate={mockSetTrialDate} />);
@@ -127,7 +127,7 @@ describe('Dashboard', () => {
 
   test('redirect logic runs on component mount', () => {
     const originalHref = window.location.href;
-    process.env.REACT_APP_ACCESS_CODE = 'test123';
+    process.env.VITE_ACCESS_CODE = 'test123';
     useStickyState.mockReturnValue([null, jest.fn()]);
 
     render(<Dashboard setTrialDate={mockSetTrialDate} />);
@@ -138,7 +138,7 @@ describe('Dashboard', () => {
   });
 
   test('component still renders even when redirecting', () => {
-    process.env.REACT_APP_ACCESS_CODE = 'test123';
+    process.env.VITE_ACCESS_CODE = 'test123';
     useStickyState.mockReturnValue([null, jest.fn()]);
 
     const { container } = render(<Dashboard setTrialDate={mockSetTrialDate} />);
@@ -151,7 +151,7 @@ describe('Dashboard', () => {
 
   test('handles special characters in access code', () => {
     const specialCode = 'test@#$%^&*()';
-    process.env.REACT_APP_ACCESS_CODE = specialCode;
+    process.env.VITE_ACCESS_CODE = specialCode;
     useStickyState.mockReturnValue([specialCode, jest.fn()]);
 
     render(<Dashboard setTrialDate={mockSetTrialDate} />);
@@ -161,7 +161,7 @@ describe('Dashboard', () => {
   });
 
   test('case sensitivity in access code comparison', () => {
-    process.env.REACT_APP_ACCESS_CODE = 'Secret123';
+    process.env.VITE_ACCESS_CODE = 'Secret123';
     useStickyState.mockReturnValue(['secret123', jest.fn()]);
 
     render(<Dashboard setTrialDate={mockSetTrialDate} />);

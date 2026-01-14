@@ -20,7 +20,7 @@ const yupSchema = yup
       .string()
       .required('This field is required')
       .matches(
-        new RegExp(import.meta.env.VITE_ACCESS_CODE || ''),
+        new RegExp(process.env.VITE_ACCESS_CODE || ''),
         'Invalid access code',
       ),
   })

@@ -82,7 +82,7 @@ export default function PricingPage(): React.ReactElement {
               label2='for first 90 days'
               label3='Free!'
               price={0}
-              priceId={import.meta.env.VITE_PRICE_MO as string}
+              priceId={process.env.VITE_PRICE_MO as string}
               setCount={setMonCount}
               showBottomContent={false}
             />
@@ -94,7 +94,7 @@ export default function PricingPage(): React.ReactElement {
             label2='per mo'
             label3=''
             price={40}
-            priceId={import.meta.env.VITE_PRICE_MO as string}
+            priceId={process.env.VITE_PRICE_MO as string}
             setCount={setMonCount}
           />
           <PriceTile
@@ -104,7 +104,7 @@ export default function PricingPage(): React.ReactElement {
             label2='per yr'
             label3='Save 10%'
             price={432}
-            priceId={import.meta.env.VITE_PRICE_YR as string}
+            priceId={process.env.VITE_PRICE_YR as string}
             setCount={setYearCount}
           />
         </div>

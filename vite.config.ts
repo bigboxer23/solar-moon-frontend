@@ -5,6 +5,16 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
+  define: {
+    // Expose process.env for compatibility with Jest tests
+    'process.env.VITE_STRIPE_PK': JSON.stringify(process.env.VITE_STRIPE_PK),
+    'process.env.VITE_PRICE_MO': JSON.stringify(process.env.VITE_PRICE_MO),
+    'process.env.VITE_PRICE_YR': JSON.stringify(process.env.VITE_PRICE_YR),
+    'process.env.VITE_NEW_UI': JSON.stringify(process.env.VITE_NEW_UI),
+    'process.env.VITE_ACCESS_CODE': JSON.stringify(
+      process.env.VITE_ACCESS_CODE,
+    ),
+  },
   server: {
     port: 3000,
     open: true,
