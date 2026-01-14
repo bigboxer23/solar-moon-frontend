@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "src/**/*",
+    "vite.config.ts",
+    "postcss.config.js"
+  ],
+  "exclude": [
+    "node_modules",
+    "build",
+    "src/graphql",
+    "src/aws-exports.js"
+  ]
+}
