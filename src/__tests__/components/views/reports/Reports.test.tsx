@@ -435,9 +435,7 @@ describe('Reports', () => {
 
     test('handles API errors gracefully', async () => {
       services.getDataPage.mockRejectedValue(new Error('API Error'));
-      const consoleSpy = vi
-        .spyOn(console, 'log')
-        .mockImplementation(() => {});
+      const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
 
       renderWithProviders(<Reports />);
 

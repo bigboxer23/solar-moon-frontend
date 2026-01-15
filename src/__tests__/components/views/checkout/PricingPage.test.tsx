@@ -1,15 +1,15 @@
+import { useAuthenticator } from '@aws-amplify/ui-react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { vi } from 'vitest';
 
 import PricingPage from '../../../../components/views/checkout/PricingPage';
-import { useAuthenticator } from '@aws-amplify/ui-react';
+import { MONTH } from '../../../../services/search';
 import {
   activateTrial,
   getSubscriptionInformation,
 } from '../../../../services/services';
-import { MONTH } from '../../../../services/search';
 
 // Mock AWS Amplify
 vi.mock('@aws-amplify/ui-react', () => ({
@@ -206,7 +206,6 @@ describe('PricingPage', () => {
   });
 
   test('renders trial tile when trial is available', async () => {
-
     getSubscriptionInformation.mockResolvedValue({
       data: {
         packs: 0,
@@ -230,7 +229,6 @@ describe('PricingPage', () => {
   });
 
   test('renders trial over message when trial is over', async () => {
-
     getSubscriptionInformation.mockResolvedValue({
       data: {
         packs: -1,
@@ -248,7 +246,6 @@ describe('PricingPage', () => {
   });
 
   test('handles trial click', async () => {
-
     getSubscriptionInformation.mockResolvedValue({
       data: {
         packs: 0,

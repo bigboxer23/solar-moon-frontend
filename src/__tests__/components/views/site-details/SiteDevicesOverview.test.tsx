@@ -4,8 +4,6 @@ import { MemoryRouter } from 'react-router-dom';
 import { vi } from 'vitest';
 
 import SiteDevicesOverview from '../../../../components/views/site-details/SiteDevicesOverview';
-import type { SearchResponse } from '../../../../types/api';
-import type { Alarm, Device } from '../../../../types/models';
 import {
   getAggregationValue,
   getBucketSize,
@@ -16,6 +14,8 @@ import {
   parseMaxData,
   parseSearchReturn,
 } from '../../../../services/search';
+import type { SearchResponse } from '../../../../types/api';
+import type { Alarm, Device } from '../../../../types/models';
 import {
   getDisplayName,
   getRoundedTimeFromOffset,

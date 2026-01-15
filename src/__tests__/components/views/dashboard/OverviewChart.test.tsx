@@ -208,7 +208,6 @@ describe('OverviewChart', () => {
     });
 
     test('renders time label', () => {
-
       render(<OverviewChart {...defaultProps} />);
 
       expect(timeLabel).toHaveBeenCalledWith(
@@ -299,7 +298,6 @@ describe('OverviewChart', () => {
 
   describe('Time Navigation', () => {
     test('calls maybeSetTimeWindow with negative increment for previous button', () => {
-
       render(<OverviewChart {...defaultProps} />);
 
       fireEvent.click(screen.getByLabelText('previous time period'));
@@ -312,7 +310,6 @@ describe('OverviewChart', () => {
     });
 
     test('calls maybeSetTimeWindow with positive increment for next button when enabled', () => {
-
       render(<OverviewChart {...defaultProps} />);
 
       const nextButton = screen.getByLabelText('next time period');
@@ -334,7 +331,6 @@ describe('OverviewChart', () => {
 
   describe('Data Processing', () => {
     test('processes overview data correctly', () => {
-
       render(<OverviewChart {...defaultProps} />);
 
       expect(parseAndCondenseStackedTimeSeriesData).toHaveBeenCalledWith(
@@ -344,7 +340,6 @@ describe('OverviewChart', () => {
     });
 
     test('processes sites data correctly', () => {
-
       render(<OverviewChart {...defaultProps} />);
 
       expect(parseSearchReturn).toHaveBeenCalledWith(
@@ -583,14 +578,12 @@ describe('OverviewChart', () => {
 
   describe('Integration', () => {
     test('integrates with useStickyState for graph type persistence', () => {
-
       render(<OverviewChart {...defaultProps} />);
 
       expect(useStickyState).toHaveBeenCalledWith('overview', 'overview.graph');
     });
 
     test('integrates with parseAndCondenseStackedTimeSeriesData for data processing', () => {
-
       render(<OverviewChart {...defaultProps} />);
 
       expect(parseAndCondenseStackedTimeSeriesData).toHaveBeenCalledWith(
@@ -600,7 +593,6 @@ describe('OverviewChart', () => {
     });
 
     test('integrates with parseSearchReturn for sites data processing', () => {
-
       render(<OverviewChart {...defaultProps} />);
 
       expect(parseSearchReturn).toHaveBeenCalledWith(
@@ -663,7 +655,6 @@ describe('OverviewChart', () => {
         { date: Date.now(), values: 30 },
       ];
 
-
       (parseAndCondenseStackedTimeSeriesData as vi.Mock).mockClear();
 
       rerender(
@@ -695,7 +686,6 @@ describe('OverviewChart', () => {
 
   describe('Performance Optimizations', () => {
     test('does not reprocess data when overviewData is null', () => {
-
       (parseAndCondenseStackedTimeSeriesData as vi.Mock).mockClear();
 
       render(<OverviewChart {...defaultProps} overviewData={null} />);

@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import type { ReactElement, ReactNode } from 'react';
+import { useIntl } from 'react-intl';
 import { vi } from 'vitest';
 
 import SummaryHeader from '../../../../components/views/dashboard/SummaryHeader';
-import { useIntl } from 'react-intl';
 import {
   getPowerScalingInformation,
   roundToDecimals,
