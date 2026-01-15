@@ -3,6 +3,7 @@ import React from 'react';
 import { vi } from 'vitest';
 
 import { LockPage } from '../../../../components/views/lock/LockPage';
+import { useStickyState } from '../../../../utils/Utils';
 
 // Mock utils
 vi.mock('../../../../utils/Utils', () => ({
@@ -86,8 +87,6 @@ delete (window as { location?: Location }).location;
 (window as { location: { href: string } }).location = { href: '' };
 
 describe('LockPage', () => {
-  import { useStickyState } from '../../../../utils/Utils';
-
   const mockSetUnlocked = vi.fn();
 
   beforeEach(() => {

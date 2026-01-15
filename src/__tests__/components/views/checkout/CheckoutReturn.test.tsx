@@ -4,6 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { vi } from 'vitest';
 
 import CheckoutReturn from '../../../../components/views/checkout/CheckoutReturn';
+import { checkoutStatus } from '../../../../services/services';
 
 // Mock services
 vi.mock('../../../../services/services', () => ({
@@ -32,8 +33,6 @@ const renderWithRouter = (
 };
 
 describe('CheckoutReturn', () => {
-  import { checkoutStatus } from '../../../../services/services';
-
   beforeEach(() => {
     vi.clearAllMocks();
     window.location.search = '';

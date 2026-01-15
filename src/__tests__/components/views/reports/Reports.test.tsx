@@ -11,7 +11,7 @@ import * as utils from '../../../../utils/Utils';
 
 // Mock child components
 vi.mock('../../../../components/common/Loader', () => {
-  return function MockLoader({
+  const MockLoader = function ({
     className,
   }: {
     className?: string;
@@ -22,10 +22,11 @@ vi.mock('../../../../components/common/Loader', () => {
       </div>
     );
   };
+  return { default: MockLoader };
 });
 
 vi.mock('../../../../components/views/reports/SearchBar', () => {
-  return function MockSearchBar({
+  const MockSearchBar = function ({
     siteId,
     deviceId,
     _start,
@@ -73,10 +74,11 @@ vi.mock('../../../../components/views/reports/SearchBar', () => {
       </div>
     );
   };
+  return { default: MockSearchBar };
 });
 
 vi.mock('../../../../components/views/reports/DownloadReportButton', () => {
-  return function MockDownloadReportButton({
+  const MockDownloadReportButton = function ({
     siteId,
     deviceId,
   }: {
@@ -97,6 +99,7 @@ vi.mock('../../../../components/views/reports/DownloadReportButton', () => {
       </div>
     );
   };
+  return { default: MockDownloadReportButton };
 });
 
 // Mock react-data-grid
@@ -432,7 +435,7 @@ describe('Reports', () => {
 
     test('handles API errors gracefully', async () => {
       services.getDataPage.mockRejectedValue(new Error('API Error'));
-      const consoleSpy = jest
+      const consoleSpy = vi
         .spyOn(console, 'log')
         .mockImplementation(() => {});
 

@@ -3,6 +3,8 @@ import type { ReactElement } from 'react';
 import { vi } from 'vitest';
 
 import TimeIncrementSelector from '../../../../components/views/dashboard/TimeIncrementSelector';
+import { DAY, MONTH, WEEK, YEAR } from '../../../../services/search';
+import { timeIncrementToText } from '../../../../utils/Utils';
 
 interface IconProps {
   className?: string;
@@ -85,9 +87,6 @@ vi.mock('@szhsin/react-menu', () => ({
 }));
 
 describe('TimeIncrementSelector', () => {
-  import { DAY, MONTH, WEEK, YEAR } from '../../../../services/search';
-  import { timeIncrementToText } from '../../../../utils/Utils';
-
   const mockSetTimeIncrement = vi.fn();
 
   beforeEach(() => {

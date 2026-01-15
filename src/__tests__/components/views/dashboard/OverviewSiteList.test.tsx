@@ -4,6 +4,12 @@ import { MemoryRouter } from 'react-router-dom';
 import { vi } from 'vitest';
 
 import OverviewSiteList from '../../../../components/views/dashboard/OverviewSiteList';
+import {
+  getAggregationValue,
+  parseCurrentPower,
+  parseMaxData,
+} from '../../../../services/search';
+import { getRoundedTimeFromOffset } from '../../../../utils/Utils';
 
 interface Device {
   site: string;
@@ -232,13 +238,6 @@ const renderWithRouter = (component: React.ReactElement) => {
 };
 
 describe('OverviewSiteList', () => {
-  import {
-    getAggregationValue,
-    parseCurrentPower,
-    parseMaxData,
-  } from '../../../../services/search';
-  import { getRoundedTimeFromOffset } from '../../../../utils/Utils';
-
   const mockSites: Site[] = [
     {
       id: 'site1',

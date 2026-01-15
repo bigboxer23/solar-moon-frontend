@@ -18,7 +18,7 @@ vi.mock('../../../../utils/Utils', () => ({
 }));
 
 vi.mock('@wojtekmaj/react-daterange-picker', () => {
-  return function MockDateRangePicker({
+  const MockDateRangePicker = function ({
     onChange,
     value,
     _calendarIcon,
@@ -44,10 +44,11 @@ vi.mock('@wojtekmaj/react-daterange-picker', () => {
       </div>
     );
   };
+  return { default: MockDateRangePicker };
 });
 
 vi.mock('../../../../components/common/Dropdown', () => {
-  return function MockDropdown({ onChange, options, value, prefixLabel }) {
+  const MockDropdown = function ({ onChange, options, value, prefixLabel }) {
     return (
       <div data-testid={`dropdown-${prefixLabel?.toLowerCase()}`}>
         <select
@@ -69,6 +70,7 @@ vi.mock('../../../../components/common/Dropdown', () => {
       </div>
     );
   };
+  return { default: MockDropdown };
 });
 
 vi.mock('../../../../components/common/Check', () => ({
@@ -89,7 +91,7 @@ vi.mock('../../../../components/common/Check', () => ({
 }));
 
 vi.mock('../../../../components/common/Button', () => {
-  return function MockButton({ children, onClick, disabled, variant, type }) {
+  const MockButton = function ({ children, onClick, disabled, variant, type }) {
     return (
       <button
         data-testid={`button-${variant || 'default'}`}
@@ -101,12 +103,14 @@ vi.mock('../../../../components/common/Button', () => {
       </button>
     );
   };
+  return { default: MockButton };
 });
 
 vi.mock('../../../../components/common/Spinner', () => {
-  return function MockSpinner() {
+  const MockSpinner = function () {
     return <div data-testid='spinner'>Loading...</div>;
   };
+  return { default: MockSpinner };
 });
 
 describe('SearchBar', () => {

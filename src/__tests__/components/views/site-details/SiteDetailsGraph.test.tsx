@@ -3,6 +3,12 @@ import React from 'react';
 import { vi } from 'vitest';
 
 import SiteDetailsGraph from '../../../../components/views/site-details/SiteDetailsGraph';
+import {
+  getDisplayName,
+  maybeSetTimeWindow,
+  timeLabel,
+  truncate,
+} from '../../../../utils/Utils';
 
 // Mock react-chartjs-2 components
 vi.mock('react-chartjs-2', () => ({
@@ -186,7 +192,6 @@ describe('SiteDetailsGraph', () => {
     });
 
     test('renders time label', () => {
-      import { timeLabel } from '../../../../utils/Utils';
 
       render(<SiteDetailsGraph {...defaultProps} />);
 
@@ -276,7 +281,6 @@ describe('SiteDetailsGraph', () => {
 
   describe('Time Navigation', () => {
     test('calls maybeSetTimeWindow with negative increment for previous button', () => {
-      import { maybeSetTimeWindow } from '../../../../utils/Utils';
 
       render(<SiteDetailsGraph {...defaultProps} />);
 
@@ -290,7 +294,6 @@ describe('SiteDetailsGraph', () => {
     });
 
     test('calls maybeSetTimeWindow with positive increment for next button when enabled', () => {
-      import { maybeSetTimeWindow } from '../../../../utils/Utils';
 
       render(<SiteDetailsGraph {...defaultProps} />);
 
@@ -313,7 +316,6 @@ describe('SiteDetailsGraph', () => {
 
   describe('Device Filtering', () => {
     test('filters devices correctly for non-overview graph types', () => {
-      import { getDisplayName } from '../../../../utils/Utils';
 
       render(<SiteDetailsGraph {...defaultProps} graphType='bar' />);
 
@@ -327,7 +329,6 @@ describe('SiteDetailsGraph', () => {
     });
 
     test('filters devices correctly for overview graph type', () => {
-      import { getDisplayName } from '../../../../utils/Utils';
 
       render(<SiteDetailsGraph {...defaultProps} graphType='overview' />);
 
@@ -342,7 +343,6 @@ describe('SiteDetailsGraph', () => {
 
   describe('Chart Data Configuration', () => {
     test('passes correct dataset structure to charts', () => {
-      import { getDisplayName, truncate } from '../../../../utils/Utils';
 
       // Ensure mocks return expected values
       truncate.mockImplementation((str, len) =>
@@ -616,7 +616,6 @@ describe('SiteDetailsGraph', () => {
 
   describe('Integration', () => {
     test('integrates with getDisplayName utility', () => {
-      import { getDisplayName } from '../../../../utils/Utils';
 
       render(<SiteDetailsGraph {...defaultProps} />);
 
@@ -629,7 +628,6 @@ describe('SiteDetailsGraph', () => {
     });
 
     test('integrates with truncate utility for labels', () => {
-      import { truncate } from '../../../../utils/Utils';
 
       render(<SiteDetailsGraph {...defaultProps} />);
 
@@ -637,7 +635,6 @@ describe('SiteDetailsGraph', () => {
     });
 
     test('integrates with maybeSetTimeWindow for navigation', () => {
-      import { maybeSetTimeWindow } from '../../../../utils/Utils';
 
       render(<SiteDetailsGraph {...defaultProps} />);
 
@@ -651,7 +648,6 @@ describe('SiteDetailsGraph', () => {
     });
 
     test('integrates with timeLabel utility', () => {
-      import { timeLabel } from '../../../../utils/Utils';
 
       render(<SiteDetailsGraph {...defaultProps} />);
 
@@ -771,7 +767,6 @@ describe('SiteDetailsGraph', () => {
 
   describe('Dataset Configuration Details', () => {
     test('configures dataset properties correctly for bar charts', () => {
-      import { getDisplayName } from '../../../../utils/Utils';
 
       getDisplayName.mockImplementation(
         (device) => device.name || device.deviceName || 'Unknown',
@@ -830,7 +825,6 @@ describe('SiteDetailsGraph', () => {
 
   describe('Data Transformation', () => {
     test('processes and transforms data correctly for each dataset', () => {
-      import { getDisplayName } from '../../../../utils/Utils';
 
       render(<SiteDetailsGraph {...defaultProps} graphType='bar' />);
 

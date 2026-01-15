@@ -86,7 +86,7 @@ vi.mock('../../../../components/device-block/StackedTotAvg', () => {
 });
 
 vi.mock('../../../../components/views/dashboard/TimeIncrementSelector', () => {
-  return function MockTimeIncrementSelector({
+  const MockTimeIncrementSelector = function ({
     timeIncrement,
     setTimeIncrement,
   }) {
@@ -98,6 +98,7 @@ vi.mock('../../../../components/views/dashboard/TimeIncrementSelector', () => {
       </div>
     );
   };
+  return { default: MockTimeIncrementSelector };
 });
 
 vi.mock('../../../../components/views/site-details/SiteDetailsGraph', () => {
@@ -125,7 +126,7 @@ vi.mock('../../../../components/views/site-details/SiteDetailsGraph', () => {
 });
 
 vi.mock('../../../../components/views/site-details/SiteDevicesOverview', () => {
-  return function MockSiteDevicesOverview({
+  const MockSiteDevicesOverview = function ({
     devices,
     activeSiteAlerts,
     resolvedSiteAlerts,
@@ -142,6 +143,7 @@ vi.mock('../../../../components/views/site-details/SiteDevicesOverview', () => {
       </div>
     );
   };
+  return { default: MockSiteDevicesOverview };
 });
 
 // Mock services and utilities before importing components
@@ -171,11 +173,17 @@ vi.mock('../../../../utils/Utils', () => ({
 }));
 
 const mockNavigate = vi.fn();
-vi.mock('react-router-dom', () => ({
-  ...vi.importActual('react-router-dom'),
-  useNavigate: () => mockNavigate,
-  redirect: vi.fn(),
-}));
+vi.mock('react-router-dom', async () => {
+  const actual =
+    await vi.importActual<typeof import('react-router-dom')>(
+      'react-router-dom',
+    );
+  return {
+    ...actual,
+    useNavigate: () => mockNavigate,
+    redirect: vi.fn(),
+  };
+});
 
 const renderWithProviders = (component, initialRoute = '/sites/site-123') => {
   return render(

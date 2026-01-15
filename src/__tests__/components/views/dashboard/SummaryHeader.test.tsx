@@ -3,6 +3,11 @@ import type { ReactElement, ReactNode } from 'react';
 import { vi } from 'vitest';
 
 import SummaryHeader from '../../../../components/views/dashboard/SummaryHeader';
+import { useIntl } from 'react-intl';
+import {
+  getPowerScalingInformation,
+  roundToDecimals,
+} from '../../../../utils/Utils';
 
 interface TippyProps {
   children: ReactNode;
@@ -101,13 +106,6 @@ vi.mock('../../../../components/graphs/FormattedLabel', () => {
 });
 
 describe('SummaryHeader', () => {
-  import { useIntl } from 'react-intl';
-
-  import {
-    getPowerScalingInformation,
-    roundToDecimals,
-  } from '../../../../utils/Utils';
-
   beforeEach(() => {
     vi.clearAllMocks();
 

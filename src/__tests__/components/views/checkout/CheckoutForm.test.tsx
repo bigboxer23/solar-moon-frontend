@@ -4,6 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { vi } from 'vitest';
 
 import CheckoutForm from '../../../../components/views/checkout/CheckoutForm';
+import { checkout } from '../../../../services/services';
 
 // Mock Stripe components
 vi.mock('@stripe/react-stripe-js', () => ({
@@ -58,8 +59,6 @@ const renderWithRouter = (
 };
 
 describe('CheckoutForm', () => {
-  import { checkout } from '../../../../services/services';
-
   beforeEach(() => {
     vi.clearAllMocks();
     checkout.mockResolvedValue({

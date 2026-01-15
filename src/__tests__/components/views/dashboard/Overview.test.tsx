@@ -202,7 +202,7 @@ vi.mock('../../../../components/views/dashboard/SummaryHeader', () => {
 });
 
 vi.mock('../../../../components/views/dashboard/TimeIncrementSelector', () => {
-  return function MockTimeIncrementSelector({
+  const MockTimeIncrementSelector = function ({
     timeIncrement,
     setTimeIncrement,
   }: {
@@ -217,6 +217,7 @@ vi.mock('../../../../components/views/dashboard/TimeIncrementSelector', () => {
       </div>
     );
   };
+  return { default: MockTimeIncrementSelector };
 });
 
 // Mock services and utilities before importing components
@@ -240,10 +241,16 @@ vi.mock('../../../../utils/Utils', () => ({
 }));
 
 const mockNavigate = vi.fn();
-vi.mock('react-router-dom', () => ({
-  ...vi.importActual('react-router-dom'),
-  useNavigate: () => mockNavigate,
-}));
+vi.mock('react-router-dom', async () => {
+  const actual =
+    await vi.importActual<typeof import('react-router-dom')>(
+      'react-router-dom',
+    );
+  return {
+    ...actual,
+    useNavigate: () => mockNavigate,
+  };
+});
 
 const renderWithProviders = (component: React.ReactElement) => {
   return render(

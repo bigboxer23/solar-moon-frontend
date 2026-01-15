@@ -6,13 +6,33 @@ import { vi } from 'vitest';
 import SiteDevicesOverview from '../../../../components/views/site-details/SiteDevicesOverview';
 import type { SearchResponse } from '../../../../types/api';
 import type { Alarm, Device } from '../../../../types/models';
+import {
+  getAggregationValue,
+  getBucketSize,
+  getInformationalErrorInfo,
+  parseCurrentAmperage,
+  parseCurrentPower,
+  parseCurrentVoltage,
+  parseMaxData,
+  parseSearchReturn,
+} from '../../../../services/search';
+import {
+  getDisplayName,
+  getRoundedTimeFromOffset,
+} from '../../../../utils/Utils';
 
 // Mock react-router-dom
 const mockNavigate = vi.fn();
-vi.mock('react-router-dom', () => ({
-  ...vi.importActual('react-router-dom'),
-  useNavigate: () => mockNavigate,
-}));
+vi.mock('react-router-dom', async () => {
+  const actual =
+    await vi.importActual<typeof import('react-router-dom')>(
+      'react-router-dom',
+    );
+  return {
+    ...actual,
+    useNavigate: () => mockNavigate,
+  };
+});
 
 // Mock search services
 vi.mock('../../../../services/search', () => ({
@@ -132,7 +152,7 @@ vi.mock('../../../../components/device-block/StackedAlertsInfo', () => {
 vi.mock(
   '../../../../components/device-block/StackedCurrentVoltageBlock',
   () => {
-    return function MockStackedCurrentVoltageBlock({
+    const MockStackedCurrentVoltageBlock = function ({
       current,
       voltage,
     }: {
@@ -149,6 +169,7 @@ vi.mock(
         </div>
       );
     };
+    return { default: MockStackedCurrentVoltageBlock };
   },
 );
 
@@ -192,21 +213,6 @@ const renderWithRouter = (component: ReactElement) => {
 };
 
 describe('SiteDevicesOverview', () => {
-  import {
-    getAggregationValue,
-    getBucketSize,
-    getInformationalErrorInfo,
-    parseCurrentAmperage,
-    parseCurrentPower,
-    parseCurrentVoltage,
-    parseMaxData,
-    parseSearchReturn,
-  } from '../../../../services/search';
-  import {
-    getDisplayName,
-    getRoundedTimeFromOffset,
-  } from '../../../../utils/Utils';
-
   const mockDevices: Device[] = [
     {
       id: 'device1',

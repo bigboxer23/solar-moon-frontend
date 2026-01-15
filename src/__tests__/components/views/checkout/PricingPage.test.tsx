@@ -4,6 +4,12 @@ import { MemoryRouter } from 'react-router-dom';
 import { vi } from 'vitest';
 
 import PricingPage from '../../../../components/views/checkout/PricingPage';
+import { useAuthenticator } from '@aws-amplify/ui-react';
+import {
+  activateTrial,
+  getSubscriptionInformation,
+} from '../../../../services/services';
+import { MONTH } from '../../../../services/search';
 
 // Mock AWS Amplify
 vi.mock('@aws-amplify/ui-react', () => ({
@@ -87,29 +93,28 @@ vi.mock('react-icons/fa', () => ({
 
 // Mock react-router-dom
 const mockNavigate = vi.fn();
-vi.mock('react-router-dom', () => ({
-  ...vi.importActual('react-router-dom'),
-  useNavigate: () => mockNavigate,
-  createSearchParams: (params: Record<string, string>) => ({
-    toString: () =>
-      Object.entries(params)
-        .map(([k, v]) => `${k}=${v}`)
-        .join('&'),
-  }),
-}));
+vi.mock('react-router-dom', async () => {
+  const actual =
+    await vi.importActual<typeof import('react-router-dom')>(
+      'react-router-dom',
+    );
+  return {
+    ...actual,
+    useNavigate: () => mockNavigate,
+    createSearchParams: (params: Record<string, string>) => ({
+      toString: () =>
+        Object.entries(params)
+          .map(([k, v]) => `${k}=${v}`)
+          .join('&'),
+    }),
+  };
+});
 
 const renderWithRouter = (component: React.ReactElement) => {
   return render(<MemoryRouter>{component}</MemoryRouter>);
 };
 
 describe('PricingPage', () => {
-  import { useAuthenticator } from '@aws-amplify/ui-react';
-
-  import {
-    activateTrial,
-    getSubscriptionInformation,
-  } from '../../../../services/services';
-
   const mockUser = { username: 'testuser' };
   const mockSignOut = vi.fn();
 
@@ -201,7 +206,6 @@ describe('PricingPage', () => {
   });
 
   test('renders trial tile when trial is available', async () => {
-    import { MONTH } from '../../../../services/search';
 
     getSubscriptionInformation.mockResolvedValue({
       data: {
@@ -226,7 +230,6 @@ describe('PricingPage', () => {
   });
 
   test('renders trial over message when trial is over', async () => {
-    import { MONTH } from '../../../../services/search';
 
     getSubscriptionInformation.mockResolvedValue({
       data: {
@@ -245,7 +248,6 @@ describe('PricingPage', () => {
   });
 
   test('handles trial click', async () => {
-    import { MONTH } from '../../../../services/search';
 
     getSubscriptionInformation.mockResolvedValue({
       data: {

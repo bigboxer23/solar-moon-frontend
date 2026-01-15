@@ -3,6 +3,7 @@ import type { Dispatch, ReactElement, SetStateAction } from 'react';
 import { vi } from 'vitest';
 
 import Dashboard from '../../../../components/views/dashboard/Dashboard';
+import { useStickyState } from '../../../../utils/Utils';
 
 interface OverviewProps {
   setTrialDate?: Dispatch<SetStateAction<Date | null>>;
@@ -32,8 +33,6 @@ delete (window as { location?: unknown }).location;
 (window as { location: { href: string } }).location = { href: '' };
 
 describe('Dashboard', () => {
-  import { useStickyState } from '../../../../utils/Utils';
-
   const mockSetTrialDate = vi.fn();
 
   beforeEach(() => {

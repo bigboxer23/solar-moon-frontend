@@ -136,7 +136,7 @@ vi.mock('../../../../components/views/site-management/NewSiteDialog', () => {
 vi.mock(
   '../../../../components/views/site-management/NewSiteExampleDialog',
   () => {
-    return function MockNewSiteExampleDialog({
+    const MockNewSiteExampleDialog = function ({
       show,
       setShow,
       showSiteCreation,
@@ -156,11 +156,12 @@ vi.mock(
         </div>
       );
     };
+    return { default: MockNewSiteExampleDialog };
   },
 );
 
 vi.mock('../../../../components/views/site-management/NewDeviceDialog', () => {
-  return function MockNewDeviceDialog({
+  const MockNewDeviceDialog = function ({
     show,
     setShow,
     setDevices,
@@ -192,12 +193,13 @@ vi.mock('../../../../components/views/site-management/NewDeviceDialog', () => {
       </div>
     );
   };
+  return { default: MockNewDeviceDialog };
 });
 
 vi.mock(
   '../../../../components/views/site-management/NewDeviceExampleDialog',
   () => {
-    return function MockNewDeviceExampleDialog({
+    const MockNewDeviceExampleDialog = function ({
       show,
       setShow,
       showDeviceCreation,
@@ -217,6 +219,7 @@ vi.mock(
         </div>
       );
     };
+    return { default: MockNewDeviceExampleDialog };
   },
 );
 
@@ -237,11 +240,17 @@ vi.mock('../../../../utils/Utils', () => ({
 const mockNavigate = vi.fn();
 const mockSearchParams = new URLSearchParams();
 const mockSetSearchParams = vi.fn();
-vi.mock('react-router-dom', () => ({
-  ...vi.importActual('react-router-dom'),
-  useNavigate: () => mockNavigate,
-  useSearchParams: () => [mockSearchParams, mockSetSearchParams],
-}));
+vi.mock('react-router-dom', async () => {
+  const actual =
+    await vi.importActual<typeof import('react-router-dom')>(
+      'react-router-dom',
+    );
+  return {
+    ...actual,
+    useNavigate: () => mockNavigate,
+    useSearchParams: () => [mockSearchParams, mockSetSearchParams],
+  };
+});
 
 const renderWithProviders = (component, initialRoute = '/manage') => {
   return render(

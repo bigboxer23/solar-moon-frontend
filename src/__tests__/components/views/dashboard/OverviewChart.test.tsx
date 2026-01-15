@@ -3,8 +3,16 @@ import React from 'react';
 import { vi } from 'vitest';
 
 import OverviewChart from '../../../../components/views/dashboard/OverviewChart';
-import { getBucketSize } from '../../../../services/search';
-import { useStickyState } from '../../../../utils/Utils';
+import {
+  getBucketSize,
+  parseAndCondenseStackedTimeSeriesData,
+  parseSearchReturn,
+} from '../../../../services/search';
+import {
+  maybeSetTimeWindow,
+  timeLabel,
+  useStickyState,
+} from '../../../../utils/Utils';
 
 interface ChartData {
   date: number;
@@ -200,7 +208,6 @@ describe('OverviewChart', () => {
     });
 
     test('renders time label', () => {
-      import { timeLabel } from '../../../../utils/Utils';
 
       render(<OverviewChart {...defaultProps} />);
 
@@ -292,7 +299,6 @@ describe('OverviewChart', () => {
 
   describe('Time Navigation', () => {
     test('calls maybeSetTimeWindow with negative increment for previous button', () => {
-      import { maybeSetTimeWindow } from '../../../../utils/Utils';
 
       render(<OverviewChart {...defaultProps} />);
 
@@ -306,7 +312,6 @@ describe('OverviewChart', () => {
     });
 
     test('calls maybeSetTimeWindow with positive increment for next button when enabled', () => {
-      import { maybeSetTimeWindow } from '../../../../utils/Utils';
 
       render(<OverviewChart {...defaultProps} />);
 
@@ -329,7 +334,6 @@ describe('OverviewChart', () => {
 
   describe('Data Processing', () => {
     test('processes overview data correctly', () => {
-      import { parseAndCondenseStackedTimeSeriesData } from '../../../../services/search';
 
       render(<OverviewChart {...defaultProps} />);
 
@@ -340,7 +344,6 @@ describe('OverviewChart', () => {
     });
 
     test('processes sites data correctly', () => {
-      import { parseSearchReturn } from '../../../../services/search';
 
       render(<OverviewChart {...defaultProps} />);
 
@@ -580,7 +583,6 @@ describe('OverviewChart', () => {
 
   describe('Integration', () => {
     test('integrates with useStickyState for graph type persistence', () => {
-      import { useStickyState } from '../../../../utils/Utils';
 
       render(<OverviewChart {...defaultProps} />);
 
@@ -588,7 +590,6 @@ describe('OverviewChart', () => {
     });
 
     test('integrates with parseAndCondenseStackedTimeSeriesData for data processing', () => {
-      import { parseAndCondenseStackedTimeSeriesData } from '../../../../services/search';
 
       render(<OverviewChart {...defaultProps} />);
 
@@ -599,7 +600,6 @@ describe('OverviewChart', () => {
     });
 
     test('integrates with parseSearchReturn for sites data processing', () => {
-      import { parseSearchReturn } from '../../../../services/search';
 
       render(<OverviewChart {...defaultProps} />);
 
@@ -663,7 +663,6 @@ describe('OverviewChart', () => {
         { date: Date.now(), values: 30 },
       ];
 
-      import { parseAndCondenseStackedTimeSeriesData } from '../../../../services/search';
 
       (parseAndCondenseStackedTimeSeriesData as vi.Mock).mockClear();
 
@@ -696,7 +695,6 @@ describe('OverviewChart', () => {
 
   describe('Performance Optimizations', () => {
     test('does not reprocess data when overviewData is null', () => {
-      import { parseAndCondenseStackedTimeSeriesData } from '../../../../services/search';
 
       (parseAndCondenseStackedTimeSeriesData as vi.Mock).mockClear();
 
