@@ -1,8 +1,10 @@
-/* eslint-env jest */
 import { fireEvent, render, screen } from '@testing-library/react';
 import type { ReactElement } from 'react';
+import { vi } from 'vitest';
 
 import TimeIncrementSelector from '../../../../components/views/dashboard/TimeIncrementSelector';
+import { DAY, MONTH, WEEK, YEAR } from '../../../../services/search';
+import { timeIncrementToText } from '../../../../utils/Utils';
 
 interface IconProps {
   className?: string;
@@ -27,7 +29,7 @@ interface MenuItemProps {
 }
 
 // Mock react-icons
-jest.mock('react-icons/fa', () => ({
+vi.mock('react-icons/fa', () => ({
   FaChevronDown: ({ className }: IconProps): ReactElement => (
     <span className={className} data-testid='chevron-down-icon'>
       ⬇️
@@ -36,7 +38,7 @@ jest.mock('react-icons/fa', () => ({
 }));
 
 // Mock search services
-jest.mock('../../../../services/search', () => ({
+vi.mock('../../../../services/search', () => ({
   DAY: 'day',
   WEEK: 'week',
   MONTH: 'month',
@@ -44,12 +46,12 @@ jest.mock('../../../../services/search', () => ({
 }));
 
 // Mock Utils
-jest.mock('../../../../utils/Utils', () => ({
-  timeIncrementToText: jest.fn(),
+vi.mock('../../../../utils/Utils', () => ({
+  timeIncrementToText: vi.fn(),
 }));
 
 // Mock @szhsin/react-menu
-jest.mock('@szhsin/react-menu', () => ({
+vi.mock('@szhsin/react-menu', () => ({
   Menu: ({
     children,
     menuButton,
@@ -85,13 +87,10 @@ jest.mock('@szhsin/react-menu', () => ({
 }));
 
 describe('TimeIncrementSelector', () => {
-  const { timeIncrementToText } = require('../../../../utils/Utils');
-  const { DAY, WEEK, MONTH, YEAR } = require('../../../../services/search');
-
-  const mockSetTimeIncrement = jest.fn();
+  const mockSetTimeIncrement = vi.fn();
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
 
     // Set up the timeIncrementToText mock to return specific values
     timeIncrementToText.mockImplementation(

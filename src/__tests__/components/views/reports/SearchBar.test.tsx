@@ -1,22 +1,24 @@
-/* eslint-env jest */
 import { fireEvent, render, screen } from '@testing-library/react';
+import { vi } from 'vitest';
 
 // Import after all mocks are set up
 import SearchBar from '../../../../components/views/reports/SearchBar';
+import { ALL } from '../../../../services/search';
+import * as utils from '../../../../utils/Utils';
 
 // Mock services first to avoid ES module issues
-jest.mock('../../../../services/search', () => ({
+vi.mock('../../../../services/search', () => ({
   ALL: 'ALL',
 }));
 
-jest.mock('../../../../utils/Utils', () => ({
-  getDisplayName: jest.fn(),
-  getRoundedTime: jest.fn(),
-  sortDevices: jest.fn(),
+vi.mock('../../../../utils/Utils', () => ({
+  getDisplayName: vi.fn(),
+  getRoundedTime: vi.fn(),
+  sortDevices: vi.fn(),
 }));
 
-jest.mock('@wojtekmaj/react-daterange-picker', () => {
-  return function MockDateRangePicker({
+vi.mock('@wojtekmaj/react-daterange-picker', () => {
+  const MockDateRangePicker = function ({
     onChange,
     value,
     _calendarIcon,
@@ -42,10 +44,11 @@ jest.mock('@wojtekmaj/react-daterange-picker', () => {
       </div>
     );
   };
+  return { default: MockDateRangePicker };
 });
 
-jest.mock('../../../../components/common/Dropdown', () => {
-  return function MockDropdown({ onChange, options, value, prefixLabel }) {
+vi.mock('../../../../components/common/Dropdown', () => {
+  const MockDropdown = function ({ onChange, options, value, prefixLabel }) {
     return (
       <div data-testid={`dropdown-${prefixLabel?.toLowerCase()}`}>
         <select
@@ -67,9 +70,10 @@ jest.mock('../../../../components/common/Dropdown', () => {
       </div>
     );
   };
+  return { default: MockDropdown };
 });
 
-jest.mock('../../../../components/common/Check', () => ({
+vi.mock('../../../../components/common/Check', () => ({
   Check: function MockCheck({ onClick, inputProps, label, name }) {
     return (
       <div data-testid={`check-${name}`}>
@@ -86,8 +90,8 @@ jest.mock('../../../../components/common/Check', () => ({
   },
 }));
 
-jest.mock('../../../../components/common/Button', () => {
-  return function MockButton({ children, onClick, disabled, variant, type }) {
+vi.mock('../../../../components/common/Button', () => {
+  const MockButton = function ({ children, onClick, disabled, variant, type }) {
     return (
       <button
         data-testid={`button-${variant || 'default'}`}
@@ -99,16 +103,15 @@ jest.mock('../../../../components/common/Button', () => {
       </button>
     );
   };
+  return { default: MockButton };
 });
 
-jest.mock('../../../../components/common/Spinner', () => {
-  return function MockSpinner() {
+vi.mock('../../../../components/common/Spinner', () => {
+  const MockSpinner = function () {
     return <div data-testid='spinner'>Loading...</div>;
   };
+  return { default: MockSpinner };
 });
-
-const utils = require('../../../../utils/Utils');
-const { ALL } = require('../../../../services/search');
 
 describe('SearchBar', () => {
   const defaultProps = {
@@ -136,22 +139,22 @@ describe('SearchBar', () => {
       },
     ],
     deviceId: ALL,
-    setDeviceId: jest.fn(),
+    setDeviceId: vi.fn(),
     siteId: ALL,
-    setSiteId: jest.fn(),
+    setSiteId: vi.fn(),
     start: new Date('2024-01-01').getTime(),
-    setStart: jest.fn(),
+    setStart: vi.fn(),
     end: new Date('2024-01-31').getTime(),
-    setEnd: jest.fn(),
+    setEnd: vi.fn(),
     filterErrors: 'false',
-    setFilterErrors: jest.fn(),
+    setFilterErrors: vi.fn(),
     refreshSearch: false,
-    setRefreshSearch: jest.fn(),
+    setRefreshSearch: vi.fn(),
     defaultSearchPeriod: 30,
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
 
     utils.getDisplayName.mockImplementation(
       (device) => device?.name || device?.deviceName || 'Unknown',

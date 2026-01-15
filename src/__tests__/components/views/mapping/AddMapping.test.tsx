@@ -1,21 +1,21 @@
-/* eslint-env jest */
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import type { AxiosResponse } from 'axios';
 import React from 'react';
+import { vi } from 'vitest';
 
 import AddMapping from '../../../../components/views/mapping/AddMapping';
 import { addMapping } from '../../../../services/services';
 import type { Mapping } from '../../../../types/models';
 
-jest.mock('../../../../services/services', () => ({
-  addMapping: jest.fn(),
+vi.mock('../../../../services/services', () => ({
+  addMapping: vi.fn(),
 }));
 
-jest.mock('react-icons/md', () => ({
+vi.mock('react-icons/md', () => ({
   MdOutlineAddCircle: () => <div data-testid='add-circle-icon' />,
 }));
 
-jest.mock('../../../../components/views/mapping/MappingConstants', () => ({
+vi.mock('../../../../components/views/mapping/MappingConstants', () => ({
   attributes: [
     'Average Current',
     'Voltage',
@@ -30,10 +30,10 @@ jest.mock('../../../../components/views/mapping/MappingConstants', () => ({
   },
 }));
 
-const mockAddMapping = addMapping as jest.MockedFunction<typeof addMapping>;
+const mockAddMapping = addMapping as vi.MockedFunction<typeof addMapping>;
 
 describe('AddMapping', () => {
-  const mockSetMappings = jest.fn();
+  const mockSetMappings = vi.fn();
 
   const existingMappings: Mapping[] = [
     { mappingName: 'Existing Mapping', attribute: 'Current' },
@@ -45,7 +45,7 @@ describe('AddMapping', () => {
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     mockAddMapping.mockResolvedValue({ data: undefined } as AxiosResponse);
   });
 

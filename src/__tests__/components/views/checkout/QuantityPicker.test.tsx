@@ -1,12 +1,12 @@
-/* eslint-env jest */
 import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
+import { vi } from 'vitest';
 
 import QuantityPicker from '../../../../components/views/checkout/QuantityPicker';
 
 // Mock Button component
-jest.mock('../../../../components/common/Button', () => {
-  return function MockButton({
+vi.mock('../../../../components/common/Button', () => {
+  const MockButton = function ({
     children,
     onClick,
     className,
@@ -31,13 +31,14 @@ jest.mock('../../../../components/common/Button', () => {
       </button>
     );
   };
+  return { default: MockButton };
 });
 
 describe('Checkout QuantityPicker', () => {
-  const mockSetCount = jest.fn();
+  const mockSetCount = vi.fn();
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test('renders with basic props', () => {

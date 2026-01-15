@@ -1,31 +1,31 @@
-/* eslint-env jest */
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import { useCopyToClipboard } from 'usehooks-ts';
+import { vi } from 'vitest';
 
 import CopyButton from '../../../components/common/CopyButton';
 
-jest.mock('usehooks-ts');
+vi.mock('usehooks-ts');
 
-const mockUseCopyToClipboard = useCopyToClipboard as jest.MockedFunction<
+const mockUseCopyToClipboard = useCopyToClipboard as vi.MockedFunction<
   typeof useCopyToClipboard
 >;
 
 describe('CopyButton', () => {
-  const mockCopy = jest.fn();
+  const mockCopy = vi.fn();
 
   beforeEach(() => {
-    jest.clearAllMocks();
-    jest.useFakeTimers();
+    vi.clearAllMocks();
+    vi.useFakeTimers();
     mockUseCopyToClipboard.mockReturnValue([null, mockCopy]);
   });
 
   afterEach(() => {
-    jest.useRealTimers();
+    vi.useRealTimers();
   });
 
   test('renders copy button with title', () => {
-    const mockDataSrc = jest.fn(() => 'test data');
+    const mockDataSrc = vi.fn(() => 'test data');
 
     render(<CopyButton dataSrc={mockDataSrc} title='Copy to clipboard' />);
 
@@ -35,7 +35,7 @@ describe('CopyButton', () => {
   });
 
   test('displays copy icon initially', () => {
-    const mockDataSrc = jest.fn(() => 'test data');
+    const mockDataSrc = vi.fn(() => 'test data');
     const { container } = render(<CopyButton dataSrc={mockDataSrc} />);
 
     const copyIcon = container.querySelector(
@@ -48,7 +48,7 @@ describe('CopyButton', () => {
   });
 
   test('calls dataSrc and copy function when clicked', () => {
-    const mockDataSrc = jest.fn(() => 'test data to copy');
+    const mockDataSrc = vi.fn(() => 'test data to copy');
 
     render(<CopyButton dataSrc={mockDataSrc} />);
 
@@ -60,7 +60,7 @@ describe('CopyButton', () => {
   });
 
   test('shows check icon temporarily after copying', () => {
-    const mockDataSrc = jest.fn(() => 'test data');
+    const mockDataSrc = vi.fn(() => 'test data');
     const { container } = render(<CopyButton dataSrc={mockDataSrc} />);
 
     const button = screen.getByRole('button');
@@ -77,7 +77,7 @@ describe('CopyButton', () => {
   });
 
   test('reverts to copy icon after timeout', () => {
-    const mockDataSrc = jest.fn(() => 'test data');
+    const mockDataSrc = vi.fn(() => 'test data');
     const { container } = render(<CopyButton dataSrc={mockDataSrc} />);
 
     const button = screen.getByRole('button');
@@ -85,7 +85,7 @@ describe('CopyButton', () => {
 
     // Fast-forward time by 1500ms
     act(() => {
-      jest.advanceTimersByTime(1500);
+      vi.advanceTimersByTime(1500);
     });
 
     // Should revert back to copy icon
@@ -99,7 +99,7 @@ describe('CopyButton', () => {
   });
 
   test('applies correct CSS classes', () => {
-    const mockDataSrc = jest.fn(() => 'test data');
+    const mockDataSrc = vi.fn(() => 'test data');
     const { container: _container } = render(
       <CopyButton dataSrc={mockDataSrc} />,
     );
@@ -109,7 +109,7 @@ describe('CopyButton', () => {
   });
 
   test('uses icon button variant', () => {
-    const mockDataSrc = jest.fn(() => 'test data');
+    const mockDataSrc = vi.fn(() => 'test data');
     const { container: _container } = render(
       <CopyButton dataSrc={mockDataSrc} />,
     );
@@ -119,7 +119,7 @@ describe('CopyButton', () => {
   });
 
   test('check icon has green color', () => {
-    const mockDataSrc = jest.fn(() => 'test data');
+    const mockDataSrc = vi.fn(() => 'test data');
     const { container } = render(<CopyButton dataSrc={mockDataSrc} />);
 
     // Find the check icon (BsCheckLg)
@@ -129,7 +129,7 @@ describe('CopyButton', () => {
   });
 
   test('handles multiple rapid clicks', () => {
-    const mockDataSrc = jest.fn(() => 'test data');
+    const mockDataSrc = vi.fn(() => 'test data');
     const { container: _container } = render(
       <CopyButton dataSrc={mockDataSrc} />,
     );
@@ -146,7 +146,7 @@ describe('CopyButton', () => {
 
   test('handles dataSrc returning different values', () => {
     let counter = 0;
-    const mockDataSrc = jest.fn(() => `data-${++counter}`);
+    const mockDataSrc = vi.fn(() => `data-${++counter}`);
 
     render(<CopyButton dataSrc={mockDataSrc} />);
 
@@ -160,7 +160,7 @@ describe('CopyButton', () => {
   });
 
   test('handles empty dataSrc return', () => {
-    const mockDataSrc = jest.fn(() => '');
+    const mockDataSrc = vi.fn(() => '');
 
     render(<CopyButton dataSrc={mockDataSrc} />);
 
@@ -171,7 +171,7 @@ describe('CopyButton', () => {
   });
 
   test('button has correct type attribute', () => {
-    const mockDataSrc = jest.fn(() => 'test data');
+    const mockDataSrc = vi.fn(() => 'test data');
 
     render(<CopyButton dataSrc={mockDataSrc} />);
 

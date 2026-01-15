@@ -1,10 +1,11 @@
-/* eslint-env jest */
+import { useTheme } from '@aws-amplify/ui-react';
 import { render, screen } from '@testing-library/react';
+import { vi } from 'vitest';
 
 import { Header } from '../../../components/login/Header';
 
 // Mock AWS Amplify UI components
-jest.mock('@aws-amplify/ui-react', () => ({
+vi.mock('@aws-amplify/ui-react', () => ({
   Flex: ({
     children,
     justifyContent,
@@ -35,25 +36,18 @@ jest.mock('@aws-amplify/ui-react', () => ({
       style={style}
     />
   ),
-  useTheme: jest.fn(() => ({
-    tokens: {
-      space: {
-        xl: '2rem',
-      },
-    },
-  })),
+  useTheme: vi.fn(),
 }));
 
 // Mock the logo import
-jest.mock('../../../assets/logo.svg', () => 'test-logo.svg');
+vi.mock('../../../assets/logo.svg', () => ({
+  default: 'test-logo.svg',
+}));
 
 describe('Header', () => {
-  let mockUseTheme: jest.Mock;
-
   beforeEach(() => {
-    mockUseTheme = require('@aws-amplify/ui-react').useTheme;
-    jest.clearAllMocks();
-    mockUseTheme.mockReturnValue({
+    vi.clearAllMocks();
+    (useTheme as ReturnType<typeof vi.fn>).mockReturnValue({
       tokens: {
         space: {
           xl: '2rem',
@@ -107,7 +101,7 @@ describe('Header', () => {
   test('uses AWS Amplify useTheme hook', () => {
     render(<Header />);
 
-    expect(mockUseTheme).toHaveBeenCalled();
+    expect(useTheme).toHaveBeenCalled();
   });
 
   test('accesses theme tokens for spacing', () => {
@@ -117,7 +111,9 @@ describe('Header', () => {
         lg: '1.5rem',
       },
     };
-    mockUseTheme.mockReturnValue({ tokens: mockTokens });
+    (useTheme as ReturnType<typeof vi.fn>).mockReturnValue({
+      tokens: mockTokens,
+    });
 
     render(<Header />);
 
@@ -136,7 +132,9 @@ describe('Header', () => {
   });
 
   test('renders without crashing when useTheme returns undefined tokens', () => {
-    mockUseTheme.mockReturnValue({ tokens: { space: {} } });
+    (useTheme as ReturnType<typeof vi.fn>).mockReturnValue({
+      tokens: { space: {} },
+    });
 
     render(<Header />);
 
@@ -144,7 +142,9 @@ describe('Header', () => {
   });
 
   test('renders without crashing when useTheme returns undefined space', () => {
-    mockUseTheme.mockReturnValue({ tokens: { space: {} } });
+    (useTheme as ReturnType<typeof vi.fn>).mockReturnValue({
+      tokens: { space: {} },
+    });
 
     render(<Header />);
 
@@ -189,7 +189,7 @@ describe('Header', () => {
   });
 
   test('renders with different theme tokens', () => {
-    mockUseTheme.mockReturnValue({
+    (useTheme as ReturnType<typeof vi.fn>).mockReturnValue({
       tokens: {
         space: {
           xl: '4rem',

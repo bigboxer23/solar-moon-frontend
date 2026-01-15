@@ -1,5 +1,5 @@
-/* eslint-env jest */
 import { fireEvent, render } from '@testing-library/react';
+import { vi } from 'vitest';
 
 import StackedAlertsInfo from '../../../components/device-block/StackedAlertsInfo';
 
@@ -86,7 +86,7 @@ describe('StackedAlertsInfo', () => {
   });
 
   test('handles onClick prop correctly', () => {
-    const mockOnClick = jest.fn();
+    const mockOnClick = vi.fn();
     const { container } = render(
       <StackedAlertsInfo
         activeAlerts={2}
@@ -104,7 +104,7 @@ describe('StackedAlertsInfo', () => {
   });
 
   test('adds cursor-pointer class when onClick is provided', () => {
-    const mockOnClick = jest.fn();
+    const mockOnClick = vi.fn();
     const { container } = render(
       <StackedAlertsInfo
         activeAlerts={1}
@@ -186,7 +186,7 @@ describe('StackedAlertsInfo', () => {
   });
 
   test('onClick callback receives event object', () => {
-    const mockOnClick = jest.fn();
+    const mockOnClick = vi.fn();
     const { container } = render(
       <StackedAlertsInfo
         activeAlerts={1}

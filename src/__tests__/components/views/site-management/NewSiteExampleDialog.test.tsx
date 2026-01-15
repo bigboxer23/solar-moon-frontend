@@ -1,24 +1,23 @@
-/* eslint-env jest */
 import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
+import { vi } from 'vitest';
 
 import NewSiteExampleDialog from '../../../../components/views/site-management/NewSiteExampleDialog';
 
 // Mock the image import
-jest.mock(
-  '../../../../assets/docs/exampleSite.jpg',
-  () => 'test-site-image-url',
-);
+vi.mock('../../../../assets/docs/exampleSite.jpg', () => ({
+  default: 'test-site-image-url',
+}));
 
-jest.mock('../../../../utils/HelpText', () => ({
+vi.mock('../../../../utils/HelpText', () => ({
   SITE_HELP_TEXT1: 'Site help text 1',
   SITE_HELP_TEXT2: 'Site help text 2',
   SITE_HELP_TEXT3: 'Site help text 3',
 }));
 
 describe('NewSiteExampleDialog', () => {
-  const mockSetShow = jest.fn();
-  const mockShowSiteCreation = jest.fn();
+  const mockSetShow = vi.fn();
+  const mockShowSiteCreation = vi.fn();
 
   const defaultProps = {
     show: true,
@@ -27,7 +26,7 @@ describe('NewSiteExampleDialog', () => {
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test('renders modal when show is true', () => {

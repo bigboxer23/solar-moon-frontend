@@ -1,18 +1,19 @@
-/* eslint-env jest */
 import { render, screen } from '@testing-library/react';
 import React from 'react';
+import { vi } from 'vitest';
 
 import Appearance from '../../../../components/views/profile/Appearance';
 
 // Mock ThemeSelector component
-jest.mock('../../../../components/common/ThemeSelector', () => {
-  return function MockThemeSelector({ extended }) {
+vi.mock('../../../../components/common/ThemeSelector', () => {
+  const MockThemeSelector = function ({ extended }) {
     return (
       <div data-extended={extended.toString()} data-testid='theme-selector'>
         ThemeSelector Component
       </div>
     );
   };
+  return { default: MockThemeSelector };
 });
 
 describe('Appearance', () => {

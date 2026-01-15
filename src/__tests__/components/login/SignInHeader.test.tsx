@@ -1,10 +1,11 @@
-/* eslint-env jest */
+import { useTheme } from '@aws-amplify/ui-react';
 import { render, screen } from '@testing-library/react';
+import { vi } from 'vitest';
 
 import { SignInHeader } from '../../../components/login/SignInHeader';
 
 // Mock AWS Amplify UI components
-jest.mock('@aws-amplify/ui-react', () => ({
+vi.mock('@aws-amplify/ui-react', () => ({
   Heading: ({
     children,
     level,
@@ -18,22 +19,13 @@ jest.mock('@aws-amplify/ui-react', () => ({
       {children}
     </h3>
   ),
-  useTheme: jest.fn(() => ({
-    tokens: {
-      space: {
-        xl: '2rem',
-      },
-    },
-  })),
+  useTheme: vi.fn(),
 }));
 
 describe('SignInHeader', () => {
-  let mockUseTheme: jest.Mock;
-
   beforeEach(() => {
-    mockUseTheme = require('@aws-amplify/ui-react').useTheme;
-    jest.clearAllMocks();
-    mockUseTheme.mockReturnValue({
+    vi.clearAllMocks();
+    (useTheme as ReturnType<typeof vi.fn>).mockReturnValue({
       tokens: {
         space: {
           xl: '2rem',
@@ -71,7 +63,7 @@ describe('SignInHeader', () => {
   test('uses AWS Amplify useTheme hook', () => {
     render(<SignInHeader />);
 
-    expect(mockUseTheme).toHaveBeenCalled();
+    expect(useTheme).toHaveBeenCalled();
   });
 
   test('accesses theme tokens for spacing', () => {
@@ -81,7 +73,9 @@ describe('SignInHeader', () => {
         lg: '1.5rem',
       },
     };
-    mockUseTheme.mockReturnValue({ tokens: mockTokens });
+    (useTheme as ReturnType<typeof vi.fn>).mockReturnValue({
+      tokens: mockTokens,
+    });
 
     render(<SignInHeader />);
 
@@ -90,7 +84,9 @@ describe('SignInHeader', () => {
   });
 
   test('renders without crashing when useTheme returns undefined tokens', () => {
-    mockUseTheme.mockReturnValue({ tokens: { space: {} } });
+    (useTheme as ReturnType<typeof vi.fn>).mockReturnValue({
+      tokens: { space: {} },
+    });
 
     render(<SignInHeader />);
 
@@ -98,7 +94,9 @@ describe('SignInHeader', () => {
   });
 
   test('renders without crashing when useTheme returns undefined space', () => {
-    mockUseTheme.mockReturnValue({ tokens: { space: {} } });
+    (useTheme as ReturnType<typeof vi.fn>).mockReturnValue({
+      tokens: { space: {} },
+    });
 
     render(<SignInHeader />);
 
@@ -128,7 +126,7 @@ describe('SignInHeader', () => {
   });
 
   test('renders with different theme tokens', () => {
-    mockUseTheme.mockReturnValue({
+    (useTheme as ReturnType<typeof vi.fn>).mockReturnValue({
       tokens: {
         space: {
           xl: '4rem',
@@ -176,7 +174,7 @@ describe('SignInHeader', () => {
   });
 
   test('handles theme hook errors gracefully', () => {
-    mockUseTheme.mockImplementation(() => {
+    (useTheme as ReturnType<typeof vi.fn>).mockImplementation(() => {
       throw new Error('Theme error');
     });
 
@@ -191,7 +189,7 @@ describe('SignInHeader', () => {
   });
 
   test('renders with minimal theme tokens', () => {
-    mockUseTheme.mockReturnValue({
+    (useTheme as ReturnType<typeof vi.fn>).mockReturnValue({
       tokens: {
         space: {
           xl: '0',
@@ -206,7 +204,7 @@ describe('SignInHeader', () => {
   });
 
   test('maintains structure with complex theme values', () => {
-    mockUseTheme.mockReturnValue({
+    (useTheme as ReturnType<typeof vi.fn>).mockReturnValue({
       tokens: {
         space: {
           xl: 'calc(2rem + 1vh)',

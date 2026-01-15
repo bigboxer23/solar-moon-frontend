@@ -1,5 +1,11 @@
 {
   "extends": "./tsconfig.json",
-  "include": ["src/**/*", "vite.config.ts", "postcss.config.js"],
+  "include": [
+    "src/**/*",
+    "vite.config.ts",
+    "vitest.config.ts",
+    "postcss.config.js",
+    "__mocks__/**/*"
+  ],
   "exclude": ["node_modules", "build", "src/graphql", "src/aws-exports.js"]
 }

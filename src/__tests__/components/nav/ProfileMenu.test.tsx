@@ -1,29 +1,29 @@
-/* eslint-env jest */
 import { fetchUserAttributes } from '@aws-amplify/auth';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { ReactElement } from 'react';
 import { MemoryRouter } from 'react-router-dom';
+import { vi } from 'vitest';
 
 import ProfileMenu from '../../../components/nav/ProfileMenu';
 import * as utils from '../../../utils/Utils';
 
 // Mock the external dependencies
-jest.mock('@aws-amplify/auth', () => ({
-  fetchUserAttributes: jest.fn(),
+vi.mock('@aws-amplify/auth', () => ({
+  fetchUserAttributes: vi.fn(),
 }));
 
-jest.mock('@aws-amplify/ui-react', () => ({
-  useAuthenticator: jest.fn(),
+vi.mock('@aws-amplify/ui-react', () => ({
+  useAuthenticator: vi.fn(),
 }));
 
-jest.mock('../../../utils/Utils', () => ({
-  getDaysLeftInTrial: jest.fn(),
+vi.mock('../../../utils/Utils', () => ({
+  getDaysLeftInTrial: vi.fn(),
 }));
 
 // Mock Avatar component
-jest.mock('../../../components/common/Avatar', () => {
-  return function MockAvatar({
+vi.mock('../../../components/common/Avatar', () => {
+  const MockAvatar = function ({
     attributes,
   }: {
     attributes: Record<string, string> | null | undefined;
@@ -34,17 +34,19 @@ jest.mock('../../../components/common/Avatar', () => {
       </div>
     );
   };
+  return { default: MockAvatar };
 });
 
 // Mock ThemeSelector component
-jest.mock('../../../components/common/ThemeSelector', () => {
-  return function MockThemeSelector() {
+vi.mock('../../../components/common/ThemeSelector', () => {
+  const MockThemeSelector = function () {
     return <div data-testid='theme-selector'>Theme Selector</div>;
   };
+  return { default: MockThemeSelector };
 });
 
 // Mock the react-menu library
-jest.mock('@szhsin/react-menu', () => ({
+vi.mock('@szhsin/react-menu', () => ({
   Menu: ({
     children,
     menuButton,
@@ -101,21 +103,21 @@ describe('ProfileMenu', () => {
     name: 'Test User',
     sub: '123-456-789',
   };
-  const mockSignOut = jest.fn();
+  const mockSignOut = vi.fn();
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
 
     // Mock useAuthenticator
-    (useAuthenticator as jest.Mock).mockReturnValue({
+    (useAuthenticator as vi.Mock).mockReturnValue({
       signOut: mockSignOut,
     });
 
     // Mock fetchUserAttributes
-    (fetchUserAttributes as jest.Mock).mockResolvedValue(mockUserAttributes);
+    (fetchUserAttributes as vi.Mock).mockResolvedValue(mockUserAttributes);
 
     // Mock getDaysLeftInTrial
-    (utils.getDaysLeftInTrial as jest.Mock).mockReturnValue('5 days left');
+    (utils.getDaysLeftInTrial as vi.Mock).mockReturnValue('5 days left');
   });
 
   describe('Basic Rendering', () => {

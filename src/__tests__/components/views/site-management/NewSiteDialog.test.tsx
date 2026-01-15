@@ -1,25 +1,25 @@
-/* eslint-env jest */
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
+import { vi } from 'vitest';
 
 import NewSiteDialog from '../../../../components/views/site-management/NewSiteDialog';
 import { addDevice } from '../../../../services/services';
 
-jest.mock('../../../../services/services', () => ({
-  addDevice: jest.fn(),
+vi.mock('../../../../services/services', () => ({
+  addDevice: vi.fn(),
 }));
 
-jest.mock('../../../../utils/HelpText', () => ({
+vi.mock('../../../../utils/HelpText', () => ({
   SITE_HELP_TEXT1: 'Help text 1',
   SITE_HELP_TEXT2: 'Help text 2',
   SITE_HELP_TEXT3: 'Help text 3',
 }));
 
 describe('NewSiteDialog', () => {
-  const mockSetShow = jest.fn();
-  const mockSetDevices = jest.fn();
-  const mockSetActiveSiteId = jest.fn();
-  const mockSetVersion = jest.fn();
+  const mockSetShow = vi.fn();
+  const mockSetDevices = vi.fn();
+  const mockSetActiveSiteId = vi.fn();
+  const mockSetVersion = vi.fn();
 
   const defaultProps = {
     show: true,
@@ -30,7 +30,7 @@ describe('NewSiteDialog', () => {
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     addDevice.mockResolvedValue({
       data: {
         id: 'new-site-1',

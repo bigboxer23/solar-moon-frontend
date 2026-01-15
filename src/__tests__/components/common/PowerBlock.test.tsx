@@ -1,23 +1,22 @@
-/* eslint-env jest */
 import { render, screen } from '@testing-library/react';
 import React from 'react';
+import { vi } from 'vitest';
 
 import PowerBlock from '../../../components/common/PowerBlock';
-
-// Mock the utils
-jest.mock('../../../utils/Utils', () => ({
-  getPowerScalingInformation: jest.fn(),
-  roundToDecimals: jest.fn(),
-}));
-
-const {
+import {
   getPowerScalingInformation,
   roundToDecimals,
-} = require('../../../utils/Utils');
+} from '../../../utils/Utils';
+
+// Mock the utils
+vi.mock('../../../utils/Utils', () => ({
+  getPowerScalingInformation: vi.fn(),
+  roundToDecimals: vi.fn(),
+}));
 
 describe('PowerBlock', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     // Default mock implementations
     getPowerScalingInformation.mockReturnValue({
       unitPrefix: 'k',

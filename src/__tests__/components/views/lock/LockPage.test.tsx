@@ -1,17 +1,18 @@
-/* eslint-env jest */
 import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
+import { vi } from 'vitest';
 
 import { LockPage } from '../../../../components/views/lock/LockPage';
+import { useStickyState } from '../../../../utils/Utils';
 
 // Mock utils
-jest.mock('../../../../utils/Utils', () => ({
-  useStickyState: jest.fn(),
+vi.mock('../../../../utils/Utils', () => ({
+  useStickyState: vi.fn(),
 }));
 
 // Mock components
-jest.mock('../../../../components/common/Button', () => {
-  return function MockButton({
+vi.mock('../../../../components/common/Button', () => {
+  const MockButton = function ({
     children,
     onClick,
     className,
@@ -36,9 +37,10 @@ jest.mock('../../../../components/common/Button', () => {
       </button>
     );
   };
+  return { default: MockButton };
 });
 
-jest.mock('../../../../components/common/Input', () => ({
+vi.mock('../../../../components/common/Input', () => ({
   ControlledInput: ({
     errorMessage,
     inputProps,
@@ -64,14 +66,15 @@ jest.mock('../../../../components/common/Input', () => ({
   ),
 }));
 
-jest.mock('../../../../components/nav/HeaderBar', () => {
-  return function MockHeaderBar({ headerText }: { headerText: string }) {
+vi.mock('../../../../components/nav/HeaderBar', () => {
+  const MockHeaderBar = function ({ headerText }: { headerText: string }) {
     return <div data-testid='header-bar'>{headerText}</div>;
   };
+  return { default: MockHeaderBar };
 });
 
 // Mock react-icons
-jest.mock('react-icons/md', () => ({
+vi.mock('react-icons/md', () => ({
   MdKey: ({ className }: { className?: string }) => (
     <span className={className} data-testid='key-icon'>
       🔑
@@ -84,11 +87,10 @@ delete (window as { location?: Location }).location;
 (window as { location: { href: string } }).location = { href: '' };
 
 describe('LockPage', () => {
-  const { useStickyState } = require('../../../../utils/Utils');
-  const mockSetUnlocked = jest.fn();
+  const mockSetUnlocked = vi.fn();
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     window.location.href = '';
 
     // Reset environment variable

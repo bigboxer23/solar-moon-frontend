@@ -1,18 +1,18 @@
-/* eslint-env jest */
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
+import { vi } from 'vitest';
 
 import SiteAttributes from '../../../../components/views/site-management/SiteAttributes';
 import { getDevices, updateDevice } from '../../../../services/services';
 
-jest.mock('../../../../services/services', () => ({
-  getDevices: jest.fn(),
-  updateDevice: jest.fn(),
+vi.mock('../../../../services/services', () => ({
+  getDevices: vi.fn(),
+  updateDevice: vi.fn(),
 }));
 
 describe('SiteAttributes', () => {
-  const mockSetDevices = jest.fn();
-  const mockSetActiveSiteId = jest.fn();
+  const mockSetDevices = vi.fn();
+  const mockSetActiveSiteId = vi.fn();
 
   const mockSiteData = {
     id: 'site-1',
@@ -31,7 +31,7 @@ describe('SiteAttributes', () => {
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     updateDevice.mockResolvedValue({ data: { ...mockSiteData } });
     getDevices.mockResolvedValue({ data: [] });
   });

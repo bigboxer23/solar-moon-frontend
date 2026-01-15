@@ -1,64 +1,70 @@
-/* eslint-env jest */
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
+import { vi } from 'vitest';
 
 import App from '../App';
+import { useStickyState } from '../utils/Utils';
 
-jest.mock('react-router-dom', () => {
-  const actualModule = jest.requireActual('react-router-dom');
+vi.mock('react-router-dom', async () => {
+  const actualModule =
+    await vi.importActual<typeof import('react-router-dom')>(
+      'react-router-dom',
+    );
   return {
     ...actualModule,
     BrowserRouter: ({ children }: { children: React.ReactNode }) => children,
   };
 });
 
-jest.mock('aws-amplify', () => ({
+vi.mock('aws-amplify', () => ({
   Amplify: {
-    configure: jest.fn(),
+    configure: vi.fn(),
   },
 }));
 
-jest.mock('@aws-amplify/ui-react', () => ({
+vi.mock('@aws-amplify/ui-react', () => ({
   Authenticator: ({ children }: { children: React.ReactNode }) => (
     <div data-testid='authenticator'>{children}</div>
   ),
 }));
 
-jest.mock('../aws-exports', () => ({}));
+vi.mock('../aws-exports', () => ({
+  default: {},
+}));
 
-jest.mock('../components/login/Footer', () => ({
+vi.mock('../components/login/Footer', () => ({
   Footer: () => <div data-testid='footer'>Footer</div>,
 }));
 
-jest.mock('../components/login/Header', () => ({
+vi.mock('../components/login/Header', () => ({
   Header: () => <div data-testid='header'>Header</div>,
 }));
 
-jest.mock('../components/login/SignInFooter', () => ({
+vi.mock('../components/login/SignInFooter', () => ({
   SignInFooter: () => <div data-testid='signin-footer'>SignInFooter</div>,
 }));
 
-jest.mock('../components/nav/Navbar', () => ({
+vi.mock('../components/nav/Navbar', () => ({
   __esModule: true,
   default: ({ trialDate }: { trialDate: number }) => (
     <div data-testid='navbar'>Navbar {trialDate}</div>
   ),
 }));
 
-jest.mock('../components/nav/PageTitleRoute', () => ({
+vi.mock('../components/nav/PageTitleRoute', () => ({
   __esModule: true,
   default: ({ title }: { title: string }) => (
     <div data-testid='page-title'>{title}</div>
   ),
 }));
 
-jest.mock('../components/PageFooter', () => ({
+vi.mock('../components/PageFooter', () => ({
   __esModule: true,
   default: () => <div data-testid='page-footer'>PageFooter</div>,
 }));
 
-jest.mock('../components/views/dashboard/Dashboard', () => ({
+vi.mock('../components/views/dashboard/Dashboard', () => ({
   __esModule: true,
   default: ({ setTrialDate }: { setTrialDate?: (date: number) => void }) => (
     <div
@@ -70,12 +76,12 @@ jest.mock('../components/views/dashboard/Dashboard', () => ({
   ),
 }));
 
-jest.mock('../components/views/reports/Reports', () => ({
+vi.mock('../components/views/reports/Reports', () => ({
   __esModule: true,
   default: () => <div data-testid='reports'>Reports</div>,
 }));
 
-jest.mock('../components/views/alerts/Alerts', () => ({
+vi.mock('../components/views/alerts/Alerts', () => ({
   __esModule: true,
   default: ({ setTrialDate }: { setTrialDate?: (date: number) => void }) => (
     <div data-testid='alerts' onClick={() => setTrialDate && setTrialDate(456)}>
@@ -84,7 +90,7 @@ jest.mock('../components/views/alerts/Alerts', () => ({
   ),
 }));
 
-jest.mock('../components/views/profile/Profile', () => ({
+vi.mock('../components/views/profile/Profile', () => ({
   __esModule: true,
   default: ({ setTrialDate }: { setTrialDate?: (date: number) => void }) => (
     <div
@@ -96,7 +102,7 @@ jest.mock('../components/views/profile/Profile', () => ({
   ),
 }));
 
-jest.mock('../components/views/site-details/SiteDetails', () => ({
+vi.mock('../components/views/site-details/SiteDetails', () => ({
   __esModule: true,
   default: ({ setTrialDate }: { setTrialDate?: (date: number) => void }) => (
     <div
@@ -108,7 +114,7 @@ jest.mock('../components/views/site-details/SiteDetails', () => ({
   ),
 }));
 
-jest.mock('../components/views/site-management/SiteManagement', () => ({
+vi.mock('../components/views/site-management/SiteManagement', () => ({
   __esModule: true,
   default: ({ setTrialDate }: { setTrialDate?: (date: number) => void }) => (
     <div
@@ -120,32 +126,32 @@ jest.mock('../components/views/site-management/SiteManagement', () => ({
   ),
 }));
 
-jest.mock('../components/views/checkout/CheckoutForm', () => ({
+vi.mock('../components/views/checkout/CheckoutForm', () => ({
   __esModule: true,
   default: () => <div data-testid='checkout-form'>CheckoutForm</div>,
 }));
 
-jest.mock('../components/views/checkout/CheckoutReturn', () => ({
+vi.mock('../components/views/checkout/CheckoutReturn', () => ({
   __esModule: true,
   default: () => <div data-testid='checkout-return'>Return</div>,
 }));
 
-jest.mock('../components/views/checkout/PricingPage', () => ({
+vi.mock('../components/views/checkout/PricingPage', () => ({
   __esModule: true,
   default: () => <div data-testid='pricing-page'>PricingPage</div>,
 }));
 
-jest.mock('../components/views/lock/LockPage', () => ({
+vi.mock('../components/views/lock/LockPage', () => ({
   LockPage: () => <div data-testid='lock-page'>LockPage</div>,
 }));
 
-jest.mock('../components/views/mapping/Mapping', () => ({
+vi.mock('../components/views/mapping/Mapping', () => ({
   __esModule: true,
   default: () => <div data-testid='mapping'>Mapping</div>,
 }));
 
-jest.mock('../utils/Utils', () => ({
-  useStickyState: jest.fn(),
+vi.mock('../utils/Utils', () => ({
+  useStickyState: vi.fn(),
 }));
 
 Object.defineProperty(navigator, 'language', {
@@ -163,9 +169,9 @@ function renderAppWithRoute(path = '/') {
 
 describe('App', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
-    const mockUseStickyState = require('../utils/Utils').useStickyState;
-    mockUseStickyState.mockReturnValue([-1, jest.fn()]);
+    vi.clearAllMocks();
+    const mockUseStickyState = useStickyState;
+    mockUseStickyState.mockReturnValue([-1, vi.fn()]);
   });
 
   test('renders without crashing', () => {
@@ -276,8 +282,8 @@ describe('App', () => {
   });
 
   test('navbar receives trialDate prop', () => {
-    const mockUseStickyState = require('../utils/Utils').useStickyState;
-    mockUseStickyState.mockReturnValue([42, jest.fn()]);
+    const mockUseStickyState = useStickyState;
+    mockUseStickyState.mockReturnValue([42, vi.fn()]);
 
     renderAppWithRoute('/');
 
@@ -285,8 +291,8 @@ describe('App', () => {
   });
 
   test('components can update trialDate through setTrialDate', () => {
-    const mockSetTrialDate = jest.fn();
-    const mockUseStickyState = require('../utils/Utils').useStickyState;
+    const mockSetTrialDate = vi.fn();
+    const mockUseStickyState = useStickyState;
     mockUseStickyState.mockReturnValue([-1, mockSetTrialDate]);
 
     renderAppWithRoute('/');

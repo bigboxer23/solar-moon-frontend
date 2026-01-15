@@ -1,28 +1,34 @@
-/* eslint-env jest */
+import { useAuthenticator } from '@aws-amplify/ui-react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
+import { vi } from 'vitest';
 
 import PricingPage from '../../../../components/views/checkout/PricingPage';
+import { MONTH } from '../../../../services/search';
+import {
+  activateTrial,
+  getSubscriptionInformation,
+} from '../../../../services/services';
 
 // Mock AWS Amplify
-jest.mock('@aws-amplify/ui-react', () => ({
-  useAuthenticator: jest.fn(),
+vi.mock('@aws-amplify/ui-react', () => ({
+  useAuthenticator: vi.fn(),
 }));
 
 // Mock services
-jest.mock('../../../../services/services', () => ({
-  activateTrial: jest.fn(),
-  getSubscriptionInformation: jest.fn(),
+vi.mock('../../../../services/services', () => ({
+  activateTrial: vi.fn(),
+  getSubscriptionInformation: vi.fn(),
 }));
 
-jest.mock('../../../../services/search', () => ({
+vi.mock('../../../../services/search', () => ({
   MONTH: 30 * 24 * 60 * 60 * 1000,
 }));
 
 // Mock components
-jest.mock('../../../../components/nav/HeaderBar', () => {
-  return function MockHeaderBar({
+vi.mock('../../../../components/nav/HeaderBar', () => {
+  const MockHeaderBar = function ({
     headerText,
     leftContent,
   }: {
@@ -36,10 +42,11 @@ jest.mock('../../../../components/nav/HeaderBar', () => {
       </div>
     );
   };
+  return { default: MockHeaderBar };
 });
 
-jest.mock('../../../../components/views/checkout/PriceTile', () => {
-  return function MockPriceTile({
+vi.mock('../../../../components/views/checkout/PriceTile', () => {
+  const MockPriceTile = function ({
     label,
     buttonText,
     checkoutClicked,
@@ -66,10 +73,11 @@ jest.mock('../../../../components/views/checkout/PriceTile', () => {
       </div>
     );
   };
+  return { default: MockPriceTile };
 });
 
 // Mock react-icons
-jest.mock('react-icons/fa', () => ({
+vi.mock('react-icons/fa', () => ({
   FaArrowLeft: ({
     onClick,
     title,
@@ -84,34 +92,34 @@ jest.mock('react-icons/fa', () => ({
 }));
 
 // Mock react-router-dom
-const mockNavigate = jest.fn();
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useNavigate: () => mockNavigate,
-  createSearchParams: (params: Record<string, string>) => ({
-    toString: () =>
-      Object.entries(params)
-        .map(([k, v]) => `${k}=${v}`)
-        .join('&'),
-  }),
-}));
+const mockNavigate = vi.fn();
+vi.mock('react-router-dom', async () => {
+  const actual =
+    await vi.importActual<typeof import('react-router-dom')>(
+      'react-router-dom',
+    );
+  return {
+    ...actual,
+    useNavigate: () => mockNavigate,
+    createSearchParams: (params: Record<string, string>) => ({
+      toString: () =>
+        Object.entries(params)
+          .map(([k, v]) => `${k}=${v}`)
+          .join('&'),
+    }),
+  };
+});
 
 const renderWithRouter = (component: React.ReactElement) => {
   return render(<MemoryRouter>{component}</MemoryRouter>);
 };
 
 describe('PricingPage', () => {
-  const { useAuthenticator } = require('@aws-amplify/ui-react');
-  const {
-    activateTrial,
-    getSubscriptionInformation,
-  } = require('../../../../services/services');
-
   const mockUser = { username: 'testuser' };
-  const mockSignOut = jest.fn();
+  const mockSignOut = vi.fn();
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     mockNavigate.mockClear();
 
     useAuthenticator.mockReturnValue({
@@ -198,7 +206,6 @@ describe('PricingPage', () => {
   });
 
   test('renders trial tile when trial is available', async () => {
-    const { MONTH } = require('../../../../services/search');
     getSubscriptionInformation.mockResolvedValue({
       data: {
         packs: 0,
@@ -222,7 +229,6 @@ describe('PricingPage', () => {
   });
 
   test('renders trial over message when trial is over', async () => {
-    const { MONTH } = require('../../../../services/search');
     getSubscriptionInformation.mockResolvedValue({
       data: {
         packs: -1,
@@ -240,7 +246,6 @@ describe('PricingPage', () => {
   });
 
   test('handles trial click', async () => {
-    const { MONTH } = require('../../../../services/search');
     getSubscriptionInformation.mockResolvedValue({
       data: {
         packs: 0,

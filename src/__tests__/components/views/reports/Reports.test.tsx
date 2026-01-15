@@ -1,14 +1,17 @@
-/* eslint-env jest */
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import type { ReactElement, ReactNode } from 'react';
 import { IntlProvider } from 'react-intl';
 import { MemoryRouter } from 'react-router-dom';
+import { vi } from 'vitest';
 
 import Reports from '../../../../components/views/reports/Reports';
+import * as reportUtils from '../../../../components/views/reports/ReportUtils';
+import * as services from '../../../../services/services';
+import * as utils from '../../../../utils/Utils';
 
 // Mock child components
-jest.mock('../../../../components/common/Loader', () => {
-  return function MockLoader({
+vi.mock('../../../../components/common/Loader', () => {
+  const MockLoader = function ({
     className,
   }: {
     className?: string;
@@ -19,10 +22,11 @@ jest.mock('../../../../components/common/Loader', () => {
       </div>
     );
   };
+  return { default: MockLoader };
 });
 
-jest.mock('../../../../components/views/reports/SearchBar', () => {
-  return function MockSearchBar({
+vi.mock('../../../../components/views/reports/SearchBar', () => {
+  const MockSearchBar = function ({
     siteId,
     deviceId,
     _start,
@@ -70,10 +74,11 @@ jest.mock('../../../../components/views/reports/SearchBar', () => {
       </div>
     );
   };
+  return { default: MockSearchBar };
 });
 
-jest.mock('../../../../components/views/reports/DownloadReportButton', () => {
-  return function MockDownloadReportButton({
+vi.mock('../../../../components/views/reports/DownloadReportButton', () => {
+  const MockDownloadReportButton = function ({
     siteId,
     deviceId,
   }: {
@@ -94,10 +99,11 @@ jest.mock('../../../../components/views/reports/DownloadReportButton', () => {
       </div>
     );
   };
+  return { default: MockDownloadReportButton };
 });
 
 // Mock react-data-grid
-jest.mock('react-data-grid', () => {
+vi.mock('react-data-grid', () => {
   const MockDataGrid = function ({
     rows,
     columns,
@@ -133,8 +139,8 @@ jest.mock('react-data-grid', () => {
 });
 
 // Mock @tippyjs/react
-jest.mock('@tippyjs/react', () => {
-  return function MockTippy({
+vi.mock('@tippyjs/react', () => {
+  const MockTippy = function ({
     children,
     content,
     ...props
@@ -153,47 +159,46 @@ jest.mock('@tippyjs/react', () => {
       </div>
     );
   };
+  return { default: MockTippy };
 });
 
 // Mock services and utilities before importing components
-jest.mock('../../../../services/services', () => ({
-  getDevices: jest.fn(),
-  getDataPage: jest.fn(),
+vi.mock('../../../../services/services', () => ({
+  getDevices: vi.fn(),
+  getDataPage: vi.fn(),
 }));
 
-jest.mock('../../../../services/search', () => ({
+vi.mock('../../../../services/search', () => ({
   ALL: 'all',
   DAY: 'day',
 }));
 
-jest.mock('../../../../utils/Utils', () => ({
-  getDeviceIdToNameMap: jest.fn(),
-  getRoundedTime: jest.fn(),
-  getFormattedShortTime: jest.fn(),
-  getFormattedTime: jest.fn(),
-  getWeatherIcon: jest.fn(),
-  isXS: jest.fn(),
-  roundToDecimals: jest.fn(),
-  roundTwoDigit: jest.fn(),
-  useSearchParamState: jest.fn(),
+vi.mock('../../../../utils/Utils', () => ({
+  getDeviceIdToNameMap: vi.fn(),
+  getRoundedTime: vi.fn(),
+  getFormattedShortTime: vi.fn(),
+  getFormattedTime: vi.fn(),
+  getWeatherIcon: vi.fn(),
+  isXS: vi.fn(),
+  roundToDecimals: vi.fn(),
+  roundTwoDigit: vi.fn(),
+  useSearchParamState: vi.fn(),
   TIPPY_DELAY: 500,
 }));
 
-jest.mock('../../../../components/views/reports/ReportUtils', () => ({
+vi.mock('../../../../components/views/reports/ReportUtils', () => ({
   DISPLAY_NAME: 'displayName.keyword',
   ENERGY_CONSUMED: 'energyConsumed',
   INFORMATIONAL_ERROR: 'informationalError',
   SITE_ID_KEYWORD: 'siteId.keyword',
   TOTAL_ENERGY_CONS: 'totalEnergyConsumed',
   TOTAL_REAL_POWER: 'totalRealPower',
-  transformRowData: jest.fn(),
-  sortRowData: jest.fn(),
+  transformRowData: vi.fn(),
+  sortRowData: vi.fn(),
 }));
 
 // Need to get mocked functions for testing
-const services = require('../../../../services/services');
-const utils = require('../../../../utils/Utils');
-const reportUtils = require('../../../../components/views/reports/ReportUtils');
+// services, utils, and reportUtils are imported at the top
 
 const renderWithProviders = (
   component: ReactElement,
@@ -290,7 +295,7 @@ describe('Reports', () => {
   ];
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
 
     // Mock window dimensions
     Object.defineProperty(window, 'innerWidth', {
@@ -307,7 +312,7 @@ describe('Reports', () => {
     // Mock utility functions
     utils.useSearchParamState.mockImplementation((defaultValue) => [
       defaultValue,
-      jest.fn(),
+      vi.fn(),
     ]);
     utils.getDeviceIdToNameMap.mockReturnValue({
       'site-1': 'Site A',
@@ -430,9 +435,7 @@ describe('Reports', () => {
 
     test('handles API errors gracefully', async () => {
       services.getDataPage.mockRejectedValue(new Error('API Error'));
-      const consoleSpy = jest
-        .spyOn(console, 'log')
-        .mockImplementation(() => {});
+      const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
 
       renderWithProviders(<Reports />);
 
@@ -447,10 +450,10 @@ describe('Reports', () => {
 
   describe('Search Parameter Integration', () => {
     test('fetches new data when site ID changes', async () => {
-      const mockSetSiteId = jest.fn();
+      const mockSetSiteId = vi.fn();
       utils.useSearchParamState.mockImplementation((defaultValue, param) => {
         if (param === 'siteId') return ['all', mockSetSiteId];
-        return [defaultValue, jest.fn()];
+        return [defaultValue, vi.fn()];
       });
 
       renderWithProviders(<Reports />);
@@ -466,10 +469,10 @@ describe('Reports', () => {
     });
 
     test('fetches new data when device ID changes', async () => {
-      const mockSetDeviceId = jest.fn();
+      const mockSetDeviceId = vi.fn();
       utils.useSearchParamState.mockImplementation((defaultValue, param) => {
         if (param === 'deviceId') return ['all', mockSetDeviceId];
-        return [defaultValue, jest.fn()];
+        return [defaultValue, vi.fn()];
       });
 
       renderWithProviders(<Reports />);
@@ -485,14 +488,14 @@ describe('Reports', () => {
     });
 
     test('fetches new data when date range changes', async () => {
-      const mockSetStart = jest.fn();
-      const mockSetEnd = jest.fn();
+      const mockSetStart = vi.fn();
+      const mockSetEnd = vi.fn();
       utils.useSearchParamState.mockImplementation((defaultValue, param) => {
         if (param === 'start')
           return [new Date('2024-01-01').getTime().toString(), mockSetStart];
         if (param === 'end')
           return [new Date('2024-01-31').getTime().toString(), mockSetEnd];
-        return [defaultValue, jest.fn()];
+        return [defaultValue, vi.fn()];
       });
 
       renderWithProviders(<Reports />);
@@ -551,8 +554,8 @@ describe('Reports', () => {
 
     test('adds informational error column when filter errors is true', async () => {
       utils.useSearchParamState.mockImplementation((defaultValue, param) => {
-        if (param === 'err') return ['true', jest.fn()];
-        return [defaultValue, jest.fn()];
+        if (param === 'err') return ['true', vi.fn()];
+        return [defaultValue, vi.fn()];
       });
 
       renderWithProviders(<Reports />);
@@ -590,8 +593,8 @@ describe('Reports', () => {
   describe('Navigation Links', () => {
     test('renders back to dashboard link when siteId is ALL', async () => {
       utils.useSearchParamState.mockImplementation((defaultValue, param) => {
-        if (param === 'siteId') return ['all', jest.fn()];
-        return [defaultValue, jest.fn()];
+        if (param === 'siteId') return ['all', vi.fn()];
+        return [defaultValue, vi.fn()];
       });
 
       renderWithProviders(<Reports />);
@@ -603,8 +606,8 @@ describe('Reports', () => {
 
     test('renders back to specific site link when siteId is specific', async () => {
       utils.useSearchParamState.mockImplementation((defaultValue, param) => {
-        if (param === 'siteId') return ['site-1', jest.fn()];
-        return [defaultValue, jest.fn()];
+        if (param === 'siteId') return ['site-1', vi.fn()];
+        return [defaultValue, vi.fn()];
       });
 
       renderWithProviders(<Reports />);
@@ -616,8 +619,8 @@ describe('Reports', () => {
 
     test('navigation link has correct href for dashboard', async () => {
       utils.useSearchParamState.mockImplementation((defaultValue, param) => {
-        if (param === 'siteId') return ['all', jest.fn()];
-        return [defaultValue, jest.fn()];
+        if (param === 'siteId') return ['all', vi.fn()];
+        return [defaultValue, vi.fn()];
       });
 
       renderWithProviders(<Reports />);
@@ -630,8 +633,8 @@ describe('Reports', () => {
 
     test('navigation link has correct href for specific site', async () => {
       utils.useSearchParamState.mockImplementation((defaultValue, param) => {
-        if (param === 'siteId') return ['site-123', jest.fn()];
-        return [defaultValue, jest.fn()];
+        if (param === 'siteId') return ['site-123', vi.fn()];
+        return [defaultValue, vi.fn()];
       });
 
       renderWithProviders(<Reports />);
@@ -802,13 +805,13 @@ describe('Reports', () => {
     test('passes correct props to SearchBar', async () => {
       utils.useSearchParamState.mockImplementation((defaultValue, param) => {
         const values = {
-          siteId: ['test-site', jest.fn()],
-          deviceId: ['test-device', jest.fn()],
-          start: [123456789, jest.fn()],
-          end: [987654321, jest.fn()],
-          err: ['true', jest.fn()],
+          siteId: ['test-site', vi.fn()],
+          deviceId: ['test-device', vi.fn()],
+          start: [123456789, vi.fn()],
+          end: [987654321, vi.fn()],
+          err: ['true', vi.fn()],
         };
-        return values[param] || [defaultValue, jest.fn()];
+        return values[param] || [defaultValue, vi.fn()];
       });
 
       renderWithProviders(<Reports />);
@@ -825,10 +828,10 @@ describe('Reports', () => {
     test('passes correct props to DownloadReportButton', async () => {
       utils.useSearchParamState.mockImplementation((defaultValue, param) => {
         const values = {
-          siteId: ['download-site', jest.fn()],
-          deviceId: ['download-device', jest.fn()],
+          siteId: ['download-site', vi.fn()],
+          deviceId: ['download-device', vi.fn()],
         };
-        return values[param] || [defaultValue, jest.fn()];
+        return values[param] || [defaultValue, vi.fn()];
       });
 
       renderWithProviders(<Reports />);

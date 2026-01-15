@@ -1,15 +1,15 @@
-/* eslint-env jest */
 import type { Chart, ChartArea, TooltipModel } from 'chart.js';
+import { vi } from 'vitest';
 
 import { tooltipPlugin } from '../../../components/common/graphPlugins';
 
 interface MockCanvasRenderingContext2D {
-  save: jest.Mock;
-  restore: jest.Mock;
-  beginPath: jest.Mock;
-  moveTo: jest.Mock;
-  lineTo: jest.Mock;
-  stroke: jest.Mock;
+  save: vi.Mock;
+  restore: vi.Mock;
+  beginPath: vi.Mock;
+  moveTo: vi.Mock;
+  lineTo: vi.Mock;
+  stroke: vi.Mock;
   strokeStyle: string;
   lineWidth: number;
 }
@@ -42,12 +42,12 @@ describe('tooltipPlugin', () => {
 
   beforeEach(() => {
     mockCtx = {
-      save: jest.fn(),
-      restore: jest.fn(),
-      beginPath: jest.fn(),
-      moveTo: jest.fn(),
-      lineTo: jest.fn(),
-      stroke: jest.fn(),
+      save: vi.fn(),
+      restore: vi.fn(),
+      beginPath: vi.fn(),
+      moveTo: vi.fn(),
+      lineTo: vi.fn(),
+      stroke: vi.fn(),
       strokeStyle: '',
       lineWidth: 0,
     };
@@ -63,7 +63,7 @@ describe('tooltipPlugin', () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test('has correct plugin id', () => {
@@ -324,7 +324,7 @@ describe('tooltipPlugin', () => {
     expect(mockChart.verticalLiner.draw).toBe(false);
 
     // Clear previous calls
-    jest.clearAllMocks();
+    vi.clearAllMocks();
 
     // Try to draw again - should not draw
     tooltipPlugin.beforeTooltipDraw!(

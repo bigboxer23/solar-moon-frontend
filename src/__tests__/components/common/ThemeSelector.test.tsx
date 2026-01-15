@@ -1,11 +1,12 @@
-/* eslint-env jest */
 import { fireEvent, render, screen } from '@testing-library/react';
+import { vi } from 'vitest';
 
 import ThemeSelector from '../../../components/common/ThemeSelector';
+import { useStickyState } from '../../../utils/Utils';
 
 // Mock dependencies
-jest.mock('@tippyjs/react', () => {
-  return function MockTippy({
+vi.mock('@tippyjs/react', () => {
+  const MockTippy = function ({
     children,
     content,
     ...props
@@ -19,27 +20,26 @@ jest.mock('@tippyjs/react', () => {
       </div>
     );
   };
+  return { default: MockTippy };
 });
 
-jest.mock('../../../utils/Utils', () => ({
+vi.mock('../../../utils/Utils', () => ({
   TIPPY_DELAY: 300,
-  useStickyState: jest.fn(),
+  useStickyState: vi.fn(),
 }));
-
-const { useStickyState } = require('../../../utils/Utils');
 
 // Mock window.matchMedia
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
-  value: jest.fn().mockImplementation((query) => ({
+  value: vi.fn().mockImplementation((query) => ({
     matches: false,
     media: query,
     onchange: null,
-    addListener: jest.fn(),
-    removeListener: jest.fn(),
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-    dispatchEvent: jest.fn(),
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
   })),
 });
 
@@ -48,31 +48,31 @@ Object.defineProperty(document, 'documentElement', {
   writable: true,
   value: {
     classList: {
-      add: jest.fn(),
-      remove: jest.fn(),
+      add: vi.fn(),
+      remove: vi.fn(),
     },
   },
 });
 
 describe('ThemeSelector', () => {
-  const mockSetActiveTheme = jest.fn();
+  const mockSetActiveTheme = vi.fn();
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     useStickyState.mockReturnValue([null, mockSetActiveTheme]);
-    (document.documentElement.classList.add as jest.Mock).mockClear();
-    (document.documentElement.classList.remove as jest.Mock).mockClear();
+    (document.documentElement.classList.add as vi.Mock).mockClear();
+    (document.documentElement.classList.remove as vi.Mock).mockClear();
 
     // Reset matchMedia to default behavior
-    (window.matchMedia as jest.Mock).mockImplementation((query: string) => ({
+    (window.matchMedia as vi.Mock).mockImplementation((query: string) => ({
       matches: false,
       media: query,
       onchange: null,
-      addListener: jest.fn(),
-      removeListener: jest.fn(),
-      addEventListener: jest.fn(),
-      removeEventListener: jest.fn(),
-      dispatchEvent: jest.fn(),
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
     }));
   });
 
@@ -182,15 +182,15 @@ describe('ThemeSelector', () => {
   });
 
   test('adds dark class when system theme matches dark preference', () => {
-    (window.matchMedia as jest.Mock).mockImplementation((query: string) => ({
+    (window.matchMedia as vi.Mock).mockImplementation((query: string) => ({
       matches: query === '(prefers-color-scheme: dark)',
       media: query,
       onchange: null,
-      addListener: jest.fn(),
-      removeListener: jest.fn(),
-      addEventListener: jest.fn(),
-      removeEventListener: jest.fn(),
-      dispatchEvent: jest.fn(),
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
     }));
 
     render(<ThemeSelector />);
@@ -204,15 +204,15 @@ describe('ThemeSelector', () => {
   });
 
   test('removes dark class when system theme matches light preference', () => {
-    (window.matchMedia as jest.Mock).mockImplementation((query: string) => ({
+    (window.matchMedia as vi.Mock).mockImplementation((query: string) => ({
       matches: false, // Light preference
       media: query,
       onchange: null,
-      addListener: jest.fn(),
-      removeListener: jest.fn(),
-      addEventListener: jest.fn(),
-      removeEventListener: jest.fn(),
-      dispatchEvent: jest.fn(),
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
     }));
 
     render(<ThemeSelector />);

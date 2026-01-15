@@ -41,7 +41,7 @@ jobs:
           AWS_EXPORTS_JS: ${{secrets.AWS_EXPORTS}}
 
       - name: Run tests
-        run: npm test -- --watchAll=false --coverage
+        run: npm test -- --run --coverage
 
       - name: Run linter
         run: npm run lint

@@ -1,6 +1,6 @@
-/* eslint-env jest */
 import { fireEvent, render, screen } from '@testing-library/react';
 import { useForm } from 'react-hook-form';
+import { vi } from 'vitest';
 
 import { ControlledInput, Input } from '../../../components/common/Input';
 
@@ -128,7 +128,7 @@ describe('Input', () => {
   });
 
   test('passes input props correctly', () => {
-    const mockChange = jest.fn();
+    const mockChange = vi.fn();
     render(
       <Input
         inputProps={{
@@ -202,7 +202,7 @@ describe('ControlledInput', () => {
   };
 
   test('renders controlled input with form integration', () => {
-    const mockSubmit = jest.fn();
+    const mockSubmit = vi.fn();
     render(<TestForm onSubmit={mockSubmit} />);
 
     const input = screen.getByRole('textbox');
@@ -213,7 +213,7 @@ describe('ControlledInput', () => {
   });
 
   test('handles form field changes', () => {
-    const mockSubmit = jest.fn();
+    const mockSubmit = vi.fn();
     render(<TestForm onSubmit={mockSubmit} />);
 
     const input = screen.getByRole('textbox');
@@ -223,7 +223,7 @@ describe('ControlledInput', () => {
   });
 
   test('submits form with field value', async () => {
-    const mockSubmit = jest.fn();
+    const mockSubmit = vi.fn();
     render(<TestForm onSubmit={mockSubmit} />);
 
     const input = screen.getByRole('textbox');

@@ -1,5 +1,5 @@
-/* eslint-env jest */
 import React from 'react';
+import { vi } from 'vitest';
 
 import {
   DEVICE_ID_KEYWORD,
@@ -12,9 +12,10 @@ import {
   TOTAL_REAL_POWER,
   transformRowData,
 } from '../../../../components/views/reports/ReportUtils';
+import * as utils from '../../../../utils/Utils';
 
-jest.mock('@tippyjs/react', () => {
-  return function MockTippy({
+vi.mock('@tippyjs/react', () => {
+  const MockTippy = function ({
     children,
     content,
     delay,
@@ -36,16 +37,15 @@ jest.mock('@tippyjs/react', () => {
       </div>
     );
   };
+  return { default: MockTippy };
 });
 
-jest.mock('../../../../utils/Utils', () => ({
-  getFormattedTime: jest.fn(),
-  roundToDecimals: jest.fn(),
+vi.mock('../../../../utils/Utils', () => ({
+  getFormattedTime: vi.fn(),
+  roundToDecimals: vi.fn(),
   TIPPY_DELAY: 500,
-  transformMultiLineForHTMLDisplay: jest.fn(),
+  transformMultiLineForHTMLDisplay: vi.fn(),
 }));
-
-const utils = require('../../../../utils/Utils');
 
 describe('ReportUtils', () => {
   describe('Constants', () => {
@@ -67,11 +67,11 @@ describe('ReportUtils', () => {
     };
 
     const mockIntl = {
-      formatNumber: jest.fn((value: number) => value.toFixed(2)),
+      formatNumber: vi.fn((value: number) => value.toFixed(2)),
     };
 
     beforeEach(() => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
 
       utils.getFormattedTime.mockReturnValue('2024-01-15 10:30 AM');
       utils.roundToDecimals.mockImplementation(
@@ -253,7 +253,7 @@ describe('ReportUtils', () => {
 
   describe('sortRowData', () => {
     beforeEach(() => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
     });
 
     test('sorts by timeSort descending (newest first)', () => {
@@ -402,7 +402,7 @@ describe('ReportUtils', () => {
         'device-1': 'Device 1',
       };
       const mockIntl = {
-        formatNumber: jest.fn((value) => value.toString()),
+        formatNumber: vi.fn((value) => value.toString()),
       };
 
       const row1 = {
@@ -428,7 +428,7 @@ describe('ReportUtils', () => {
 
     test('time coefficient creates appropriate timeSort values', () => {
       const mockDeviceMap = {};
-      const mockIntl = { formatNumber: jest.fn((value) => value.toString()) };
+      const mockIntl = { formatNumber: vi.fn((value) => value.toString()) };
 
       const row = {
         '@timestamp': '2024-01-15T10:30:45.123Z', // Has seconds and milliseconds
@@ -449,7 +449,7 @@ describe('ReportUtils', () => {
       const mockDeviceMap = {
         'device-1': 'Device 1',
       };
-      const mockIntl = { formatNumber: jest.fn() };
+      const mockIntl = { formatNumber: vi.fn() };
 
       utils.transformMultiLineForHTMLDisplay.mockReturnValue(
         'Error message<br>Line 2',
@@ -471,7 +471,7 @@ describe('ReportUtils', () => {
   describe('Edge Cases', () => {
     test('handles empty row object', () => {
       const mockDeviceMap = {};
-      const mockIntl = { formatNumber: jest.fn() };
+      const mockIntl = { formatNumber: vi.fn() };
 
       const row = {};
 
@@ -485,7 +485,7 @@ describe('ReportUtils', () => {
 
     test('handles empty device map', () => {
       const mockDeviceMap = {};
-      const mockIntl = { formatNumber: jest.fn() };
+      const mockIntl = { formatNumber: vi.fn() };
 
       const row = {
         '@timestamp': '2024-01-15T10:30:00Z',

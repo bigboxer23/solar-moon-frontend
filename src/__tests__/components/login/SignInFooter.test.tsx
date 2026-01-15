@@ -1,10 +1,11 @@
-/* eslint-env jest */
+import { useAuthenticator, useTheme } from '@aws-amplify/ui-react';
 import { fireEvent, render, screen } from '@testing-library/react';
+import { vi } from 'vitest';
 
 import { SignInFooter } from '../../../components/login/SignInFooter';
 
 // Mock AWS Amplify UI components
-jest.mock('@aws-amplify/ui-react', () => ({
+vi.mock('@aws-amplify/ui-react', () => ({
   Flex: ({
     children,
     justifyContent,
@@ -33,34 +34,22 @@ jest.mock('@aws-amplify/ui-react', () => ({
       {children}
     </button>
   ),
-  useAuthenticator: jest.fn(() => ({
-    toForgotPassword: jest.fn(),
-  })),
-  useTheme: jest.fn(() => ({
-    tokens: {
-      space: {
-        xs: '0.5rem',
-      },
-    },
-  })),
+  useAuthenticator: vi.fn(),
+  useTheme: vi.fn(),
 }));
 
 describe('SignInFooter', () => {
-  let mockUseAuthenticator: jest.Mock;
-  let mockUseTheme: jest.Mock;
-  let mockToForgotPassword: jest.Mock;
+  let mockToForgotPassword: vi.Mock;
 
   beforeEach(() => {
-    mockToForgotPassword = jest.fn();
-    mockUseAuthenticator = require('@aws-amplify/ui-react').useAuthenticator;
-    mockUseTheme = require('@aws-amplify/ui-react').useTheme;
+    mockToForgotPassword = vi.fn();
 
-    jest.clearAllMocks();
+    vi.clearAllMocks();
 
-    mockUseAuthenticator.mockReturnValue({
+    (useAuthenticator as ReturnType<typeof vi.fn>).mockReturnValue({
       toForgotPassword: mockToForgotPassword,
     });
-    mockUseTheme.mockReturnValue({
+    (useTheme as ReturnType<typeof vi.fn>).mockReturnValue({
       tokens: {
         space: {
           xs: '0.5rem',
@@ -108,13 +97,13 @@ describe('SignInFooter', () => {
   test('uses AWS Amplify useTheme hook', () => {
     render(<SignInFooter />);
 
-    expect(mockUseTheme).toHaveBeenCalled();
+    expect(useTheme).toHaveBeenCalled();
   });
 
   test('uses AWS Amplify useAuthenticator hook', () => {
     render(<SignInFooter />);
 
-    expect(mockUseAuthenticator).toHaveBeenCalled();
+    expect(useAuthenticator).toHaveBeenCalled();
   });
 
   test('accesses theme tokens for spacing', () => {
@@ -124,7 +113,9 @@ describe('SignInFooter', () => {
         sm: '0.75rem',
       },
     };
-    mockUseTheme.mockReturnValue({ tokens: mockTokens });
+    (useTheme as ReturnType<typeof vi.fn>).mockReturnValue({
+      tokens: mockTokens,
+    });
 
     render(<SignInFooter />);
 
@@ -133,7 +124,9 @@ describe('SignInFooter', () => {
   });
 
   test('renders without crashing when useTheme returns undefined tokens', () => {
-    mockUseTheme.mockReturnValue({ tokens: { space: {} } });
+    (useTheme as ReturnType<typeof vi.fn>).mockReturnValue({
+      tokens: { space: {} },
+    });
 
     render(<SignInFooter />);
 
@@ -141,7 +134,9 @@ describe('SignInFooter', () => {
   });
 
   test('renders without crashing when useTheme returns undefined space', () => {
-    mockUseTheme.mockReturnValue({ tokens: { space: {} } });
+    (useTheme as ReturnType<typeof vi.fn>).mockReturnValue({
+      tokens: { space: {} },
+    });
 
     render(<SignInFooter />);
 
@@ -150,7 +145,7 @@ describe('SignInFooter', () => {
   });
 
   test('handles missing toForgotPassword function', () => {
-    mockUseAuthenticator.mockReturnValue({});
+    (useAuthenticator as ReturnType<typeof vi.fn>).mockReturnValue({});
 
     render(<SignInFooter />);
 
@@ -199,7 +194,7 @@ describe('SignInFooter', () => {
   });
 
   test('renders with different theme tokens', () => {
-    mockUseTheme.mockReturnValue({
+    (useTheme as ReturnType<typeof vi.fn>).mockReturnValue({
       tokens: {
         space: {
           xs: '2rem',
@@ -214,7 +209,7 @@ describe('SignInFooter', () => {
   });
 
   test('handles authenticator hook errors gracefully', () => {
-    mockUseAuthenticator.mockImplementation(() => {
+    (useAuthenticator as ReturnType<typeof vi.fn>).mockImplementation(() => {
       throw new Error('Auth error');
     });
 

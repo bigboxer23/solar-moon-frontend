@@ -1,31 +1,31 @@
-/* eslint-env jest */
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { updatePassword } from 'aws-amplify/auth';
 import React from 'react';
 import { toast } from 'react-toastify';
+import { vi } from 'vitest';
 
 import ChangePassword from '../../../../components/views/profile/ChangePassword';
 
 // Mock dependencies
-jest.mock('aws-amplify/auth', () => ({
-  updatePassword: jest.fn(),
+vi.mock('aws-amplify/auth', () => ({
+  updatePassword: vi.fn(),
 }));
 
-jest.mock('react-toastify', () => ({
+vi.mock('react-toastify', () => ({
   toast: {
-    success: jest.fn(),
-    error: jest.fn(),
+    success: vi.fn(),
+    error: vi.fn(),
   },
   ToastContainer: () => <div data-testid='toast-container' />,
 }));
 
-jest.mock('react-icons/md', () => ({
+vi.mock('react-icons/md', () => ({
   MdOutlinePassword: () => <svg data-testid='password-icon' />,
 }));
 
 describe('ChangePassword', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test('renders form with all required fields', () => {

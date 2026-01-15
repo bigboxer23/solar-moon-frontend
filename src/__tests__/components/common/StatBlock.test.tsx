@@ -1,5 +1,5 @@
-/* eslint-env jest */
 import { fireEvent, render, screen } from '@testing-library/react';
+import { vi } from 'vitest';
 
 import StatBlock from '../../../components/common/StatBlock';
 
@@ -28,7 +28,7 @@ describe('StatBlock', () => {
   });
 
   test('handles onClick prop', () => {
-    const mockOnClick = jest.fn();
+    const mockOnClick = vi.fn();
     const { container } = render(
       <StatBlock onClick={mockOnClick} title='Current' value='12.5A' />,
     );
@@ -40,7 +40,7 @@ describe('StatBlock', () => {
   });
 
   test('adds cursor-pointer class when onClick is provided', () => {
-    const mockOnClick = jest.fn();
+    const mockOnClick = vi.fn();
     const { container } = render(
       <StatBlock onClick={mockOnClick} title='Frequency' value='60Hz' />,
     );
@@ -112,7 +112,7 @@ describe('StatBlock', () => {
   });
 
   test('combines custom className with cursor-pointer when both are present', () => {
-    const mockOnClick = jest.fn();
+    const mockOnClick = vi.fn();
     const { container } = render(
       <StatBlock
         className='custom-style'

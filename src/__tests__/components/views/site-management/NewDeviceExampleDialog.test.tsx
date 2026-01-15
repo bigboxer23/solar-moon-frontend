@@ -1,19 +1,21 @@
-/* eslint-env jest */
 import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
+import { vi } from 'vitest';
 
 import NewDeviceExampleDialog from '../../../../components/views/site-management/NewDeviceExampleDialog';
 
-jest.mock('react-icons/fi', () => ({
+vi.mock('react-icons/fi', () => ({
   FiExternalLink: () => <div data-testid='external-link-icon' />,
 }));
 
 // Mock the image import
-jest.mock('../../../../assets/docs/exampleDevice.jpg', () => 'test-image-url');
+vi.mock('../../../../assets/docs/exampleDevice.jpg', () => ({
+  default: 'test-image-url',
+}));
 
 describe('NewDeviceExampleDialog', () => {
-  const mockSetShow = jest.fn();
-  const mockShowDeviceCreation = jest.fn();
+  const mockSetShow = vi.fn();
+  const mockShowDeviceCreation = vi.fn();
 
   const defaultProps = {
     show: true,
@@ -22,7 +24,7 @@ describe('NewDeviceExampleDialog', () => {
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test('renders modal when show is true', () => {
@@ -56,7 +58,7 @@ describe('NewDeviceExampleDialog', () => {
 
   test('opens documentation link when clicked', () => {
     // Mock window.open
-    const mockOpen = jest.fn();
+    const mockOpen = vi.fn();
     global.window.open = mockOpen;
 
     render(<NewDeviceExampleDialog {...defaultProps} />);

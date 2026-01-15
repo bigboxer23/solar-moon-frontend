@@ -1,6 +1,6 @@
-/* eslint-env jest */
-
 // Mock the ReportUtils module
+import { vi } from 'vitest';
+
 import {
   ALL,
   AVG,
@@ -30,7 +30,7 @@ import {
   YEAR,
 } from '../../services/search';
 
-jest.mock('../../components/views/reports/ReportUtils', () => ({
+vi.mock('../../components/views/reports/ReportUtils', () => ({
   TOTAL_REAL_POWER: 'Total Real Power',
 }));
 

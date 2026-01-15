@@ -1,8 +1,8 @@
-/* eslint-env jest */
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { IntlProvider } from 'react-intl';
 import { BrowserRouter } from 'react-router-dom';
+import { vi } from 'vitest';
 
 import Overview from '../../../../components/views/dashboard/Overview';
 import * as searchService from '../../../../services/search';
@@ -10,8 +10,8 @@ import * as services from '../../../../services/services';
 import * as utils from '../../../../utils/Utils';
 
 // Mock child components
-jest.mock('../../../../components/common/CurrentPowerBlock', () => {
-  return function MockCurrentPowerBlock({
+vi.mock('../../../../components/common/CurrentPowerBlock', () => {
+  const MockCurrentPowerBlock = function ({
     currentPower,
     max,
     activeAlert,
@@ -26,22 +26,25 @@ jest.mock('../../../../components/common/CurrentPowerBlock', () => {
       </div>
     );
   };
+  return { default: MockCurrentPowerBlock };
 });
 
-jest.mock('../../../../components/common/Error', () => {
-  return function MockError() {
+vi.mock('../../../../components/common/Error', () => {
+  const MockError = function () {
     return <div data-testid='error'>Error occurred</div>;
   };
+  return { default: MockError };
 });
 
-jest.mock('../../../../components/common/Loader', () => {
-  return function MockLoader() {
+vi.mock('../../../../components/common/Loader', () => {
+  const MockLoader = function () {
     return <div data-testid='loader'>Loading...</div>;
   };
+  return { default: MockLoader };
 });
 
-jest.mock('../../../../components/common/PowerBlock', () => {
-  return function MockPowerBlock({
+vi.mock('../../../../components/common/PowerBlock', () => {
+  const MockPowerBlock = function ({
     power,
     title,
     unit,
@@ -58,10 +61,11 @@ jest.mock('../../../../components/common/PowerBlock', () => {
       </div>
     );
   };
+  return { default: MockPowerBlock };
 });
 
-jest.mock('../../../../components/common/StatBlock', () => {
-  return function MockStatBlock({
+vi.mock('../../../../components/common/StatBlock', () => {
+  const MockStatBlock = function ({
     title,
     value,
     onClick,
@@ -82,10 +86,11 @@ jest.mock('../../../../components/common/StatBlock', () => {
       </div>
     );
   };
+  return { default: MockStatBlock };
 });
 
-jest.mock('../../../../components/device-block/StackedAlertsInfo', () => {
-  return function MockStackedAlertsInfo({
+vi.mock('../../../../components/device-block/StackedAlertsInfo', () => {
+  const MockStackedAlertsInfo = function ({
     activeAlerts,
     resolvedAlerts,
     onClick,
@@ -106,10 +111,11 @@ jest.mock('../../../../components/device-block/StackedAlertsInfo', () => {
       </div>
     );
   };
+  return { default: MockStackedAlertsInfo };
 });
 
-jest.mock('../../../../components/device-block/StackedTotAvg', () => {
-  return function MockStackedTotAvg({
+vi.mock('../../../../components/device-block/StackedTotAvg', () => {
+  const MockStackedTotAvg = function ({
     total,
     avg,
     className,
@@ -124,10 +130,11 @@ jest.mock('../../../../components/device-block/StackedTotAvg', () => {
       </div>
     );
   };
+  return { default: MockStackedTotAvg };
 });
 
-jest.mock('../../../../components/views/dashboard/OverviewChart', () => {
-  return function MockOverviewChart({
+vi.mock('../../../../components/views/dashboard/OverviewChart', () => {
+  const MockOverviewChart = function ({
     _overviewData,
     _sitesData,
     timeIncrement,
@@ -150,10 +157,11 @@ jest.mock('../../../../components/views/dashboard/OverviewChart', () => {
       </div>
     );
   };
+  return { default: MockOverviewChart };
 });
 
-jest.mock('../../../../components/views/dashboard/OverviewSiteList', () => {
-  return function MockOverviewSiteList({
+vi.mock('../../../../components/views/dashboard/OverviewSiteList', () => {
+  const MockOverviewSiteList = function ({
     sites,
     devices,
     alerts,
@@ -173,10 +181,11 @@ jest.mock('../../../../components/views/dashboard/OverviewSiteList', () => {
       </div>
     );
   };
+  return { default: MockOverviewSiteList };
 });
 
-jest.mock('../../../../components/views/dashboard/SummaryHeader', () => {
-  return function MockSummaryHeader({
+vi.mock('../../../../components/views/dashboard/SummaryHeader', () => {
+  const MockSummaryHeader = function ({
     dailyAverageOutput,
     dailyOutput,
   }: {
@@ -189,54 +198,59 @@ jest.mock('../../../../components/views/dashboard/SummaryHeader', () => {
       </div>
     );
   };
+  return { default: MockSummaryHeader };
 });
 
-jest.mock(
-  '../../../../components/views/dashboard/TimeIncrementSelector',
-  () => {
-    return function MockTimeIncrementSelector({
-      timeIncrement,
-      setTimeIncrement,
-    }: {
-      timeIncrement: number;
-      setTimeIncrement: (value: string) => void;
-    }) {
-      return (
-        <div data-testid='time-increment-selector'>
-          <button onClick={() => setTimeIncrement('week')}>Week</button>
-          <button onClick={() => setTimeIncrement('month')}>Month</button>
-          Current: {timeIncrement}
-        </div>
-      );
-    };
-  },
-);
+vi.mock('../../../../components/views/dashboard/TimeIncrementSelector', () => {
+  const MockTimeIncrementSelector = function ({
+    timeIncrement,
+    setTimeIncrement,
+  }: {
+    timeIncrement: number;
+    setTimeIncrement: (value: string) => void;
+  }) {
+    return (
+      <div data-testid='time-increment-selector'>
+        <button onClick={() => setTimeIncrement('week')}>Week</button>
+        <button onClick={() => setTimeIncrement('month')}>Month</button>
+        Current: {timeIncrement}
+      </div>
+    );
+  };
+  return { default: MockTimeIncrementSelector };
+});
 
 // Mock services and utilities before importing components
-jest.mock('../../../../services/services', () => ({
-  getOverviewData: jest.fn(),
+vi.mock('../../../../services/services', () => ({
+  getOverviewData: vi.fn(),
 }));
 
-jest.mock('../../../../services/search', () => ({
+vi.mock('../../../../services/search', () => ({
   AVG_AGGREGATION: 'avg',
   DAY: 'day',
   TOTAL_AGGREGATION: 'total',
-  getAggregationValue: jest.fn(),
-  parseCurrentPower: jest.fn(),
-  parseMaxData: jest.fn(),
+  getAggregationValue: vi.fn(),
+  parseCurrentPower: vi.fn(),
+  parseMaxData: vi.fn(),
 }));
 
-jest.mock('../../../../utils/Utils', () => ({
-  getRoundedTimeFromOffset: jest.fn(),
-  sortDevices: jest.fn(),
-  useStickyState: jest.fn(),
+vi.mock('../../../../utils/Utils', () => ({
+  getRoundedTimeFromOffset: vi.fn(),
+  sortDevices: vi.fn(),
+  useStickyState: vi.fn(),
 }));
 
-const mockNavigate = jest.fn();
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useNavigate: () => mockNavigate,
-}));
+const mockNavigate = vi.fn();
+vi.mock('react-router-dom', async () => {
+  const actual =
+    await vi.importActual<typeof import('react-router-dom')>(
+      'react-router-dom',
+    );
+  return {
+    ...actual,
+    useNavigate: () => mockNavigate,
+  };
+});
 
 const renderWithProviders = (component: React.ReactElement) => {
   return render(
@@ -249,7 +263,7 @@ const renderWithProviders = (component: React.ReactElement) => {
 };
 
 describe('Overview', () => {
-  const mockSetTrialDate = jest.fn();
+  const mockSetTrialDate = vi.fn();
 
   const mockOverviewData = {
     devices: [
@@ -341,37 +355,35 @@ describe('Overview', () => {
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
 
     // Mock utility functions
-    (utils.useStickyState as jest.Mock).mockImplementation((defaultValue) => [
+    (utils.useStickyState as vi.Mock).mockImplementation((defaultValue) => [
       defaultValue,
-      jest.fn(),
+      vi.fn(),
     ]);
-    (utils.getRoundedTimeFromOffset as jest.Mock).mockReturnValue(
+    (utils.getRoundedTimeFromOffset as vi.Mock).mockReturnValue(
       new Date('2024-01-01').getTime(),
     );
-    (utils.sortDevices as jest.Mock).mockImplementation((a, b) =>
+    (utils.sortDevices as vi.Mock).mockImplementation((a, b) =>
       (a.name || '').localeCompare(b.name || ''),
     );
 
     // Mock search service functions
-    (searchService.getAggregationValue as jest.Mock).mockImplementation(
+    (searchService.getAggregationValue as vi.Mock).mockImplementation(
       (data, _type) => data?.value || 0,
     );
-    (searchService.parseMaxData as jest.Mock).mockImplementation((data) => {
+    (searchService.parseMaxData as vi.Mock).mockImplementation((data) => {
       const maxValue = data?.aggregations?.max?.value;
       return maxValue || 0;
     });
-    (searchService.parseCurrentPower as jest.Mock).mockImplementation(
-      (data) => {
-        const currentValue = data?.aggregations?.current?.value;
-        return currentValue || 0;
-      },
-    );
+    (searchService.parseCurrentPower as vi.Mock).mockImplementation((data) => {
+      const currentValue = data?.aggregations?.current?.value;
+      return currentValue || 0;
+    });
 
     // Mock successful service call
-    (services.getOverviewData as jest.Mock).mockResolvedValue({
+    (services.getOverviewData as vi.Mock).mockResolvedValue({
       data: mockOverviewData,
     });
   });
@@ -384,7 +396,7 @@ describe('Overview', () => {
     });
 
     test('shows error state on API failure', async () => {
-      (services.getOverviewData as jest.Mock).mockRejectedValue(
+      (services.getOverviewData as vi.Mock).mockRejectedValue(
         new Error('API Error'),
       );
 
@@ -413,7 +425,7 @@ describe('Overview', () => {
 
     test('calls getOverviewData with correct parameters', async () => {
       const mockStartDate = new Date('2024-01-01');
-      (utils.getRoundedTimeFromOffset as jest.Mock).mockReturnValue(
+      (utils.getRoundedTimeFromOffset as vi.Mock).mockReturnValue(
         mockStartDate.getTime(),
       );
 
@@ -551,8 +563,8 @@ describe('Overview', () => {
 
   describe('Time Increment Changes', () => {
     test('updates time increment and refetches data', async () => {
-      const mockSetTimeIncrement = jest.fn();
-      (utils.useStickyState as jest.Mock).mockReturnValue([
+      const mockSetTimeIncrement = vi.fn();
+      (utils.useStickyState as vi.Mock).mockReturnValue([
         'day',
         mockSetTimeIncrement,
       ]);
@@ -570,8 +582,8 @@ describe('Overview', () => {
     });
 
     test('updates start date when time increment changes', async () => {
-      const mockSetTimeIncrement = jest.fn();
-      (utils.useStickyState as jest.Mock).mockReturnValue([
+      const mockSetTimeIncrement = vi.fn();
+      (utils.useStickyState as vi.Mock).mockReturnValue([
         'day',
         mockSetTimeIncrement,
       ]);
@@ -593,7 +605,7 @@ describe('Overview', () => {
   describe('No Devices Redirect', () => {
     test('redirects to manage page when no devices', async () => {
       const noDevicesData = { ...mockOverviewData, devices: [] };
-      (services.getOverviewData as jest.Mock).mockResolvedValue({
+      (services.getOverviewData as vi.Mock).mockResolvedValue({
         data: noDevicesData,
       });
 

@@ -1,18 +1,22 @@
-/* eslint-env jest */
 import { render } from '@testing-library/react';
 import { IntlProvider } from 'react-intl';
+import { vi } from 'vitest';
 
 import StackedTotAvg from '../../../components/device-block/StackedTotAvg';
+import {
+  getPowerScalingInformation,
+  roundToDecimals,
+} from '../../../utils/Utils';
 
 // Mock the Utils functions
-jest.mock('../../../utils/Utils', () => ({
-  getPowerScalingInformation: jest.fn(),
-  roundToDecimals: jest.fn(),
+vi.mock('../../../utils/Utils', () => ({
+  getPowerScalingInformation: vi.fn(),
+  roundToDecimals: vi.fn(),
 }));
 
 // Mock StackedStatBlock component
-jest.mock('../../../components/device-block/StackedStatBlock', () => {
-  return function MockStackedStatBlock(props: {
+vi.mock('../../../components/device-block/StackedStatBlock', () => {
+  const MockStackedStatBlock = function (props: {
     upperTitle: string;
     upperValue: number | null;
     upperUnit: string;
@@ -62,12 +66,8 @@ jest.mock('../../../components/device-block/StackedStatBlock', () => {
       </div>
     );
   };
+  return { default: MockStackedStatBlock };
 });
-
-const {
-  getPowerScalingInformation,
-  roundToDecimals,
-} = require('../../../utils/Utils');
 
 const renderWithIntl = (component: React.ReactElement) => {
   return render(<IntlProvider locale='en'>{component}</IntlProvider>);
@@ -75,7 +75,7 @@ const renderWithIntl = (component: React.ReactElement) => {
 
 describe('StackedTotAvg', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     getPowerScalingInformation.mockReturnValue({
       unitPrefix: 'k',
       powerValue: 15.5,

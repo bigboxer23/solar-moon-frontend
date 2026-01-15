@@ -299,6 +299,7 @@ export default function OverviewChart({
         {graphType === 'overview' && (
           <Line
             data={overallDataset}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             options={overallOptions as any} // Chart.js type compatibility
             plugins={[tooltipPlugin]}
           />
@@ -306,6 +307,7 @@ export default function OverviewChart({
         {graphType === 'stacked-line' && (
           <Line
             data={sitesDataset}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             options={sitesOptions as any} // Chart.js type compatibility
             plugins={[tooltipPlugin]}
           />
@@ -313,7 +315,9 @@ export default function OverviewChart({
         {graphType === 'stacked-bar' && (
           <Bar
             data={sitesDataset}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             options={sitesOptions as any} // Chart.js type compatibility
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             plugins={[tooltipPlugin] as any} // Chart.js type compatibility
           />
         )}

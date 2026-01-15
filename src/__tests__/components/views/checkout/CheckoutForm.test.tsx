@@ -1,12 +1,13 @@
-/* eslint-env jest */
 import { act, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
+import { vi } from 'vitest';
 
 import CheckoutForm from '../../../../components/views/checkout/CheckoutForm';
+import { checkout } from '../../../../services/services';
 
 // Mock Stripe components
-jest.mock('@stripe/react-stripe-js', () => ({
+vi.mock('@stripe/react-stripe-js', () => ({
   EmbeddedCheckout: () => (
     <div data-testid='embedded-checkout'>Embedded Checkout</div>
   ),
@@ -15,34 +16,36 @@ jest.mock('@stripe/react-stripe-js', () => ({
   ),
 }));
 
-jest.mock('@stripe/stripe-js', () => ({
-  loadStripe: jest.fn(() => Promise.resolve({ mockStripe: true })),
+vi.mock('@stripe/stripe-js', () => ({
+  loadStripe: vi.fn(() => Promise.resolve({ mockStripe: true })),
 }));
 
 // Mock services
-jest.mock('../../../../services/services', () => ({
-  checkout: jest.fn(),
+vi.mock('../../../../services/services', () => ({
+  checkout: vi.fn(),
 }));
 
 // Mock components
-jest.mock('../../../../components/common/Loader', () => {
-  return function MockLoader({ className }: { className?: string }) {
+vi.mock('../../../../components/common/Loader', () => {
+  const MockLoader = function ({ className }: { className?: string }) {
     return (
       <div className={className} data-testid='loader'>
         Loading...
       </div>
     );
   };
+  return { default: MockLoader };
 });
 
-jest.mock('../../../../components/nav/HeaderBar', () => {
-  return function MockHeaderBar({ headerText }: { headerText: string }) {
+vi.mock('../../../../components/nav/HeaderBar', () => {
+  const MockHeaderBar = function ({ headerText }: { headerText: string }) {
     return <div data-testid='header-bar'>{headerText}</div>;
   };
+  return { default: MockHeaderBar };
 });
 
 // Mock react-icons
-jest.mock('react-icons/fa', () => ({
+vi.mock('react-icons/fa', () => ({
   FaArrowLeft: () => <span data-testid='arrow-left-icon'>←</span>,
 }));
 
@@ -56,10 +59,8 @@ const renderWithRouter = (
 };
 
 describe('CheckoutForm', () => {
-  const { checkout } = require('../../../../services/services');
-
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     checkout.mockResolvedValue({
       data: {
         clientSecret: 'test-client-secret',

@@ -1,11 +1,17 @@
-/* eslint-env jest */
 import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
+import { vi } from 'vitest';
 
 import SiteDetailsGraph from '../../../../components/views/site-details/SiteDetailsGraph';
+import {
+  getDisplayName,
+  maybeSetTimeWindow,
+  timeLabel,
+  truncate,
+} from '../../../../utils/Utils';
 
 // Mock react-chartjs-2 components
-jest.mock('react-chartjs-2', () => ({
+vi.mock('react-chartjs-2', () => ({
   Line: ({ data, options, plugins }) => (
     <div
       data-chart-data={JSON.stringify(data)}
@@ -29,36 +35,36 @@ jest.mock('react-chartjs-2', () => ({
 }));
 
 // Mock external dependencies
-jest.mock('../../../../services/search', () => ({
+vi.mock('../../../../services/search', () => ({
   DAY: 'DAY',
   GROUPED_BAR: 'GROUPED_BAR',
 }));
 
-jest.mock('../../../../utils/Utils', () => ({
-  formatXAxisLabels: jest.fn(),
-  formatXAxisLabelsDay: jest.fn(),
-  getDisplayName: jest.fn(
+vi.mock('../../../../utils/Utils', () => ({
+  formatXAxisLabels: vi.fn(),
+  formatXAxisLabelsDay: vi.fn(),
+  getDisplayName: vi.fn(
     (device) => device.name || device.deviceName || 'Unknown',
   ),
-  getFormattedTime: jest.fn((timestamp) =>
+  getFormattedTime: vi.fn((timestamp) =>
     new Date(timestamp).toLocaleTimeString(),
   ),
-  maybeSetTimeWindow: jest.fn(),
-  roundTwoDigit: jest.fn((num) => Math.round(num * 100) / 100),
-  timeLabel: jest.fn(
+  maybeSetTimeWindow: vi.fn(),
+  roundTwoDigit: vi.fn((num) => Math.round(num * 100) / 100),
+  timeLabel: vi.fn(
     (startDate, timeIncrement) => `${startDate}-${timeIncrement}`,
   ),
-  truncate: jest.fn((str, len) =>
+  truncate: vi.fn((str, len) =>
     str?.length > len ? `${str.substring(0, len)}...` : str,
   ),
 }));
 
-jest.mock('../../../../components/common/graphPlugins', () => ({
-  tooltipPlugin: { id: 'tooltip-plugin', beforeDraw: jest.fn() },
+vi.mock('../../../../components/common/graphPlugins', () => ({
+  tooltipPlugin: { id: 'tooltip-plugin', beforeDraw: vi.fn() },
 }));
 
 // Mock react-icons
-jest.mock('react-icons/md', () => ({
+vi.mock('react-icons/md', () => ({
   MdBarChart: () => <div data-testid='bar-chart-icon'>Bar Chart</div>,
   MdNavigateBefore: () => <div data-testid='navigate-before'>Previous</div>,
   MdNavigateNext: () => <div data-testid='navigate-next'>Next</div>,
@@ -72,8 +78,8 @@ jest.mock('react-icons/md', () => ({
 }));
 
 // Mock classnames
-jest.mock('classnames', () => {
-  return function classNames(...classes) {
+vi.mock('classnames', () => {
+  const classNames = function (...classes) {
     return classes
       .filter(Boolean)
       .map((cls) => {
@@ -88,6 +94,7 @@ jest.mock('classnames', () => {
       })
       .join(' ');
   };
+  return { default: classNames };
 });
 
 describe('SiteDetailsGraph', () => {
@@ -128,14 +135,14 @@ describe('SiteDetailsGraph', () => {
     graphData: mockGraphData,
     devices: mockDevices,
     graphType: 'bar',
-    setGraphType: jest.fn(),
+    setGraphType: vi.fn(),
     timeIncrement: 'HOUR',
-    setStartDate: jest.fn(),
+    setStartDate: vi.fn(),
     startDate: new Date(),
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe('Loading State', () => {
@@ -185,7 +192,6 @@ describe('SiteDetailsGraph', () => {
     });
 
     test('renders time label', () => {
-      const { timeLabel } = require('../../../../utils/Utils');
       render(<SiteDetailsGraph {...defaultProps} />);
 
       expect(timeLabel).toHaveBeenCalledWith(
@@ -274,7 +280,6 @@ describe('SiteDetailsGraph', () => {
 
   describe('Time Navigation', () => {
     test('calls maybeSetTimeWindow with negative increment for previous button', () => {
-      const { maybeSetTimeWindow } = require('../../../../utils/Utils');
       render(<SiteDetailsGraph {...defaultProps} />);
 
       fireEvent.click(screen.getByLabelText('previous time period'));
@@ -287,7 +292,6 @@ describe('SiteDetailsGraph', () => {
     });
 
     test('calls maybeSetTimeWindow with positive increment for next button when enabled', () => {
-      const { maybeSetTimeWindow } = require('../../../../utils/Utils');
       render(<SiteDetailsGraph {...defaultProps} />);
 
       const nextButton = screen.getByLabelText('next time period');
@@ -309,7 +313,6 @@ describe('SiteDetailsGraph', () => {
 
   describe('Device Filtering', () => {
     test('filters devices correctly for non-overview graph types', () => {
-      const { getDisplayName } = require('../../../../utils/Utils');
       render(<SiteDetailsGraph {...defaultProps} graphType='bar' />);
 
       const barChart = screen.getByTestId('bar-chart');
@@ -322,7 +325,6 @@ describe('SiteDetailsGraph', () => {
     });
 
     test('filters devices correctly for overview graph type', () => {
-      const { getDisplayName } = require('../../../../utils/Utils');
       render(<SiteDetailsGraph {...defaultProps} graphType='overview' />);
 
       const lineChart = screen.getByTestId('line-chart');
@@ -336,8 +338,6 @@ describe('SiteDetailsGraph', () => {
 
   describe('Chart Data Configuration', () => {
     test('passes correct dataset structure to charts', () => {
-      const { truncate, getDisplayName } = require('../../../../utils/Utils');
-
       // Ensure mocks return expected values
       truncate.mockImplementation((str, len) =>
         str?.length > len ? `${str.substring(0, len)}...` : str,
@@ -610,7 +610,6 @@ describe('SiteDetailsGraph', () => {
 
   describe('Integration', () => {
     test('integrates with getDisplayName utility', () => {
-      const { getDisplayName } = require('../../../../utils/Utils');
       render(<SiteDetailsGraph {...defaultProps} />);
 
       expect(getDisplayName).toHaveBeenCalled();
@@ -622,14 +621,12 @@ describe('SiteDetailsGraph', () => {
     });
 
     test('integrates with truncate utility for labels', () => {
-      const { truncate } = require('../../../../utils/Utils');
       render(<SiteDetailsGraph {...defaultProps} />);
 
       expect(truncate).toHaveBeenCalled();
     });
 
     test('integrates with maybeSetTimeWindow for navigation', () => {
-      const { maybeSetTimeWindow } = require('../../../../utils/Utils');
       render(<SiteDetailsGraph {...defaultProps} />);
 
       fireEvent.click(screen.getByLabelText('previous time period'));
@@ -642,7 +639,6 @@ describe('SiteDetailsGraph', () => {
     });
 
     test('integrates with timeLabel utility', () => {
-      const { timeLabel } = require('../../../../utils/Utils');
       render(<SiteDetailsGraph {...defaultProps} />);
 
       expect(timeLabel).toHaveBeenCalledWith(
@@ -761,7 +757,6 @@ describe('SiteDetailsGraph', () => {
 
   describe('Dataset Configuration Details', () => {
     test('configures dataset properties correctly for bar charts', () => {
-      const { getDisplayName } = require('../../../../utils/Utils');
       getDisplayName.mockImplementation(
         (device) => device.name || device.deviceName || 'Unknown',
       );
@@ -819,8 +814,6 @@ describe('SiteDetailsGraph', () => {
 
   describe('Data Transformation', () => {
     test('processes and transforms data correctly for each dataset', () => {
-      const { getDisplayName } = require('../../../../utils/Utils');
-
       render(<SiteDetailsGraph {...defaultProps} graphType='bar' />);
 
       // getDisplayName should be called for each non-site device

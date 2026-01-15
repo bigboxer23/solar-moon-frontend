@@ -1,6 +1,6 @@
-/* eslint-env jest */
 import { render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
+import { vi } from 'vitest';
 
 import ManagePlanTile from '../../../../components/views/profile/ManagePlanTile';
 import {
@@ -11,17 +11,17 @@ import {
 import { getDaysLeftInTrial } from '../../../../utils/Utils';
 
 // Mock dependencies
-jest.mock('../../../../services/services', () => ({
-  getStripeSubscriptions: jest.fn(),
-  getSubscriptionInformation: jest.fn(),
-  getUserPortalSession: jest.fn(),
+vi.mock('../../../../services/services', () => ({
+  getStripeSubscriptions: vi.fn(),
+  getSubscriptionInformation: vi.fn(),
+  getUserPortalSession: vi.fn(),
 }));
 
-jest.mock('../../../../utils/Utils', () => ({
-  getDaysLeftInTrial: jest.fn(),
+vi.mock('../../../../utils/Utils', () => ({
+  getDaysLeftInTrial: vi.fn(),
 }));
 
-jest.mock('react-icons/md', () => ({
+vi.mock('react-icons/md', () => ({
   MdOutlineSubscriptions: () => <svg data-testid='subscription-icon' />,
 }));
 
@@ -35,7 +35,7 @@ Object.defineProperty(window, 'location', {
 
 describe('ManagePlanTile', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     window.location.href = '';
   });
 

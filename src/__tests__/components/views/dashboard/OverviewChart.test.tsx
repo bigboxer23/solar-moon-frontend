@@ -1,8 +1,18 @@
-/* eslint-env jest */
 import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
+import { vi } from 'vitest';
 
 import OverviewChart from '../../../../components/views/dashboard/OverviewChart';
+import {
+  getBucketSize,
+  parseAndCondenseStackedTimeSeriesData,
+  parseSearchReturn,
+} from '../../../../services/search';
+import {
+  maybeSetTimeWindow,
+  timeLabel,
+  useStickyState,
+} from '../../../../utils/Utils';
 
 interface ChartData {
   date: number;
@@ -18,7 +28,7 @@ interface SitesDataMap {
 }
 
 // Mock react-chartjs-2 components
-jest.mock('react-chartjs-2', () => ({
+vi.mock('react-chartjs-2', () => ({
   Line: ({
     data,
     options,
@@ -58,33 +68,33 @@ jest.mock('react-chartjs-2', () => ({
 }));
 
 // Mock external dependencies
-jest.mock('../../../../services/search', () => ({
+vi.mock('../../../../services/search', () => ({
   DAY: 'DAY',
-  getBucketSize: jest.fn(() => '1m'),
-  parseAndCondenseStackedTimeSeriesData: jest.fn((data: unknown) => data || []),
-  parseSearchReturn: jest.fn((data: unknown) => data || []),
+  getBucketSize: vi.fn(() => '1m'),
+  parseAndCondenseStackedTimeSeriesData: vi.fn((data: unknown) => data || []),
+  parseSearchReturn: vi.fn((data: unknown) => data || []),
 }));
 
-jest.mock('../../../../utils/Utils', () => ({
-  formatXAxisLabels: jest.fn(),
-  formatXAxisLabelsDay: jest.fn(),
-  getFormattedTime: jest.fn((timestamp: number) =>
+vi.mock('../../../../utils/Utils', () => ({
+  formatXAxisLabels: vi.fn(),
+  formatXAxisLabelsDay: vi.fn(),
+  getFormattedTime: vi.fn((timestamp: number) =>
     new Date(timestamp).toLocaleTimeString(),
   ),
-  maybeSetTimeWindow: jest.fn(),
-  roundTwoDigit: jest.fn((num: number) => Math.round(num * 100) / 100),
-  timeLabel: jest.fn(
+  maybeSetTimeWindow: vi.fn(),
+  roundTwoDigit: vi.fn((num: number) => Math.round(num * 100) / 100),
+  timeLabel: vi.fn(
     (startDate: Date, timeIncrement: string) => `${startDate}-${timeIncrement}`,
   ),
-  useStickyState: jest.fn((defaultValue: string) => [defaultValue, jest.fn()]),
+  useStickyState: vi.fn((defaultValue: string) => [defaultValue, vi.fn()]),
 }));
 
-jest.mock('../../../../components/common/graphPlugins', () => ({
-  tooltipPlugin: { id: 'tooltip-plugin', beforeDraw: jest.fn() },
+vi.mock('../../../../components/common/graphPlugins', () => ({
+  tooltipPlugin: { id: 'tooltip-plugin', beforeDraw: vi.fn() },
 }));
 
 // Mock react-icons
-jest.mock('react-icons/md', () => ({
+vi.mock('react-icons/md', () => ({
   MdNavigateBefore: () => <div data-testid='navigate-before'>Previous</div>,
   MdNavigateNext: () => <div data-testid='navigate-next'>Next</div>,
   MdShowChart: () => <div data-testid='show-chart'>Overview</div>,
@@ -97,8 +107,8 @@ jest.mock('react-icons/md', () => ({
 }));
 
 // Mock classnames
-jest.mock('classnames', () => {
-  return function classNames(
+vi.mock('classnames', () => {
+  const classNames = function (
     ...classes: (string | Record<string, boolean> | undefined | null | false)[]
   ) {
     return classes
@@ -115,6 +125,7 @@ jest.mock('classnames', () => {
       })
       .join(' ');
   };
+  return { default: classNames };
 });
 
 describe('OverviewChart', () => {
@@ -145,19 +156,15 @@ describe('OverviewChart', () => {
     overviewData: mockOverviewData,
     sitesData: mockSitesData,
     timeIncrement: 'HOUR',
-    setStartDate: jest.fn(),
+    setStartDate: vi.fn(),
     startDate: new Date(),
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     // Reset useStickyState mock to return overview as default
-    (
-      require('../../../../utils/Utils').useStickyState as jest.Mock
-    ).mockReturnValue(['overview', jest.fn()]);
-    (
-      require('../../../../services/search').getBucketSize as jest.Mock
-    ).mockReturnValue('1m');
+    (useStickyState as vi.Mock).mockReturnValue(['overview', vi.fn()]);
+    (getBucketSize as vi.Mock).mockReturnValue('1m');
   });
 
   describe('Loading State', () => {
@@ -201,7 +208,6 @@ describe('OverviewChart', () => {
     });
 
     test('renders time label', () => {
-      const { timeLabel } = require('../../../../utils/Utils');
       render(<OverviewChart {...defaultProps} />);
 
       expect(timeLabel).toHaveBeenCalledWith(
@@ -231,9 +237,7 @@ describe('OverviewChart', () => {
     });
 
     test('renders Line chart for stacked-line type', () => {
-      (
-        require('../../../../utils/Utils').useStickyState as jest.Mock
-      ).mockReturnValue(['stacked-line', jest.fn()]);
+      (useStickyState as vi.Mock).mockReturnValue(['stacked-line', vi.fn()]);
 
       render(<OverviewChart {...defaultProps} />);
 
@@ -242,9 +246,7 @@ describe('OverviewChart', () => {
     });
 
     test('renders Bar chart for stacked-bar type', () => {
-      (
-        require('../../../../utils/Utils').useStickyState as jest.Mock
-      ).mockReturnValue(['stacked-bar', jest.fn()]);
+      (useStickyState as vi.Mock).mockReturnValue(['stacked-bar', vi.fn()]);
 
       render(<OverviewChart {...defaultProps} />);
 
@@ -255,10 +257,11 @@ describe('OverviewChart', () => {
 
   describe('Graph Type Switching', () => {
     test('switches to overview when overview button clicked', () => {
-      const mockSetGraphType = jest.fn();
-      (
-        require('../../../../utils/Utils').useStickyState as jest.Mock
-      ).mockReturnValue(['stacked-line', mockSetGraphType]);
+      const mockSetGraphType = vi.fn();
+      (useStickyState as vi.Mock).mockReturnValue([
+        'stacked-line',
+        mockSetGraphType,
+      ]);
 
       render(<OverviewChart {...defaultProps} />);
 
@@ -267,10 +270,11 @@ describe('OverviewChart', () => {
     });
 
     test('switches to stacked-line when line graph button clicked', () => {
-      const mockSetGraphType = jest.fn();
-      (
-        require('../../../../utils/Utils').useStickyState as jest.Mock
-      ).mockReturnValue(['overview', mockSetGraphType]);
+      const mockSetGraphType = vi.fn();
+      (useStickyState as vi.Mock).mockReturnValue([
+        'overview',
+        mockSetGraphType,
+      ]);
 
       render(<OverviewChart {...defaultProps} />);
 
@@ -279,10 +283,11 @@ describe('OverviewChart', () => {
     });
 
     test('switches to stacked-bar when bar graph button clicked', () => {
-      const mockSetGraphType = jest.fn();
-      (
-        require('../../../../utils/Utils').useStickyState as jest.Mock
-      ).mockReturnValue(['overview', mockSetGraphType]);
+      const mockSetGraphType = vi.fn();
+      (useStickyState as vi.Mock).mockReturnValue([
+        'overview',
+        mockSetGraphType,
+      ]);
 
       render(<OverviewChart {...defaultProps} />);
 
@@ -293,7 +298,6 @@ describe('OverviewChart', () => {
 
   describe('Time Navigation', () => {
     test('calls maybeSetTimeWindow with negative increment for previous button', () => {
-      const { maybeSetTimeWindow } = require('../../../../utils/Utils');
       render(<OverviewChart {...defaultProps} />);
 
       fireEvent.click(screen.getByLabelText('previous time period'));
@@ -306,7 +310,6 @@ describe('OverviewChart', () => {
     });
 
     test('calls maybeSetTimeWindow with positive increment for next button when enabled', () => {
-      const { maybeSetTimeWindow } = require('../../../../utils/Utils');
       render(<OverviewChart {...defaultProps} />);
 
       const nextButton = screen.getByLabelText('next time period');
@@ -328,9 +331,6 @@ describe('OverviewChart', () => {
 
   describe('Data Processing', () => {
     test('processes overview data correctly', () => {
-      const {
-        parseAndCondenseStackedTimeSeriesData,
-      } = require('../../../../services/search');
       render(<OverviewChart {...defaultProps} />);
 
       expect(parseAndCondenseStackedTimeSeriesData).toHaveBeenCalledWith(
@@ -340,7 +340,6 @@ describe('OverviewChart', () => {
     });
 
     test('processes sites data correctly', () => {
-      const { parseSearchReturn } = require('../../../../services/search');
       render(<OverviewChart {...defaultProps} />);
 
       expect(parseSearchReturn).toHaveBeenCalledWith(
@@ -378,9 +377,7 @@ describe('OverviewChart', () => {
     });
 
     test('passes correct sites dataset to stacked-line chart', () => {
-      (
-        require('../../../../utils/Utils').useStickyState as jest.Mock
-      ).mockReturnValue(['stacked-line', jest.fn()]);
+      (useStickyState as vi.Mock).mockReturnValue(['stacked-line', vi.fn()]);
 
       render(<OverviewChart {...defaultProps} />);
 
@@ -395,9 +392,7 @@ describe('OverviewChart', () => {
     });
 
     test('passes correct sites dataset to stacked-bar chart', () => {
-      (
-        require('../../../../utils/Utils').useStickyState as jest.Mock
-      ).mockReturnValue(['stacked-bar', jest.fn()]);
+      (useStickyState as vi.Mock).mockReturnValue(['stacked-bar', vi.fn()]);
 
       render(<OverviewChart {...defaultProps} />);
 
@@ -431,9 +426,7 @@ describe('OverviewChart', () => {
     });
 
     test('configures sites options correctly for stacked charts', () => {
-      (
-        require('../../../../utils/Utils').useStickyState as jest.Mock
-      ).mockReturnValue(['stacked-line', jest.fn()]);
+      (useStickyState as vi.Mock).mockReturnValue(['stacked-line', vi.fn()]);
 
       render(<OverviewChart {...defaultProps} />);
 
@@ -502,9 +495,7 @@ describe('OverviewChart', () => {
     });
 
     test('shows stacked-line button as active when stacked-line type selected', () => {
-      (
-        require('../../../../utils/Utils').useStickyState as jest.Mock
-      ).mockReturnValue(['stacked-line', jest.fn()]);
+      (useStickyState as vi.Mock).mockReturnValue(['stacked-line', vi.fn()]);
 
       render(<OverviewChart {...defaultProps} />);
 
@@ -514,9 +505,7 @@ describe('OverviewChart', () => {
     });
 
     test('shows stacked-bar button as active when stacked-bar type selected', () => {
-      (
-        require('../../../../utils/Utils').useStickyState as jest.Mock
-      ).mockReturnValue(['stacked-bar', jest.fn()]);
+      (useStickyState as vi.Mock).mockReturnValue(['stacked-bar', vi.fn()]);
 
       render(<OverviewChart {...defaultProps} />);
 
@@ -589,16 +578,12 @@ describe('OverviewChart', () => {
 
   describe('Integration', () => {
     test('integrates with useStickyState for graph type persistence', () => {
-      const { useStickyState } = require('../../../../utils/Utils');
       render(<OverviewChart {...defaultProps} />);
 
       expect(useStickyState).toHaveBeenCalledWith('overview', 'overview.graph');
     });
 
     test('integrates with parseAndCondenseStackedTimeSeriesData for data processing', () => {
-      const {
-        parseAndCondenseStackedTimeSeriesData,
-      } = require('../../../../services/search');
       render(<OverviewChart {...defaultProps} />);
 
       expect(parseAndCondenseStackedTimeSeriesData).toHaveBeenCalledWith(
@@ -608,7 +593,6 @@ describe('OverviewChart', () => {
     });
 
     test('integrates with parseSearchReturn for sites data processing', () => {
-      const { parseSearchReturn } = require('../../../../services/search');
       render(<OverviewChart {...defaultProps} />);
 
       expect(parseSearchReturn).toHaveBeenCalledWith(
@@ -643,9 +627,7 @@ describe('OverviewChart', () => {
     });
 
     test('configures tooltip callbacks correctly for stacked charts', () => {
-      (
-        require('../../../../utils/Utils').useStickyState as jest.Mock
-      ).mockReturnValue(['stacked-line', jest.fn()]);
+      (useStickyState as vi.Mock).mockReturnValue(['stacked-line', vi.fn()]);
 
       render(<OverviewChart {...defaultProps} />);
 
@@ -673,10 +655,7 @@ describe('OverviewChart', () => {
         { date: Date.now(), values: 30 },
       ];
 
-      const {
-        parseAndCondenseStackedTimeSeriesData,
-      } = require('../../../../services/search');
-      (parseAndCondenseStackedTimeSeriesData as jest.Mock).mockClear();
+      (parseAndCondenseStackedTimeSeriesData as vi.Mock).mockClear();
 
       rerender(
         <OverviewChart {...defaultProps} overviewData={newOverviewData} />,
@@ -707,11 +686,7 @@ describe('OverviewChart', () => {
 
   describe('Performance Optimizations', () => {
     test('does not reprocess data when overviewData is null', () => {
-      const {
-        parseAndCondenseStackedTimeSeriesData,
-      } = require('../../../../services/search');
-
-      (parseAndCondenseStackedTimeSeriesData as jest.Mock).mockClear();
+      (parseAndCondenseStackedTimeSeriesData as vi.Mock).mockClear();
 
       render(<OverviewChart {...defaultProps} overviewData={null} />);
 

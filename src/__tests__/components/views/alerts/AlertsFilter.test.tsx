@@ -1,18 +1,18 @@
-/* eslint-env jest */
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import type { ReactElement, ReactNode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
+import { vi } from 'vitest';
 
 import AlertsFilter from '../../../../components/views/alerts/AlertsFilter';
 
 // Mock external dependencies
-jest.mock('../../../../services/search', () => ({
+vi.mock('../../../../services/search', () => ({
   ALL: 'ALL',
 }));
 
 // Mock child components
-jest.mock('../../../../components/common/Button', () => {
-  return function MockButton({
+vi.mock('../../../../components/common/Button', () => {
+  const MockButton = function ({
     children,
     onClick,
     disabled,
@@ -41,10 +41,11 @@ jest.mock('../../../../components/common/Button', () => {
       </button>
     );
   };
+  return { default: MockButton };
 });
 
-jest.mock('../../../../components/common/Dropdown', () => {
-  return function MockDropdown({
+vi.mock('../../../../components/common/Dropdown', () => {
+  const MockDropdown = function ({
     onChange,
     options,
     prefixLabel,
@@ -76,15 +77,17 @@ jest.mock('../../../../components/common/Dropdown', () => {
       </div>
     );
   };
+  return { default: MockDropdown };
 });
 
-jest.mock('../../../../components/common/Spinner', () => {
-  return function MockSpinner() {
+vi.mock('../../../../components/common/Spinner', () => {
+  const MockSpinner = function () {
     return <div data-testid='spinner'>Loading...</div>;
   };
+  return { default: MockSpinner };
 });
 
-jest.mock('react-icons/fa6', () => ({
+vi.mock('react-icons/fa6', () => ({
   FaRotate: () => <div data-testid='rotate-icon'>Rotate</div>,
 }));
 
@@ -93,8 +96,8 @@ const renderWithRouter = (component: ReactElement) => {
 };
 
 describe('AlertsFilter', () => {
-  const mockHandleFilterChange = jest.fn();
-  const mockSetRefreshSearch = jest.fn();
+  const mockHandleFilterChange = vi.fn();
+  const mockSetRefreshSearch = vi.fn();
 
   const mockSites = [
     {
@@ -144,7 +147,7 @@ describe('AlertsFilter', () => {
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
 
     // Clear URL search params
     delete window.location;

@@ -1,6 +1,6 @@
-/* eslint-env jest */
 import { render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
+import { vi } from 'vitest';
 
 import Profile from '../../../../components/views/profile/Profile';
 import {
@@ -9,58 +9,64 @@ import {
 } from '../../../../services/services';
 
 // Mock dependencies
-jest.mock('../../../../services/services', () => ({
-  getCustomer: jest.fn(),
-  getSubscriptionInformation: jest.fn(),
+vi.mock('../../../../services/services', () => ({
+  getCustomer: vi.fn(),
+  getSubscriptionInformation: vi.fn(),
 }));
 
 // Mock child components
-jest.mock('../../../../components/views/profile/CustomerInformation', () => {
-  return function MockCustomerInformation({ customer }) {
+vi.mock('../../../../components/views/profile/CustomerInformation', () => {
+  const MockCustomerInformation = function ({ customer }) {
     return (
       <div data-testid='customer-information'>
         Customer Info for {customer?.email || 'unknown'}
       </div>
     );
   };
+  return { default: MockCustomerInformation };
 });
 
-jest.mock('../../../../components/views/profile/Appearance', () => {
-  return function MockAppearance() {
+vi.mock('../../../../components/views/profile/Appearance', () => {
+  const MockAppearance = function () {
     return <div data-testid='appearance'>Appearance Settings</div>;
   };
+  return { default: MockAppearance };
 });
 
-jest.mock('../../../../components/views/profile/ManagePlanTile', () => {
-  return function MockManagePlanTile() {
+vi.mock('../../../../components/views/profile/ManagePlanTile', () => {
+  const MockManagePlanTile = function () {
     return <div data-testid='manage-plan-tile'>Manage Plan</div>;
   };
+  return { default: MockManagePlanTile };
 });
 
-jest.mock('../../../../components/views/profile/APIInformation', () => {
-  return function MockAPIInformation({ customerData }) {
+vi.mock('../../../../components/views/profile/APIInformation', () => {
+  const MockAPIInformation = function ({ customerData }) {
     return (
       <div data-testid='api-information'>
         API Info for {customerData?.email || 'unknown'}
       </div>
     );
   };
+  return { default: MockAPIInformation };
 });
 
-jest.mock('../../../../components/views/profile/ChangePassword', () => {
-  return function MockChangePassword() {
+vi.mock('../../../../components/views/profile/ChangePassword', () => {
+  const MockChangePassword = function () {
     return <div data-testid='change-password'>Change Password</div>;
   };
+  return { default: MockChangePassword };
 });
 
-jest.mock('../../../../components/views/profile/DeleteAccount', () => {
-  return function MockDeleteAccount() {
+vi.mock('../../../../components/views/profile/DeleteAccount', () => {
+  const MockDeleteAccount = function () {
     return <div data-testid='delete-account'>Delete Account</div>;
   };
+  return { default: MockDeleteAccount };
 });
 
 describe('Profile', () => {
-  const mockSetTrialDate = jest.fn();
+  const mockSetTrialDate = vi.fn();
   const mockCustomerData = {
     email: 'test@example.com',
     name: 'Test User',
@@ -71,7 +77,7 @@ describe('Profile', () => {
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test('shows loading state initially', () => {
