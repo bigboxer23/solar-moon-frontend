@@ -1,16 +1,16 @@
-/* eslint-env jest */
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
+import { vi } from 'vitest';
 
 import MappingBlock from '../../../../components/views/mapping/MappingBlock';
 
-jest.mock('react-icons/md', () => ({
+vi.mock('react-icons/md', () => ({
   MdLock: () => <div data-testid='lock-icon' />,
   MdOutlineDelete: () => <div data-testid='delete-icon' />,
 }));
 
 describe('MappingBlock', () => {
-  const mockDeleteMapping = jest.fn();
+  const mockDeleteMapping = vi.fn();
 
   const defaultProps = {
     attribute: 'Current',
@@ -20,7 +20,7 @@ describe('MappingBlock', () => {
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test('renders mapping name and attribute', () => {

@@ -1,12 +1,12 @@
-/* eslint-env jest */
 import { render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
+import { vi } from 'vitest';
 
 import DeviceBlock from '../../../components/device-block/DeviceBlock';
 
 // Mock dependencies
-jest.mock('@tippyjs/react', () => {
-  return function MockTippy({
+vi.mock('@tippyjs/react', () => {
+  const MockTippy = function ({
     children,
     content,
     ...props
@@ -20,28 +20,32 @@ jest.mock('@tippyjs/react', () => {
       </div>
     );
   };
+  return { default: MockTippy };
 });
 
-jest.mock('../../../utils/Utils', () => ({
+vi.mock('../../../utils/Utils', () => ({
   TIPPY_DELAY: 300,
-  transformMultiLineForHTMLDisplay: jest.fn((text: string) => `<p>${text}</p>`),
-  truncate: jest.fn((text: string, length: number) =>
+  transformMultiLineForHTMLDisplay: vi.fn((text: string) => `<p>${text}</p>`),
+  truncate: vi.fn((text: string, length: number) =>
     text.length > length ? `${text.substring(0, length)}...` : text,
   ),
 }));
-
-const {
-  transformMultiLineForHTMLDisplay,
-  truncate,
-} = require('../../../utils/Utils');
 
 const renderWithRouter = (component: React.ReactElement) => {
   return render(<MemoryRouter>{component}</MemoryRouter>);
 };
 
 describe('DeviceBlock', () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
+  let truncate: vi.Mock;
+  let transformMultiLineForHTMLDisplay: vi.Mock;
+
+  beforeEach(async () => {
+    const utils = await import('../../../utils/Utils');
+    truncate = utils.truncate as vi.Mock;
+    transformMultiLineForHTMLDisplay =
+      utils.transformMultiLineForHTMLDisplay as vi.Mock;
+
+    vi.clearAllMocks();
     truncate.mockImplementation((text: string, length: number) =>
       text && text.length > length
         ? `${text.substring(0, length)}...`

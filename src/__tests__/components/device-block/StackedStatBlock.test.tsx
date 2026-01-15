@@ -1,12 +1,12 @@
-/* eslint-env jest */
 import { fireEvent, render } from '@testing-library/react';
 import { IntlProvider } from 'react-intl';
+import { vi } from 'vitest';
 
 import StackedStatBlock from '../../../components/device-block/StackedStatBlock';
 
 // Mock dependencies
-jest.mock('@tippyjs/react', () => {
-  return function MockTippy({
+vi.mock('@tippyjs/react', () => {
+  const MockTippy = function ({
     children,
     content,
     ...props
@@ -20,10 +20,11 @@ jest.mock('@tippyjs/react', () => {
       </div>
     );
   };
+  return { default: MockTippy };
 });
 
-jest.mock('../../../utils/Utils', () => ({
-  roundTwoDigit: jest.fn((value) => {
+vi.mock('../../../utils/Utils', () => ({
+  roundTwoDigit: vi.fn((value) => {
     if (value === null || value === undefined) return value;
     const num = Number(value);
     if (isNaN(num)) return value;
@@ -38,7 +39,7 @@ const renderWithIntl = (component: React.ReactElement) => {
 
 describe('StackedStatBlock', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test('applies correct base CSS classes', () => {
@@ -75,7 +76,7 @@ describe('StackedStatBlock', () => {
   });
 
   test('handles onClick functionality', () => {
-    const mockOnClick = jest.fn();
+    const mockOnClick = vi.fn();
     const { container } = renderWithIntl(
       <StackedStatBlock
         lowerTitle='Test'
@@ -97,7 +98,7 @@ describe('StackedStatBlock', () => {
   });
 
   test('adds cursor-pointer class when onClick is provided', () => {
-    const mockOnClick = jest.fn();
+    const mockOnClick = vi.fn();
     const { container } = renderWithIntl(
       <StackedStatBlock
         lowerTitle='Test'

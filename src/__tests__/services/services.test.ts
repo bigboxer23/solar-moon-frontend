@@ -1,7 +1,7 @@
-/* eslint-env jest */
-
 // Mock the API client
 // Import after mocking
+import { vi } from 'vitest';
+
 import { api } from '../../services/apiClient';
 import {
   DAY,
@@ -35,27 +35,27 @@ import {
   updateDevice,
 } from '../../services/services';
 
-jest.mock('../../services/apiClient', () => ({
+vi.mock('../../services/apiClient', () => ({
   api: {
-    get: jest.fn(),
-    post: jest.fn(),
-    put: jest.fn(),
-    delete: jest.fn(),
+    get: vi.fn(),
+    post: vi.fn(),
+    put: vi.fn(),
+    delete: vi.fn(),
   },
 }));
 
 // Mock the search module
-jest.mock('../../services/search', () => ({
+vi.mock('../../services/search', () => ({
   DAY: 86400000,
-  getAvgTotalBody: jest.fn(),
-  getBucketSize: jest.fn(),
-  getDataPageBody: jest.fn(),
+  getAvgTotalBody: vi.fn(),
+  getBucketSize: vi.fn(),
+  getDataPageBody: vi.fn(),
   GROUPED_BAR: 'groupedBarGraph',
 }));
 
 describe('services', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe('customer services', () => {
@@ -154,17 +154,17 @@ describe('services', () => {
   });
 
   describe('site and overview services', () => {
-    let dateNowSpy: jest.SpyInstance;
+    let dateNowSpy: vi.SpyInstance;
 
     beforeEach(() => {
       // Mock Date.now() to return a fixed timestamp
-      dateNowSpy = jest.spyOn(Date, 'now').mockReturnValue(1672531200000); // 2023-01-01T00:00:00Z
-      (getAvgTotalBody as jest.Mock).mockReturnValue({
+      dateNowSpy = vi.spyOn(Date, 'now').mockReturnValue(1672531200000); // 2023-01-01T00:00:00Z
+      (getAvgTotalBody as vi.Mock).mockReturnValue({
         type: 'avgTotal',
         startDate: 1672444800000,
         endDate: 1672531200000,
       });
-      (getBucketSize as jest.Mock).mockReturnValue('1h');
+      (getBucketSize as vi.Mock).mockReturnValue('1h');
     });
 
     afterEach(() => {
@@ -248,7 +248,7 @@ describe('services', () => {
 
   describe('data page services', () => {
     beforeEach(() => {
-      (getDataPageBody as jest.Mock).mockReturnValue({
+      (getDataPageBody as vi.Mock).mockReturnValue({
         deviceId: 'device-123',
         siteId: 'site-456',
         type: 'data',

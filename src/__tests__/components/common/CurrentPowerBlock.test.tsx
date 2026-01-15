@@ -1,13 +1,13 @@
-/* eslint-env jest */
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { IntlProvider } from 'react-intl';
+import { vi } from 'vitest';
 
 import CurrentPowerBlock from '../../../components/common/CurrentPowerBlock';
 
 // Mock the child components
-jest.mock('../../../components/common/PowerBlock', () => {
-  return function MockPowerBlock({
+vi.mock('../../../components/common/PowerBlock', () => {
+  const MockPowerBlock = function ({
     power,
     title,
     activeAlert,
@@ -22,10 +22,11 @@ jest.mock('../../../components/common/PowerBlock', () => {
       </div>
     );
   };
+  return { default: MockPowerBlock };
 });
 
-jest.mock('../../../components/common/PowerIcon', () => {
-  return function MockPowerIcon({
+vi.mock('../../../components/common/PowerIcon', () => {
+  const MockPowerIcon = function ({
     percent,
     max,
     activeAlert,
@@ -40,11 +41,12 @@ jest.mock('../../../components/common/PowerIcon', () => {
       </div>
     );
   };
+  return { default: MockPowerIcon };
 });
 
 // Mock Tippy
-jest.mock('@tippyjs/react', () => {
-  return function MockTippy({
+vi.mock('@tippyjs/react', () => {
+  const MockTippy = function ({
     children,
     content,
     ...props
@@ -59,6 +61,7 @@ jest.mock('@tippyjs/react', () => {
       </div>
     );
   };
+  return { default: MockTippy };
 });
 
 const renderWithIntl = (component: React.ReactElement) => {

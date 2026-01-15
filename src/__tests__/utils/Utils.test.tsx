@@ -1,7 +1,8 @@
-/* eslint-env jest */
 import { act, render, renderHook, screen } from '@testing-library/react';
 import React from 'react';
+import { vi } from 'vitest';
 
+import { DAY, HOUR, MONTH, WEEK, YEAR } from '../../services/search';
 import {
   compare,
   debounce,
@@ -35,7 +36,7 @@ import {
 } from '../../utils/Utils';
 
 // Mock the search service to avoid ES6 import issues
-jest.mock('../../services/search', () => ({
+vi.mock('../../services/search', () => ({
   DAY: 86400000,
   HOUR: 3600000,
   MONTH: 2592000000,
@@ -44,14 +45,12 @@ jest.mock('../../services/search', () => ({
 }));
 
 // Mock the SiteManagement component to avoid import chain issues
-jest.mock('../../components/views/site-management/SiteManagement', () => ({
+vi.mock('../../components/views/site-management/SiteManagement', () => ({
   noSite: 'No Site',
 }));
 
-const { DAY, HOUR, MONTH, WEEK, YEAR } = require('../../services/search');
-
 // Mock Tippy component
-jest.mock('@tippyjs/react', () => {
+vi.mock('@tippyjs/react', () => {
   const MockTippy = ({
     children,
     content,
@@ -64,23 +63,25 @@ jest.mock('@tippyjs/react', () => {
     </div>
   );
   MockTippy.displayName = 'MockTippy';
-  return MockTippy;
+  return {
+    default: MockTippy,
+  };
 });
 
 // Mock localStorage
 const localStorageMock = {
-  getItem: jest.fn(),
-  setItem: jest.fn(),
-  removeItem: jest.fn(),
-  clear: jest.fn(),
+  getItem: vi.fn(),
+  setItem: vi.fn(),
+  removeItem: vi.fn(),
+  clear: vi.fn(),
   length: 0,
-  key: jest.fn(),
+  key: vi.fn(),
 };
 global.localStorage = localStorageMock as Storage;
 
 describe('Utils', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     localStorageMock.getItem.mockReturnValue(null);
   });
 
@@ -111,35 +112,35 @@ describe('Utils', () => {
   });
 
   describe('debounce', () => {
-    jest.useFakeTimers();
+    vi.useFakeTimers();
 
     it('delays function execution', () => {
-      const mockFn = jest.fn();
+      const mockFn = vi.fn();
       const debouncedFn = debounce(mockFn, 100);
 
       debouncedFn();
       expect(mockFn).not.toHaveBeenCalled();
 
-      jest.advanceTimersByTime(100);
+      vi.advanceTimersByTime(100);
       expect(mockFn).toHaveBeenCalledTimes(1);
     });
 
     it('cancels previous calls when called multiple times', () => {
-      const mockFn = jest.fn();
+      const mockFn = vi.fn();
       const debouncedFn = debounce(mockFn, 100);
 
       debouncedFn();
       debouncedFn();
       debouncedFn();
 
-      jest.advanceTimersByTime(100);
+      vi.advanceTimersByTime(100);
       expect(mockFn).toHaveBeenCalledTimes(1);
     });
   });
 
   describe('useStickyState', () => {
     it('returns default value when localStorage is empty', () => {
-      const getItemSpy = jest
+      const getItemSpy = vi
         .spyOn(Storage.prototype, 'getItem')
         .mockReturnValue(null);
       const { result } = renderHook(() =>
@@ -150,18 +151,19 @@ describe('Utils', () => {
     });
 
     it('returns parsed value from localStorage when available', () => {
-      const getItemSpy = jest
-        .spyOn(Storage.prototype, 'getItem')
-        .mockReturnValue(JSON.stringify('stored-value'));
+      const originalGetItem = window.localStorage.getItem;
+      window.localStorage.getItem = vi.fn(() => JSON.stringify('stored-value'));
+
       const { result } = renderHook(() =>
         useStickyState('default', 'test-key'),
       );
       expect(result.current[0]).toBe('stored-value');
-      getItemSpy.mockRestore();
+
+      window.localStorage.getItem = originalGetItem;
     });
 
     it('returns default value when localStorage contains "undefined" string', () => {
-      const getItemSpy = jest
+      const getItemSpy = vi
         .spyOn(Storage.prototype, 'getItem')
         .mockReturnValue('undefined');
       const { result } = renderHook(() =>
@@ -172,7 +174,7 @@ describe('Utils', () => {
     });
 
     it('returns default value when localStorage contains corrupted JSON', () => {
-      const getItemSpy = jest
+      const getItemSpy = vi
         .spyOn(Storage.prototype, 'getItem')
         .mockReturnValue('{invalid json}');
       const { result } = renderHook(() =>
@@ -183,10 +185,11 @@ describe('Utils', () => {
     });
 
     it('stores value in localStorage when updated', () => {
-      const getItemSpy = jest
-        .spyOn(Storage.prototype, 'getItem')
-        .mockReturnValue(null);
-      const setItemSpy = jest.spyOn(Storage.prototype, 'setItem');
+      const originalGetItem = window.localStorage.getItem;
+      const originalSetItem = window.localStorage.setItem;
+      window.localStorage.getItem = vi.fn(() => null);
+      const setItemMock = vi.fn();
+      window.localStorage.setItem = setItemMock;
 
       const { result } = renderHook(() =>
         useStickyState('default', 'test-key'),
@@ -196,19 +199,21 @@ describe('Utils', () => {
         result.current[1]('new-value');
       });
 
-      expect(setItemSpy).toHaveBeenCalledWith(
+      expect(setItemMock).toHaveBeenCalledWith(
         'test-key',
         JSON.stringify('new-value'),
       );
-      getItemSpy.mockRestore();
-      setItemSpy.mockRestore();
+
+      window.localStorage.getItem = originalGetItem;
+      window.localStorage.setItem = originalSetItem;
     });
 
     it('removes value from localStorage when set to null', () => {
-      const getItemSpy = jest
-        .spyOn(Storage.prototype, 'getItem')
-        .mockReturnValue(JSON.stringify('initial'));
-      const removeItemSpy = jest.spyOn(Storage.prototype, 'removeItem');
+      const originalGetItem = window.localStorage.getItem;
+      const originalRemoveItem = window.localStorage.removeItem;
+      window.localStorage.getItem = vi.fn(() => JSON.stringify('initial'));
+      const removeItemMock = vi.fn();
+      window.localStorage.removeItem = removeItemMock;
 
       const { result } = renderHook(() =>
         useStickyState<string | null | undefined>('default', 'test-key'),
@@ -218,16 +223,18 @@ describe('Utils', () => {
         result.current[1](null);
       });
 
-      expect(removeItemSpy).toHaveBeenCalledWith('test-key');
-      getItemSpy.mockRestore();
-      removeItemSpy.mockRestore();
+      expect(removeItemMock).toHaveBeenCalledWith('test-key');
+
+      window.localStorage.getItem = originalGetItem;
+      window.localStorage.removeItem = originalRemoveItem;
     });
 
     it('removes value from localStorage when set to undefined', () => {
-      const getItemSpy = jest
-        .spyOn(Storage.prototype, 'getItem')
-        .mockReturnValue(JSON.stringify('initial'));
-      const removeItemSpy = jest.spyOn(Storage.prototype, 'removeItem');
+      const originalGetItem = window.localStorage.getItem;
+      const originalRemoveItem = window.localStorage.removeItem;
+      window.localStorage.getItem = vi.fn(() => JSON.stringify('initial'));
+      const removeItemMock = vi.fn();
+      window.localStorage.removeItem = removeItemMock;
 
       const { result } = renderHook(() =>
         useStickyState<string | null | undefined>('default', 'test-key'),
@@ -237,9 +244,10 @@ describe('Utils', () => {
         result.current[1](undefined);
       });
 
-      expect(removeItemSpy).toHaveBeenCalledWith('test-key');
-      getItemSpy.mockRestore();
-      removeItemSpy.mockRestore();
+      expect(removeItemMock).toHaveBeenCalledWith('test-key');
+
+      window.localStorage.getItem = originalGetItem;
+      window.localStorage.removeItem = originalRemoveItem;
     });
   });
 
@@ -518,12 +526,12 @@ describe('Utils', () => {
 
   describe('time functions', () => {
     beforeEach(() => {
-      jest.useFakeTimers();
-      jest.setSystemTime(new Date('2023-12-25T15:30:45'));
+      vi.useFakeTimers();
+      vi.setSystemTime(new Date('2023-12-25T15:30:45'));
     });
 
     afterEach(() => {
-      jest.useRealTimers();
+      vi.useRealTimers();
     });
 
     describe('getRoundedTimeFromOffset', () => {
@@ -672,8 +680,8 @@ describe('Utils', () => {
     });
 
     it('caps end date at current time', () => {
-      jest.useFakeTimers();
-      jest.setSystemTime(new Date('2023-12-25T12:00:00'));
+      vi.useFakeTimers();
+      vi.setSystemTime(new Date('2023-12-25T12:00:00'));
 
       const startDate = new Date('2023-12-24T00:00:00');
       const increment = DAY * 2; // Would go past current time
@@ -681,23 +689,23 @@ describe('Utils', () => {
 
       expect(result).toBe('Dec 24, 23 - Dec 25, 23');
 
-      jest.useRealTimers();
+      vi.useRealTimers();
     });
   });
 
   describe('maybeSetTimeWindow', () => {
-    let mockSetNextDisabled: jest.Mock;
-    let mockSetStartDate: jest.Mock;
+    let mockSetNextDisabled: vi.Mock;
+    let mockSetStartDate: vi.Mock;
 
     beforeEach(() => {
-      mockSetStartDate = jest.fn();
-      mockSetNextDisabled = jest.fn();
-      jest.useFakeTimers();
-      jest.setSystemTime(new Date('2023-12-25T12:00:00'));
+      mockSetStartDate = vi.fn();
+      mockSetNextDisabled = vi.fn();
+      vi.useFakeTimers();
+      vi.setSystemTime(new Date('2023-12-25T12:00:00'));
     });
 
     afterEach(() => {
-      jest.useRealTimers();
+      vi.useRealTimers();
     });
 
     it('sets start date when within bounds', () => {
@@ -811,12 +819,12 @@ describe('Utils', () => {
 
   describe('getDaysLeftInTrial', () => {
     beforeEach(() => {
-      jest.useFakeTimers();
-      jest.setSystemTime(new Date('2023-12-25T00:00:00'));
+      vi.useFakeTimers();
+      vi.setSystemTime(new Date('2023-12-25T00:00:00'));
     });
 
     afterEach(() => {
-      jest.useRealTimers();
+      vi.useRealTimers();
     });
 
     it('calculates days left correctly', () => {

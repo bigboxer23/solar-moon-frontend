@@ -1,26 +1,31 @@
-/* eslint-env jest */
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+// Need to get mocked functions for testing
+import { jsons2csv } from 'react-csv/lib/core';
+import { toast } from 'react-toastify';
+import { vi } from 'vitest';
 
 // Import after all mocks are set up
 import DownloadReportButton from '../../../../components/views/reports/DownloadReportButton';
+import * as ReportUtils from '../../../../components/views/reports/ReportUtils';
+import * as services from '../../../../services/services';
 
 // Mock all the service dependencies that use axios/ES modules - MUST BE FIRST
-jest.mock('../../../../services/apiClient', () => ({
-  api: { get: jest.fn(), post: jest.fn() },
+vi.mock('../../../../services/apiClient', () => ({
+  api: { get: vi.fn(), post: vi.fn() },
 }));
 
-jest.mock('../../../../services/services', () => ({
-  getDataPage: jest.fn(),
-  getDownloadPageSize: jest.fn(),
+vi.mock('../../../../services/services', () => ({
+  getDataPage: vi.fn(),
+  getDownloadPageSize: vi.fn(),
 }));
 
-jest.mock('../../../../services/search', () => ({
+vi.mock('../../../../services/search', () => ({
   ALL: 'ALL',
   DAY: 86400000,
 }));
 
-jest.mock('../../../../components/views/reports/ReportUtils', () => ({
-  transformRowData: jest.fn(),
+vi.mock('../../../../components/views/reports/ReportUtils', () => ({
+  transformRowData: vi.fn(),
   DEVICE_ID_KEYWORD: 'device-id.keyword',
   ENERGY_CONSUMED: 'energyConsumed',
   SITE_ID_KEYWORD: 'siteId.keyword',
@@ -28,33 +33,27 @@ jest.mock('../../../../components/views/reports/ReportUtils', () => ({
   TOTAL_REAL_POWER: 'totalRealPower',
 }));
 
-jest.mock('react-intl', () => ({
+vi.mock('react-intl', () => ({
   useIntl: () => ({
-    formatMessage: jest.fn(),
-    formatNumber: jest.fn((value) => value.toString()),
+    formatMessage: vi.fn(),
+    formatNumber: vi.fn((value) => value.toString()),
   }),
 }));
 
-jest.mock('react-toastify', () => ({
-  toast: { error: jest.fn() },
+vi.mock('react-toastify', () => ({
+  toast: { error: vi.fn() },
   ToastContainer: function MockToastContainer() {
     return <div data-testid='toast-container' />;
   },
 }));
 
-jest.mock('react-csv/lib/core', () => ({
-  jsons2csv: jest.fn(),
+vi.mock('react-csv/lib/core', () => ({
+  jsons2csv: vi.fn(),
 }));
-
-// Need to get mocked functions for testing
-const services = require('../../../../services/services');
-const ReportUtils = require('../../../../components/views/reports/ReportUtils');
-const { jsons2csv } = require('react-csv/lib/core');
-const { toast } = require('react-toastify');
 
 // Mock DOM methods
 Object.defineProperty(window, 'URL', {
-  value: { createObjectURL: jest.fn(() => 'mock-blob-url') },
+  value: { createObjectURL: vi.fn(() => 'mock-blob-url') },
 });
 
 describe('DownloadReportButton', () => {
@@ -64,7 +63,7 @@ describe('DownloadReportButton', () => {
     filterErrors: 'false',
     start: new Date('2024-01-01').getTime(),
     end: new Date('2024-01-31').getTime(),
-    timeFormatter: jest.fn((date) => date.toLocaleDateString()),
+    timeFormatter: vi.fn((date) => date.toLocaleDateString()),
     deviceMap: {
       'site-1': 'Site A',
       'device-1': 'Device 1',
@@ -72,7 +71,7 @@ describe('DownloadReportButton', () => {
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
 
     // Set up default mocks
     services.getDownloadPageSize.mockResolvedValue({

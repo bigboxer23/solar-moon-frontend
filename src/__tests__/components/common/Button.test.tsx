@@ -1,5 +1,5 @@
-/* eslint-env jest */
 import { fireEvent, render, screen } from '@testing-library/react';
+import { vi } from 'vitest';
 
 import Button from '../../../components/common/Button';
 
@@ -92,7 +92,7 @@ describe('Button', () => {
   });
 
   test('handles onClick event', () => {
-    const mockClick = jest.fn();
+    const mockClick = vi.fn();
     render(<Button onClick={mockClick}>Click me</Button>);
 
     const button = screen.getByRole('button');
@@ -109,7 +109,7 @@ describe('Button', () => {
   });
 
   test('disabled button does not trigger onClick', () => {
-    const mockClick = jest.fn();
+    const mockClick = vi.fn();
     render(
       <Button disabled onClick={mockClick}>
         Disabled
@@ -155,7 +155,7 @@ describe('Button', () => {
   });
 
   test('disabled false explicitly works correctly', () => {
-    const mockClick = jest.fn();
+    const mockClick = vi.fn();
     render(
       <Button disabled={false} onClick={mockClick}>
         Enabled
@@ -190,7 +190,7 @@ describe('Button', () => {
   });
 
   test('combines buttonProps with default props correctly', () => {
-    const mockClick = jest.fn();
+    const mockClick = vi.fn();
     render(
       <Button
         buttonProps={{ 'aria-label': 'Custom label', tabIndex: 0 }}

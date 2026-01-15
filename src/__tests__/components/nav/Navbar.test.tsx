@@ -1,35 +1,36 @@
-/* eslint-env jest */
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { ReactElement } from 'react';
 import { MemoryRouter } from 'react-router-dom';
+import { vi } from 'vitest';
 
 import Navbar from '../../../components/nav/Navbar';
 import * as utils from '../../../utils/Utils';
 
 // Mock the external dependencies
-jest.mock('@aws-amplify/ui-react', () => ({
-  useAuthenticator: jest.fn(),
+vi.mock('@aws-amplify/ui-react', () => ({
+  useAuthenticator: vi.fn(),
 }));
 
-jest.mock('usehooks-ts', () => ({
-  useOnClickOutside: jest.fn(),
+vi.mock('usehooks-ts', () => ({
+  useOnClickOutside: vi.fn(),
 }));
 
-jest.mock('../../../utils/Utils', () => ({
-  getDaysLeftInTrial: jest.fn(),
-  useStickyState: jest.fn(),
+vi.mock('../../../utils/Utils', () => ({
+  getDaysLeftInTrial: vi.fn(),
+  useStickyState: vi.fn(),
 }));
 
 // Mock ProfileMenu component
-jest.mock('../../../components/nav/ProfileMenu', () => {
-  return function MockProfileMenu({ trialDate }: { trialDate: number }) {
+vi.mock('../../../components/nav/ProfileMenu', () => {
+  const MockProfileMenu = function ({ trialDate }: { trialDate: number }) {
     return (
       <div data-testid='profile-menu'>
         Profile Menu - Trial Date: {trialDate}
       </div>
     );
   };
+  return { default: MockProfileMenu };
 });
 
 const renderWithRouter = (component: ReactElement, initialRoute = '/') => {
@@ -40,22 +41,22 @@ const renderWithRouter = (component: ReactElement, initialRoute = '/') => {
 
 describe('Navbar', () => {
   const mockUser = { username: 'testuser' };
-  const mockSignOut = jest.fn();
+  const mockSignOut = vi.fn();
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
 
     // Mock useAuthenticator
-    (useAuthenticator as jest.Mock).mockReturnValue({
+    (useAuthenticator as vi.Mock).mockReturnValue({
       user: mockUser,
       signOut: mockSignOut,
     });
 
     // Mock getDaysLeftInTrial
-    (utils.getDaysLeftInTrial as jest.Mock).mockReturnValue('5 days left');
+    (utils.getDaysLeftInTrial as vi.Mock).mockReturnValue('5 days left');
 
     // Mock useStickyState
-    (utils.useStickyState as jest.Mock).mockReturnValue(['', jest.fn()]);
+    (utils.useStickyState as vi.Mock).mockReturnValue(['', vi.fn()]);
   });
 
   describe('Desktop Navigation', () => {

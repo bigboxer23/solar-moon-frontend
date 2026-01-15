@@ -1,6 +1,6 @@
-/* eslint-env jest */
 import { render, screen } from '@testing-library/react';
 import type { Dispatch, ReactElement, SetStateAction } from 'react';
+import { vi } from 'vitest';
 
 import Dashboard from '../../../../components/views/dashboard/Dashboard';
 
@@ -9,19 +9,22 @@ interface OverviewProps {
 }
 
 // Mock utils
-jest.mock('../../../../utils/Utils', () => ({
-  useStickyState: jest.fn(),
+vi.mock('../../../../utils/Utils', () => ({
+  useStickyState: vi.fn(),
 }));
 
 // Mock Overview component
-jest.mock('../../../../components/views/dashboard/Overview', () => {
-  return function MockOverview({ setTrialDate }: OverviewProps): ReactElement {
+vi.mock('../../../../components/views/dashboard/Overview', () => {
+  const MockOverview = function ({
+    setTrialDate,
+  }: OverviewProps): ReactElement {
     return (
       <div data-set-trial-date={!!setTrialDate} data-testid='overview'>
         Overview Component
       </div>
     );
   };
+  return { default: MockOverview };
 });
 
 // Mock window.location
@@ -29,18 +32,19 @@ delete (window as { location?: unknown }).location;
 (window as { location: { href: string } }).location = { href: '' };
 
 describe('Dashboard', () => {
-  const { useStickyState } = require('../../../../utils/Utils');
-  const mockSetTrialDate = jest.fn();
+  import { useStickyState } from '../../../../utils/Utils';
+
+  const mockSetTrialDate = vi.fn();
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     window.location.href = '';
 
     // Reset environment variable
     delete process.env.VITE_ACCESS_CODE;
 
     // Default mock: no unlock code stored
-    useStickyState.mockReturnValue([null, jest.fn()]);
+    useStickyState.mockReturnValue([null, vi.fn()]);
   });
 
   afterEach(() => {
@@ -65,7 +69,7 @@ describe('Dashboard', () => {
 
   test('does not redirect when no access code is required', () => {
     // No REACT_APP_ACCESS_CODE environment variable
-    useStickyState.mockReturnValue([null, jest.fn()]);
+    useStickyState.mockReturnValue([null, vi.fn()]);
 
     render(<Dashboard setTrialDate={mockSetTrialDate} />);
 
@@ -75,7 +79,7 @@ describe('Dashboard', () => {
 
   test('does not redirect when access code matches unlocked code', () => {
     process.env.VITE_ACCESS_CODE = 'secret123';
-    useStickyState.mockReturnValue(['secret123', jest.fn()]);
+    useStickyState.mockReturnValue(['secret123', vi.fn()]);
 
     render(<Dashboard setTrialDate={mockSetTrialDate} />);
 
@@ -85,7 +89,7 @@ describe('Dashboard', () => {
 
   test('redirects to /lock when access code is required but not unlocked', () => {
     process.env.VITE_ACCESS_CODE = 'secret123';
-    useStickyState.mockReturnValue([null, jest.fn()]);
+    useStickyState.mockReturnValue([null, vi.fn()]);
 
     render(<Dashboard setTrialDate={mockSetTrialDate} />);
 
@@ -94,7 +98,7 @@ describe('Dashboard', () => {
 
   test('redirects to /lock when access code does not match unlocked code', () => {
     process.env.VITE_ACCESS_CODE = 'secret123';
-    useStickyState.mockReturnValue(['wrongcode', jest.fn()]);
+    useStickyState.mockReturnValue(['wrongcode', vi.fn()]);
 
     render(<Dashboard setTrialDate={mockSetTrialDate} />);
 
@@ -109,7 +113,7 @@ describe('Dashboard', () => {
 
   test('handles empty string access code', () => {
     process.env.VITE_ACCESS_CODE = '';
-    useStickyState.mockReturnValue([null, jest.fn()]);
+    useStickyState.mockReturnValue([null, vi.fn()]);
 
     render(<Dashboard setTrialDate={mockSetTrialDate} />);
 
@@ -128,7 +132,7 @@ describe('Dashboard', () => {
   test('redirect logic runs on component mount', () => {
     const originalHref = window.location.href;
     process.env.VITE_ACCESS_CODE = 'test123';
-    useStickyState.mockReturnValue([null, jest.fn()]);
+    useStickyState.mockReturnValue([null, vi.fn()]);
 
     render(<Dashboard setTrialDate={mockSetTrialDate} />);
 
@@ -139,7 +143,7 @@ describe('Dashboard', () => {
 
   test('component still renders even when redirecting', () => {
     process.env.VITE_ACCESS_CODE = 'test123';
-    useStickyState.mockReturnValue([null, jest.fn()]);
+    useStickyState.mockReturnValue([null, vi.fn()]);
 
     const { container } = render(<Dashboard setTrialDate={mockSetTrialDate} />);
 
@@ -152,7 +156,7 @@ describe('Dashboard', () => {
   test('handles special characters in access code', () => {
     const specialCode = 'test@#$%^&*()';
     process.env.VITE_ACCESS_CODE = specialCode;
-    useStickyState.mockReturnValue([specialCode, jest.fn()]);
+    useStickyState.mockReturnValue([specialCode, vi.fn()]);
 
     render(<Dashboard setTrialDate={mockSetTrialDate} />);
 
@@ -162,7 +166,7 @@ describe('Dashboard', () => {
 
   test('case sensitivity in access code comparison', () => {
     process.env.VITE_ACCESS_CODE = 'Secret123';
-    useStickyState.mockReturnValue(['secret123', jest.fn()]);
+    useStickyState.mockReturnValue(['secret123', vi.fn()]);
 
     render(<Dashboard setTrialDate={mockSetTrialDate} />);
 

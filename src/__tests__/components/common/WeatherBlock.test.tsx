@@ -1,16 +1,15 @@
-/* eslint-env jest */
 import { render, screen } from '@testing-library/react';
+import { vi } from 'vitest';
 
 import WeatherBlock from '../../../components/common/WeatherBlock';
 import { WeatherData } from '../../../types';
+import { getWeatherIconWithTippy } from '../../../utils/Utils';
 
 // Mock the utils
-jest.mock('../../../utils/Utils', () => ({
-  getWeatherIcon: jest.fn(),
-  getWeatherIconWithTippy: jest.fn(),
+vi.mock('../../../utils/Utils', () => ({
+  getWeatherIcon: vi.fn(),
+  getWeatherIconWithTippy: vi.fn(),
 }));
-
-const { getWeatherIconWithTippy } = require('../../../utils/Utils');
 
 describe('WeatherBlock', () => {
   const mockWeatherData = {
@@ -22,7 +21,7 @@ describe('WeatherBlock', () => {
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     // Mock the weather icon function to return a simple span
     getWeatherIconWithTippy.mockReturnValue(
       <span data-testid='weather-icon'>☀️</span>,

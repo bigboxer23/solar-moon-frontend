@@ -1,37 +1,42 @@
-/* eslint-env jest */
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import type { ReactElement } from 'react';
 import { MemoryRouter } from 'react-router-dom';
+import { vi } from 'vitest';
 
 import Alerts from '../../../../components/views/alerts/Alerts';
+import {
+  getAlarmData,
+  getSubscriptionInformation,
+} from '../../../../services/services';
 
 // Mock external dependencies
-jest.mock('../../../../services/services', () => ({
-  getAlarmData: jest.fn(),
-  getSubscriptionInformation: jest.fn(),
+vi.mock('../../../../services/services', () => ({
+  getAlarmData: vi.fn(),
+  getSubscriptionInformation: vi.fn(),
 }));
 
-jest.mock('../../../../utils/Utils', () => ({
-  compare: jest.fn((a, b) => {
+vi.mock('../../../../utils/Utils', () => ({
+  compare: vi.fn((a, b) => {
     if (a < b) return -1;
     if (a > b) return 1;
     return 0;
   }),
 }));
 
-jest.mock('../../../../services/search', () => ({
+vi.mock('../../../../services/search', () => ({
   ALL: 'ALL',
 }));
 
 // Mock child components
-jest.mock('../../../../components/common/Loader', () => {
-  return function MockLoader() {
+vi.mock('../../../../components/common/Loader', () => {
+  const MockLoader = function () {
     return <div data-testid='loader'>Loading...</div>;
   };
+  return { default: MockLoader };
 });
 
-jest.mock('../../../../components/views/alerts/Alert', () => {
-  return function MockAlert({
+vi.mock('../../../../components/views/alerts/Alert', () => {
+  const MockAlert = function ({
     alert,
     active,
   }: {
@@ -48,10 +53,11 @@ jest.mock('../../../../components/views/alerts/Alert', () => {
       </div>
     );
   };
+  return { default: MockAlert };
 });
 
-jest.mock('../../../../components/views/alerts/AlertsFilter', () => {
-  return function MockAlertsFilter({
+vi.mock('../../../../components/views/alerts/AlertsFilter', () => {
+  const MockAlertsFilter = function ({
     handleFilterChange,
     availableDevices,
     availableSites,
@@ -95,6 +101,7 @@ jest.mock('../../../../components/views/alerts/AlertsFilter', () => {
       </div>
     );
   };
+  return { default: MockAlertsFilter };
 });
 
 const renderWithRouter = (component: ReactElement) => {
@@ -102,11 +109,9 @@ const renderWithRouter = (component: ReactElement) => {
 };
 
 describe('Alerts', () => {
-  const mockSetTrialDate = jest.fn();
-  const mockGetAlarmData =
-    require('../../../../services/services').getAlarmData;
-  const mockGetSubscriptionInformation =
-    require('../../../../services/services').getSubscriptionInformation;
+  const mockSetTrialDate = vi.fn();
+  const mockGetAlarmData = getAlarmData;
+  const mockGetSubscriptionInformation = getSubscriptionInformation;
 
   const mockActiveAlert = {
     alarmId: 'alarm-1',
@@ -135,7 +140,7 @@ describe('Alerts', () => {
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
 
     // Default mock responses
     mockGetAlarmData.mockResolvedValue({

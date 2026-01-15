@@ -1,16 +1,17 @@
-/* eslint-env jest */
 // Test mocks for Chart.js contexts require `any`
 import { render, screen } from '@testing-library/react';
 import type { ChartOptions } from 'chart.js';
+import { vi } from 'vitest';
 
 import MiniChart from '../../../components/graphs/MiniChart';
 import type { ChartDataPoint } from '../../../types/chart';
+import { getFormattedTime } from '../../../utils/Utils';
 
 // Variable to capture chart options for callback testing
 let capturedOptions: ChartOptions<'line'> | null = null;
 
 // Mock react-chartjs-2 components
-jest.mock('react-chartjs-2', () => ({
+vi.mock('react-chartjs-2', () => ({
   Line: ({
     data,
     options,
@@ -36,14 +37,14 @@ jest.mock('react-chartjs-2', () => ({
 }));
 
 // Mock external dependencies
-jest.mock('../../../utils/Utils', () => ({
-  getFormattedTime: jest.fn((timestamp: Date | string | number) =>
+vi.mock('../../../utils/Utils', () => ({
+  getFormattedTime: vi.fn((timestamp: Date | string | number) =>
     new Date(timestamp as number).toLocaleTimeString(),
   ),
 }));
 
-jest.mock('../../../components/common/graphPlugins', () => ({
-  tooltipPlugin: { id: 'tooltip-plugin', beforeDraw: jest.fn() },
+vi.mock('../../../components/common/graphPlugins', () => ({
+  tooltipPlugin: { id: 'tooltip-plugin', beforeDraw: vi.fn() },
 }));
 
 describe('MiniChart', () => {
@@ -55,7 +56,7 @@ describe('MiniChart', () => {
   ];
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     capturedOptions = null;
   });
 
@@ -255,9 +256,7 @@ describe('MiniChart', () => {
     });
 
     test('tooltip title callback executes correctly and calls getFormattedTime', () => {
-      const getFormattedTimeMock =
-        require('../../../utils/Utils').getFormattedTime;
-      getFormattedTimeMock.mockReturnValue('10:30 AM');
+      getFormattedTime.mockReturnValue('10:30 AM');
 
       render(<MiniChart graphData={mockGraphData} />);
 
@@ -268,7 +267,7 @@ describe('MiniChart', () => {
       expect(titleCallback).toBeDefined();
 
       // Create mock context that matches Chart.js structure
-
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const mockContext = [{ dataIndex: 1, datasetIndex: 0 }] as any;
 
       // Execute the actual callback function
@@ -276,7 +275,7 @@ describe('MiniChart', () => {
       const result = titleCallback?.(mockContext);
 
       // Verify getFormattedTime was called
-      expect(getFormattedTimeMock).toHaveBeenCalled();
+      expect(getFormattedTime).toHaveBeenCalled();
       expect(result).toBe('10:30 AM');
     });
 
@@ -290,28 +289,28 @@ describe('MiniChart', () => {
       expect(labelCallback).toBeDefined();
 
       // Test with formatted value
-
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const mockContextWithValue = { formattedValue: '15.5' } as any;
       // @ts-expect-error - Testing internal callback with mock context
       const resultWithValue = labelCallback?.(mockContextWithValue);
       expect(resultWithValue).toBe('15.5 kW');
 
       // Test with empty formatted value
-
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const mockContextEmpty = { formattedValue: '' } as any;
       // @ts-expect-error - Testing internal callback with mock context
       const resultEmpty = labelCallback?.(mockContextEmpty);
       expect(resultEmpty).toBe('');
 
       // Test with null formatted value
-
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const mockContextNull = { formattedValue: null } as any;
       // @ts-expect-error - Testing internal callback with mock context
       const resultNull = labelCallback?.(mockContextNull);
       expect(resultNull).toBe('');
 
       // Test with undefined formatted value
-
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const mockContextUndefined = { formattedValue: undefined } as any;
       // @ts-expect-error - Testing internal callback with mock context
       const resultUndefined = labelCallback?.(mockContextUndefined);

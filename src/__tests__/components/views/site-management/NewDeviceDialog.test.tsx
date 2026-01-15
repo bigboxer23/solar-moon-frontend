@@ -1,23 +1,23 @@
-/* eslint-env jest */
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
+import { vi } from 'vitest';
 
 import NewDeviceDialog from '../../../../components/views/site-management/NewDeviceDialog';
 import { addDevice } from '../../../../services/services';
 import { findSiteNameFromSiteId } from '../../../../utils/Utils';
 
-jest.mock('../../../../services/services', () => ({
-  addDevice: jest.fn(),
+vi.mock('../../../../services/services', () => ({
+  addDevice: vi.fn(),
 }));
 
-jest.mock('../../../../utils/Utils', () => ({
-  findSiteNameFromSiteId: jest.fn(),
+vi.mock('../../../../utils/Utils', () => ({
+  findSiteNameFromSiteId: vi.fn(),
 }));
 
 describe('NewDeviceDialog', () => {
-  const mockSetShow = jest.fn();
-  const mockSetDevices = jest.fn();
-  const mockSetVersion = jest.fn();
+  const mockSetShow = vi.fn();
+  const mockSetDevices = vi.fn();
+  const mockSetVersion = vi.fn();
 
   const mockDevices = [
     {
@@ -47,7 +47,7 @@ describe('NewDeviceDialog', () => {
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     findSiteNameFromSiteId.mockImplementation((id, devices) => {
       const site = devices.find((d) => d.id === id);
       return site ? site.name : 'Unknown Site';

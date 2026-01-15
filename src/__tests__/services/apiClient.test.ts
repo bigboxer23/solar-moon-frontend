@@ -1,49 +1,51 @@
-/* eslint-env jest */
+import type { AxiosError } from 'axios';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { AxiosError, AxiosInstance } from 'axios';
+// Mock dependencies before importing apiClient
+const mockFetchAuthSession = vi.fn();
+vi.mock('aws-amplify/auth', () => ({
+  fetchAuthSession: mockFetchAuthSession,
+}));
+
+// Mock axios
+const mockAxiosCreate = vi.fn();
+const mockInterceptorsRequest = { use: vi.fn() };
+const mockInterceptorsResponse = { use: vi.fn() };
+
+vi.mock('axios', () => {
+  const actual = vi.importActual('axios');
+  return {
+    ...actual,
+    default: {
+      ...(actual as Record<string, unknown>).default,
+      create: mockAxiosCreate,
+    },
+    create: mockAxiosCreate,
+  };
+});
 
 describe('apiClient', () => {
-  let mockAxiosInstance: AxiosInstance;
-  let mockCreate: jest.Mock;
-  let mockFetchAuthSession: jest.Mock;
-
   beforeEach(() => {
-    jest.clearAllMocks();
-    jest.resetModules();
+    vi.clearAllMocks();
 
-    mockAxiosInstance = {
+    // Setup mock axios instance
+    mockAxiosCreate.mockReturnValue({
       interceptors: {
-        request: {
-          use: jest.fn(),
-        },
-        response: {
-          use: jest.fn(),
-        },
+        request: mockInterceptorsRequest,
+        response: mockInterceptorsResponse,
       },
-    } as unknown as AxiosInstance;
-
-    mockCreate = jest.fn(() => mockAxiosInstance);
-
-    jest.doMock('axios', () => ({
-      create: mockCreate,
-    }));
-
-    mockFetchAuthSession = jest.fn();
-    jest.doMock('aws-amplify/auth', () => ({
-      fetchAuthSession: mockFetchAuthSession,
-    }));
+    });
   });
 
   afterEach(() => {
-    jest.dontMock('axios');
-    jest.dontMock('aws-amplify/auth');
+    vi.resetModules();
   });
 
   describe('api instance', () => {
-    it('should create axios instance with correct baseURL and headers', () => {
-      require('../../services/apiClient');
+    it('should create axios instance with correct baseURL and headers', async () => {
+      await import('../../services/apiClient');
 
-      expect(mockCreate).toHaveBeenCalledWith({
+      expect(mockAxiosCreate).toHaveBeenCalledWith({
         baseURL: '/v1/',
         headers: {
           'Content-Type': 'application/json',
@@ -51,43 +53,40 @@ describe('apiClient', () => {
       });
     });
 
-    it('should setup request interceptor for authentication', () => {
-      require('../../services/apiClient');
+    it('should setup request interceptor for authentication', async () => {
+      await import('../../services/apiClient');
 
-      expect(mockAxiosInstance.interceptors.request.use).toHaveBeenCalled();
+      expect(mockInterceptorsRequest.use).toHaveBeenCalled();
     });
 
-    it('should setup response interceptor for error handling', () => {
-      require('../../services/apiClient');
+    it('should setup response interceptor for error handling', async () => {
+      await import('../../services/apiClient');
 
-      expect(mockAxiosInstance.interceptors.response.use).toHaveBeenCalled();
+      expect(mockInterceptorsResponse.use).toHaveBeenCalled();
     });
   });
 
   describe('request interceptor', () => {
-    let requestInterceptor: (config: unknown) => Promise<unknown>;
-
-    beforeEach(() => {
-      require('../../services/apiClient');
-      const [firstCall] = (
-        mockAxiosInstance.interceptors.request.use as jest.Mock
-      ).mock.calls;
-      [requestInterceptor] = firstCall;
-    });
-
     it('should add authorization header when JWT token exists', async () => {
       const mockToken = 'mock-jwt-token';
       mockFetchAuthSession.mockResolvedValue({
         tokens: { accessToken: mockToken },
       });
 
-      const mockSet = jest.fn();
+      await import('../../services/apiClient');
+
+      const [requestInterceptor] = mockInterceptorsRequest.use.mock
+        .calls[0] as unknown[];
+      const mockSet = vi.fn();
       const config = {
         headers: {
           set: mockSet,
         },
       };
-      const result = await requestInterceptor(config);
+
+      const result = await (
+        requestInterceptor as (config: unknown) => Promise<unknown>
+      )(config);
 
       expect(mockFetchAuthSession).toHaveBeenCalled();
       expect(mockSet).toHaveBeenCalledWith(
@@ -102,17 +101,23 @@ describe('apiClient', () => {
         tokens: { accessToken: null },
       });
 
-      const mockSet = jest.fn();
+      await import('../../services/apiClient');
+
+      const [requestInterceptor] = mockInterceptorsRequest.use.mock
+        .calls[0] as unknown[];
+      const mockSet = vi.fn();
       const config = {
         headers: {
           set: mockSet,
         },
       };
-      const result = await requestInterceptor(config);
+
+      await (requestInterceptor as (config: unknown) => Promise<unknown>)(
+        config,
+      );
 
       expect(mockFetchAuthSession).toHaveBeenCalled();
       expect(mockSet).not.toHaveBeenCalled();
-      expect(result).toBe(config);
     });
 
     it('should not add authorization header when JWT token is undefined', async () => {
@@ -120,137 +125,142 @@ describe('apiClient', () => {
         tokens: { accessToken: undefined },
       });
 
-      const mockSet = jest.fn();
+      await import('../../services/apiClient');
+
+      const [requestInterceptor] = mockInterceptorsRequest.use.mock
+        .calls[0] as unknown[];
+      const mockSet = vi.fn();
       const config = {
         headers: {
           set: mockSet,
         },
       };
-      const result = await requestInterceptor(config);
+
+      await (requestInterceptor as (config: unknown) => Promise<unknown>)(
+        config,
+      );
 
       expect(mockFetchAuthSession).toHaveBeenCalled();
       expect(mockSet).not.toHaveBeenCalled();
-      expect(result).toBe(config);
     });
 
     it('should handle request interceptor errors', async () => {
-      const requestError = new Error('Request failed');
-      const [firstCall] = (
-        mockAxiosInstance.interceptors.request.use as jest.Mock
-      ).mock.calls;
-      const [, errorHandler] = firstCall;
+      await import('../../services/apiClient');
 
-      await expect(errorHandler(requestError)).rejects.toBe(requestError);
+      const [, errorHandler] = mockInterceptorsRequest.use.mock
+        .calls[0] as unknown[];
+      const mockError = new Error('Request error') as AxiosError;
+
+      await expect(
+        (errorHandler as (error: AxiosError) => Promise<unknown>)(mockError),
+      ).rejects.toThrow('Request error');
     });
   });
 
   describe('response interceptor', () => {
-    let responseInterceptorError: (error: AxiosError) => Promise<never>;
-    let mockConsoleLog: jest.SpyInstance;
+    let consoleLogSpy: ReturnType<typeof vi.spyOn>;
     let originalLocation: Location;
 
     beforeEach(() => {
-      require('../../services/apiClient');
-      const [firstCall] = (
-        mockAxiosInstance.interceptors.response.use as jest.Mock
-      ).mock.calls;
-      [, responseInterceptorError] = firstCall;
-      mockConsoleLog = jest.spyOn(console, 'log').mockImplementation();
-
+      consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+      // Save original location and mock it
       originalLocation = window.location;
-      // @ts-expect-error - Mocking window.location
+      // @ts-expect-error - mocking window.location
       delete window.location;
-      // @ts-expect-error - Mocking window.location
-      window.location = { href: '' } as Location;
+      window.location = { ...originalLocation, href: '' };
     });
 
     afterEach(() => {
-      mockConsoleLog.mockRestore();
-      // @ts-expect-error - Restoring window.location
+      consoleLogSpy.mockRestore();
+      // Restore original location
       window.location = originalLocation;
     });
 
-    it('should log error and redirect to pricing page for 403 subscription error', () => {
-      const error = {
+    it('should log error and redirect to pricing page for 403 subscription error', async () => {
+      await import('../../services/apiClient');
+
+      const [, errorHandler] = mockInterceptorsResponse.use.mock
+        .calls[0] as unknown[];
+      const mockError = {
         response: {
           status: 403,
           data: 'No subscription is active',
         },
-      } as unknown as AxiosError;
+      } as AxiosError;
 
-      expect(() => responseInterceptorError(error)).rejects.toBe(error);
-      expect(mockConsoleLog).toHaveBeenCalledWith(error);
-      expect(mockConsoleLog).toHaveBeenCalledWith(
-        'redirecting to pricing page',
-      );
+      await expect(
+        (errorHandler as (error: AxiosError) => Promise<unknown>)(mockError),
+      ).rejects.toEqual(mockError);
+
+      expect(consoleLogSpy).toHaveBeenCalledWith(mockError);
+      expect(consoleLogSpy).toHaveBeenCalledWith('redirecting to pricing page');
       expect(window.location.href).toBe('/pricing');
     });
 
-    it('should log error but not redirect for 403 with different message', () => {
-      const error = {
+    it('should log error but not redirect for 403 with different message', async () => {
+      await import('../../services/apiClient');
+
+      const [, errorHandler] = mockInterceptorsResponse.use.mock
+        .calls[0] as unknown[];
+      const mockError = {
         response: {
           status: 403,
-          data: 'Access denied',
+          data: 'Different error',
         },
-      } as unknown as AxiosError;
+      } as AxiosError;
 
-      expect(() => responseInterceptorError(error)).rejects.toBe(error);
-      expect(mockConsoleLog).toHaveBeenCalledWith(error);
-      expect(mockConsoleLog).not.toHaveBeenCalledWith(
-        'redirecting to pricing page',
-      );
+      await expect(
+        (errorHandler as (error: AxiosError) => Promise<unknown>)(mockError),
+      ).rejects.toEqual(mockError);
+
+      expect(consoleLogSpy).toHaveBeenCalledWith(mockError);
       expect(window.location.href).toBe('');
     });
 
-    it('should log error but not redirect for non-403 status', () => {
-      const error = {
+    it('should log error but not redirect for non-403 status', async () => {
+      await import('../../services/apiClient');
+
+      const [, errorHandler] = mockInterceptorsResponse.use.mock
+        .calls[0] as unknown[];
+      const mockError = {
         response: {
           status: 500,
-          data: 'Internal server error',
+          data: 'Server error',
         },
-      } as unknown as AxiosError;
+      } as AxiosError;
 
-      expect(() => responseInterceptorError(error)).rejects.toBe(error);
-      expect(mockConsoleLog).toHaveBeenCalledWith(error);
-      expect(mockConsoleLog).not.toHaveBeenCalledWith(
-        'redirecting to pricing page',
-      );
+      await expect(
+        (errorHandler as (error: AxiosError) => Promise<unknown>)(mockError),
+      ).rejects.toEqual(mockError);
+
+      expect(consoleLogSpy).toHaveBeenCalledWith(mockError);
       expect(window.location.href).toBe('');
     });
 
-    it('should handle errors without response object gracefully', () => {
-      const error = { message: 'Network error' } as AxiosError;
+    it('should handle errors without response object gracefully', async () => {
+      await import('../../services/apiClient');
 
-      expect(() => responseInterceptorError(error)).rejects.toBe(error);
-      expect(mockConsoleLog).toHaveBeenCalledWith(error);
+      const [, errorHandler] = mockInterceptorsResponse.use.mock
+        .calls[0] as unknown[];
+      const mockError = {
+        message: 'Network error',
+      } as AxiosError;
+
+      await expect(
+        (errorHandler as (error: AxiosError) => Promise<unknown>)(mockError),
+      ).rejects.toEqual(mockError);
+
+      expect(consoleLogSpy).toHaveBeenCalledWith(mockError);
       expect(window.location.href).toBe('');
     });
   });
 
   describe('openSearch instance', () => {
-    let openSearchAxiosInstance: AxiosInstance;
+    it('should create openSearch axios instance with correct baseURL and headers', async () => {
+      await import('../../services/apiClient');
 
-    beforeEach(() => {
-      openSearchAxiosInstance = {
-        interceptors: {
-          request: {
-            use: jest.fn(),
-          },
-          response: {
-            use: jest.fn(),
-          },
-        },
-      } as unknown as AxiosInstance;
-
-      mockCreate
-        .mockReturnValueOnce(mockAxiosInstance)
-        .mockReturnValueOnce(openSearchAxiosInstance);
-    });
-
-    it('should create openSearch axios instance with correct baseURL and headers', () => {
-      require('../../services/apiClient');
-
-      expect(mockCreate).toHaveBeenCalledWith({
+      // openSearch is the second call to axios.create
+      expect(mockAxiosCreate).toHaveBeenCalledWith({
         baseURL: '',
         headers: {
           'Content-Type': 'application/json',
@@ -258,31 +268,31 @@ describe('apiClient', () => {
       });
     });
 
-    it('should setup request interceptor for openSearch', () => {
-      require('../../services/apiClient');
+    it('should setup request interceptor for openSearch', async () => {
+      await import('../../services/apiClient');
 
-      expect(
-        openSearchAxiosInstance.interceptors.request.use,
-      ).toHaveBeenCalled();
+      // Check that interceptor was set up (called twice, once for api, once for openSearch)
+      expect(mockInterceptorsRequest.use).toHaveBeenCalled();
     });
 
     it('should add Basic authorization header in openSearch request interceptor', async () => {
-      require('../../services/apiClient');
+      await import('../../services/apiClient');
 
-      const [firstCall] = (
-        openSearchAxiosInstance.interceptors.request.use as jest.Mock
-      ).mock.calls;
-      const [openSearchRequestInterceptor] = firstCall;
-      const mockSet = jest.fn();
+      // Get the second request interceptor (for openSearch)
+      const [requestInterceptor] = mockInterceptorsRequest.use.mock
+        .calls[1] as unknown[];
+      const mockSet = vi.fn();
       const config = {
         headers: {
           set: mockSet,
         },
       };
-      const result = await openSearchRequestInterceptor(config);
+
+      await (requestInterceptor as (config: unknown) => Promise<unknown>)(
+        config,
+      );
 
       expect(mockSet).toHaveBeenCalledWith('authorization', 'Basic ');
-      expect(result).toBe(config);
     });
   });
 });

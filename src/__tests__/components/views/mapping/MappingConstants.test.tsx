@@ -1,12 +1,12 @@
-/* eslint-env jest */
-
 // Mock the dependencies that cause import issues
+import { vi } from 'vitest';
+
 import {
   attributeMappings,
   attributes,
 } from '../../../../components/views/mapping/MappingConstants';
 
-jest.mock('../../../../components/views/reports/ReportUtils', () => ({
+vi.mock('../../../../components/views/reports/ReportUtils', () => ({
   TOTAL_ENERGY_CONS: 'Total Energy Consumption',
   TOTAL_REAL_POWER: 'Total Real Power',
 }));

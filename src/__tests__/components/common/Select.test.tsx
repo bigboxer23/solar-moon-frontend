@@ -1,14 +1,14 @@
-/* eslint-env jest */
 import { fireEvent, render, screen } from '@testing-library/react';
-import { Control } from 'react-hook-form';
+import { Control, useController } from 'react-hook-form';
+import { vi } from 'vitest';
 
 import { ControlledSelect, Select } from '../../../components/common/Select';
 
 // Mock react-hook-form
-jest.mock('react-hook-form', () => ({
-  useController: jest.fn(() => ({
+vi.mock('react-hook-form', () => ({
+  useController: vi.fn(() => ({
     field: {
-      onChange: jest.fn(),
+      onChange: vi.fn(),
       value: '1',
       name: 'test-select',
     },
@@ -26,12 +26,12 @@ describe('Select', () => {
     attributes: mockAttributes,
     inputProps: {
       name: 'test-select',
-      onChange: jest.fn(),
+      onChange: vi.fn(),
     },
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test('renders select component', () => {
@@ -160,7 +160,7 @@ describe('Select', () => {
   });
 
   test('calls onChange when option is selected', () => {
-    const mockOnChange = jest.fn();
+    const mockOnChange = vi.fn();
     render(
       <Select
         {...defaultProps}
@@ -254,8 +254,6 @@ describe('Select', () => {
 });
 
 describe('ControlledSelect', () => {
-  const { useController } = require('react-hook-form');
-
   type TestFormData = Record<string, unknown>;
 
   const mockAttributes = [
@@ -264,10 +262,10 @@ describe('ControlledSelect', () => {
   ];
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     useController.mockReturnValue({
       field: {
-        onChange: jest.fn(),
+        onChange: vi.fn(),
         value: '1',
         name: 'test-controlled-select',
       },
@@ -305,7 +303,7 @@ describe('ControlledSelect', () => {
 
   test('passes field props to Select inputProps', () => {
     const mockField = {
-      onChange: jest.fn(),
+      onChange: vi.fn(),
       value: '2',
       name: 'controlled-field',
     };
@@ -360,7 +358,7 @@ describe('ControlledSelect', () => {
   });
 
   test('handles change events through field.onChange', () => {
-    const mockOnChange = jest.fn();
+    const mockOnChange = vi.fn();
     useController.mockReturnValue({
       field: {
         onChange: mockOnChange,

@@ -1,47 +1,46 @@
-/* eslint-env jest */
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
+import { vi } from 'vitest';
 
 import Site from '../../../../components/views/site-management/Site';
 import { deleteDevice, getDevices } from '../../../../services/services';
 import { sortDevicesWithDisabled } from '../../../../utils/Utils';
 
-jest.mock('../../../../services/services', () => ({
-  deleteDevice: jest.fn(),
-  getDevices: jest.fn(),
+vi.mock('../../../../services/services', () => ({
+  deleteDevice: vi.fn(),
+  getDevices: vi.fn(),
 }));
 
-jest.mock('../../../../utils/Utils', () => ({
-  sortDevicesWithDisabled: jest.fn((a, b) => a.name.localeCompare(b.name)),
+vi.mock('../../../../utils/Utils', () => ({
+  sortDevicesWithDisabled: vi.fn((a, b) => a.name.localeCompare(b.name)),
 }));
 
-jest.mock('react-icons/ai', () => ({
+vi.mock('react-icons/ai', () => ({
   AiOutlineDelete: () => <div data-testid='delete-icon' />,
 }));
 
 // Mock child components
-jest.mock('../../../../components/views/site-management/Device', () => {
-  return function MockDevice({ data }) {
+vi.mock('../../../../components/views/site-management/Device', () => {
+  const MockDevice = function ({ data }) {
     return <div data-testid={`device-${data.id}`}>{data.name}</div>;
   };
+  return { default: MockDevice };
 });
 
-jest.mock('../../../../components/views/site-management/SiteAttributes', () => {
-  return function MockSiteAttributes({ data }) {
+vi.mock('../../../../components/views/site-management/SiteAttributes', () => {
+  const MockSiteAttributes = function ({ data }) {
     return <div data-testid={`site-attributes-${data.id}`}>{data.name}</div>;
   };
+  return { default: MockSiteAttributes };
 });
 
-jest.mock(
-  '../../../../components/views/site-management/SiteManagement',
-  () => ({
-    noSite: 'no-site',
-  }),
-);
+vi.mock('../../../../components/views/site-management/SiteManagement', () => ({
+  noSite: 'no-site',
+}));
 
 describe('Site', () => {
-  const mockSetDevices = jest.fn();
-  const mockSetActiveSiteId = jest.fn();
+  const mockSetDevices = vi.fn();
+  const mockSetActiveSiteId = vi.fn();
 
   const mockSiteData = {
     id: 'site-1',
@@ -84,7 +83,7 @@ describe('Site', () => {
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     getDevices.mockResolvedValue({ data: [] });
     deleteDevice.mockResolvedValue();
   });

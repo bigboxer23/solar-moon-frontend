@@ -10,8 +10,9 @@ React frontend for solar monitoring application with AWS Amplify authentication,
 - **React 19** with functional components and hooks
 - **AWS Amplify** for authentication and API
 - **React Router v6** for navigation
+- **Vite** for development and build tooling
 - **Tailwind CSS** for styling
-- **Jest + React Testing Library** for testing
+- **Vitest + React Testing Library** for testing
 - **Chart.js/Recharts** for data visualization
 - **ESLint 9 + Prettier** for code quality
 
@@ -98,20 +99,23 @@ setData?.(newValue);
 ## Development Commands
 
 ```bash
-# Start development server
+# Start development server (Vite)
 npm start
 
-# Run tests
-npm test -- --watchAll=false
-npm test -- --watchAll=false --coverage  # With coverage
-npm test -- --watchAll=false --testPathPattern=ComponentName  # Specific tests
+# Run tests (Vitest)
+npm test                    # Watch mode
+npm test -- --run          # Run once
+npm test -- --coverage     # With coverage
+npm test -- --ui           # Vitest UI
+npm test -- --run path/to/test.tsx  # Specific test
 
 # Linting and formatting
 npm run lint
 npm run format
 
-# Build for production
+# Build for production (Vite)
 npm run build
+npm run preview            # Preview production build
 ```
 
 ## Testing Patterns
@@ -138,25 +142,38 @@ const renderWithRouter = (component: React.ReactElement, initialRoute = '/') => 
 
 ```typescript
 // AWS Amplify
-jest.mock('@aws-amplify/auth', () => ({
-  fetchUserAttributes: jest.fn(),
+vi.mock('@aws-amplify/auth', () => ({
+  fetchUserAttributes: vi.fn(),
 }));
 
-jest.mock('@aws-amplify/ui-react', () => ({
-  useAuthenticator: jest.fn(),
+vi.mock('@aws-amplify/ui-react', () => ({
+  useAuthenticator: vi.fn(),
 }));
 
 // Type-safe mock functions
-import { jest } from '@jest/globals';
-const mockFn = jest.fn() as jest.MockedFunction<typeof originalFunction>;
+import { vi } from 'vitest';
+const mockFn = vi.fn() as ReturnType<typeof vi.fn>;
+
+// Async imports for partial mocks
+vi.mock('react-router-dom', async () => {
+  const actual =
+    await vi.importActual<typeof import('react-router-dom')>(
+      'react-router-dom',
+    );
+  return {
+    ...actual,
+    useNavigate: vi.fn(),
+  };
+});
 ```
 
 ### TypeScript in Tests
 
 - Use `.tsx` extension for test files with JSX
-- Type mock functions properly: `jest.fn() as jest.MockedFunction<typeof fn>`
+- Type mock functions properly: `vi.fn() as ReturnType<typeof vi.fn>`
 - Prefix unused destructured variables with `_` (e.g., `const { container: _container }`)
 - Use `@ts-expect-error` for intentional type mismatches in test mocks
+- Import `vi` from 'vitest' for all mocking operations
 
 ## Code Style Guidelines
 
@@ -234,10 +251,12 @@ const mockFn = jest.fn() as jest.MockedFunction<typeof originalFunction>;
 - React Router future flag warnings (expected in tests)
 - ESLint prefer-destructuring rule (use array destructuring)
 - Icon rendering in tests (use SVG selectors instead of class names)
-- Mock persistence between tests (reset in beforeEach)
+- Mock persistence between tests (reset in beforeEach with `vi.clearAllMocks()`)
 - TypeScript errors in tests: Ensure mock functions are properly typed
 - Chart.js type compatibility: Use `as any` with documentation comment
 - Unused variable errors: Prefix with `_` to satisfy ESLint rules
+- Vitest mock hoisting: `vi.mock()` factories can't reference external variables
+- Storage mocking: Mock `window.localStorage` directly, not `Storage.prototype`
 
 ## Performance Considerations
 

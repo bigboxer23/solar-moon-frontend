@@ -1,11 +1,11 @@
-/* eslint-env jest */
 import { fireEvent, render, screen } from '@testing-library/react';
+import { vi } from 'vitest';
 
 import AlertSection from '../../../components/common/AlertSection';
 
 // Mock the Button component
-jest.mock('../../../components/common/Button', () => {
-  return function MockButton({
+vi.mock('../../../components/common/Button', () => {
+  const MockButton = function ({
     children,
     onClick,
     variant,
@@ -26,6 +26,7 @@ jest.mock('../../../components/common/Button', () => {
       </button>
     );
   };
+  return { default: MockButton };
 });
 
 describe('AlertSection', () => {
@@ -33,12 +34,12 @@ describe('AlertSection', () => {
     title: 'Test Alert',
     buttonTitle: 'Confirm',
     show: true,
-    setShow: jest.fn(),
-    onClick: jest.fn(),
+    setShow: vi.fn(),
+    onClick: vi.fn(),
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test('renders alert section when show is true', () => {
@@ -70,7 +71,7 @@ describe('AlertSection', () => {
   });
 
   test('calls setShow(false) when Cancel button is clicked', () => {
-    const mockSetShow = jest.fn();
+    const mockSetShow = vi.fn();
     render(<AlertSection {...defaultProps} setShow={mockSetShow} />);
 
     const cancelButton = screen.getByText('Cancel');
@@ -80,8 +81,8 @@ describe('AlertSection', () => {
   });
 
   test('calls setShow(false) and onClick when action button is clicked', () => {
-    const mockSetShow = jest.fn();
-    const mockOnClick = jest.fn();
+    const mockSetShow = vi.fn();
+    const mockOnClick = vi.fn();
     render(
       <AlertSection
         {...defaultProps}
@@ -157,8 +158,8 @@ describe('AlertSection', () => {
   });
 
   test('handles multiple clicks correctly', () => {
-    const mockSetShow = jest.fn();
-    const mockOnClick = jest.fn();
+    const mockSetShow = vi.fn();
+    const mockOnClick = vi.fn();
     render(
       <AlertSection
         {...defaultProps}

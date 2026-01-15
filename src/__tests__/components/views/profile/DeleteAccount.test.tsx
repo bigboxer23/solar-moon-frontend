@@ -1,32 +1,32 @@
-/* eslint-env jest */
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { vi } from 'vitest';
 
 import DeleteAccount from '../../../../components/views/profile/DeleteAccount';
 import { deleteCustomer } from '../../../../services/services';
 
 // Mock dependencies
-jest.mock('@aws-amplify/ui-react', () => ({
-  useAuthenticator: jest.fn(),
+vi.mock('@aws-amplify/ui-react', () => ({
+  useAuthenticator: vi.fn(),
 }));
 
-jest.mock('react-router-dom', () => ({
-  useNavigate: jest.fn(),
+vi.mock('react-router-dom', () => ({
+  useNavigate: vi.fn(),
 }));
 
-jest.mock('../../../../services/services', () => ({
-  deleteCustomer: jest.fn(),
+vi.mock('../../../../services/services', () => ({
+  deleteCustomer: vi.fn(),
 }));
 
-jest.mock('react-icons/tb', () => ({
+vi.mock('react-icons/tb', () => ({
   TbUserCancel: () => <svg data-testid='user-cancel-icon' />,
 }));
 
 // Mock AlertSection component
-jest.mock('../../../../components/common/AlertSection', () => {
-  return function MockAlertSection({
+vi.mock('../../../../components/common/AlertSection', () => {
+  const MockAlertSection = function ({
     show,
     setShow,
     onClick,
@@ -48,14 +48,15 @@ jest.mock('../../../../components/common/AlertSection', () => {
       </div>
     ) : null;
   };
+  return { default: MockAlertSection };
 });
 
 describe('DeleteAccount', () => {
-  const mockSignOut = jest.fn();
-  const mockNavigate = jest.fn();
+  const mockSignOut = vi.fn();
+  const mockNavigate = vi.fn();
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
 
     useAuthenticator.mockReturnValue({
       signOut: mockSignOut,

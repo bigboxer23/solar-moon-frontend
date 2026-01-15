@@ -1,6 +1,6 @@
-/* eslint-env jest */
 import { render, screen } from '@testing-library/react';
 import type { ReactElement, ReactNode } from 'react';
+import { vi } from 'vitest';
 
 import SummaryHeader from '../../../../components/views/dashboard/SummaryHeader';
 
@@ -20,7 +20,7 @@ interface FormattedLabelProps {
 }
 
 interface IntlFormatter {
-  formatNumber: jest.Mock<string, [number]>;
+  formatNumber: vi.Mock<string, [number]>;
 }
 
 interface PowerScalingInfo {
@@ -30,8 +30,8 @@ interface PowerScalingInfo {
 }
 
 // Mock Tippy component
-jest.mock('@tippyjs/react', () => {
-  return function MockTippy({
+vi.mock('@tippyjs/react', () => {
+  const MockTippy = function ({
     children,
     content,
     delay,
@@ -48,35 +48,34 @@ jest.mock('@tippyjs/react', () => {
       </div>
     );
   };
+  return { default: MockTippy };
 });
 
 // Mock react-intl
-jest.mock('react-intl', () => ({
-  useIntl: jest.fn(
+vi.mock('react-intl', () => ({
+  useIntl: vi.fn(
     (): IntlFormatter => ({
-      formatNumber: jest.fn((number: number): string =>
-        number.toLocaleString(),
-      ),
+      formatNumber: vi.fn((number: number): string => number.toLocaleString()),
     }),
   ),
 }));
 
 // Mock Utils
-jest.mock('../../../../utils/Utils', () => ({
-  getPowerScalingInformation: jest.fn(),
-  roundToDecimals: jest.fn(),
+vi.mock('../../../../utils/Utils', () => ({
+  getPowerScalingInformation: vi.fn(),
+  roundToDecimals: vi.fn(),
   TIPPY_DELAY: [200, 0],
 }));
 
 // Mock HelpText
-jest.mock('../../../../utils/HelpText', () => ({
+vi.mock('../../../../utils/HelpText', () => ({
   AVERAGE_CALCULATION:
     'Your daily average is calculated over the last 30 days.',
 }));
 
 // Mock FormattedLabel
-jest.mock('../../../../components/graphs/FormattedLabel', () => {
-  return function MockFormattedLabel({
+vi.mock('../../../../components/graphs/FormattedLabel', () => {
+  const MockFormattedLabel = function ({
     className,
     label,
     separator,
@@ -98,23 +97,23 @@ jest.mock('../../../../components/graphs/FormattedLabel', () => {
       </span>
     );
   };
+  return { default: MockFormattedLabel };
 });
 
 describe('SummaryHeader', () => {
-  const { useIntl } = require('react-intl');
-  const {
+  import { useIntl } from 'react-intl';
+
+  import {
     getPowerScalingInformation,
     roundToDecimals,
-  } = require('../../../../utils/Utils');
+  } from '../../../../utils/Utils';
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
 
     // Mock useIntl
     useIntl.mockReturnValue({
-      formatNumber: jest.fn((number: number): string =>
-        number.toLocaleString(),
-      ),
+      formatNumber: vi.fn((number: number): string => number.toLocaleString()),
     });
 
     // Mock getPowerScalingInformation for daily output (larger value)
@@ -343,7 +342,7 @@ describe('SummaryHeader', () => {
   });
 
   test('formatNumber is called for tooltip content', () => {
-    const mockFormatNumber = jest.fn((number: number): string =>
+    const mockFormatNumber = vi.fn((number: number): string =>
       number.toLocaleString(),
     );
     useIntl.mockReturnValue({

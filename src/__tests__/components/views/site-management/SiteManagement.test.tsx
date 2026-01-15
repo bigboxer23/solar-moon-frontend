@@ -1,8 +1,8 @@
-/* eslint-env jest */
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { IntlProvider } from 'react-intl';
 import { MemoryRouter } from 'react-router-dom';
+import { vi } from 'vitest';
 
 import SiteManagement, {
   noSite,
@@ -11,8 +11,8 @@ import * as services from '../../../../services/services';
 import * as utils from '../../../../utils/Utils';
 
 // Mock child components
-jest.mock('../../../../components/common/Button', () => {
-  return function MockButton({
+vi.mock('../../../../components/common/Button', () => {
+  const MockButton = function ({
     children,
     onClick,
     disabled,
@@ -33,10 +33,11 @@ jest.mock('../../../../components/common/Button', () => {
       </button>
     );
   };
+  return { default: MockButton };
 });
 
-jest.mock('../../../../components/common/Dropdown', () => {
-  return function MockDropdown({
+vi.mock('../../../../components/common/Dropdown', () => {
+  const MockDropdown = function ({
     options,
     value,
     onChange,
@@ -69,20 +70,22 @@ jest.mock('../../../../components/common/Dropdown', () => {
       </div>
     );
   };
+  return { default: MockDropdown };
 });
 
-jest.mock('../../../../components/common/Loader', () => {
-  return function MockLoader({ className }) {
+vi.mock('../../../../components/common/Loader', () => {
+  const MockLoader = function ({ className }) {
     return (
       <div className={className} data-testid='loader'>
         Loading...
       </div>
     );
   };
+  return { default: MockLoader };
 });
 
-jest.mock('../../../../components/views/site-management/Site', () => {
-  return function MockSite({ data, devices, setActiveSiteId }) {
+vi.mock('../../../../components/views/site-management/Site', () => {
+  const MockSite = function ({ data, devices, setActiveSiteId }) {
     return (
       <div data-testid={`site-${data.id}`}>
         <div>Site: {data.name}</div>
@@ -96,10 +99,11 @@ jest.mock('../../../../components/views/site-management/Site', () => {
       </div>
     );
   };
+  return { default: MockSite };
 });
 
-jest.mock('../../../../components/views/site-management/NewSiteDialog', () => {
-  return function MockNewSiteDialog({
+vi.mock('../../../../components/views/site-management/NewSiteDialog', () => {
+  const MockNewSiteDialog = function ({
     show,
     setShow,
     setActiveSiteId,
@@ -126,9 +130,10 @@ jest.mock('../../../../components/views/site-management/NewSiteDialog', () => {
       </div>
     );
   };
+  return { default: MockNewSiteDialog };
 });
 
-jest.mock(
+vi.mock(
   '../../../../components/views/site-management/NewSiteExampleDialog',
   () => {
     return function MockNewSiteExampleDialog({
@@ -154,45 +159,42 @@ jest.mock(
   },
 );
 
-jest.mock(
-  '../../../../components/views/site-management/NewDeviceDialog',
-  () => {
-    return function MockNewDeviceDialog({
-      show,
-      setShow,
-      setDevices,
-      siteId,
-      setVersion,
-    }) {
-      if (!show) return null;
-      return (
-        <div data-testid='new-device-dialog'>
-          <div>Site ID: {siteId}</div>
-          <button onClick={() => setShow(false)}>Close</button>
-          <button
-            onClick={() => {
-              setDevices((prev) => [
-                ...prev,
-                {
-                  id: 'new-device-id',
-                  name: 'New Device',
-                  isSite: false,
-                  siteId,
-                },
-              ]);
-              setVersion((prev) => prev + 1);
-              setShow(false);
-            }}
-          >
-            Create Device
-          </button>
-        </div>
-      );
-    };
-  },
-);
+vi.mock('../../../../components/views/site-management/NewDeviceDialog', () => {
+  return function MockNewDeviceDialog({
+    show,
+    setShow,
+    setDevices,
+    siteId,
+    setVersion,
+  }) {
+    if (!show) return null;
+    return (
+      <div data-testid='new-device-dialog'>
+        <div>Site ID: {siteId}</div>
+        <button onClick={() => setShow(false)}>Close</button>
+        <button
+          onClick={() => {
+            setDevices((prev) => [
+              ...prev,
+              {
+                id: 'new-device-id',
+                name: 'New Device',
+                isSite: false,
+                siteId,
+              },
+            ]);
+            setVersion((prev) => prev + 1);
+            setShow(false);
+          }}
+        >
+          Create Device
+        </button>
+      </div>
+    );
+  };
+});
 
-jest.mock(
+vi.mock(
   '../../../../components/views/site-management/NewDeviceExampleDialog',
   () => {
     return function MockNewDeviceExampleDialog({
@@ -219,24 +221,24 @@ jest.mock(
 );
 
 // Mock services and utilities before importing components
-jest.mock('../../../../services/services', () => ({
-  getDevice: jest.fn(),
-  getDevices: jest.fn(),
-  getSubscriptionInformation: jest.fn(),
-  updateDevice: jest.fn(),
+vi.mock('../../../../services/services', () => ({
+  getDevice: vi.fn(),
+  getDevices: vi.fn(),
+  getSubscriptionInformation: vi.fn(),
+  updateDevice: vi.fn(),
 }));
 
-jest.mock('../../../../utils/Utils', () => ({
-  findSiteNameFromSiteId: jest.fn(),
-  sortDevices: jest.fn(),
-  useStickyState: jest.fn(),
+vi.mock('../../../../utils/Utils', () => ({
+  findSiteNameFromSiteId: vi.fn(),
+  sortDevices: vi.fn(),
+  useStickyState: vi.fn(),
 }));
 
-const mockNavigate = jest.fn();
+const mockNavigate = vi.fn();
 const mockSearchParams = new URLSearchParams();
-const mockSetSearchParams = jest.fn();
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
+const mockSetSearchParams = vi.fn();
+vi.mock('react-router-dom', () => ({
+  ...vi.importActual('react-router-dom'),
   useNavigate: () => mockNavigate,
   useSearchParams: () => [mockSearchParams, mockSetSearchParams],
 }));
@@ -252,7 +254,7 @@ const renderWithProviders = (component, initialRoute = '/manage') => {
 };
 
 describe('SiteManagement', () => {
-  const mockSetTrialDate = jest.fn();
+  const mockSetTrialDate = vi.fn();
 
   const mockDevices = [
     { id: 'site-1', name: 'Site A', isSite: true, siteId: 'site-1' },
@@ -268,12 +270,12 @@ describe('SiteManagement', () => {
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
 
     // Mock utility functions
     utils.useStickyState.mockImplementation((defaultValue) => [
       defaultValue,
-      jest.fn(),
+      vi.fn(),
     ]);
     utils.sortDevices.mockImplementation((a, b) =>
       a.name.localeCompare(b.name),
@@ -449,7 +451,7 @@ describe('SiteManagement', () => {
     });
 
     test('selecting existing site changes active site', async () => {
-      const mockSetActiveSiteId = jest.fn();
+      const mockSetActiveSiteId = vi.fn();
       utils.useStickyState.mockReturnValue(['site-1', mockSetActiveSiteId]);
 
       renderWithProviders(<SiteManagement setTrialDate={mockSetTrialDate} />);
@@ -526,7 +528,7 @@ describe('SiteManagement', () => {
 
   describe('Site Rendering', () => {
     test('renders active site component', async () => {
-      utils.useStickyState.mockReturnValue(['site-1', jest.fn()]);
+      utils.useStickyState.mockReturnValue(['site-1', vi.fn()]);
 
       renderWithProviders(<SiteManagement setTrialDate={mockSetTrialDate} />);
 
@@ -537,7 +539,7 @@ describe('SiteManagement', () => {
     });
 
     test('renders device count for site', async () => {
-      utils.useStickyState.mockReturnValue(['site-1', jest.fn()]);
+      utils.useStickyState.mockReturnValue(['site-1', vi.fn()]);
 
       renderWithProviders(<SiteManagement setTrialDate={mockSetTrialDate} />);
 
@@ -547,7 +549,7 @@ describe('SiteManagement', () => {
     });
 
     test('defaults to first site when no active site set', async () => {
-      const mockSetActiveSiteId = jest.fn();
+      const mockSetActiveSiteId = vi.fn();
       utils.useStickyState.mockImplementation((defaultValue, key) => {
         if (key === 'site.management') {
           // Simulate that setActiveSiteId was called and now returns 'site-1'
@@ -556,7 +558,7 @@ describe('SiteManagement', () => {
             mockSetActiveSiteId,
           ];
         }
-        return [defaultValue, jest.fn()];
+        return [defaultValue, vi.fn()];
       });
 
       renderWithProviders(<SiteManagement setTrialDate={mockSetTrialDate} />);
@@ -572,7 +574,7 @@ describe('SiteManagement', () => {
 
     test('falls back to "No Site" when no sites exist', async () => {
       services.getDevices.mockResolvedValue({ data: [] });
-      const mockSetActiveSiteId = jest.fn();
+      const mockSetActiveSiteId = vi.fn();
       utils.useStickyState.mockImplementation((defaultValue, key) => {
         if (key === 'site.management') {
           // Simulate that setActiveSiteId was called and now returns noSite
@@ -581,7 +583,7 @@ describe('SiteManagement', () => {
             mockSetActiveSiteId,
           ];
         }
-        return [defaultValue, jest.fn()];
+        return [defaultValue, vi.fn()];
       });
 
       renderWithProviders(<SiteManagement setTrialDate={mockSetTrialDate} />);
@@ -746,7 +748,7 @@ describe('SiteManagement', () => {
     });
 
     test('can create new device through dialog', async () => {
-      utils.useStickyState.mockReturnValue(['site-1', jest.fn()]);
+      utils.useStickyState.mockReturnValue(['site-1', vi.fn()]);
 
       renderWithProviders(<SiteManagement setTrialDate={mockSetTrialDate} />);
 

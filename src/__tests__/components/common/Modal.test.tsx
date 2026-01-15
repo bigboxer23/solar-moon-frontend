@@ -1,5 +1,5 @@
-/* eslint-env jest */
 import { fireEvent, render, screen } from '@testing-library/react';
+import { vi } from 'vitest';
 
 import Modal, {
   ModalFooter,
@@ -173,7 +173,7 @@ describe('ModalHeader', () => {
   });
 
   test('renders close button when onCloseClick provided', () => {
-    const mockClose = jest.fn();
+    const mockClose = vi.fn();
     render(<ModalHeader label='Test Modal' onCloseClick={mockClose} />);
 
     const closeButton = screen.getByRole('button');
@@ -187,7 +187,7 @@ describe('ModalHeader', () => {
   });
 
   test('calls onCloseClick when close button is clicked', () => {
-    const mockClose = jest.fn();
+    const mockClose = vi.fn();
     render(<ModalHeader label='Test Modal' onCloseClick={mockClose} />);
 
     const closeButton = screen.getByRole('button');
@@ -196,7 +196,7 @@ describe('ModalHeader', () => {
   });
 
   test('close button has icon variant', () => {
-    const mockClose = jest.fn();
+    const mockClose = vi.fn();
     render(<ModalHeader label='Test Modal' onCloseClick={mockClose} />);
 
     const closeButton = screen.getByRole('button');

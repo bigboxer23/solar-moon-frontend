@@ -1,4 +1,3 @@
-/* eslint-env jest */
 import {
   AVERAGE_CALCULATION,
   DEVICE_HELP_TEXT1,

@@ -1,20 +1,21 @@
-/* eslint-env jest */
 import { act, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
+import { vi } from 'vitest';
 
 import CheckoutReturn from '../../../../components/views/checkout/CheckoutReturn';
 
 // Mock services
-jest.mock('../../../../services/services', () => ({
-  checkoutStatus: jest.fn(),
+vi.mock('../../../../services/services', () => ({
+  checkoutStatus: vi.fn(),
 }));
 
 // Mock components
-jest.mock('../../../../components/common/Loader', () => {
-  return function MockLoader() {
+vi.mock('../../../../components/common/Loader', () => {
+  const MockLoader = function () {
     return <div data-testid='loader'>Loading...</div>;
   };
+  return { default: MockLoader };
 });
 
 // Mock window.location.search
@@ -31,10 +32,10 @@ const renderWithRouter = (
 };
 
 describe('CheckoutReturn', () => {
-  const { checkoutStatus } = require('../../../../services/services');
+  import { checkoutStatus } from '../../../../services/services';
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     window.location.search = '';
     checkoutStatus.mockResolvedValue({
       data: {

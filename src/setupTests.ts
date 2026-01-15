@@ -1,9 +1,9 @@
-/* eslint-env jest */
 import '@testing-library/jest-dom';
 
 import { webcrypto } from 'crypto';
 // Polyfills for React Router v7
 import { TextDecoder, TextEncoder } from 'util';
+import { vi } from 'vitest';
 
 // Type-safe global assignments
 global.TextEncoder = TextEncoder as typeof global.TextEncoder;
@@ -14,18 +14,19 @@ if (!global.crypto) {
   global.crypto = webcrypto as Crypto;
 }
 
-jest.mock('@aws-amplify/ui-react/styles.css', () => ({}), { virtual: true });
-jest.mock('chartjs-adapter-date-fns', () => ({}));
-jest.mock('react-data-grid/lib/styles.css', () => ({}), { virtual: true });
-jest.mock('react-day-picker/style.css', () => ({}), { virtual: true });
-jest.mock('react-toastify/dist/ReactToastify.css', () => ({}), {
-  virtual: true,
-});
-jest.mock(
+// Mock CSS imports
+vi.mock('@aws-amplify/ui-react/styles.css', () => ({}));
+vi.mock('chartjs-adapter-date-fns', () => ({}));
+vi.mock('react-data-grid/lib/styles.css', () => ({}));
+vi.mock('react-day-picker/style.css', () => ({}));
+vi.mock('react-toastify/dist/ReactToastify.css', () => ({}));
+vi.mock(
   '@wojtekmaj/react-daterange-picker/dist/DateRangePicker.css',
   () => ({}),
-  { virtual: true },
 );
-jest.mock('react-calendar/dist/Calendar.css', () => ({}), {
-  virtual: true,
-});
+vi.mock('react-calendar/dist/Calendar.css', () => ({}));
+
+// Mock aws-exports
+vi.mock('./aws-exports', () => ({
+  default: {},
+}));

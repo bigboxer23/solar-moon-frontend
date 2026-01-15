@@ -1,17 +1,17 @@
-/* eslint-env jest */
 import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
+import { vi } from 'vitest';
 
 import CustomerInformation from '../../../../components/views/profile/CustomerInformation';
 import { updateCustomer } from '../../../../services/services';
 
 // Mock dependencies
-jest.mock('../../../../services/services', () => ({
-  updateCustomer: jest.fn(),
+vi.mock('../../../../services/services', () => ({
+  updateCustomer: vi.fn(),
 }));
 
 // Use manual mock from __mocks__ directory
-jest.mock('react-timezone-select');
+vi.mock('react-timezone-select');
 
 describe('CustomerInformation', () => {
   const mockCustomer = {
@@ -21,11 +21,11 @@ describe('CustomerInformation', () => {
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
 
     // Mock Intl.DateTimeFormat for consistent testing
-    global.Intl.DateTimeFormat = jest.fn().mockImplementation(() => ({
-      resolvedOptions: jest
+    global.Intl.DateTimeFormat = vi.fn().mockImplementation(() => ({
+      resolvedOptions: vi
         .fn()
         .mockReturnValue({ timeZone: 'America/New_York' }),
     }));

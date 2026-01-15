@@ -1,23 +1,24 @@
-/* eslint-env jest */
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
+import { vi } from 'vitest';
 
 import APIInformation from '../../../../components/views/profile/APIInformation';
 import { updateCustomer } from '../../../../services/services';
 
 // Mock dependencies
-jest.mock('../../../../services/services', () => ({
-  updateCustomer: jest.fn(),
+vi.mock('../../../../services/services', () => ({
+  updateCustomer: vi.fn(),
 }));
 
-jest.mock('../../../../components/common/CopyButton', () => {
-  return function MockCopyButton({ title }) {
+vi.mock('../../../../components/common/CopyButton', () => {
+  const MockCopyButton = function ({ title }) {
     return <button>{title}</button>;
   };
+  return { default: MockCopyButton };
 });
 
-jest.mock('../../../../components/common/Button', () => {
-  return function MockButton({
+vi.mock('../../../../components/common/Button', () => {
+  const MockButton = function ({
     children,
     onClick,
     className,
@@ -38,6 +39,7 @@ jest.mock('../../../../components/common/Button', () => {
       </button>
     );
   };
+  return { default: MockButton };
 });
 
 describe('APIInformation', () => {
@@ -47,10 +49,10 @@ describe('APIInformation', () => {
     email: 'test@example.com',
   };
 
-  const mockSetCustomerData = jest.fn();
+  const mockSetCustomerData = vi.fn();
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test('renders API information component with all elements', () => {

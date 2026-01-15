@@ -1,8 +1,8 @@
-/* eslint-env jest */
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { IntlProvider } from 'react-intl';
 import { MemoryRouter } from 'react-router-dom';
+import { vi } from 'vitest';
 
 import SiteDetails from '../../../../components/views/site-details/SiteDetails';
 import * as searchService from '../../../../services/search';
@@ -10,44 +10,52 @@ import * as services from '../../../../services/services';
 import * as utils from '../../../../utils/Utils';
 
 // Mock child components
-jest.mock('../../../../components/common/CurrentPowerBlock', () => {
-  return function MockCurrentPowerBlock({ currentPower, max, _activeAlert }) {
+vi.mock('../../../../components/common/CurrentPowerBlock', () => {
+  const MockCurrentPowerBlock = function ({ currentPower, max, _activeAlert }) {
     return (
       <div data-testid='current-power-block'>
         Current: {currentPower}, Max: {max}
       </div>
     );
   };
+  return { default: MockCurrentPowerBlock };
 });
 
-jest.mock('../../../../components/common/Loader', () => {
-  return function MockLoader() {
+vi.mock('../../../../components/common/Loader', () => {
+  const MockLoader = function () {
     return <div data-testid='loader'>Loading...</div>;
   };
+  return { default: MockLoader };
 });
 
-jest.mock('../../../../components/common/PowerBlock', () => {
-  return function MockPowerBlock({ power, title, unit, className }) {
+vi.mock('../../../../components/common/PowerBlock', () => {
+  const MockPowerBlock = function ({ power, title, unit, className }) {
     return (
       <div className={className} data-testid={`power-block-${title}`}>
         {title}: {power} {unit}
       </div>
     );
   };
+  return { default: MockPowerBlock };
 });
 
-jest.mock('../../../../components/common/WeatherBlock', () => {
-  return function MockWeatherBlock({ weather, className, _wrapperClassName }) {
+vi.mock('../../../../components/common/WeatherBlock', () => {
+  const MockWeatherBlock = function ({
+    weather,
+    className,
+    _wrapperClassName,
+  }) {
     return (
       <div className={className} data-testid='weather-block'>
         Weather: {weather?.temp}°F, {weather?.condition}
       </div>
     );
   };
+  return { default: MockWeatherBlock };
 });
 
-jest.mock('../../../../components/device-block/StackedAlertsInfo', () => {
-  return function MockStackedAlertsInfo({
+vi.mock('../../../../components/device-block/StackedAlertsInfo', () => {
+  const MockStackedAlertsInfo = function ({
     activeAlerts,
     resolvedAlerts,
     onClick,
@@ -63,38 +71,37 @@ jest.mock('../../../../components/device-block/StackedAlertsInfo', () => {
       </div>
     );
   };
+  return { default: MockStackedAlertsInfo };
 });
 
-jest.mock('../../../../components/device-block/StackedTotAvg', () => {
-  return function MockStackedTotAvg({ total, avg, className }) {
+vi.mock('../../../../components/device-block/StackedTotAvg', () => {
+  const MockStackedTotAvg = function ({ total, avg, className }) {
     return (
       <div className={className} data-testid='stacked-tot-avg'>
         Total: {total}, Avg: {avg}
       </div>
     );
   };
+  return { default: MockStackedTotAvg };
 });
 
-jest.mock(
-  '../../../../components/views/dashboard/TimeIncrementSelector',
-  () => {
-    return function MockTimeIncrementSelector({
-      timeIncrement,
-      setTimeIncrement,
-    }) {
-      return (
-        <div data-testid='time-increment-selector'>
-          <button onClick={() => setTimeIncrement('week')}>Week</button>
-          <button onClick={() => setTimeIncrement('month')}>Month</button>
-          Current: {timeIncrement}
-        </div>
-      );
-    };
-  },
-);
+vi.mock('../../../../components/views/dashboard/TimeIncrementSelector', () => {
+  return function MockTimeIncrementSelector({
+    timeIncrement,
+    setTimeIncrement,
+  }) {
+    return (
+      <div data-testid='time-increment-selector'>
+        <button onClick={() => setTimeIncrement('week')}>Week</button>
+        <button onClick={() => setTimeIncrement('month')}>Month</button>
+        Current: {timeIncrement}
+      </div>
+    );
+  };
+});
 
-jest.mock('../../../../components/views/site-details/SiteDetailsGraph', () => {
-  return function MockSiteDetailsGraph({
+vi.mock('../../../../components/views/site-details/SiteDetailsGraph', () => {
+  const MockSiteDetailsGraph = function ({
     devices,
     _graphData,
     graphType,
@@ -114,62 +121,60 @@ jest.mock('../../../../components/views/site-details/SiteDetailsGraph', () => {
       </div>
     );
   };
+  return { default: MockSiteDetailsGraph };
 });
 
-jest.mock(
-  '../../../../components/views/site-details/SiteDevicesOverview',
-  () => {
-    return function MockSiteDevicesOverview({
-      devices,
-      activeSiteAlerts,
-      resolvedSiteAlerts,
-      _avgData,
-      _totalData,
-      _maxData,
-      _timeSeriesData,
-      _timeIncrement,
-    }) {
-      return (
-        <div data-testid='site-devices-overview'>
-          Devices: {devices?.length}, Active Alerts: {activeSiteAlerts?.length},
-          Resolved: {resolvedSiteAlerts?.length}
-        </div>
-      );
-    };
-  },
-);
+vi.mock('../../../../components/views/site-details/SiteDevicesOverview', () => {
+  return function MockSiteDevicesOverview({
+    devices,
+    activeSiteAlerts,
+    resolvedSiteAlerts,
+    _avgData,
+    _totalData,
+    _maxData,
+    _timeSeriesData,
+    _timeIncrement,
+  }) {
+    return (
+      <div data-testid='site-devices-overview'>
+        Devices: {devices?.length}, Active Alerts: {activeSiteAlerts?.length},
+        Resolved: {resolvedSiteAlerts?.length}
+      </div>
+    );
+  };
+});
 
 // Mock services and utilities before importing components
-jest.mock('../../../../services/services', () => ({
-  getSiteOverview: jest.fn(),
+vi.mock('../../../../services/services', () => ({
+  getSiteOverview: vi.fn(),
 }));
 
-jest.mock('../../../../services/search', () => ({
+vi.mock('../../../../services/search', () => ({
   AVG_AGGREGATION: 'avg',
   DAY: 'day',
   GROUPED_BAR: 'groupedBar',
   TOTAL_AGGREGATION: 'total',
-  getAggregationValue: jest.fn(),
-  getBucketSize: jest.fn(() => '1m'),
-  parseCurrentPower: jest.fn(),
-  parseMaxData: jest.fn(),
-  parseSearchReturn: jest.fn(),
-  parseStackedTimeSeriesData: jest.fn(),
+  getAggregationValue: vi.fn(),
+  getBucketSize: vi.fn(() => '1m'),
+  parseCurrentPower: vi.fn(),
+  parseMaxData: vi.fn(),
+  parseSearchReturn: vi.fn(),
+  parseStackedTimeSeriesData: vi.fn(),
 }));
 
-jest.mock('../../../../utils/Utils', () => ({
-  getDeviceIdToNameMap: jest.fn(),
-  getDisplayName: jest.fn(),
-  getRoundedTimeFromOffset: jest.fn(),
-  sortDevices: jest.fn(),
-  useStickyState: jest.fn(),
+vi.mock('../../../../utils/Utils', () => ({
+  getDeviceIdToNameMap: vi.fn(),
+  getDisplayName: vi.fn(),
+  getRoundedTimeFromOffset: vi.fn(),
+  sortDevices: vi.fn(),
+  useStickyState: vi.fn(),
 }));
 
-const mockNavigate = jest.fn();
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
+const mockNavigate = vi.fn();
+vi.mock('react-router-dom', () => ({
+  ...vi.importActual('react-router-dom'),
   useNavigate: () => mockNavigate,
-  redirect: jest.fn(),
+  redirect: vi.fn(),
 }));
 
 const renderWithProviders = (component, initialRoute = '/sites/site-123') => {
@@ -183,7 +188,7 @@ const renderWithProviders = (component, initialRoute = '/sites/site-123') => {
 };
 
 describe('SiteDetails', () => {
-  const mockSetTrialDate = jest.fn();
+  const mockSetTrialDate = vi.fn();
 
   const mockSiteData = {
     site: {
@@ -243,12 +248,12 @@ describe('SiteDetails', () => {
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
 
     // Mock utility functions
     utils.useStickyState.mockImplementation((defaultValue) => [
       defaultValue,
-      jest.fn(),
+      vi.fn(),
     ]);
     utils.getRoundedTimeFromOffset.mockReturnValue(
       new Date('2024-01-01').getTime(),
@@ -555,7 +560,7 @@ describe('SiteDetails', () => {
 
   describe('Time Increment Changes', () => {
     test('updates time increment and refetches data', async () => {
-      const mockSetTimeIncrement = jest.fn();
+      const mockSetTimeIncrement = vi.fn();
       utils.useStickyState.mockReturnValue(['day', mockSetTimeIncrement]);
 
       renderWithProviders(<SiteDetails setTrialDate={mockSetTrialDate} />);
@@ -586,10 +591,10 @@ describe('SiteDetails', () => {
 
   describe('Graph Type Changes', () => {
     test('changes graph type without refetching data for non-grouped bar types', async () => {
-      const mockSetGraphType = jest.fn();
+      const mockSetGraphType = vi.fn();
       utils.useStickyState.mockImplementation((defaultValue, key) => {
         if (key === 'graph.type') return ['bar', mockSetGraphType];
-        return [defaultValue, jest.fn()];
+        return [defaultValue, vi.fn()];
       });
 
       renderWithProviders(<SiteDetails setTrialDate={mockSetTrialDate} />);
@@ -607,10 +612,10 @@ describe('SiteDetails', () => {
     });
 
     test('refetches data when changing to/from grouped bar type', async () => {
-      const mockSetGraphType = jest.fn();
+      const mockSetGraphType = vi.fn();
       utils.useStickyState.mockImplementation((defaultValue, key) => {
         if (key === 'graph.type') return ['groupedBar', mockSetGraphType];
-        return [defaultValue, jest.fn()];
+        return [defaultValue, vi.fn()];
       });
 
       renderWithProviders(<SiteDetails setTrialDate={mockSetTrialDate} />);

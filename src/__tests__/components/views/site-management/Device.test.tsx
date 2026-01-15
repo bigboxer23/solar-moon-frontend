@@ -1,4 +1,3 @@
-/* eslint-env jest */
 import {
   act,
   fireEvent,
@@ -7,31 +6,32 @@ import {
   waitFor,
 } from '@testing-library/react';
 import React from 'react';
+import { vi } from 'vitest';
 
 import Device from '../../../../components/views/site-management/Device';
 import { deleteDevice, updateDevice } from '../../../../services/services';
 import { findSiteNameFromSiteId } from '../../../../utils/Utils';
 
-jest.mock('../../../../services/services', () => ({
-  deleteDevice: jest.fn(),
-  updateDevice: jest.fn(),
+vi.mock('../../../../services/services', () => ({
+  deleteDevice: vi.fn(),
+  updateDevice: vi.fn(),
 }));
 
-jest.mock('../../../../utils/Utils', () => ({
-  findSiteNameFromSiteId: jest.fn(),
-  getDisplayName: jest.fn(),
+vi.mock('../../../../utils/Utils', () => ({
+  findSiteNameFromSiteId: vi.fn(),
+  getDisplayName: vi.fn(),
 }));
 
-jest.mock('react-icons/ai', () => ({
+vi.mock('react-icons/ai', () => ({
   AiOutlineDelete: () => <div data-testid='delete-icon' />,
 }));
 
-jest.mock('uuid', () => ({
+vi.mock('uuid', () => ({
   v4: () => 'test-uuid',
 }));
 
 describe('Device', () => {
-  const mockSetDevices = jest.fn();
+  const mockSetDevices = vi.fn();
   const mockDeviceData = {
     id: 'device-1',
     name: 'Test Device',
@@ -56,7 +56,7 @@ describe('Device', () => {
   ];
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     findSiteNameFromSiteId.mockReturnValue('Test Site');
     updateDevice.mockResolvedValue({
       data: { ...mockDeviceData, id: 'device-1' },

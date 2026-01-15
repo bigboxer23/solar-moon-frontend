@@ -1,42 +1,42 @@
-/* eslint-env jest */
 import { fireEvent, render, screen } from '@testing-library/react';
 import React, { ReactElement } from 'react';
 import { MemoryRouter } from 'react-router-dom';
+import { vi } from 'vitest';
 
 import SiteDevicesOverview from '../../../../components/views/site-details/SiteDevicesOverview';
 import type { SearchResponse } from '../../../../types/api';
 import type { Alarm, Device } from '../../../../types/models';
 
 // Mock react-router-dom
-const mockNavigate = jest.fn();
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
+const mockNavigate = vi.fn();
+vi.mock('react-router-dom', () => ({
+  ...vi.importActual('react-router-dom'),
   useNavigate: () => mockNavigate,
 }));
 
 // Mock search services
-jest.mock('../../../../services/search', () => ({
+vi.mock('../../../../services/search', () => ({
   AVG_AGGREGATION: 'avg',
   TOTAL_AGGREGATION: 'total',
-  getAggregationValue: jest.fn(),
-  getBucketSize: jest.fn(() => '1m'),
-  getInformationalErrorInfo: jest.fn(),
-  parseCurrentAmperage: jest.fn(),
-  parseCurrentPower: jest.fn(),
-  parseCurrentVoltage: jest.fn(),
-  parseMaxData: jest.fn(),
-  parseSearchReturn: jest.fn(),
+  getAggregationValue: vi.fn(),
+  getBucketSize: vi.fn(() => '1m'),
+  getInformationalErrorInfo: vi.fn(),
+  parseCurrentAmperage: vi.fn(),
+  parseCurrentPower: vi.fn(),
+  parseCurrentVoltage: vi.fn(),
+  parseMaxData: vi.fn(),
+  parseSearchReturn: vi.fn(),
 }));
 
 // Mock Utils
-jest.mock('../../../../utils/Utils', () => ({
-  getDisplayName: jest.fn(),
-  getRoundedTimeFromOffset: jest.fn(),
+vi.mock('../../../../utils/Utils', () => ({
+  getDisplayName: vi.fn(),
+  getRoundedTimeFromOffset: vi.fn(),
 }));
 
 // Mock components
-jest.mock('../../../../components/common/CurrentPowerBlock', () => {
-  return function MockCurrentPowerBlock({
+vi.mock('../../../../components/common/CurrentPowerBlock', () => {
+  const MockCurrentPowerBlock = function ({
     activeAlert,
     currentPower,
     max,
@@ -56,10 +56,11 @@ jest.mock('../../../../components/common/CurrentPowerBlock', () => {
       </div>
     );
   };
+  return { default: MockCurrentPowerBlock };
 });
 
-jest.mock('../../../../components/device-block/DeviceBlock', () => {
-  return function MockDeviceBlock({
+vi.mock('../../../../components/device-block/DeviceBlock', () => {
+  const MockDeviceBlock = function ({
     title,
     subtitle,
     body,
@@ -98,10 +99,11 @@ jest.mock('../../../../components/device-block/DeviceBlock', () => {
       </div>
     );
   };
+  return { default: MockDeviceBlock };
 });
 
-jest.mock('../../../../components/device-block/StackedAlertsInfo', () => {
-  return function MockStackedAlertsInfo({
+vi.mock('../../../../components/device-block/StackedAlertsInfo', () => {
+  const MockStackedAlertsInfo = function ({
     activeAlerts,
     resolvedAlerts,
     className,
@@ -124,9 +126,10 @@ jest.mock('../../../../components/device-block/StackedAlertsInfo', () => {
       </div>
     );
   };
+  return { default: MockStackedAlertsInfo };
 });
 
-jest.mock(
+vi.mock(
   '../../../../components/device-block/StackedCurrentVoltageBlock',
   () => {
     return function MockStackedCurrentVoltageBlock({
@@ -149,8 +152,8 @@ jest.mock(
   },
 );
 
-jest.mock('../../../../components/device-block/StackedTotAvg', () => {
-  return function MockStackedTotAvg({
+vi.mock('../../../../components/device-block/StackedTotAvg', () => {
+  const MockStackedTotAvg = function ({
     total,
     avg,
     className,
@@ -170,16 +173,18 @@ jest.mock('../../../../components/device-block/StackedTotAvg', () => {
       </div>
     );
   };
+  return { default: MockStackedTotAvg };
 });
 
-jest.mock('../../../../components/graphs/MiniChart', () => {
-  return function MockMiniChart({ graphData }: { graphData: unknown }) {
+vi.mock('../../../../components/graphs/MiniChart', () => {
+  const MockMiniChart = function ({ graphData }: { graphData: unknown }) {
     return (
       <div data-graph-data={JSON.stringify(graphData)} data-testid='mini-chart'>
         Mini Chart
       </div>
     );
   };
+  return { default: MockMiniChart };
 });
 
 const renderWithRouter = (component: ReactElement) => {
@@ -187,7 +192,7 @@ const renderWithRouter = (component: ReactElement) => {
 };
 
 describe('SiteDevicesOverview', () => {
-  const {
+  import {
     getAggregationValue,
     getBucketSize,
     getInformationalErrorInfo,
@@ -196,12 +201,11 @@ describe('SiteDevicesOverview', () => {
     parseCurrentVoltage,
     parseMaxData,
     parseSearchReturn,
-  } = require('../../../../services/search');
-
-  const {
+  } from '../../../../services/search';
+  import {
     getDisplayName,
     getRoundedTimeFromOffset,
-  } = require('../../../../utils/Utils');
+  } from '../../../../utils/Utils';
 
   const mockDevices: Device[] = [
     {
@@ -313,33 +317,33 @@ describe('SiteDevicesOverview', () => {
   const mockTimeIncrement = 7;
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
 
     // Setup mocks
-    (getRoundedTimeFromOffset as jest.Mock).mockReturnValue(
+    (getRoundedTimeFromOffset as vi.Mock).mockReturnValue(
       new Date('2023-01-01'),
     );
-    (getDisplayName as jest.Mock).mockImplementation(
+    (getDisplayName as vi.Mock).mockImplementation(
       (device: Device) => device.name,
     );
-    (getBucketSize as jest.Mock).mockReturnValue('1m');
-    (parseSearchReturn as jest.Mock).mockImplementation(
+    (getBucketSize as vi.Mock).mockReturnValue('1m');
+    (parseSearchReturn as vi.Mock).mockImplementation(
       (data: SearchResponse) => data,
     );
-    (getInformationalErrorInfo as jest.Mock).mockReturnValue([]);
-    (parseCurrentPower as jest.Mock).mockImplementation(
+    (getInformationalErrorInfo as vi.Mock).mockReturnValue([]);
+    (parseCurrentPower as vi.Mock).mockImplementation(
       (data: SearchResponse) => data?.aggregations?.power?.value || 0,
     );
-    (parseMaxData as jest.Mock).mockImplementation(
+    (parseMaxData as vi.Mock).mockImplementation(
       (data: SearchResponse) => data?.aggregations?.power?.value || 0,
     );
-    (parseCurrentAmperage as jest.Mock).mockImplementation(
+    (parseCurrentAmperage as vi.Mock).mockImplementation(
       (data: SearchResponse) => data?.aggregations?.amperage?.value || 0,
     );
-    (parseCurrentVoltage as jest.Mock).mockImplementation(
+    (parseCurrentVoltage as vi.Mock).mockImplementation(
       (data: SearchResponse) => data?.aggregations?.voltage?.value || 0,
     );
-    (getAggregationValue as jest.Mock).mockImplementation(
+    (getAggregationValue as vi.Mock).mockImplementation(
       (data: SearchResponse, type: string) => {
         if (type === 'avg') return data?.aggregations?.avg?.value || 0;
         if (type === 'total') return data?.aggregations?.total?.value || 0;

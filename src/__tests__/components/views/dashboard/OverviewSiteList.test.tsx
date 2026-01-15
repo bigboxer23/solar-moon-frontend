@@ -1,7 +1,7 @@
-/* eslint-env jest */
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
+import { vi } from 'vitest';
 
 import OverviewSiteList from '../../../../components/views/dashboard/OverviewSiteList';
 
@@ -48,34 +48,34 @@ interface TimeIncrement {
 }
 
 // Mock search services
-jest.mock('../../../../services/search', () => ({
+vi.mock('../../../../services/search', () => ({
   AVG_AGGREGATION: 'avg',
   TOTAL_AGGREGATION: 'total',
-  getAggregationValue: jest.fn(
+  getAggregationValue: vi.fn(
     (data: { value: number } | undefined, type: string) => {
       if (type === 'avg') return 1500;
       if (type === 'total') return 5000;
       return 0;
     },
   ),
-  getBucketSize: jest.fn(() => '1m'),
-  getInformationalErrorInfo: jest.fn(() => []),
-  parseCurrentPower: jest.fn(() => 2500),
-  parseMaxData: jest.fn(() => 3000),
-  parseSearchReturn: jest.fn(() => [
+  getBucketSize: vi.fn(() => '1m'),
+  getInformationalErrorInfo: vi.fn(() => []),
+  parseCurrentPower: vi.fn(() => 2500),
+  parseMaxData: vi.fn(() => 3000),
+  parseSearchReturn: vi.fn(() => [
     { timestamp: 1234567890, value: 1000 },
     { timestamp: 1234567900, value: 1200 },
   ]),
 }));
 
 // Mock utils
-jest.mock('../../../../utils/Utils', () => ({
-  getRoundedTimeFromOffset: jest.fn(),
+vi.mock('../../../../utils/Utils', () => ({
+  getRoundedTimeFromOffset: vi.fn(),
 }));
 
 // Mock common components
-jest.mock('../../../../components/common/CurrentPowerBlock', () => {
-  return function MockCurrentPowerBlock({
+vi.mock('../../../../components/common/CurrentPowerBlock', () => {
+  const MockCurrentPowerBlock = function ({
     currentPower,
     max,
   }: {
@@ -92,10 +92,11 @@ jest.mock('../../../../components/common/CurrentPowerBlock', () => {
       </div>
     );
   };
+  return { default: MockCurrentPowerBlock };
 });
 
-jest.mock('../../../../components/common/WeatherBlock', () => {
-  return function MockWeatherBlock({
+vi.mock('../../../../components/common/WeatherBlock', () => {
+  const MockWeatherBlock = function ({
     weather,
     className,
     wrapperClassName,
@@ -114,11 +115,12 @@ jest.mock('../../../../components/common/WeatherBlock', () => {
       </div>
     );
   };
+  return { default: MockWeatherBlock };
 });
 
 // Mock device-block components
-jest.mock('../../../../components/device-block/DeviceBlock', () => {
-  return function MockDeviceBlock({
+vi.mock('../../../../components/device-block/DeviceBlock', () => {
+  const MockDeviceBlock = function ({
     title,
     subtitle,
     secondaryTitle,
@@ -156,10 +158,11 @@ jest.mock('../../../../components/device-block/DeviceBlock', () => {
       </div>
     );
   };
+  return { default: MockDeviceBlock };
 });
 
-jest.mock('../../../../components/device-block/StackedAlertsInfo', () => {
-  return function MockStackedAlertsInfo({
+vi.mock('../../../../components/device-block/StackedAlertsInfo', () => {
+  const MockStackedAlertsInfo = function ({
     activeAlerts,
     resolvedAlerts,
     className,
@@ -179,10 +182,11 @@ jest.mock('../../../../components/device-block/StackedAlertsInfo', () => {
       </div>
     );
   };
+  return { default: MockStackedAlertsInfo };
 });
 
-jest.mock('../../../../components/device-block/StackedTotAvg', () => {
-  return function MockStackedTotAvg({
+vi.mock('../../../../components/device-block/StackedTotAvg', () => {
+  const MockStackedTotAvg = function ({
     total,
     avg,
     className,
@@ -202,11 +206,12 @@ jest.mock('../../../../components/device-block/StackedTotAvg', () => {
       </div>
     );
   };
+  return { default: MockStackedTotAvg };
 });
 
 // Mock graphs components
-jest.mock('../../../../components/graphs/MiniChart', () => {
-  return function MockMiniChart({
+vi.mock('../../../../components/graphs/MiniChart', () => {
+  const MockMiniChart = function ({
     graphData,
     stepSize,
   }: {
@@ -219,6 +224,7 @@ jest.mock('../../../../components/graphs/MiniChart', () => {
       </div>
     );
   };
+  return { default: MockMiniChart };
 });
 
 const renderWithRouter = (component: React.ReactElement) => {
@@ -226,12 +232,12 @@ const renderWithRouter = (component: React.ReactElement) => {
 };
 
 describe('OverviewSiteList', () => {
-  const { getRoundedTimeFromOffset } = require('../../../../utils/Utils');
-  const {
+  import {
     getAggregationValue,
     parseCurrentPower,
     parseMaxData,
-  } = require('../../../../services/search');
+  } from '../../../../services/search';
+  import { getRoundedTimeFromOffset } from '../../../../utils/Utils';
 
   const mockSites: Site[] = [
     {
@@ -282,15 +288,15 @@ describe('OverviewSiteList', () => {
   const mockTimeIncrement: TimeIncrement = { days: 7 };
 
   beforeEach(() => {
-    jest.clearAllMocks();
-    (getRoundedTimeFromOffset as jest.Mock).mockReturnValue(
+    vi.clearAllMocks();
+    (getRoundedTimeFromOffset as vi.Mock).mockReturnValue(
       new Date('2023-01-01T00:00:00Z'),
     );
 
     // Set up search service mocks
-    (parseCurrentPower as jest.Mock).mockReturnValue(2500);
-    (parseMaxData as jest.Mock).mockReturnValue(3000);
-    (getAggregationValue as jest.Mock).mockImplementation(
+    (parseCurrentPower as vi.Mock).mockReturnValue(2500);
+    (parseMaxData as vi.Mock).mockReturnValue(3000);
+    (getAggregationValue as vi.Mock).mockImplementation(
       (data: { value: number } | undefined, type: string) => {
         if (type === 'avg') return 1500;
         if (type === 'total') return 5000;

@@ -1,17 +1,17 @@
-/* eslint-env jest */
 import { fireEvent, render, screen } from '@testing-library/react';
 import { useForm } from 'react-hook-form';
+import { vi } from 'vitest';
 
 import { Check, ControlledCheck } from '../../../components/common/Check';
 
 describe('Check', () => {
   const defaultInputProps = {
     value: false,
-    onChange: jest.fn(),
+    onChange: vi.fn(),
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test('renders checkbox with label', () => {
@@ -52,7 +52,7 @@ describe('Check', () => {
   });
 
   test('calls onChange when checkbox is clicked', () => {
-    const mockOnChange = jest.fn();
+    const mockOnChange = vi.fn();
     const inputProps = { ...defaultInputProps, onChange: mockOnChange };
 
     render(<Check id='test-check' inputProps={inputProps} />);
@@ -63,7 +63,7 @@ describe('Check', () => {
   });
 
   test('calls onClick when wrapper is clicked', () => {
-    const mockOnClick = jest.fn();
+    const mockOnClick = vi.fn();
     const { container } = render(
       <Check
         id='test-check'
@@ -202,7 +202,7 @@ describe('Check', () => {
 });
 
 describe('ControlledCheck', () => {
-  function TestForm({ defaultValue = false, onSubmit = jest.fn() }) {
+  function TestForm({ defaultValue = false, onSubmit = vi.fn() }) {
     const { control, handleSubmit } = useForm({
       defaultValues: { testCheck: defaultValue },
     });
@@ -237,7 +237,7 @@ describe('ControlledCheck', () => {
   });
 
   test('integrates with form submission', async () => {
-    const mockSubmit = jest.fn();
+    const mockSubmit = vi.fn();
     render(<TestForm onSubmit={mockSubmit} />);
 
     const checkbox = screen.getByRole('checkbox');

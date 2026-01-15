@@ -1,4 +1,3 @@
-/* eslint-env jest */
 import { render } from '@testing-library/react';
 
 import Meter from '../../../components/common/Meter';

@@ -1,17 +1,17 @@
-/* eslint-env jest */
 import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
+import { vi } from 'vitest';
 
 import PriceTile from '../../../../components/views/checkout/PriceTile';
 
 // Mock services
-jest.mock('../../../../services/services', () => ({
-  activateTrial: jest.fn(),
+vi.mock('../../../../services/services', () => ({
+  activateTrial: vi.fn(),
 }));
 
 // Mock components
-jest.mock('../../../../components/common/Button', () => {
-  return function MockButton({
+vi.mock('../../../../components/common/Button', () => {
+  const MockButton = function ({
     children,
     onClick,
     className,
@@ -36,10 +36,11 @@ jest.mock('../../../../components/common/Button', () => {
       </button>
     );
   };
+  return { default: MockButton };
 });
 
-jest.mock('../../../../components/views/checkout/QuantityPicker', () => {
-  return function MockQuantityPicker({
+vi.mock('../../../../components/views/checkout/QuantityPicker', () => {
+  const MockQuantityPicker = function ({
     className,
     max,
     min,
@@ -62,6 +63,7 @@ jest.mock('../../../../components/views/checkout/QuantityPicker', () => {
       </div>
     );
   };
+  return { default: MockQuantityPicker };
 });
 
 describe('PriceTile', () => {
@@ -70,14 +72,14 @@ describe('PriceTile', () => {
     label2: 'per month',
     label3: '(Popular)',
     count: 2,
-    setCount: jest.fn(),
+    setCount: vi.fn(),
     priceId: 'price_premium',
     price: 50,
-    checkoutClicked: jest.fn(),
+    checkoutClicked: vi.fn(),
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test('renders price tile with all labels', () => {

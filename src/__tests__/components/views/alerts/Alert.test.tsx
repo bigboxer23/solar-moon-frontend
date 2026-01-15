@@ -1,13 +1,14 @@
-/* eslint-env jest */
 import { render, screen } from '@testing-library/react';
 import type { ReactElement, ReactNode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
+import { vi } from 'vitest';
 
 import Alert from '../../../../components/views/alerts/Alert';
+import * as utils from '../../../../utils/Utils';
 
 // Mock external dependencies
-jest.mock('@tippyjs/react', () => {
-  return function MockTippy({
+vi.mock('@tippyjs/react', () => {
+  const MockTippy = function ({
     children,
     content,
     ...props
@@ -22,26 +23,27 @@ jest.mock('@tippyjs/react', () => {
       </div>
     );
   };
+  return { default: MockTippy };
 });
 
-jest.mock('../../../../utils/Utils', () => ({
-  formatMessage: jest.fn((msg) => msg || ''),
-  getFormattedDaysHoursMinutes: jest.fn(
+vi.mock('../../../../utils/Utils', () => ({
+  formatMessage: vi.fn((msg) => msg || ''),
+  getFormattedDaysHoursMinutes: vi.fn(
     (duration) => `${Math.floor(duration / (1000 * 60 * 60))}h`,
   ),
-  getFormattedTime: jest.fn((timestamp) =>
+  getFormattedTime: vi.fn((timestamp) =>
     new Date(timestamp).toLocaleTimeString(),
   ),
   TIPPY_DELAY: 500,
 }));
 
-jest.mock('../../../../services/search', () => ({
+vi.mock('../../../../services/search', () => ({
   HOUR: 3600000, // 1 hour in milliseconds
 }));
 
 // Mock date-fns formatDistance
-jest.mock('date-fns', () => ({
-  formatDistance: jest.fn((date, baseDate, options) => {
+vi.mock('date-fns', () => ({
+  formatDistance: vi.fn((date, baseDate, options) => {
     const diff = Math.abs(baseDate - date);
     const hours = Math.floor(diff / (1000 * 60 * 60));
     const result = `${hours} hours`;
@@ -77,7 +79,7 @@ describe('Alert', () => {
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe('Basic Rendering', () => {
@@ -329,7 +331,6 @@ describe('Alert', () => {
 
   describe('Integration', () => {
     test('calls formatMessage utility with alert message', () => {
-      const utils = require('../../../../utils/Utils');
       renderWithRouter(<Alert active alert={mockActiveAlert} />);
 
       expect(utils.formatMessage).toHaveBeenCalledWith(
@@ -338,7 +339,6 @@ describe('Alert', () => {
     });
 
     test('calls time formatting utilities for resolved alerts', () => {
-      const utils = require('../../../../utils/Utils');
       renderWithRouter(<Alert active={false} alert={mockResolvedAlert} />);
 
       expect(utils.getFormattedTime).toHaveBeenCalled();

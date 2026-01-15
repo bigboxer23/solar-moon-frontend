@@ -1,22 +1,22 @@
-/* eslint-env jest */
 import { fireEvent, render, screen } from '@testing-library/react';
-import { Control } from 'react-hook-form';
+import { Control, useController } from 'react-hook-form';
+import { vi } from 'vitest';
 
 import Dropdown, {
   ControlledDropdown,
 } from '../../../components/common/Dropdown';
 
 // Mock react-hook-form
-jest.mock('react-hook-form', () => ({
-  useController: jest.fn(() => ({
+vi.mock('react-hook-form', () => ({
+  useController: vi.fn(() => ({
     field: {
-      onChange: jest.fn(),
+      onChange: vi.fn(),
       value: undefined,
     },
   })),
 }));
 
-jest.mock('@szhsin/react-menu', () => ({
+vi.mock('@szhsin/react-menu', () => ({
   Menu: (props: { children: React.ReactNode; menuButton: React.ReactNode }) => (
     <div data-testid='menu'>
       {props.menuButton}
@@ -48,7 +48,7 @@ jest.mock('@szhsin/react-menu', () => ({
 }));
 
 // Mock react-icons
-jest.mock('react-icons/fa', () => ({
+vi.mock('react-icons/fa', () => ({
   FaChevronDown: (props: { className?: string; size?: number | string }) => (
     <span
       className={props.className}
@@ -61,10 +61,11 @@ jest.mock('react-icons/fa', () => ({
 }));
 
 // Mock classnames
-jest.mock('classnames', () => {
-  return jest.fn((baseClass: string, additionalClass?: string) =>
+vi.mock('classnames', () => {
+  const mockClassNames = vi.fn((baseClass: string, additionalClass?: string) =>
     [baseClass, additionalClass].filter(Boolean).join(' '),
   );
+  return { default: mockClassNames };
 });
 
 describe('Dropdown', () => {
@@ -76,11 +77,11 @@ describe('Dropdown', () => {
 
   const defaultProps = {
     options: mockOptions,
-    onChange: jest.fn(),
+    onChange: vi.fn(),
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test('renders dropdown with default first option selected', () => {
@@ -111,7 +112,7 @@ describe('Dropdown', () => {
   });
 
   test('calls onChange when menu item is clicked', () => {
-    const mockOnChange = jest.fn();
+    const mockOnChange = vi.fn();
     render(<Dropdown {...defaultProps} onChange={mockOnChange} />);
 
     const menuItems = screen.getAllByTestId('menu-item');
@@ -201,7 +202,7 @@ describe('Dropdown', () => {
   });
 
   test('handles onClick for multiple options', () => {
-    const mockOnChange = jest.fn();
+    const mockOnChange = vi.fn();
     render(<Dropdown {...defaultProps} onChange={mockOnChange} />);
 
     const menuItems = screen.getAllByTestId('menu-item');
@@ -228,8 +229,6 @@ describe('Dropdown', () => {
 });
 
 describe('ControlledDropdown', () => {
-  const { useController } = require('react-hook-form');
-
   type TestFormData = Record<string, unknown>;
 
   const mockOptions = [
@@ -238,10 +237,10 @@ describe('ControlledDropdown', () => {
   ];
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     useController.mockReturnValue({
       field: {
-        onChange: jest.fn(),
+        onChange: vi.fn(),
         value: mockOptions[0],
       },
     });
@@ -277,7 +276,7 @@ describe('ControlledDropdown', () => {
   });
 
   test('passes field.onChange to Dropdown', () => {
-    const mockFieldOnChange = jest.fn();
+    const mockFieldOnChange = vi.fn();
     useController.mockReturnValue({
       field: {
         onChange: mockFieldOnChange,

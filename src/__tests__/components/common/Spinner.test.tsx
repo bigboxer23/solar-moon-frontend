@@ -1,4 +1,3 @@
-/* eslint-env jest */
 import { render } from '@testing-library/react';
 
 import Spinner from '../../../components/common/Spinner';

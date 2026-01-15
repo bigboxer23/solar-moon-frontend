@@ -1,35 +1,36 @@
-/* eslint-env jest */
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import type { AxiosResponse } from 'axios';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
+import { vi } from 'vitest';
 
 import Mapping from '../../../../components/views/mapping/Mapping';
 import { deleteMapping, getMappings } from '../../../../services/services';
 import type { Mapping as MappingType } from '../../../../types/models';
 
-jest.mock('../../../../services/services', () => ({
-  deleteMapping: jest.fn(),
-  getMappings: jest.fn(),
+vi.mock('../../../../services/services', () => ({
+  deleteMapping: vi.fn(),
+  getMappings: vi.fn(),
 }));
 
-jest.mock('react-icons/fa', () => ({
+vi.mock('react-icons/fa', () => ({
   FaArrowLeft: () => <div data-testid='arrow-left-icon' />,
 }));
 
-jest.mock('../../../../utils/HelpText', () => ({
+vi.mock('../../../../utils/HelpText', () => ({
   MAPPING_HELP_TEXT: 'This is mapping help text',
 }));
 
 // Mock child components
-jest.mock('../../../../components/common/Help', () => {
-  return function MockHelp({ content }: { content: string }) {
+vi.mock('../../../../components/common/Help', () => {
+  const MockHelp = function ({ content }: { content: string }) {
     return <div data-testid='help-component'>{content}</div>;
   };
+  return { default: MockHelp };
 });
 
-jest.mock('../../../../components/views/mapping/AddMapping', () => {
-  return function MockAddMapping({
+vi.mock('../../../../components/views/mapping/AddMapping', () => {
+  const MockAddMapping = function ({
     mappings,
     setMappings,
   }: {
@@ -51,10 +52,11 @@ jest.mock('../../../../components/views/mapping/AddMapping', () => {
       </div>
     );
   };
+  return { default: MockAddMapping };
 });
 
-jest.mock('../../../../components/views/mapping/MappingBlock', () => {
-  return function MockMappingBlock({
+vi.mock('../../../../components/views/mapping/MappingBlock', () => {
+  const MockMappingBlock = function ({
     mappingName,
     attribute,
     showDelete,
@@ -76,17 +78,18 @@ jest.mock('../../../../components/views/mapping/MappingBlock', () => {
       </div>
     );
   };
+  return { default: MockMappingBlock };
 });
 
-jest.mock('../../../../components/views/mapping/MappingConstants', () => ({
+vi.mock('../../../../components/views/mapping/MappingConstants', () => ({
   attributeMappings: {
     'Average Current': 'Current',
     'Power Factor': 'System Power Factor',
   },
 }));
 
-const mockGetMappings = getMappings as jest.MockedFunction<typeof getMappings>;
-const mockDeleteMapping = deleteMapping as jest.MockedFunction<
+const mockGetMappings = getMappings as vi.MockedFunction<typeof getMappings>;
+const mockDeleteMapping = deleteMapping as vi.MockedFunction<
   typeof deleteMapping
 >;
 
@@ -106,7 +109,7 @@ describe('Mapping', () => {
   ];
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     mockGetMappings.mockResolvedValue({
       data: mockMappings,
     } as AxiosResponse<MappingType[]>);

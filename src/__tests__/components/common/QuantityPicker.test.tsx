@@ -1,13 +1,13 @@
-/* eslint-env jest */
 import { fireEvent, render, screen } from '@testing-library/react';
+import { vi } from 'vitest';
 
 import QuantityPicker from '../../../components/common/QuantityPicker';
 
 describe('QuantityPicker', () => {
-  const mockSetCount = jest.fn();
+  const mockSetCount = vi.fn();
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test('renders with basic props', () => {

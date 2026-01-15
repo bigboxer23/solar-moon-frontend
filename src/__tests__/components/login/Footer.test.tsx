@@ -1,13 +1,14 @@
-/* eslint-env jest */
 import { render } from '@testing-library/react';
+import { vi } from 'vitest';
 
 import { Footer } from '../../../components/login/Footer';
 
 // Mock the PageFooter component
-jest.mock('../../../components/PageFooter', () => {
-  return function MockPageFooter() {
+vi.mock('../../../components/PageFooter', () => {
+  const MockPageFooter = function () {
     return <div data-testid='page-footer'>Page Footer</div>;
   };
+  return { default: MockPageFooter };
 });
 
 describe('Footer', () => {

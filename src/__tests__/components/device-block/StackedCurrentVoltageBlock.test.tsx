@@ -1,11 +1,11 @@
-/* eslint-env jest */
 import { render } from '@testing-library/react';
+import { vi } from 'vitest';
 
 import StackedCurrentVoltageBlock from '../../../components/device-block/StackedCurrentVoltageBlock';
 
 // Mock StackedStatBlock component
-jest.mock('../../../components/device-block/StackedStatBlock', () => {
-  return function MockStackedStatBlock(props: {
+vi.mock('../../../components/device-block/StackedStatBlock', () => {
+  const MockStackedStatBlock = function (props: {
     upperTitle: string;
     upperValue: number | null;
     upperUnit: string;
@@ -55,6 +55,7 @@ jest.mock('../../../components/device-block/StackedStatBlock', () => {
       </div>
     );
   };
+  return { default: MockStackedStatBlock };
 });
 
 describe('StackedCurrentVoltageBlock', () => {
