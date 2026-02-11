@@ -11,7 +11,7 @@
     "@tippyjs/react": "^4.2.6",
     "@wojtekmaj/react-daterange-picker": "^7.0.0",
     "aws-amplify": "^6.15.6",
-    "axios": "^1.12.2",
+    "axios": "^1.13.5",
     "chart.js": "^4.5.0",
     "chartjs-adapter-date-fns": "^3.0.0",
     "classnames": "^2.5.1",
