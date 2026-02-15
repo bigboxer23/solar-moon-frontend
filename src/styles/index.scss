@@ -1,3 +1,13 @@
+@use 'EllipsisLoader';
+@use 'Switch';
+@use 'restyles/DatePicker';
+@use 'restyles/Grid';
+@use 'restyles/Amplify';
+@use 'restyles/Button';
+@use 'PowerIcon';
+@use 'tippy.js/dist/tippy.css';
+@use 'restyles/Tippy';
+
 @import url('https://fonts.googleapis.com/css?family=Roboto:wght@500&display=swap');
 
 body {
@@ -10,13 +20,3 @@ body {
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import 'EllipsisLoader';
-@import 'Switch';
-@import 'restyles/DatePicker';
-@import 'restyles/Grid';
-@import 'restyles/Amplify';
-@import 'restyles/Button';
-@import 'PowerIcon';
-@import 'tippy.js/dist/tippy.css';
-@import 'restyles/Tippy';
