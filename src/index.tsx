@@ -1,4 +1,5 @@
 import './styles/tailwind.css';
+import './styles/amplify.css';
 import './styles/index.scss';
 
 import React from 'react';

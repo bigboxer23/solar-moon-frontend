@@ -25,7 +25,6 @@ describe('StackedAlertsInfo', () => {
       'StackedAlertsInfo',
       'flex',
       'flex-col',
-      'items-start',
       'text-base',
       'space-y-1',
       'justify-end',

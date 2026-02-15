@@ -1,10 +1,9 @@
-import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
-  plugins: [tailwindcss(), react(), tsconfigPaths()],
+  plugins: [react(), tsconfigPaths()],
   define: {
     // Expose process.env for compatibility with Jest tests
     'process.env.VITE_STRIPE_PK': JSON.stringify(process.env.VITE_STRIPE_PK),
