@@ -154,7 +154,7 @@ describe('Check', () => {
 
     const checkbox = screen.getByRole('checkbox');
     expect(checkbox).toHaveClass(
-      'outline-none',
+      'outline-hidden',
       'switch-checkbox',
       'custom-input',
     );
@@ -172,7 +172,7 @@ describe('Check', () => {
 
     const checkbox = screen.getByRole('checkbox');
     expect(checkbox).toHaveClass('only-custom');
-    expect(checkbox).not.toHaveClass('outline-none');
+    expect(checkbox).not.toHaveClass('outline-hidden');
   });
 
   test('has proper label association', () => {

@@ -125,10 +125,10 @@ export default function AlertsFilter({
   }
 
   return (
-    <div className='AlertsFilter flex flex-col items-end space-y-3 sm:flex-row sm:items-center sm:space-x-6 sm:space-y-0'>
+    <div className='AlertsFilter flex flex-col items-end space-y-3 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-6'>
       {dirty && (
         <button
-          className='border-1 hidden bg-white text-sm font-bold text-gray-400 underline dark:bg-gray-800 sm:block sm:rounded-full'
+          className='hidden bg-white text-sm font-bold text-gray-400 underline sm:block sm:rounded-full dark:bg-gray-800'
           onClick={resetFilters}
         >
           Reset Filters
@@ -187,7 +187,7 @@ export default function AlertsFilter({
         onClick={() => setRefreshSearch(true)}
         variant='icon'
       >
-        <div className='me-2 text-black dark:text-gray-100 sm:hidden'>
+        <div className='me-2 text-black sm:hidden dark:text-gray-100'>
           Refresh
         </div>
         {refreshSearch && <Spinner />}
@@ -195,7 +195,7 @@ export default function AlertsFilter({
       </Button>
       {dirty && (
         <button
-          className='border-1 block rounded-full bg-white text-sm font-bold text-gray-400 underline dark:bg-gray-800 sm:hidden'
+          className='block rounded-full bg-white text-sm font-bold text-gray-400 underline sm:hidden dark:bg-gray-800'
           onClick={resetFilters}
         >
           Reset Filters

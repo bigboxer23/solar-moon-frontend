@@ -35,7 +35,7 @@ export default function Dropdown({
       <Menu
         gap={8}
         menuButton={
-          <MenuButton className='border-1 flex items-center rounded-full border-solid border-border-color bg-white text-black dark:bg-gray-800 dark:text-gray-100'>
+          <MenuButton className='border-border-color flex items-center rounded-full border-solid bg-white text-black dark:bg-gray-800 dark:text-gray-100'>
             {prefixLabel && (
               <span className='mr-2 font-bold'>{prefixLabel}:</span>
             )}
@@ -49,7 +49,7 @@ export default function Dropdown({
           if (option.divider)
             return (
               <MenuDivider
-                className='me-3 ms-3 h-px bg-[#eee]'
+                className='ms-3 me-3 h-px bg-[#eee]'
                 key={option.value}
               />
             );

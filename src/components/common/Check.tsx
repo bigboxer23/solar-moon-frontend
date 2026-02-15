@@ -18,7 +18,7 @@ function buildStyles(
   extendVariantStyles = true,
 ): StylesResult {
   const { inputStyle, wrapperStyle, labelStyle, errorStyle } = {
-    inputStyle: 'outline-none switch-checkbox invisible h-0 w-0',
+    inputStyle: 'outline-hidden switch-checkbox invisible h-0 w-0',
     wrapperStyle: 'flex focus-within:border-brand-primary pb-1 space-x-4',
     labelStyle: 'text-sm text-gray-700 dark:text-gray-300',
     errorStyle: 'text-sm text-danger mt-1',

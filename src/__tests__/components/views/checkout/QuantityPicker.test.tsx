@@ -235,7 +235,7 @@ describe('Checkout QuantityPicker', () => {
       'select-none',
       'border-0',
       'text-center',
-      'outline-none',
+      'outline-hidden',
     );
   });
 

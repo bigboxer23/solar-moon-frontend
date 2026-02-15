@@ -62,7 +62,7 @@ function QuantityPicker({
         &ndash;
       </Button>
       <input
-        className='quantity-display min-h-full w-12 select-none border-0 text-center outline-none'
+        className='quantity-display min-h-full w-12 select-none border-0 text-center outline-hidden'
         readOnly
         type='text'
         value={value}

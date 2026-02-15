@@ -22,7 +22,7 @@ describe('Input', () => {
     expect(input).toHaveClass(
       'appearance-none',
       'w-full',
-      'outline-none',
+      'outline-hidden',
       'text-black',
     );
     expect(wrapper).toHaveClass(
