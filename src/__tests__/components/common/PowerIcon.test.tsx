@@ -21,7 +21,7 @@ describe('PowerIcon', () => {
       'h-full',
       'w-[10px]',
       'items-end',
-      'rounded-sm',
+      'rounded-xs',
       'border-2',
     );
   });

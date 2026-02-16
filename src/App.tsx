@@ -1,4 +1,3 @@
-import '@aws-amplify/ui-react/styles.css';
 import 'chartjs-adapter-date-fns';
 
 import { Authenticator } from '@aws-amplify/ui-react';

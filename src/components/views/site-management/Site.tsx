@@ -47,7 +47,7 @@ const Site = ({
   };
 
   return (
-    <div className='space-y-6'>
+    <div className='gap-y-6'>
       {devices
         .filter((device) => device.isSite)
         .filter((device) => device.site === site.name)

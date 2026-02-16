@@ -12,7 +12,7 @@ interface StylePreset {
 }
 
 const boxStylePreset: StylePreset = {
-  inputStyle: 'grow outline-none text-black dark:text-gray-100',
+  inputStyle: 'grow outline-hidden text-black dark:text-gray-100',
   wrapperStyle:
     'flex flex-col border border-gray-300 rounded-md focus-within:border-brand-primary py-2 px-4',
   labelStyle: 'text-sm text-gray-700 dark:text-gray-300',
@@ -21,7 +21,7 @@ const boxStylePreset: StylePreset = {
 
 const underlineStylePreset: StylePreset = {
   inputStyle:
-    'grow outline-none bg-transparent text-black dark:text-gray-100 max-w-full',
+    'grow outline-hidden bg-transparent text-black dark:text-gray-100 max-w-full',
   wrapperStyle:
     'flex flex-col border-b border-gray-300 focus-within:border-brand-primary pb-1',
   labelStyle: 'text-sm text-gray-700 dark:text-gray-300',
@@ -115,7 +115,7 @@ export function Select({
       <div>
         <label className={`Input ${wrapperStyle}`}>
           {label && <div className={labelStyle}>{label}</div>}
-          <div className='flex space-x-2'>
+          <div className='flex gap-x-2'>
             {prefix}
             <select className={inputStyle} {...inputProps}>
               {attributes.map((attr) => {

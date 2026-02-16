@@ -84,7 +84,7 @@ export default function Navbar({ trialDate }: NavbarProps): ReactElement {
             {getPageName(location)}
           </span>
         </div>
-        <nav className='hidden items-center sm:flex sm:space-x-6 md:space-x-12 lg:space-x-10'>
+        <nav className='hidden items-center sm:flex sm:gap-x-6 md:gap-x-12 lg:gap-x-10'>
           <NavLink
             className={({ isActive }) =>
               isActive ? activeLinkStyle : linkStyle
@@ -148,7 +148,7 @@ export default function Navbar({ trialDate }: NavbarProps): ReactElement {
             <FaXmark className='text-3xl' />
           </button>
         </div>
-        <nav className='flex w-full flex-col space-y-8'>
+        <nav className='flex w-full flex-col gap-y-8'>
           {trialDate > 0 && (
             <div className='flex'>
               <MdOutlineInfo className='mr-2 text-gray-400' size={18} />

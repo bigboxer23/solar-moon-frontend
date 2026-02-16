@@ -1,27 +1,27 @@
 .dark {
   .react-daterange-picker {
     .react-daterange-picker__wrapper {
-      color: theme('colors.gray.100') !important;
-      border-color: theme('colors.gray.400') !important;
+      color: var(--color-gray-100) !important;
+      border-color: var(--color-gray-400) !important;
     }
   }
 
   .react-calendar {
-    background-color: theme('colors.gray.600') !important;
-    color: theme('colors.gray.100') !important;
+    background-color: var(--color-gray-600) !important;
+    color: var(--color-gray-100) !important;
 
     .react-calendar__tile--active {
-      background-color: theme('colors.gray.500') !important;
-      color: theme('colors.gray.100') !important;
+      background-color: var(--color-gray-500) !important;
+      color: var(--color-gray-100) !important;
     }
 
     .react-calendar__tile--now {
-      color: theme('colors.brand-secondary') !important;
+      color: var(--color-brand-secondary) !important;
     }
 
     .react-calendar__navigation button:enabled:focus,
     .react-calendar__tile:enabled:focus {
-      background-color: theme('colors.gray.600') !important;
+      background-color: var(--color-gray-600) !important;
     }
   }
 }
@@ -29,8 +29,8 @@
 .react-calendar {
   z-index: 1;
   border: 0 !important;
-  padding: theme('padding.4');
-  border-radius: theme('borderRadius.lg');
+  padding: var(--spacing-4);
+  border-radius: var(--radius-lg);
 }
 
 .react-calendar abbr {
@@ -43,7 +43,7 @@
 }
 
 .react-calendar__month-view__days__day--neighboringMonth {
-  color: theme('colors.border-color') !important;
+  color: var(--color-border-color) !important;
 }
 
 .react-calendar__tile--now {
@@ -53,16 +53,15 @@
 .react-calendar__tile:enabled:hover,
 .react-calendar__navigation button:enabled:hover,
 .react-calendar__navigation button:disabled {
-  border-radius: theme('borderRadius.DEFAULT');
-  background-color: theme('colors.brand-primary') !important;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-brand-primary) !important;
   color: #ffffff !important;
 }
 
 .react-daterange-picker__wrapper {
-  border: theme('borderWidth.DEFAULT') solid theme('borderColor.neutral.300') !important;
-  border-radius: theme('borderRadius.full');
-  padding: theme('padding.1') theme('padding.3') theme('padding.1')
-    theme('padding.3');
+  border: 1px solid var(--color-neutral-300) !important;
+  border-radius: var(--radius-full);
+  padding: var(--spacing-1) var(--spacing-3) var(--spacing-1) var(--spacing-3);
 }
 
 .react-daterange-picker__inputGroup__input:invalid {
@@ -70,24 +69,24 @@
 }
 
 .react-calendar__tile--active {
-  background-color: theme('colors.brand-primary-light') !important;
+  background-color: var(--color-brand-primary-light) !important;
   color: black !important;
 }
 
 .react-calendar__tile--hoverStart,
 .react-calendar__tile--rangeStart {
-  border-radius: theme('borderRadius.DEFAULT') 0 0 theme('borderRadius.DEFAULT') !important;
+  border-radius: var(--radius-sm) 0 0 var(--radius-sm) !important;
 }
 
 .react-calendar__tile--hoverEnd,
 .react-calendar__tile--rangeEnd {
-  border-radius: 0 theme('borderRadius.DEFAULT') theme('borderRadius.DEFAULT') 0 !important;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0 !important;
 }
 .react-calendar--selectRange .react-calendar__tile--hover {
-  background-color: theme('colors.brand-primary') !important;
+  background-color: var(--color-brand-primary) !important;
   color: #ffffff !important;
 }
 
 .react-calendar__tile--now {
-  color: theme('colors.danger') !important;
+  color: var(--color-danger) !important;
 }

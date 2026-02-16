@@ -181,7 +181,6 @@ describe('Dropdown', () => {
 
     const menuButton = screen.getByTestId('menu-button');
     expect(menuButton).toHaveClass(
-      'border-1',
       'flex',
       'items-center',
       'rounded-full',

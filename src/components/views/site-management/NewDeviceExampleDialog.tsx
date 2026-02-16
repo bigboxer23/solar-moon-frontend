@@ -58,7 +58,7 @@ export default function NewDeviceExampleDialog({
           src={exampleDevice}
         />
       </div>
-      <ModalFooter className='space-x-2'>
+      <ModalFooter className='gap-x-2'>
         <Button
           onClick={() => {
             setShow(false);

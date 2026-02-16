@@ -79,7 +79,7 @@ describe('Select', () => {
     const selectElement = screen.getByRole('combobox');
     expect(selectElement).toHaveClass(
       'grow',
-      'outline-none',
+      'outline-hidden',
       'text-black',
       'dark:text-gray-100',
     );
@@ -91,7 +91,7 @@ describe('Select', () => {
     const selectElement = screen.getByRole('combobox');
     expect(selectElement).toHaveClass(
       'grow',
-      'outline-none',
+      'outline-hidden',
       'bg-transparent',
       'text-black',
       'dark:text-gray-100',

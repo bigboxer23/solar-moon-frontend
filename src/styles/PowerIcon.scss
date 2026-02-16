@@ -1,16 +1,16 @@
 .PowerIcon.red line {
-  stroke: theme('colors.red.500');
+  stroke: var(--color-red-500);
 }
 
 .PowerIcon.red path {
-  stroke: theme('colors.red.500');
+  stroke: var(--color-red-500);
 }
 
 .PowerIcon.green path {
-  fill: theme('colors.green.500');
-  stroke: theme('colors.green.500');
+  fill: var(--color-green-500);
+  stroke: var(--color-green-500);
 }
 
 .PowerIcon.default line {
-  stroke: theme('colors.brand-primary');
+  stroke: var(--color-brand-primary);
 }

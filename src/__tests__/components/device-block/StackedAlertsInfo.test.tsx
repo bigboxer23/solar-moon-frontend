@@ -25,9 +25,8 @@ describe('StackedAlertsInfo', () => {
       'StackedAlertsInfo',
       'flex',
       'flex-col',
-      'items-start',
       'text-base',
-      'space-y-1',
+      'gap-y-1',
       'justify-end',
       'text-sm',
       'xs:text-base',
@@ -172,7 +171,7 @@ describe('StackedAlertsInfo', () => {
     expect(activeAlertsElement).toHaveClass('leading-4');
     expect(resolvedAlertsElement).toHaveClass('leading-4');
     expect(container.querySelector('.StackedAlertsInfo')).toHaveClass(
-      'space-y-1',
+      'gap-y-1',
     );
   });
 

@@ -148,7 +148,7 @@ export default function SearchBar({
           flex: searchActive,
         })}
       >
-        <div className='ml-2 flex flex-wrap items-center space-x-4 sm:ml-6'>
+        <div className='ml-2 flex flex-wrap items-center gap-x-4 sm:ml-6'>
           <DateRangePicker
             calendarIcon={null}
             calendarProps={{
@@ -205,7 +205,7 @@ export default function SearchBar({
               onChange: () => {},
               name: 'errors',
             }}
-            inputWrapperClassName='flex focus-within:border-brand-primary space-x-1'
+            inputWrapperClassName='flex focus-within:border-brand-primary gap-x-1'
             label='Errors:'
             labelClassName='font-bold dark:text-gray-100'
             onClick={() => setFilterErrors(`${!(filterErrors === 'true')}`)}

@@ -315,7 +315,7 @@ describe('Site', () => {
   test('renders with correct component structure', () => {
     const { container } = render(<Site {...defaultProps} />);
 
-    const siteContainer = container.querySelector('.space-y-6');
+    const siteContainer = container.querySelector('.gap-y-6');
     expect(siteContainer).toBeInTheDocument();
   });
 });

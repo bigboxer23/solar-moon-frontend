@@ -153,7 +153,7 @@ export default function Alerts({ setTrialDate }: AlertsProps): ReactElement {
             result[d.deviceId] = getOption(
               d,
               <div
-                className='flex items-center rounded-md bg-danger px-1 text-white'
+                className='bg-danger flex items-center rounded-md px-1 text-white'
                 title='(Active)'
               >
                 <TbAlertTriangle className='mr-1' />
@@ -235,7 +235,7 @@ export default function Alerts({ setTrialDate }: AlertsProps): ReactElement {
     <main className='Alerts flex w-full flex-col items-center justify-center'>
       {loading && <Loader />}
       {!loading && (
-        <div className='fade-in my-8 w-[55rem] max-w-full bg-white p-6 shadow-panel dark:bg-gray-800 sm:rounded-lg sm:p-8'>
+        <div className='fade-in shadow-panel my-8 w-[55rem] max-w-full bg-white p-6 sm:rounded-lg sm:p-8 dark:bg-gray-800'>
           <div className='mb-10 flex w-full justify-between'>
             <span className='flex items-center text-lg font-bold text-black dark:text-gray-100'>
               Alerts
@@ -253,7 +253,7 @@ export default function Alerts({ setTrialDate }: AlertsProps): ReactElement {
               setRefreshSearch={setRefreshSearch}
             />
           </div>
-          <div className='mb-8 space-y-4'>
+          <div className='mb-8 gap-y-4'>
             {filteredActiveAlerts.length === 0 && (
               <div className='flex size-full items-center justify-center px-6 text-center text-base text-gray-400'>
                 All clear! You have no active device alerts.
@@ -271,7 +271,7 @@ export default function Alerts({ setTrialDate }: AlertsProps): ReactElement {
               </div>
             )}
           </div>
-          <div className='space-y-4'>
+          <div className='flex flex-col gap-y-4'>
             {filteredResolvedAlerts.map((alert) => (
               <Alert alert={alert} key={alert.alarmId} />
             ))}

@@ -18,7 +18,7 @@ export default function PowerIcon({
   };
 
   const borderClass = classNames(
-    'PowerIcon flex h-full w-[10px] items-end rounded-sm border-2',
+    'PowerIcon flex h-full w-[10px] items-end rounded-xs border-2',
     {
       'border-red-500': activeAlert,
     },

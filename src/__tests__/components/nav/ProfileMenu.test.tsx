@@ -221,7 +221,7 @@ describe('ProfileMenu', () => {
       expect(profileMenuItem).toHaveClass(
         'flex',
         'items-center',
-        'space-x-2',
+        'gap-x-2',
         'text-text-primary',
         'hover:bg-gray-200',
         'dark:bg-gray-700',
@@ -243,7 +243,7 @@ describe('ProfileMenu', () => {
       expect(signOutMenuItem).toHaveClass(
         'flex',
         'items-center',
-        'space-x-2',
+        'gap-x-2',
         'text-text-primary',
         'hover:bg-gray-200',
         'dark:bg-gray-700',
@@ -265,7 +265,7 @@ describe('ProfileMenu', () => {
       expect(themeMenuItem).toHaveClass(
         'flex',
         'items-center',
-        'space-x-2',
+        'gap-x-2',
         'text-text-primary',
         'dark:bg-gray-700',
         'px-4',

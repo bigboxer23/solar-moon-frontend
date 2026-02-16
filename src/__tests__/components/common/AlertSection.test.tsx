@@ -154,7 +154,7 @@ describe('AlertSection', () => {
     render(<AlertSection {...defaultProps} />);
 
     const actionButton = screen.getByTestId('button-danger');
-    expect(actionButton).toHaveClass('ml-auto', 'ms-2');
+    expect(actionButton).toHaveClass('ms-2');
   });
 
   test('handles multiple clicks correctly', () => {

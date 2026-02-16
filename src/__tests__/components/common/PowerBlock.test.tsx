@@ -105,7 +105,7 @@ describe('PowerBlock', () => {
       'PowerBlock',
       'dark:text-gray-100',
       'flex',
-      'space-x-2',
+      'gap-x-2',
       'items-end',
       'h-full',
     );

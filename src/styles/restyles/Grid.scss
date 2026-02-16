@@ -1,23 +1,23 @@
 .dark {
   .rdg {
-    color: theme('colors.gray.100') !important;
+    color: var(--color-gray-100) !important;
   }
 
   .rdg-row-odd {
-    background-color: theme('colors.gray.800') !important;
+    background-color: var(--color-gray-800) !important;
   }
 
   .rdg-row-even {
-    background-color: theme('colors.gray.700') !important;
+    background-color: var(--color-gray-700) !important;
   }
 
   .rdg-header-row {
-    background-color: theme('colors.gray.900') !important;
+    background-color: var(--color-gray-900) !important;
   }
 }
 
 .rdg-header-row {
-  background-color: theme('colors.grid-background-alt');
+  background-color: var(--color-grid-background-alt);
 }
 
 .rdg-row,
@@ -25,10 +25,12 @@
   background-color: transparent;
 }
 
-.rdg {
+.rdg,
+.rdg-cell {
   border-right: 0;
   border-left: 0;
   border-top: 0;
+  border-bottom: 0;
 }
 
 .rdg-holder {
@@ -36,7 +38,7 @@
 }
 
 .rdg-row-odd {
-  background-color: theme('colors.grid-background-alt');
+  background-color: var(--color-grid-background-alt);
 }
 
 .rdg-header-secondary {

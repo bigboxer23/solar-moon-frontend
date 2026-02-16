@@ -117,7 +117,7 @@ export default function NewDeviceDialog({
           />
         </div>
         {/* Needed so pressing enter to submit works*/}
-        <ModalFooter className='space-x-2'>
+        <ModalFooter className='gap-x-2'>
           <Button
             disabled={loading}
             onClick={handleSubmit(createNewDevice)}

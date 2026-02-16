@@ -1,0 +1,21 @@
+@import 'tailwindcss';
+
+@source "../**/*.{tsx,ts,jsx,js}";
+
+@variant dark (&:is(.dark *));
+
+@theme {
+  --breakpoint-xs: 500px;
+
+  --color-brand-primary: #5178c2;
+  --color-brand-primary-light: #eef2f9;
+  --color-brand-secondary: #f6ce46;
+  --color-danger: #db0000;
+  --color-border-color: #a9a9a9;
+  --color-grid-background-alt: #f5f5f5;
+
+  --shadow-panel: 0 0 16px 0 rgba(17, 17, 26, 0.05);
+  --shadow-modal:
+    rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px,
+    rgba(17, 17, 26, 0.1) 0px 24px 80px;
+}

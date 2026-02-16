@@ -4,60 +4,60 @@
 
 .dark {
   [data-amplify-router] {
-    background-color: theme('colors.gray.800') !important;
+    background-color: var(--color-gray-800) !important;
   }
   .amplify-input {
-    background-color: theme('colors.gray.800') !important;
-    color: theme('colors.white') !important;
+    background-color: var(--color-gray-800) !important;
+    color: var(--color-white) !important;
   }
   .amplify-label {
-    color: theme('colors.gray.400') !important;
+    color: var(--color-gray-400) !important;
   }
 
   .amplify-text {
-    color: theme('colors.gray.300') !important;
+    color: var(--color-gray-300) !important;
   }
 
   .amplify-heading {
-    color: theme('colors.gray.100') !important;
+    color: var(--color-gray-100) !important;
   }
 
   .amplify-button.amplify-button--primary {
     &:hover {
-      background-color: theme('colors.brand-primary') !important;
+      background-color: var(--color-brand-primary) !important;
       filter: brightness(110%) !important;
     }
   }
 
   .amplify-button {
-    color: theme('colors.gray.100') !important;
+    color: var(--color-gray-100) !important;
     &:hover {
-      background-color: theme('colors.gray.600') !important;
-      border-color: theme('colors.brand-primary') !important;
+      background-color: var(--color-gray-600) !important;
+      border-color: var(--color-brand-primary) !important;
     }
   }
 
   .amplify-button--link {
-    color: theme('colors.black') !important;
+    color: var(--color-black) !important;
     &:hover {
-      background-color: theme('colors.gray.400') !important;
-      border-color: theme('colors.gray.400') !important;
+      background-color: var(--color-gray-400) !important;
+      border-color: var(--color-gray-400) !important;
     }
   }
 
   .amplify-tabs-item[data-state='inactive'],
   .amplify-tabs__item {
-    background-color: theme('colors.gray.700') !important;
-    color: theme('colors.gray.400') !important;
+    background-color: var(--color-gray-700) !important;
+    color: var(--color-gray-400) !important;
 
     &:hover {
-      color: theme('colors.brand-primary') !important;
+      color: var(--color-brand-primary) !important;
     }
   }
 
   .amplify-tabs__item--active {
     background-color: inherit !important;
-    color: theme('colors.brand-primary') !important;
+    color: var(--color-brand-primary) !important;
   }
 }
 
@@ -66,67 +66,67 @@
 }
 
 [data-amplify-form] .amplify-button {
-  border-radius: theme('borderRadius.full');
+  border-radius: var(--radius-full);
 }
 .amplify-field-group__outer-end .amplify-button {
-  border-radius: 0 theme('borderRadius.full') theme('borderRadius.full') 0;
+  border-radius: 0 var(--radius-full) var(--radius-full) 0;
 }
 
 .amplify-link {
   text-decoration: underline !important;
-  color: theme('colors.brand-primary') !important;
-  font-size: theme('fontSize.sm') !important;
+  color: var(--color-brand-primary) !important;
+  font-size: var(--text-sm) !important;
 }
 
 .amplify-tabs__item:hover {
-  color: theme('colors.brand-primary') !important;
+  color: var(--color-brand-primary) !important;
 }
 
 .amplify-tabs-item[data-state='active'],
 .amplify-tabs__item--active,
 .amplify-tabs__item:active {
-  color: theme('colors.brand-primary') !important;
-  border-color: theme('colors.brand-primary') !important;
+  color: var(--color-brand-primary) !important;
+  border-color: var(--color-brand-primary) !important;
 }
 
 .amplify-button--primary {
-  background-color: theme('colors.brand-primary') !important;
+  background-color: var(--color-brand-primary) !important;
 }
 
 .amplify-button--primary:hover {
-  filter: brightness(theme('brightness.110'));
+  filter: brightness(1.1);
 }
 
 .amplify-button--primary.amplify-button--disabled,
 .amplify-button--primary.amplify-button--disabled:hover {
-  color: theme('colors.white') !important;
+  color: var(--color-white) !important;
 }
 
 .amplify-button--link {
-  background-color: theme('backgroundColor.neutral.200') !important;
-  color: theme('colors.black') !important;
-  font-weight: theme('fontWeight.bold');
+  background-color: var(--color-neutral-200) !important;
+  color: var(--color-black) !important;
+  font-weight: 700;
 }
 
 .amplify-button--link:hover {
-  filter: brightness(theme('brightness.105'));
+  filter: brightness(1.05);
 }
 
 .amplify-label {
-  font-size: theme('fontSize.sm') !important;
-  line-height: theme('lineHeight.5') !important;
+  font-size: var(--text-sm) !important;
+  line-height: var(--leading-5, 1.25rem) !important;
 }
 
 .amplify-input {
   border: 0 !important;
-  border-bottom: 1px solid theme('borderColor.gray.300') !important;
+  border-bottom: 1px solid var(--color-gray-300) !important;
   border-radius: 0 !important;
   padding-left: 0 !important;
   box-shadow: none !important;
 }
 
 .amplify-input:focus {
-  border-color: theme('borderColor.brand-primary') !important;
+  border-color: var(--color-brand-primary) !important;
 }
 
 .amplify-field-group__outer-end .amplify-button {
@@ -134,7 +134,7 @@
 }
 
 .amplify-alert {
-  border-radius: theme('borderRadius.lg') !important;
+  border-radius: var(--radius-lg) !important;
 }
 
 .amplify-alert .amplify-button {
@@ -142,11 +142,11 @@
 }
 
 .amplify-alert--error {
-  color: theme('colors.danger') !important;
+  color: var(--color-danger) !important;
   background-color: transparent !important;
-  border: 1px solid theme('colors.danger') !important;
+  border: 1px solid var(--color-danger) !important;
 }
 
 .amplify-text--error {
-  color: theme('colors.danger') !important;
+  color: var(--color-danger) !important;
 }

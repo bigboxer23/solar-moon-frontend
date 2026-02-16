@@ -122,7 +122,7 @@ export default function NewSiteDialog({
             name='name'
             variant='underline'
           />
-          <div className='flex space-x-6'>
+          <div className='flex gap-x-6'>
             <div className='grow'>
               <ControlledInput
                 className='grow-1 mb-6'
@@ -152,7 +152,7 @@ export default function NewSiteDialog({
           />
           {/* Needed so pressing enter to submit works*/}
         </div>
-        <ModalFooter className='space-x-2'>
+        <ModalFooter className='gap-x-2'>
           <Button
             disabled={loading}
             onClick={handleSubmit(createNewSite)}

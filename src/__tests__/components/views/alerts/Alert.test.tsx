@@ -288,10 +288,10 @@ describe('Alert', () => {
       renderWithRouter(<Alert active alert={mockActiveAlert} />);
 
       const infoContainer = document.querySelector(
-        '.flex.flex-col.space-y-1.sm\\:flex-row',
+        '.flex.flex-col.gap-y-1.sm\\:flex-row',
       );
       expect(infoContainer).toBeInTheDocument();
-      expect(infoContainer).toHaveClass('sm:space-y-0');
+      expect(infoContainer).toHaveClass('sm:gap-y-0');
     });
 
     test('time display has responsive layout classes', () => {
@@ -300,7 +300,7 @@ describe('Alert', () => {
       const timeContainer = document.querySelector('.mb-1.flex.flex-row');
       expect(timeContainer).toHaveClass(
         'justify-between',
-        'space-x-1',
+        'gap-x-1',
         'text-xs',
         'italic',
         'sm:mb-0',

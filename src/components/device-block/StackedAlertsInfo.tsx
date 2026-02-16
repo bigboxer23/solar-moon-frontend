@@ -20,7 +20,7 @@ export default function StackedAlertsInfo({
   });
 
   const style = classNames(
-    'StackedAlertsInfo flex flex-col items-start text-base space-y-1 justify-end text-sm xs:text-base',
+    'StackedAlertsInfo flex flex-col text-base gap-y-1 justify-end text-sm xs:text-base',
     className,
     {
       'cursor-pointer': onClick,

@@ -14,16 +14,16 @@ export default function StatBlock({
   className,
   onClick,
 }: StatBlockProps): ReactElement {
-  const style = classNames('StatBlock flex space-x-2', className, {
+  const style = classNames('StatBlock flex gap-x-2', className, {
     'cursor-pointer': onClick,
   });
 
   return (
     <div className={style} onClick={onClick}>
-      <div className='inline-block self-end text-5xl font-bold leading-[3rem]'>
+      <div className='inline-block self-end text-5xl leading-[3rem] font-bold'>
         {value}
       </div>
-      <div className='mb-1 inline-block max-w-[3.3rem] self-end text-left text-base font-bold leading-[1.125rem]'>
+      <div className='mb-1 inline-block max-w-[3.3rem] self-end text-left text-base leading-[1.125rem] font-bold'>
         {title}
       </div>
     </div>
