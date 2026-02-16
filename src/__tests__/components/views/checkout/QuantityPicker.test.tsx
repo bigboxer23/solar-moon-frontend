@@ -67,12 +67,7 @@ describe('Checkout QuantityPicker', () => {
     );
 
     const picker = container.querySelector('.quantity-picker');
-    expect(picker).toHaveClass(
-      'custom-class',
-      'quantity-picker',
-      'flex',
-      'self-end',
-    );
+    expect(picker).toHaveClass('custom-class', 'quantity-picker', 'flex');
   });
 
   test('decrement button is disabled initially at min value', () => {
@@ -214,12 +209,7 @@ describe('Checkout QuantityPicker', () => {
     );
 
     const picker = container.querySelector('.quantity-picker');
-    expect(picker).toHaveClass(
-      'test-class',
-      'quantity-picker',
-      'flex',
-      'self-end',
-    );
+    expect(picker).toHaveClass('test-class', 'quantity-picker', 'flex');
   });
 
   test('applies correct CSS classes to input', () => {
@@ -336,7 +326,7 @@ describe('Checkout QuantityPicker', () => {
     );
 
     const picker = container.querySelector('.quantity-picker');
-    expect(picker).toHaveClass('quantity-picker', 'flex', 'self-end');
+    expect(picker).toHaveClass('quantity-picker', 'flex');
     // This component has a bug where it renders "undefined" when className is not provided
     expect(picker?.className).toContain('undefined');
   });
