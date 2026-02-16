@@ -25,10 +25,10 @@ export default function ProfileMenu({
 
   const { signOut } = useAuthenticator((context) => [context.user]);
   const menuItemClassName =
-    'flex items-center space-x-2 text-text-primary hover:bg-gray-200 dark:bg-gray-700 px-4 py-1 hover:dark:bg-gray-500 cursor-pointer';
+    'flex items-center gap-x-2 text-text-primary hover:bg-gray-200 dark:bg-gray-700 px-4 py-1 hover:dark:bg-gray-500 cursor-pointer';
 
   const menuItemNoHoverClassName =
-    'flex items-center space-x-2 text-text-primary dark:bg-gray-700 px-4 py-1 cursor-pointer';
+    'flex items-center gap-x-2 text-text-primary dark:bg-gray-700 px-4 py-1 cursor-pointer';
 
   useEffect(() => {
     fetchUserAttributes().then((attributes) =>

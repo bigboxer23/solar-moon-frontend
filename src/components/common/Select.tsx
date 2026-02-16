@@ -115,7 +115,7 @@ export function Select({
       <div>
         <label className={`Input ${wrapperStyle}`}>
           {label && <div className={labelStyle}>{label}</div>}
-          <div className='flex space-x-2'>
+          <div className='flex gap-x-2'>
             {prefix}
             <select className={inputStyle} {...inputProps}>
               {attributes.map((attr) => {

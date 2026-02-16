@@ -191,7 +191,7 @@ describe('StackedStatBlock', () => {
       'flex',
       'flex-row',
       'flex-wrap',
-      'space-x-1',
+      'gap-x-1',
       'text-end',
     );
   });
@@ -214,7 +214,7 @@ describe('StackedStatBlock', () => {
       'flex',
       'flex-row',
       'flex-wrap',
-      'space-x-1',
+      'gap-x-1',
       'text-end',
       'text-base',
       'font-bold',

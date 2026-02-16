@@ -202,7 +202,7 @@ export default function SiteDetails({
           />
         </div>
         <div className='mb-4 flex justify-between'>
-          <div className='flex flex-col md:flex-row md:items-center md:space-x-6'>
+          <div className='flex flex-col md:flex-row md:items-center md:gap-x-6'>
             <CurrentPowerBlock
               className=''
               currentPower={parseCurrentPower(
@@ -222,7 +222,7 @@ export default function SiteDetails({
               resolvedAlerts={resolvedSiteAlerts.length}
             />
           </div>
-          <div className='flex flex-col space-x-4 md:flex-row'>
+          <div className='flex flex-col gap-x-4 md:flex-row'>
             <PowerBlock
               className='hidden md:flex'
               power={getAggregationValue(siteData?.total, TOTAL_AGGREGATION)}

@@ -111,7 +111,7 @@ export function Input({
       <div className={`Input ${className}`}>
         <label className={inputWrapperStyle}>
           {label && <div className={labelStyle}>{label}</div>}
-          <div className='flex space-x-2'>
+          <div className='flex gap-x-2'>
             {prefix}
             <input className={inputStyle} {...inputProps} />
             {suffix}

@@ -27,7 +27,7 @@ export default function SummaryHeader({
     return Math.abs(Math.round((total / average) * 100));
   };
   return (
-    <span className='SummaryHeader mx-6 flex flex-wrap items-baseline justify-center space-x-2 space-y-2 py-8 text-xl font-bold text-black dark:text-gray-100'>
+    <span className='SummaryHeader mx-6 flex flex-wrap items-baseline justify-center gap-x-2 gap-y-2 py-8 text-xl font-bold text-black dark:text-gray-100'>
       <span className='whitespace-nowrap text-center'>You have generated</span>
       <span className='whitespace-nowrap text-center'>
         <Tippy

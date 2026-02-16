@@ -403,11 +403,11 @@ describe('AlertsFilter', () => {
         'flex',
         'flex-col',
         'items-end',
-        'space-y-3',
+        'gap-y-3',
         'sm:flex-row',
         'sm:items-center',
-        'sm:space-x-6',
-        'sm:space-y-0',
+        'sm:gap-x-6',
+        'sm:gap-y-0',
       );
     });
 

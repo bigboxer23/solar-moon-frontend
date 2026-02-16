@@ -125,7 +125,7 @@ export default function AlertsFilter({
   }
 
   return (
-    <div className='AlertsFilter flex flex-col items-end space-y-3 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-6'>
+    <div className='AlertsFilter flex flex-col items-end gap-y-3 sm:flex-row sm:items-center sm:gap-y-0 sm:gap-x-6'>
       {dirty && (
         <button
           className='hidden bg-white text-sm font-bold text-gray-400 underline sm:block sm:rounded-full dark:bg-gray-800'

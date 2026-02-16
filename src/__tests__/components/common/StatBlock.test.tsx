@@ -15,7 +15,7 @@ describe('StatBlock', () => {
     const { container } = render(<StatBlock title='Energy' value='5.4kWh' />);
 
     const statBlock = container.querySelector('.StatBlock');
-    expect(statBlock).toHaveClass('StatBlock', 'flex', 'space-x-2');
+    expect(statBlock).toHaveClass('StatBlock', 'flex', 'gap-x-2');
   });
 
   test('applies custom className', () => {

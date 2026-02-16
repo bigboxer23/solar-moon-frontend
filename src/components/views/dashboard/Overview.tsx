@@ -167,7 +167,7 @@ export default function Overview({ setTrialDate }: OverviewProps) {
           />
         </div>
         <div className='mb-6 flex justify-between'>
-          <div className='flex flex-row items-start space-x-6 sm:items-center'>
+          <div className='flex flex-row items-start gap-x-6 sm:items-center'>
             <CurrentPowerBlock currentPower={currentPower} max={maxPower} />
             <StackedAlertsInfo
               activeAlerts={activeAlerts.length}
@@ -191,7 +191,7 @@ export default function Overview({ setTrialDate }: OverviewProps) {
               value={resolvedAlerts.length}
             />
           </div>
-          <div className='flex flex-col space-y-2 xs:flex-row xs:space-y-0 sm:space-x-6'>
+          <div className='flex flex-col gap-y-2 xs:flex-row xs:gap-y-0 sm:gap-x-6'>
             <PowerBlock
               className='hidden md:flex'
               power={totalOutput}

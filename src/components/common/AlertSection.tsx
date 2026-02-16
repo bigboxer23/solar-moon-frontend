@@ -22,8 +22,8 @@ export default function AlertSection({
   }
 
   return (
-    <div className='mt-8 rounded-lg border-2 border-danger p-4'>
-      <div className='mb-2 flex w-full justify-between text-danger'>
+    <div className='border-danger mt-8 rounded-lg border-2 p-4'>
+      <div className='text-danger mb-2 flex w-full justify-between'>
         <span className='text-lg font-bold text-black dark:text-gray-100'>
           {title}
         </span>
@@ -37,7 +37,7 @@ export default function AlertSection({
           Cancel
         </Button>
         <Button
-          className='ml-auto ms-2'
+          className='ms-2'
           onClick={() => {
             setShow(false);
             onClick();

@@ -41,7 +41,7 @@ export default function Mapping() {
           <FaArrowLeft className='mr-2 inline-block' size='12' />
           <span>Back to manage</span>
         </NavLink>
-        <div className='mb-10 flex w-full items-center space-x-1'>
+        <div className='mb-10 flex w-full items-center gap-x-1'>
           <span className='text-lg font-bold dark:text-white'>
             Attribute Mappings
           </span>
@@ -49,7 +49,7 @@ export default function Mapping() {
         </div>
         <div>
           <AddMapping mappings={mappings} setMappings={setMappings} />
-          <div className='space-y-4'>
+          <div className='gap-y-4'>
             {[
               ...Object.entries(attributeMappings).map(([key, value]) => {
                 return { mappingName: key, attribute: value, readOnly: true };

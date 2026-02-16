@@ -23,7 +23,7 @@ export default function PowerBlock({
   return (
     <div
       className={classNames(
-        'PowerBlock dark:text-gray-100 flex space-x-2 items-end h-full',
+        'PowerBlock dark:text-gray-100 flex gap-x-2 items-end h-full',
         className,
       )}
     >
@@ -35,7 +35,7 @@ export default function PowerBlock({
       >
         {roundToDecimals(powerValue, decimals)}
       </div>
-      <div className='mb-1 flex max-w-[3.3rem] flex-col items-start justify-end text-base font-bold leading-[1.125rem]'>
+      <div className='mb-1 flex max-w-[3.3rem] flex-col items-start justify-end text-base leading-[1.125rem] font-bold'>
         <div className='text-gray-400'>{unitPrefix + unit}</div>
         <div>{title}</div>
       </div>

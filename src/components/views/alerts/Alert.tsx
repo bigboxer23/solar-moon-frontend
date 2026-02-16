@@ -55,8 +55,8 @@ export default function Alert({ alert, active }: AlertProps): ReactElement {
       className={alertClass}
       to={`/reports?deviceId=${alert.deviceId}${reportTimeLink}`}
     >
-      <div className='flex flex-col space-y-1'>
-        <div className='flex flex-col space-y-1 sm:flex-row sm:space-y-0'>
+      <div className='flex flex-col gap-y-1'>
+        <div className='flex flex-col gap-y-1 sm:flex-row sm:gap-y-0'>
           <div className='mr-3 text-sm'>
             <span className='mr-1.5 font-bold'>Device:</span>
             {alert.deviceName ? alert.deviceName : alert.deviceId}
@@ -73,7 +73,7 @@ export default function Alert({ alert, active }: AlertProps): ReactElement {
           {formatMessage(alert.message)}
         </div>
       </div>
-      <div className='mb-1 flex flex-row justify-between space-x-1 text-xs italic sm:mb-0 sm:flex-col sm:items-end'>
+      <div className='mb-1 flex flex-row justify-between gap-x-1 text-xs italic sm:mb-0 sm:flex-col sm:items-end'>
         {alert.state === 1 && (
           <Tippy
             content={`Starting at ${getFormattedTime(new Date(alert.startDate))}`}
