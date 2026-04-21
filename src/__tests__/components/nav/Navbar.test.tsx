@@ -376,7 +376,7 @@ describe('Navbar', () => {
         'h-[4.5rem]',
         'w-full',
         'items-center',
-        'justify-between',
+        'justify-center',
         'border-b',
         'border-gray-400',
         'dark:border-b-0',
