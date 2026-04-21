@@ -68,7 +68,7 @@ export function debounce<T extends (...args: never[]) => void>(
   fn: T,
   ms: number,
 ): (...args: Parameters<T>) => void {
-  let timer: NodeJS.Timeout | null = null;
+  let timer: ReturnType<typeof setTimeout> | null = null;
   return (...args: Parameters<T>) => {
     if (timer) {
       clearTimeout(timer);
