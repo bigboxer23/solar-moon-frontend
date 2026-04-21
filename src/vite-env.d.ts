@@ -1,4 +1,7 @@
-// / <reference types="vite/client" />
+/// <reference types="vite/client" />
+
+declare module '*.css' {}
+declare module '*.scss' {}
 
 interface ImportMetaEnv {
   readonly VITE_STRIPE_PK?: string;

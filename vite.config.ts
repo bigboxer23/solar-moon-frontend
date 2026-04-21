@@ -30,10 +30,16 @@ export default defineConfig({
     sourcemap: true,
     rollupOptions: {
       output: {
-        manualChunks: {
-          react: ['react', 'react-dom', 'react-router-dom'],
-          aws: ['aws-amplify', '@aws-amplify/ui-react'],
-          charts: ['chart.js', 'react-chartjs-2'],
+        manualChunks(id) {
+          if (['react', 'react-dom', 'react-router-dom'].some(pkg => id.includes(`/node_modules/${pkg}/`))) {
+            return 'react';
+          }
+          if (['aws-amplify', '@aws-amplify/ui-react'].some(pkg => id.includes(`/node_modules/${pkg}/`))) {
+            return 'aws';
+          }
+          if (['chart.js', 'react-chartjs-2'].some(pkg => id.includes(`/node_modules/${pkg}/`))) {
+            return 'charts';
+          }
         },
       },
     },

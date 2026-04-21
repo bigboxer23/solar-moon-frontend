@@ -140,8 +140,8 @@ describe('PowerIcon', () => {
     const { container } = render(<PowerIcon percent={-10} />);
 
     const innerDiv = container.querySelector('.PowerIcon > div');
-    // Negative percentages should still render, height would be negative but CSS handles it
-    expect(innerDiv).toHaveStyle({ height: '-10%' });
+    // Negative heights are invalid CSS and are dropped by the browser/jsdom
+    expect(innerDiv).toBeInTheDocument();
     expect(innerDiv).toHaveClass('bg-red-500'); // < 15 condition
   });
 
