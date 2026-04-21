@@ -31,13 +31,25 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id) {
-          if (['react', 'react-dom', 'react-router-dom'].some(pkg => id.includes(`/node_modules/${pkg}/`))) {
+          if (
+            ['react', 'react-dom', 'react-router-dom'].some((pkg) =>
+              id.includes(`/node_modules/${pkg}/`),
+            )
+          ) {
             return 'react';
           }
-          if (['aws-amplify', '@aws-amplify/ui-react'].some(pkg => id.includes(`/node_modules/${pkg}/`))) {
+          if (
+            ['aws-amplify', '@aws-amplify/ui-react'].some((pkg) =>
+              id.includes(`/node_modules/${pkg}/`),
+            )
+          ) {
             return 'aws';
           }
-          if (['chart.js', 'react-chartjs-2'].some(pkg => id.includes(`/node_modules/${pkg}/`))) {
+          if (
+            ['chart.js', 'react-chartjs-2'].some((pkg) =>
+              id.includes(`/node_modules/${pkg}/`),
+            )
+          ) {
             return 'charts';
           }
         },
