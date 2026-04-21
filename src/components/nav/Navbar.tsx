@@ -71,62 +71,66 @@ export default function Navbar({ trialDate }: NavbarProps): ReactElement {
 
   return (
     <>
-      <div className='Navbar2 flex h-[4.5rem] w-full items-center justify-between border-b border-gray-400 dark:border-b-0 sm:h-[6.25rem]'>
-        <NavLink className='flex items-center justify-center' to='/'>
-          <img
-            alt='brand'
-            className='ml-6 size-10 sm:ml-8 sm:size-12'
-            src={logo}
-          />
-        </NavLink>
-        <div className='flex items-center justify-center sm:hidden'>
-          <span className='text-xl font-bold text-black dark:text-gray-100'>
-            {getPageName(location)}
-          </span>
-        </div>
-        <nav className='hidden items-center sm:flex sm:gap-x-6 md:gap-x-12 lg:gap-x-10'>
-          <NavLink
-            className={({ isActive }) =>
-              isActive ? activeLinkStyle : linkStyle
-            }
-            to='/'
-          >
-            Dashboard
+      <div className='Navbar2 flex h-[4.5rem] w-full items-center justify-center border-b border-gray-400 dark:border-b-0 sm:h-[6.25rem]'>
+        <div className='flex w-[55rem] max-w-full items-center justify-between'>
+          <NavLink className='flex items-center justify-center' to='/'>
+            <img
+              alt='brand'
+              className='ml-6 size-10 sm:ml-8 sm:size-12'
+              src={logo}
+            />
           </NavLink>
-          <LuSun className={separatorStyle} />
-          <NavLink
-            className={({ isActive }) =>
-              isActive ? activeLinkStyle : linkStyle
-            }
-            to='/reports'
-          >
-            Reports
-          </NavLink>
-          <LuSun className={separatorStyle} />
-          <NavLink
-            className={({ isActive }) =>
-              isActive ? activeLinkStyle : linkStyle
-            }
-            to='/alerts'
-          >
-            Alerts
-          </NavLink>
-          <LuSun className={separatorStyle} />
-          <NavLink
-            className={({ isActive }) =>
-              isActive ? activeLinkStyle : linkStyle
-            }
-            to='/manage'
-          >
-            Manage
-          </NavLink>
-        </nav>
-        {/* annoying hack because this thing has bizarre positioning */}
-        <div className='mr-8 hidden items-center justify-center sm:flex'>
-          <ProfileMenu trialDate={trialDate} />
-        </div>
-        <div className='mr-6 flex items-center justify-center text-black dark:text-gray-100 sm:hidden'>
-          <FaBars className='text-2xl' onClick={() => setSlideMenuOpen(true)} />
+          <div className='flex items-center justify-center sm:hidden'>
+            <span className='text-xl font-bold text-black dark:text-gray-100'>
+              {getPageName(location)}
+            </span>
+          </div>
+          <nav className='hidden items-center sm:flex sm:gap-x-6 md:gap-x-12 lg:gap-x-10'>
+            <NavLink
+              className={({ isActive }) =>
+                isActive ? activeLinkStyle : linkStyle
+              }
+              to='/'
+            >
+              Dashboard
+            </NavLink>
+            <LuSun className={separatorStyle} />
+            <NavLink
+              className={({ isActive }) =>
+                isActive ? activeLinkStyle : linkStyle
+              }
+              to='/reports'
+            >
+              Reports
+            </NavLink>
+            <LuSun className={separatorStyle} />
+            <NavLink
+              className={({ isActive }) =>
+                isActive ? activeLinkStyle : linkStyle
+              }
+              to='/alerts'
+            >
+              Alerts
+            </NavLink>
+            <LuSun className={separatorStyle} />
+            <NavLink
+              className={({ isActive }) =>
+                isActive ? activeLinkStyle : linkStyle
+              }
+              to='/manage'
+            >
+              Manage
+            </NavLink>
+          </nav>
+          <div className='mr-8 hidden items-center justify-center sm:flex'>
+            <ProfileMenu trialDate={trialDate} />
+          </div>
+          <div className='mr-6 flex items-center justify-center text-black dark:text-gray-100 sm:hidden'>
+            <FaBars
+              className='text-2xl'
+              onClick={() => setSlideMenuOpen(true)}
+            />
+          </div>
         </div>
       </div>
       <div
