@@ -33,7 +33,6 @@
 
     "noEmit": true,
     "forceConsistentCasingInFileNames": true
-
   },
   "include": ["src/**/*"],
   "exclude": [
