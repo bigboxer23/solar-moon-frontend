@@ -2,7 +2,7 @@ import Tippy from '@tippyjs/react';
 import classNames from 'classnames';
 import { formatDistance } from 'date-fns';
 import type { ReactElement } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router';
 
 import { HOUR } from '../../../services/search';
 import {

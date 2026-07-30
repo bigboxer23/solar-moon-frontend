@@ -1,7 +1,7 @@
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import React, { useState } from 'react';
 import { TbUserCancel } from 'react-icons/tb';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 import { deleteCustomer } from '../../../services/services';
 import AlertSection from '../../common/AlertSection';

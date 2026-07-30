@@ -5,7 +5,7 @@ import {
 import { loadStripe, Stripe } from '@stripe/stripe-js';
 import { useEffect, useState } from 'react';
 import { FaArrowLeft } from 'react-icons/fa';
-import { NavLink, useSearchParams } from 'react-router-dom';
+import { NavLink, useSearchParams } from 'react-router';
 
 import { checkout } from '../../../services/services';
 import Loader from '../../common/Loader';

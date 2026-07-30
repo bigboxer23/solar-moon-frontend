@@ -1,16 +1,14 @@
 import { render, screen } from '@testing-library/react';
 import React from 'react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 import { vi } from 'vitest';
 
 import App from '../App';
 import { useStickyState } from '../utils/Utils';
 
-vi.mock('react-router-dom', async () => {
+vi.mock('react-router', async () => {
   const actualModule =
-    await vi.importActual<typeof import('react-router-dom')>(
-      'react-router-dom',
-    );
+    await vi.importActual<typeof import('react-router')>('react-router');
   return {
     ...actualModule,
     BrowserRouter: ({ children }: { children: React.ReactNode }) => children,

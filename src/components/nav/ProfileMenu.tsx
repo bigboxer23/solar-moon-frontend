@@ -2,7 +2,7 @@ import { fetchUserAttributes } from '@aws-amplify/auth';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { Menu, MenuButton, MenuItem } from '@szhsin/react-menu';
 import { ReactElement, useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router';
 
 import { getDaysLeftInTrial } from '../../utils/Utils';
 import Avatar from '../common/Avatar';

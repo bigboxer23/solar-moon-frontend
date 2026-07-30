@@ -32,7 +32,7 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (
-            ['react', 'react-dom', 'react-router-dom'].some((pkg) =>
+            ['react', 'react-dom', 'react-router'].some((pkg) =>
               id.includes(`/node_modules/${pkg}/`),
             )
           ) {
@@ -63,7 +63,7 @@ export default defineConfig({
     include: [
       'react',
       'react-dom',
-      'react-router-dom',
+      'react-router',
       'aws-amplify',
       '@aws-amplify/ui-react',
     ],

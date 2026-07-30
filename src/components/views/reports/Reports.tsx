@@ -7,7 +7,7 @@ import type { Column, DataGridHandle, RenderCellProps } from 'react-data-grid';
 import { DataGrid } from 'react-data-grid';
 import { FaArrowLeft } from 'react-icons/fa';
 import { useIntl } from 'react-intl';
-import { NavLink, useSearchParams } from 'react-router-dom';
+import { NavLink, useSearchParams } from 'react-router';
 
 import { ALL, DAY } from '../../../services/search';
 import { getDataPage, getDevices } from '../../../services/services';

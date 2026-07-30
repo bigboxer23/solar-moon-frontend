@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { ReactElement, ReactNode } from 'react';
 import { FaArrowRight } from 'react-icons/fa';
 import { MdOutlineInfo } from 'react-icons/md';
-import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router';
 
 import {
   TIPPY_DELAY,

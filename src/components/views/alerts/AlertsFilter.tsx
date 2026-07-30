@@ -1,7 +1,7 @@
 import type { ReactElement, ReactNode } from 'react';
 import { useEffect, useState } from 'react';
 import { FaRotate } from 'react-icons/fa6';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 
 import { ALL } from '../../../services/search';
 import Button from '../../common/Button';

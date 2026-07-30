@@ -20,19 +20,17 @@ jobs:
           node-version: 22
       - name: Install dependencies
         run: npm install --legacy-peer-deps
-      - name: Setup aws-exports.js
-        run: echo $AWS_EXPORTS_JS >> ./src/aws-exports.js
-        shell: bash
-        env:
-          AWS_EXPORTS_JS: ${{secrets.AWS_EXPORTS}}
       - name: Setup env
-        run: echo $REACT_APP_STRIPE_PK >> ./.env;echo $REACT_APP_PRICE_MO >> ./.env;echo $REACT_APP_PRICE_YR >> ./.env;echo $REACT_APP_ACCESS_CODE >> ./.env
+        run: echo $REACT_APP_STRIPE_PK >> ./.env;echo $REACT_APP_PRICE_MO >> ./.env;echo $REACT_APP_PRICE_YR >> ./.env;echo $REACT_APP_ACCESS_CODE >> ./.env;echo $COGNITO_USER_POOL_ID >> ./.env;echo $COGNITO_USER_POOL_CLIENT_ID >> ./.env;echo $COGNITO_IDENTITY_POOL_ID >> ./.env
         shell: bash
         env:
           REACT_APP_STRIPE_PK: ${{secrets.REACT_APP_STRIPE_PK}}
           REACT_APP_PRICE_MO: ${{secrets.REACT_APP_PRICE_MO}}
           REACT_APP_PRICE_YR: ${{secrets.REACT_APP_PRICE_YR}}
           REACT_APP_ACCESS_CODE: ${{secrets.REACT_APP_ACCESS_CODE}}
+          COGNITO_USER_POOL_ID: ${{secrets.COGNITO_USER_POOL_ID}}
+          COGNITO_USER_POOL_CLIENT_ID: ${{secrets.COGNITO_USER_POOL_CLIENT_ID}}
+          COGNITO_IDENTITY_POOL_ID: ${{secrets.COGNITO_IDENTITY_POOL_ID}}
       - name: NPM Install
         run: npm install --legacy-peer-deps
         env:
