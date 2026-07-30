@@ -5,7 +5,7 @@ import { FaBars } from 'react-icons/fa';
 import { FaXmark } from 'react-icons/fa6';
 import { LuSun } from 'react-icons/lu';
 import { MdOutlineInfo } from 'react-icons/md';
-import { Location, NavLink, useLocation } from 'react-router-dom';
+import { Location, NavLink, useLocation } from 'react-router';
 import { useOnClickOutside } from 'usehooks-ts';
 
 // @ts-ignore - SVG import handled by webpack

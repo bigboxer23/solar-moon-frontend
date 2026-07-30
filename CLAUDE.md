@@ -9,7 +9,7 @@ React frontend for solar monitoring application with AWS Amplify authentication,
 - **TypeScript 5.9** with strict mode enabled
 - **React 19** with functional components and hooks
 - **AWS Amplify** for authentication and API
-- **React Router v6** for navigation
+- **React Router v8** for navigation (import from `react-router`; `react-router-dom` is discontinued)
 - **Vite** for development and build tooling
 - **Tailwind CSS** for styling
 - **Vitest + React Testing Library** for testing
@@ -155,11 +155,9 @@ import { vi } from 'vitest';
 const mockFn = vi.fn() as ReturnType<typeof vi.fn>;
 
 // Async imports for partial mocks
-vi.mock('react-router-dom', async () => {
+vi.mock('react-router', async () => {
   const actual =
-    await vi.importActual<typeof import('react-router-dom')>(
-      'react-router-dom',
-    );
+    await vi.importActual<typeof import('react-router')>('react-router');
   return {
     ...actual,
     useNavigate: vi.fn(),

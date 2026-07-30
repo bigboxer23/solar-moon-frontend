@@ -6,7 +6,7 @@ import {
   MdOutlineAdd,
   MdSettingsInputComposite,
 } from 'react-icons/md';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router';
 
 import {
   getDevice,

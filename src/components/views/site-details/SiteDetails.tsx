@@ -1,7 +1,7 @@
 import type { Dispatch, ReactElement, SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
-import { NavLink, useMatch, useNavigate } from 'react-router-dom';
+import { NavLink, useMatch, useNavigate } from 'react-router';
 
 import {
   AVG_AGGREGATION,

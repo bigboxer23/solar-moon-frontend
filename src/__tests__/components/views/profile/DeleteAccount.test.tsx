@@ -1,7 +1,7 @@
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { vi } from 'vitest';
 
 import DeleteAccount from '../../../../components/views/profile/DeleteAccount';
@@ -12,7 +12,7 @@ vi.mock('@aws-amplify/ui-react', () => ({
   useAuthenticator: vi.fn(),
 }));
 
-vi.mock('react-router-dom', () => ({
+vi.mock('react-router', () => ({
   useNavigate: vi.fn(),
 }));
 

@@ -1,7 +1,7 @@
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { useEffect, useState } from 'react';
 import { FaArrowLeft } from 'react-icons/fa';
-import { createSearchParams, useNavigate } from 'react-router-dom';
+import { createSearchParams, useNavigate } from 'react-router';
 
 import { MONTH } from '../../../services/search';
 import {

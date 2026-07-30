@@ -2,7 +2,7 @@ import { fetchUserAttributes } from '@aws-amplify/auth';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { ReactElement } from 'react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 import { vi } from 'vitest';
 
 import ProfileMenu from '../../../components/nav/ProfileMenu';

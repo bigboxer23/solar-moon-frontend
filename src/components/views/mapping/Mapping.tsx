@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { FaArrowLeft } from 'react-icons/fa';
-import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router';
 
 import { deleteMapping, getMappings } from '../../../services/services';
 import type { Mapping as MappingType } from '../../../types/models';

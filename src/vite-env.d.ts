@@ -9,6 +9,9 @@ interface ImportMetaEnv {
   readonly VITE_PRICE_YR?: string;
   readonly VITE_NEW_UI?: string;
   readonly VITE_ACCESS_CODE?: string;
+  readonly VITE_USER_POOL_ID: string;
+  readonly VITE_USER_POOL_CLIENT_ID: string;
+  readonly VITE_IDENTITY_POOL_ID: string;
 }
 
 interface ImportMeta {

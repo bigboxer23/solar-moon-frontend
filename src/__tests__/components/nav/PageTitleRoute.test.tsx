@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import { ReactElement } from 'react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 
 import PageTitle from '../../../components/nav/PageTitleRoute';
 

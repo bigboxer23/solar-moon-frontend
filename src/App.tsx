@@ -17,14 +17,8 @@ import {
 } from 'chart.js';
 import type { ReactElement } from 'react';
 import { IntlProvider } from 'react-intl';
-import {
-  BrowserRouter as Router,
-  Navigate,
-  Route,
-  Routes,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router';
 
-import awsExports from './aws-exports';
 import { Footer } from './components/login/Footer';
 import { Header } from './components/login/Header';
 import { SignInFooter } from './components/login/SignInFooter';
@@ -57,7 +51,22 @@ ChartJS.register(
   TimeScale,
 );
 
-Amplify.configure(awsExports);
+Amplify.configure({
+  Auth: {
+    Cognito: {
+      userPoolId: import.meta.env.VITE_USER_POOL_ID,
+      userPoolClientId: import.meta.env.VITE_USER_POOL_CLIENT_ID,
+      identityPoolId: import.meta.env.VITE_IDENTITY_POOL_ID,
+      loginWith: { email: true },
+      userAttributes: {
+        email: { required: true },
+        name: { required: true },
+      },
+      passwordFormat: { minLength: 8 },
+      signUpVerificationMethod: 'code',
+    },
+  },
+});
 
 function App(): ReactElement {
   const components = {
