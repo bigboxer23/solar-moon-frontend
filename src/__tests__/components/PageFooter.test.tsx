@@ -87,8 +87,23 @@ describe('PageFooter', () => {
 
     const paragraph = container.querySelector('p');
     expect(paragraph!.textContent).toMatch(
-      /^Copyright © \d{4} Solar Moon Analytics, LLC$/,
+      /^Copyright © \d{4} Solar Moon Analytics, LLC · \S+$/,
     );
+  });
+
+  test('renders the build version', () => {
+    const { container } = render(<PageFooter />);
+
+    // The __BUILD_* globals are only injected by Vite at build time, so tests
+    // exercise the fallbacks.
+    expect(container.textContent).toContain('· dev');
+  });
+
+  test('exposes build detail as a tooltip', () => {
+    const { container } = render(<PageFooter />);
+
+    const build = container.querySelector('span');
+    expect(build).toHaveAttribute('title', 'Build dev (local)');
   });
 
   test('uses current year dynamically', () => {
