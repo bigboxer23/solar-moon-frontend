@@ -253,7 +253,7 @@ export default function Alerts({ setTrialDate }: AlertsProps): ReactElement {
               setRefreshSearch={setRefreshSearch}
             />
           </div>
-          <div className='mb-8 gap-y-4'>
+          <div className='mb-8 flex flex-col gap-y-4'>
             {filteredActiveAlerts.length === 0 && (
               <div className='flex size-full items-center justify-center px-6 text-center text-base text-gray-400'>
                 All clear! You have no active device alerts.
