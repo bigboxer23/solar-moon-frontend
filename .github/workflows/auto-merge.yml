@@ -15,5 +15,8 @@ jobs:
       - name: Enable auto-merge for Dependabot PR
         uses: peter-evans/enable-pull-request-automerge@v3
         with:
+          # A PAT (stored as a Dependabot secret) instead of GITHUB_TOKEN, so the
+          # resulting push to master triggers the deploy and CI workflows.
+          token: ${{ secrets.AUTOMERGE_PAT }}
           pull-request-number: ${{ github.event.pull_request.number }}
           merge-method: squash # or 'merge' or 'rebase'
