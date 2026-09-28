@@ -373,14 +373,14 @@ describe('Navbar', () => {
       const navbar = container.querySelector('.Navbar2');
       expect(navbar).toHaveClass(
         'flex',
-        'h-[4.5rem]',
+        'h-18',
         'w-full',
         'items-center',
         'justify-center',
         'border-b',
         'border-gray-400',
         'dark:border-b-0',
-        'sm:h-[6.25rem]',
+        'sm:h-25',
       );
     });
 

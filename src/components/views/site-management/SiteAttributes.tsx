@@ -103,7 +103,7 @@ const SiteAttributes = ({
         <div className='flex'>
           <div className='grow'>
             <ControlledInput
-              className='grow-1 mb-6'
+              className='mb-6 grow'
               control={control as unknown as Control}
               errorMessage={errors.city?.message}
               label='City'
@@ -112,7 +112,7 @@ const SiteAttributes = ({
             />
           </div>
           <ControlledInput
-            className='mb-6 ms-6'
+            className='ms-6 mb-6'
             control={control as unknown as Control}
             errorMessage={errors.state?.message}
             label='State, Province, or Region'

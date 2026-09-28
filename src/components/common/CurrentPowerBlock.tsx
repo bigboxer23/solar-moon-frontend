@@ -37,7 +37,7 @@ export default function CurrentPowerBlock({
     >
       <div
         className={classNames(
-          'PowerBlock dark:text-gray-100 flex gap-x-2 items-end',
+          'PowerBlock flex items-end gap-x-2 dark:text-gray-100',
           className,
         )}
         onTouchStart={(e) => e.preventDefault()}

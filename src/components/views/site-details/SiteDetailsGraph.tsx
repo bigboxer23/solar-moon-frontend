@@ -200,7 +200,7 @@ export default function SiteDetailsGraph({
             <button
               aria-label='site stacked line graph'
               className={classNames(
-                'rounded-l dark:border-gray-600 px-2 py-1 hover:bg-gray-200 dark:hover:bg-gray-500 dark:hover:text-gray-100',
+                'rounded-l px-2 py-1 hover:bg-gray-200 dark:border-gray-600 dark:hover:bg-gray-500 dark:hover:text-gray-100',
                 {
                   'bg-gray-300 dark:text-black': graphType === GROUPED_BAR,
                 },
@@ -224,7 +224,7 @@ export default function SiteDetailsGraph({
             <button
               aria-label='grouped bar graph'
               className={classNames(
-                'dark:border-gray-600 px-2 py-1 hover:bg-gray-200 dark:hover:bg-gray-500 dark:hover:text-gray-100',
+                'px-2 py-1 hover:bg-gray-200 dark:border-gray-600 dark:hover:bg-gray-500 dark:hover:text-gray-100',
                 {
                   'bg-gray-300 dark:text-black': graphType === 'overview',
                 },
@@ -236,7 +236,7 @@ export default function SiteDetailsGraph({
             <button
               aria-label='overview graph'
               className={classNames(
-                'rounded-r dark:border-gray-600 px-2 py-1 hover:bg-gray-200 dark:hover:bg-gray-500 dark:hover:text-gray-100',
+                'rounded-r px-2 py-1 hover:bg-gray-200 dark:border-gray-600 dark:hover:bg-gray-500 dark:hover:text-gray-100',
                 {
                   'bg-gray-300 dark:text-black': graphType === 'line',
                 },

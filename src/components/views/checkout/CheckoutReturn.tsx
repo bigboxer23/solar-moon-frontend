@@ -40,7 +40,7 @@ const Return = (): React.ReactElement => {
         <div>
           {loading && <Loader />}
           {status === 'complete' && (
-            <main className='fade-in my-8 w-[25rem] max-w-full rounded-lg bg-white p-6 shadow-panel dark:bg-gray-800 sm:w-[55rem] sm:p-8'>
+            <main className='fade-in my-8 w-100 max-w-full rounded-lg bg-white p-6 shadow-panel sm:w-220 sm:p-8 dark:bg-gray-800'>
               <p>
                 Thank you, we appreciate your business!
                 <br />

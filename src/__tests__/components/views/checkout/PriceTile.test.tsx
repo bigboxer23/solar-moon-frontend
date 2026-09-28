@@ -193,23 +193,21 @@ describe('PriceTile', () => {
     expect(priceTile).toHaveClass(
       'PriceTile',
       'fade-in',
-      'grow-1',
+      'grow',
       'm-3',
       'my-8',
-      'me-2',
-      'ms-2',
+      'mx-2',
       'flex',
-      'min-h-[17rem]',
+      'min-h-68',
       'w-full',
-      'max-w-[17rem]',
+      'max-w-68',
       'flex-col',
       'rounded-lg',
       'bg-white',
       'p-8',
       'shadow-panel',
       'dark:bg-gray-800',
-      'sm:me-5',
-      'sm:ms-5',
+      'sm:mx-5',
     );
   });
 

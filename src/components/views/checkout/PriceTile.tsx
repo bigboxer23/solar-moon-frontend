@@ -27,7 +27,7 @@ function PriceTile({
   showBottomContent = true,
 }: PriceTileProps): React.ReactElement {
   return (
-    <div className='PriceTile fade-in grow-1 m-3 my-8 me-2 ms-2 flex min-h-[17rem] w-full max-w-[17rem] flex-col rounded-lg bg-white p-8 shadow-panel dark:bg-gray-800 sm:me-5 sm:ms-5 '>
+    <div className='PriceTile fade-in m-3 mx-2 my-8 flex min-h-68 w-full max-w-68 grow flex-col rounded-lg bg-white p-8 shadow-panel sm:mx-5 dark:bg-gray-800 '>
       <div className='flex h-full flex-col'>
         <div className='mb-3 flex items-center'>
           <div className='text-xl font-bold text-black dark:text-gray-100'>
@@ -65,7 +65,7 @@ function PriceTile({
         <div className='grow' />
         {showBottomContent && (
           <>
-            <div className='mb-1 me-2 self-start text-sm text-gray-500 dark:text-gray-400'>
+            <div className='me-2 mb-1 self-start text-sm text-gray-500 dark:text-gray-400'>
               Seats
             </div>
             <QuantityPicker

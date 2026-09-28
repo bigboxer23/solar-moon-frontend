@@ -118,10 +118,10 @@ describe('NewSiteExampleDialog', () => {
 
     const image = screen.getByRole('img');
     expect(image).toHaveClass(
-      'max-w-[300px]',
+      'max-w-75',
       'rounded-xl',
       'object-fill',
-      'sm:max-w-[400px]',
+      'sm:max-w-100',
     );
   });
 

@@ -176,7 +176,7 @@ describe('CheckoutForm', () => {
       'fade-in',
       'ml-6',
       'flex',
-      'w-[55rem]',
+      'w-220',
       'max-w-full',
       'flex-col',
       'dark:bg-gray-800',

@@ -103,13 +103,13 @@ describe('HeaderBar', () => {
       expect(navbar).toHaveClass(
         'Navbar',
         'flex',
-        'h-[4.5rem]',
+        'h-18',
         'w-full',
         'items-center',
         'border-b',
         'border-gray-400',
         'dark:border-0',
-        'sm:h-[6.25rem]',
+        'sm:h-25',
       );
     });
 
@@ -158,7 +158,7 @@ describe('HeaderBar', () => {
       const { container } = render(<HeaderBar headerText='Test Page' />);
 
       const navbar = container.querySelector('.Navbar');
-      expect(navbar).toHaveClass('h-[4.5rem]', 'sm:h-[6.25rem]');
+      expect(navbar).toHaveClass('h-18', 'sm:h-25');
     });
 
     test('has responsive logo size classes', () => {

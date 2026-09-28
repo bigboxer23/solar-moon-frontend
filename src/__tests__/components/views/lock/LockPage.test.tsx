@@ -134,7 +134,7 @@ describe('LockPage', () => {
       'fade-in',
       'my-8',
       'flex',
-      'w-[30rem]',
+      'w-120',
       'max-w-full',
       'flex-col',
       'content-center',

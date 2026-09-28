@@ -172,14 +172,14 @@ describe('CheckoutReturn', () => {
       expect(successPanel).toHaveClass(
         'fade-in',
         'my-8',
-        'w-[25rem]',
+        'w-100',
         'max-w-full',
         'rounded-lg',
         'bg-white',
         'p-6',
         'shadow-panel',
         'dark:bg-gray-800',
-        'sm:w-[55rem]',
+        'sm:w-220',
         'sm:p-8',
       );
     });

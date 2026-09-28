@@ -72,15 +72,15 @@ describe('Modal', () => {
     expect(dialog).toHaveClass(
       'Modal',
       'fixed',
-      '!top-[10%]',
+      'top-[10%]!',
       'z-10',
-      '!mx-auto',
+      'mx-auto!',
       'w-full',
       'rounded-xl',
       'bg-white',
       'shadow-modal',
       'dark:bg-gray-800',
-      'sm:!top-1/4',
+      'sm:top-1/4!',
     );
   });
 

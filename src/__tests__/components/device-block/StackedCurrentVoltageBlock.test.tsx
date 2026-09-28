@@ -109,7 +109,7 @@ describe('StackedCurrentVoltageBlock', () => {
     );
 
     const emptyDiv = container.querySelector('div');
-    expect(emptyDiv).toHaveClass('min-h-[52px]');
+    expect(emptyDiv).toHaveClass('min-h-13');
     expect(
       document.querySelector('[data-testid="stacked-stat-block"]'),
     ).not.toBeInTheDocument();
@@ -121,7 +121,7 @@ describe('StackedCurrentVoltageBlock', () => {
     );
 
     const emptyDiv = container.querySelector('div');
-    expect(emptyDiv).toHaveClass('min-h-[52px]');
+    expect(emptyDiv).toHaveClass('min-h-13');
     expect(
       document.querySelector('[data-testid="stacked-stat-block"]'),
     ).not.toBeInTheDocument();
@@ -133,7 +133,7 @@ describe('StackedCurrentVoltageBlock', () => {
     );
 
     const emptyDiv = container.querySelector('div');
-    expect(emptyDiv).toHaveClass('min-h-[52px]');
+    expect(emptyDiv).toHaveClass('min-h-13');
     expect(
       document.querySelector('[data-testid="stacked-stat-block"]'),
     ).not.toBeInTheDocument();
@@ -208,7 +208,7 @@ describe('StackedCurrentVoltageBlock', () => {
     );
 
     const emptyDiv = container.querySelector('div');
-    expect(emptyDiv).toHaveClass('min-h-[52px]');
+    expect(emptyDiv).toHaveClass('min-h-13');
     expect(emptyDiv).toBeEmptyDOMElement();
   });
 

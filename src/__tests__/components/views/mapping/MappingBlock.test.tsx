@@ -114,7 +114,7 @@ describe('MappingBlock', () => {
   test('renders arrow with correct styling', () => {
     const { container } = render(<MappingBlock {...defaultProps} />);
 
-    const arrowSpan = container.querySelector('.pe-2.ps-2');
+    const arrowSpan = container.querySelector('.px-2');
     expect(arrowSpan).toBeInTheDocument();
     expect(arrowSpan).toHaveTextContent('->');
   });

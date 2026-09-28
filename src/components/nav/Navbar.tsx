@@ -71,8 +71,8 @@ export default function Navbar({ trialDate }: NavbarProps): ReactElement {
 
   return (
     <>
-      <div className='Navbar2 flex h-[4.5rem] w-full items-center justify-center border-b border-gray-400 dark:border-b-0 sm:h-[6.25rem]'>
-        <div className='flex w-[55rem] max-w-full items-center justify-between'>
+      <div className='Navbar2 flex h-18 w-full items-center justify-center border-b border-gray-400 sm:h-25 dark:border-b-0'>
+        <div className='flex w-220 max-w-full items-center justify-between'>
           <NavLink className='flex items-center justify-center' to='/'>
             <img
               alt='brand'
@@ -125,7 +125,7 @@ export default function Navbar({ trialDate }: NavbarProps): ReactElement {
           <div className='mr-8 hidden items-center justify-center sm:flex'>
             <ProfileMenu trialDate={trialDate} />
           </div>
-          <div className='mr-6 flex items-center justify-center text-black dark:text-gray-100 sm:hidden'>
+          <div className='mr-6 flex items-center justify-center text-black sm:hidden dark:text-gray-100'>
             <FaBars
               className='text-2xl'
               onClick={() => setSlideMenuOpen(true)}
@@ -135,7 +135,7 @@ export default function Navbar({ trialDate }: NavbarProps): ReactElement {
       </div>
       <div
         className={classNames(
-          'Navbar2SlideMenu fixed top-0 right-0 h-screen w-3/4 bg-white dark:bg-gray-900 shadow-panel z-10 transition-all duration-300 ease-in-out pl-10 pt-6 pr-6',
+          'Navbar2SlideMenu fixed top-0 right-0 z-10 h-screen w-3/4 bg-white pt-6 pr-6 pl-10 shadow-panel transition-all duration-300 ease-in-out dark:bg-gray-900',
           {
             'translate-x-0': slideMenuOpen,
             'translate-x-full': !slideMenuOpen,

@@ -42,7 +42,7 @@ export default function DeviceBlock({
   const hoverSubtitle =
     subtitle && subtitle.length === truncatedSubtitle.length ? '' : subtitle;
   const style = classNames(
-    'DeviceBlock rounded-lg p-4 sm:p-6 bg-gray-50 dark:bg-gray-700 h-fit',
+    'DeviceBlock h-fit rounded-lg bg-gray-50 p-4 sm:p-6 dark:bg-gray-700',
     className,
   );
 

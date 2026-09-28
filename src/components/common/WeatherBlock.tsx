@@ -25,7 +25,7 @@ export default function WeatherBlock({
   wrapperClassName = '',
 }: WeatherBlockProps): ReactElement {
   const style = classNames(
-    'WeatherBlock text-black dark:text-gray-100 flex items-center font-bold mt-1',
+    'WeatherBlock mt-1 flex items-center font-bold text-black dark:text-gray-100',
     className,
   );
 
@@ -34,18 +34,18 @@ export default function WeatherBlock({
       {weather && (
         <div className={style}>
           <div className='flex flex-col justify-end'>
-            <span className='flex h-5 justify-end text-lg font-bold leading-5'>
+            <span className='flex h-5 justify-end text-lg leading-5 font-bold'>
               {Math.round(weather?.temperature ?? 0)}
             </span>
-            <span className='flex h-5 justify-end text-lg font-bold leading-5'>
+            <span className='flex h-5 justify-end text-lg leading-5 font-bold'>
               {weather?.uvIndex}
             </span>
           </div>
           <div className='ml-1 flex flex-col items-start justify-end'>
-            <span className='flex h-5 justify-start text-xs font-normal leading-5'>
+            <span className='flex h-5 justify-start text-xs leading-5 font-normal'>
               °F
             </span>
-            <span className='flex h-5 justify-start text-xs font-normal leading-5'>
+            <span className='flex h-5 justify-start text-xs leading-5 font-normal'>
               UVI
             </span>
           </div>

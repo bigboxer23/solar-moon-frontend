@@ -37,7 +37,7 @@ export default function Alert({ alert, active }: AlertProps): ReactElement {
     addSuffix: true,
   });
   const alertClass = classNames(
-    'Alert flex w-full justify-between text-black dark:text-gray-100 bg-[#f5f5f5] p-4 rounded-md overflow-hidden flex-col-reverse sm:flex-row',
+    'Alert flex w-full flex-col-reverse justify-between overflow-hidden rounded-md bg-grid-background-alt p-4 text-black sm:flex-row dark:text-gray-100',
     {
       'bg-danger text-white dark:bg-danger': active,
     },

@@ -27,7 +27,7 @@ export default function NewSiteExampleDialog({
         label='Creating a Site'
         onCloseClick={() => setShow(false)}
       />
-      <div className='flex flex-col-reverse items-center p-6 text-black dark:text-gray-100 sm:flex-row sm:items-start'>
+      <div className='flex flex-col-reverse items-center p-6 text-black sm:flex-row sm:items-start dark:text-gray-100'>
         <div className='p-4 text-sm'>
           <p className='indent-2'>{SITE_HELP_TEXT1}</p>
           <br />
@@ -36,7 +36,7 @@ export default function NewSiteExampleDialog({
           <p className='indent-2'>{SITE_HELP_TEXT3}</p>
         </div>
         <img
-          className='max-w-[300px] rounded-xl object-fill sm:max-w-[400px]'
+          className='max-w-75 rounded-xl object-fill sm:max-w-100'
           src={exampleSite}
         />
       </div>
