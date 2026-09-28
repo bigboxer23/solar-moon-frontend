@@ -32,7 +32,7 @@ jobs:
           node-version: 22
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        run: npm ci --legacy-peer-deps
 
       - name: Setup aws-exports.js
         run: echo $AWS_EXPORTS_JS >> ./src/aws-exports.js

@@ -23,7 +23,7 @@ jobs:
         with:
           node-version: 22
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        run: npm ci --legacy-peer-deps
       - name: Setup env
         run: echo $REACT_APP_STRIPE_PK >> ./.env;echo $REACT_APP_PRICE_MO >> ./.env;echo $REACT_APP_PRICE_YR >> ./.env;echo $REACT_APP_ACCESS_CODE >> ./.env;echo $COGNITO_USER_POOL_ID >> ./.env;echo $COGNITO_USER_POOL_CLIENT_ID >> ./.env;echo $COGNITO_IDENTITY_POOL_ID >> ./.env
         shell: bash
@@ -36,7 +36,7 @@ jobs:
           COGNITO_USER_POOL_CLIENT_ID: ${{secrets.COGNITO_USER_POOL_CLIENT_ID}}
           COGNITO_IDENTITY_POOL_ID: ${{secrets.COGNITO_IDENTITY_POOL_ID}}
       - name: NPM Install
-        run: npm install --legacy-peer-deps
+        run: npm ci --legacy-peer-deps
         env:
           CI: ''
       - name: Build
