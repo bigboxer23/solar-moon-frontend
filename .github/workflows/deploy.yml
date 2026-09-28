@@ -19,7 +19,7 @@ jobs:
           # Full history so the build can count same-day commits for the
           # build version suffix (see buildVersion in vite.config.ts).
           fetch-depth: 0
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
       - name: Install dependencies
