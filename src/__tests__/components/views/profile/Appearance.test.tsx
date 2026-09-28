@@ -39,7 +39,7 @@ describe('Appearance', () => {
       'fade-in',
       'my-8',
       'flex',
-      'w-[40rem]',
+      'w-160',
       'max-w-full',
       'flex-col',
       'bg-white',

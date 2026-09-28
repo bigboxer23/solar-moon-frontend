@@ -17,7 +17,7 @@ export default function StackedCurrentVoltageBlock({
   const style = classNames('StackedCurrentVoltage', className);
 
   if (current === 0 || voltage === 0) {
-    return <div className='min-h-[52px]' />;
+    return <div className='min-h-13' />;
   }
   return (
     <StackedStatBlock

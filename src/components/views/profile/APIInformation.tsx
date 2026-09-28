@@ -34,7 +34,7 @@ export default function APIInformation({
   };
 
   return (
-    <div className='fade-in shadow-panel my-8 w-[40rem] max-w-full bg-white p-6 sm:rounded-lg sm:p-8 dark:bg-gray-800'>
+    <div className='fade-in my-8 w-160 max-w-full bg-white p-6 shadow-panel sm:rounded-lg sm:p-8 dark:bg-gray-800'>
       <div className='mb-8 flex w-full justify-between'>
         <span className='text-lg font-bold text-black dark:text-gray-100'>
           API Information

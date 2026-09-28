@@ -40,7 +40,7 @@ const CheckoutForm = (): React.ReactElement => {
     <div>
       <HeaderBar headerText='Enter payment details' />
       <main className='flex w-full flex-col py-8'>
-        <div className='fade-in ml-6 flex w-[55rem] max-w-full flex-col dark:bg-gray-800 sm:ml-8 sm:rounded-lg'>
+        <div className='fade-in ml-6 flex w-220 max-w-full flex-col sm:ml-8 sm:rounded-lg dark:bg-gray-800'>
           <NavLink
             className='mb-4 flex items-center self-start text-sm text-gray-500 hover:underline dark:text-gray-400'
             to='/pricing'

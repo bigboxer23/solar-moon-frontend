@@ -20,10 +20,10 @@ export default function StatBlock({
 
   return (
     <div className={style} onClick={onClick}>
-      <div className='inline-block self-end text-5xl leading-[3rem] font-bold'>
+      <div className='inline-block self-end text-5xl leading-12 font-bold'>
         {value}
       </div>
-      <div className='mb-1 inline-block max-w-[3.3rem] self-end text-left text-base leading-[1.125rem] font-bold'>
+      <div className='mb-1 inline-block max-w-[3.3rem] self-end text-left text-base leading-4.5 font-bold'>
         {title}
       </div>
     </div>

@@ -125,7 +125,7 @@ export default function NewSiteDialog({
           <div className='flex gap-x-6'>
             <div className='grow'>
               <ControlledInput
-                className='grow-1 mb-6'
+                className='mb-6 grow'
                 control={control as unknown as Control}
                 errorMessage={errors.city?.message}
                 label='City'

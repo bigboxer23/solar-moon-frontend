@@ -143,7 +143,7 @@ export default function SearchBar({
   return (
     <div className='flex w-full items-center justify-center'>
       <div
-        className={classNames('flex flex-wrap items-center w-full', {
+        className={classNames('flex w-full flex-wrap items-center', {
           hidden: !searchActive,
           flex: searchActive,
         })}
@@ -227,7 +227,7 @@ export default function SearchBar({
               title: 'Reset Search',
               'aria-label': 'Refresh Search',
             }}
-            className='ml-auto mr-4'
+            className='mr-4 ml-auto'
             onClick={() => resetSearch()}
             variant='text'
           >
@@ -241,7 +241,7 @@ export default function SearchBar({
             title: 'Search',
             'aria-label': 'Search',
           }}
-          className='ml-auto mr-4'
+          className='mr-4 ml-auto'
           onClick={() => loadSearches()}
           variant='primary'
         >

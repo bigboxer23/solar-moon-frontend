@@ -147,7 +147,7 @@ describe('PowerBlock', () => {
       'self-end',
       'text-5xl',
       'font-bold',
-      'leading-[3rem]',
+      'leading-12',
     );
   });
 
@@ -166,7 +166,7 @@ describe('PowerBlock', () => {
       'justify-end',
       'text-base',
       'font-bold',
-      'leading-[1.125rem]',
+      'leading-4.5',
     );
   });
 

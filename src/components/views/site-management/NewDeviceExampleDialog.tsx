@@ -29,7 +29,7 @@ export default function NewDeviceExampleDialog({
         label='Creating a Device'
         onCloseClick={() => setShow(false)}
       />
-      <div className='flex flex-col-reverse items-center p-6 text-black dark:text-gray-100 sm:flex-row sm:items-start'>
+      <div className='flex flex-col-reverse items-center p-6 text-black sm:flex-row sm:items-start dark:text-gray-100'>
         <div className='p-4 text-sm'>
           <p className='indent-2'>
             {`${DEVICE_HELP_TEXT1} `}
@@ -54,7 +54,7 @@ export default function NewDeviceExampleDialog({
           <p className='indent-2'>{DEVICE_HELP_TEXT4}</p>
         </div>
         <img
-          className='max-w-[300px] rounded-xl object-fill sm:max-w-[400px]'
+          className='max-w-75 rounded-xl object-fill sm:max-w-100'
           src={exampleDevice}
         />
       </div>

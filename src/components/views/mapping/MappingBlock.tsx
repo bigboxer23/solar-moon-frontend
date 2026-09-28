@@ -22,7 +22,7 @@ export default function MappingBlock({
   return (
     <div className='MappingBlock flex w-full items-center overflow-hidden rounded-md bg-grid-background-alt p-4 dark:bg-gray-700 dark:text-gray-100'>
       <div className='text-sm font-extrabold'>{mappingName}</div>
-      <span className='pe-2 ps-2'>{'->'}</span>
+      <span className='px-2'>{'->'}</span>
       <div className='text-sm italic'>{attribute}</div>
       {showDelete ? (
         <Button

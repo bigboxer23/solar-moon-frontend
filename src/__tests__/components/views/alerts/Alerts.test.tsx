@@ -415,7 +415,7 @@ describe('Alerts', () => {
         expect(contentWrapper).toHaveClass(
           'fade-in',
           'my-8',
-          'w-[55rem]',
+          'w-220',
           'max-w-full',
           'bg-white',
           'p-6',

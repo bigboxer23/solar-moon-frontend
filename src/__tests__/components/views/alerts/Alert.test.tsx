@@ -155,7 +155,10 @@ describe('Alert', () => {
       );
 
       const alertElement = container.querySelector('.Alert');
-      expect(alertElement).toHaveClass('bg-[#f5f5f5]', 'dark:bg-gray-700');
+      expect(alertElement).toHaveClass(
+        'bg-grid-background-alt',
+        'dark:bg-gray-700',
+      );
       expect(alertElement).not.toHaveClass('bg-danger');
     });
 

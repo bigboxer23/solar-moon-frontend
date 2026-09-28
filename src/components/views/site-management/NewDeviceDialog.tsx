@@ -93,7 +93,7 @@ export default function NewDeviceDialog({
             variant='underline'
           />
           <ControlledInput
-            className='grow-1 mb-6'
+            className='mb-6 grow'
             control={control as unknown as Control}
             errorMessage={errors.name?.message}
             label='Display Name'

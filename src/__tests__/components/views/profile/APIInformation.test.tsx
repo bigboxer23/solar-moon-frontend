@@ -278,7 +278,7 @@ describe('APIInformation', () => {
     expect(mainContainer).toHaveClass(
       'fade-in',
       'my-8',
-      'w-[40rem]',
+      'w-160',
       'max-w-full',
       'bg-white',
       'p-6',

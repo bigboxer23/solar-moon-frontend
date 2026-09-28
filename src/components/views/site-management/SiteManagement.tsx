@@ -145,14 +145,14 @@ const SiteManagement = ({
 
   const allowed = devices.length <= devicesAllowed;
   const deviceCountClassNames = classNames('text-sm', {
-    'text-danger font-bold': !allowed,
+    'font-bold text-danger': !allowed,
     'text-gray-400': allowed,
     'opacity-0': !subscriptionAvailable,
   });
 
   return (
     <main className='SiteManagement flex max-w-full flex-col items-center justify-center '>
-      <div className='fade-in my-8 flex w-[45rem] max-w-full flex-col bg-white p-6 shadow-panel dark:bg-gray-800 sm:rounded-lg sm:p-8'>
+      <div className='fade-in my-8 flex w-180 max-w-full flex-col bg-white p-6 shadow-panel sm:rounded-lg sm:p-8 dark:bg-gray-800'>
         <div className='dark:text-gray-100'>
           <div
             className={deviceCountClassNames}

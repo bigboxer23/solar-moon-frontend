@@ -85,8 +85,8 @@ export default function StackedStatBlock({
   return (
     <div className={style} onClick={onClick}>
       <div
-        className='flex flex-row flex-wrap gap-x-1 text-end text-sm text-black dark:text-gray-100
-      xs:text-base'
+        className='flex flex-row flex-wrap gap-x-1 text-end text-sm text-black xs:text-base
+      dark:text-gray-100'
       >
         {getContent(
           upperTitle,
@@ -96,7 +96,7 @@ export default function StackedStatBlock({
           upperHoverUnit,
         )}
       </div>
-      <div className='average-output flex flex-row flex-wrap gap-x-1 text-end text-base font-bold text-black dark:text-gray-100 xs:text-lg'>
+      <div className='average-output flex flex-row flex-wrap gap-x-1 text-end text-base font-bold text-black xs:text-lg dark:text-gray-100'>
         {getContent(
           lowerTitle,
           lowerValue,

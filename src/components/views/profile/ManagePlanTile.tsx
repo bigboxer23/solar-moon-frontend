@@ -61,7 +61,7 @@ export default function ManagePlanTile(): React.ReactElement {
   };
 
   return (
-    <div className='price fade-in my-8 w-[40rem] max-w-full bg-white p-6 shadow-panel dark:bg-gray-800 sm:rounded-lg sm:p-8'>
+    <div className='price fade-in my-8 w-160 max-w-full bg-white p-6 shadow-panel sm:rounded-lg sm:p-8 dark:bg-gray-800'>
       <div className='mb-8 flex w-full justify-between'>
         <span className='text-lg font-bold text-black dark:text-gray-100'>
           Billing Information
@@ -86,11 +86,11 @@ export default function ManagePlanTile(): React.ReactElement {
               {quantity} Seats, ${price} per seat per {periodShort}
             </div>
           </div>
-          <div className='grow-1' />
+          <div className='grow' />
           <div>
             <Button
               buttonProps={{ type: 'button' }}
-              className='ml-auto mt-3'
+              className='mt-3 ml-auto'
               disabled={billingLoading}
               onClick={() => gotoPortal()}
               variant='primary'
@@ -118,11 +118,11 @@ export default function ManagePlanTile(): React.ReactElement {
               {trialDaysLeft}
             </div>
           </div>
-          <div className='grow-1' />
+          <div className='grow' />
           <div>
             <Button
               buttonProps={{ type: 'button' }}
-              className='ml-auto mt-3'
+              className='mt-3 ml-auto'
               disabled={billingLoading}
               onClick={() => (window.location.href = '/pricing')}
               variant='primary'
@@ -141,7 +141,7 @@ export default function ManagePlanTile(): React.ReactElement {
           No Active Plan
           <Button
             buttonProps={{ type: 'button' }}
-            className='ml-auto mt-3'
+            className='mt-3 ml-auto'
             disabled={billingLoading}
             onClick={() => (window.location.href = '/pricing')}
             variant='primary'

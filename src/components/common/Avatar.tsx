@@ -30,7 +30,7 @@ export default function Avatar({
   return (
     <div
       className={classNames(
-        'Avatar bg-brand-primary rounded-full text-white flex text-center justify-center items-center text-xl font-bold tracking-wider',
+        'Avatar flex items-center justify-center rounded-full bg-brand-primary text-center text-xl font-bold tracking-wider text-white',
         sizeStyle[size],
       )}
     >

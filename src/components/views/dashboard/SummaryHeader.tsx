@@ -27,9 +27,9 @@ export default function SummaryHeader({
     return Math.abs(Math.round((total / average) * 100));
   };
   return (
-    <span className='SummaryHeader mx-6 flex flex-wrap items-baseline justify-center gap-x-2 gap-y-2 py-8 text-xl font-bold text-black dark:text-gray-100'>
-      <span className='whitespace-nowrap text-center'>You have generated</span>
-      <span className='whitespace-nowrap text-center'>
+    <span className='SummaryHeader mx-6 flex flex-wrap items-baseline justify-center gap-2 py-8 text-xl font-bold text-black dark:text-gray-100'>
+      <span className='text-center whitespace-nowrap'>You have generated</span>
+      <span className='text-center whitespace-nowrap'>
         <Tippy
           content={`${intl.formatNumber(Math.round(dailyOutput))} kWh`}
           delay={TIPPY_DELAY}
@@ -37,7 +37,7 @@ export default function SummaryHeader({
         >
           <span>
             <FormattedLabel
-              className='mx-1 whitespace-nowrap text-center text-3xl font-bold text-brand-primary'
+              className='mx-1 text-center text-3xl font-bold whitespace-nowrap text-brand-primary'
               label=''
               separator=' '
               unit={`${unitPrefix}Wh`}
@@ -47,7 +47,7 @@ export default function SummaryHeader({
         </Tippy>
         {'today.'}
       </span>
-      <span className='whitespace-nowrap text-center'>
+      <span className='text-center whitespace-nowrap'>
         {"That's "}
         <Tippy
           content={
@@ -66,7 +66,7 @@ export default function SummaryHeader({
         >
           <span>
             <FormattedLabel
-              className='mx-1 whitespace-nowrap text-center text-3xl font-bold text-brand-primary'
+              className='mx-1 text-center text-3xl font-bold whitespace-nowrap text-brand-primary'
               label=''
               unit='%'
               value={calculatePercent(dailyOutput, dailyAverageOutput)}

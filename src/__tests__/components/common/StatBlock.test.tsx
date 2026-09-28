@@ -67,7 +67,7 @@ describe('StatBlock', () => {
       'self-end',
       'text-5xl',
       'font-bold',
-      'leading-[3rem]',
+      'leading-12',
     );
   });
 
@@ -83,7 +83,7 @@ describe('StatBlock', () => {
       'text-left',
       'text-base',
       'font-bold',
-      'leading-[1.125rem]',
+      'leading-4.5',
     );
   });
 

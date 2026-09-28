@@ -153,7 +153,7 @@ export default function Alerts({ setTrialDate }: AlertsProps): ReactElement {
             result[d.deviceId] = getOption(
               d,
               <div
-                className='bg-danger flex items-center rounded-md px-1 text-white'
+                className='flex items-center rounded-md bg-danger px-1 text-white'
                 title='(Active)'
               >
                 <TbAlertTriangle className='mr-1' />
@@ -235,7 +235,7 @@ export default function Alerts({ setTrialDate }: AlertsProps): ReactElement {
     <main className='Alerts flex w-full flex-col items-center justify-center'>
       {loading && <Loader />}
       {!loading && (
-        <div className='fade-in shadow-panel my-8 w-[55rem] max-w-full bg-white p-6 sm:rounded-lg sm:p-8 dark:bg-gray-800'>
+        <div className='fade-in my-8 w-220 max-w-full bg-white p-6 shadow-panel sm:rounded-lg sm:p-8 dark:bg-gray-800'>
           <div className='mb-10 flex w-full justify-between'>
             <span className='flex items-center text-lg font-bold text-black dark:text-gray-100'>
               Alerts

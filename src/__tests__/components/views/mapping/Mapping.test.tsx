@@ -246,7 +246,7 @@ describe('Mapping', () => {
       'fade-in',
       'my-8',
       'flex',
-      'w-[55rem]',
+      'w-220',
       'max-w-full',
       'flex-col',
       'bg-white',

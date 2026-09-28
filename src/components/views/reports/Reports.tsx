@@ -322,8 +322,8 @@ export default function Reports(): ReactElement {
 
   return (
     <main className='Reports flex w-full flex-col items-center sm:px-5'>
-      <div className='fade-in  my-8 flex w-[75rem] max-w-full flex-col bg-white shadow-panel dark:bg-gray-800 sm:rounded-lg '>
-        <div className='flex max-w-full pl-4 pt-4 sm:pl-8 sm:pt-8'>
+      <div className='fade-in  my-8 flex w-300 max-w-full flex-col bg-white shadow-panel sm:rounded-lg dark:bg-gray-800 '>
+        <div className='flex max-w-full pt-4 pl-4 sm:pt-8 sm:pl-8'>
           <NavLink
             className='flex items-center self-start text-xs text-gray-500 hover:underline dark:text-gray-400'
             to={`../${siteId === ALL ? '' : `sites/${siteId}`}`}
@@ -334,7 +334,7 @@ export default function Reports(): ReactElement {
           </NavLink>
         </div>
         <div className='flex w-full items-center justify-between p-2 py-4 sm:p-8 sm:pt-4'>
-          <span className='hidden text-lg font-bold text-black dark:text-gray-100 sm:block'>
+          <span className='hidden text-lg font-bold text-black sm:block dark:text-gray-100'>
             Reports
           </span>
           <SearchBar
