@@ -30,7 +30,7 @@
     "react-select": "^5.10.2",
     "react-timezone-select": "^3.3.3",
     "react-toastify": "^11.1.0",
-    "sass": "^1.99.0",
+    "sass": "^1.105.0",
     "usehooks-ts": "^3.1.1",
     "uuid": "^14.0.0",
     "yup": "^1.7.1"
