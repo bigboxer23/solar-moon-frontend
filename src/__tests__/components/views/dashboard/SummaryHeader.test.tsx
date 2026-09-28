@@ -58,11 +58,9 @@ vi.mock('@tippyjs/react', () => {
 
 // Mock react-intl
 vi.mock('react-intl', () => ({
-  useIntl: vi.fn(
-    (): IntlFormatter => ({
-      formatNumber: vi.fn((number: number): string => number.toLocaleString()),
-    }),
-  ),
+  useIntl: vi.fn((): IntlFormatter => ({
+    formatNumber: vi.fn((number: number): string => number.toLocaleString()),
+  })),
 }));
 
 // Mock Utils
