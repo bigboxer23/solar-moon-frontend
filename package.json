@@ -82,7 +82,7 @@
     "@vitest/ui": "^5.0.2",
     "babel-plugin-transform-vite-meta-env": "^1.0.3",
     "baseline-browser-mapping": "^2.11.26",
-    "eslint": "^9.39.2",
+    "eslint": "^10.11.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-prettier": "^5.5.6",
