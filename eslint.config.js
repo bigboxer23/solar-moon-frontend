@@ -77,6 +77,9 @@ export default [
       react: {
         version: 'detect',
       },
+      tailwindcss: {
+        cssConfigPath: './src/styles/tailwind.css',
+      },
     },
     rules: {
       ...js.configs.recommended.rules,
@@ -153,6 +156,9 @@ export default [
     settings: {
       react: {
         version: 'detect',
+      },
+      tailwindcss: {
+        cssConfigPath: './src/styles/tailwind.css',
       },
     },
     rules: {
