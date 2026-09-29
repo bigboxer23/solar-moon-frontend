@@ -14,7 +14,7 @@ const outlineSecondaryButtonClass =
 const dangerButtonClass =
   'bg-danger text-sm text-white rounded-full font-bold py-2 px-5 tracking-wide leading-4 transition-all hover:brightness-110';
 const outlineDangerButtonClass =
-  'bg-white dark:bg-gray-800 text-sm text-black dark:text-gray-100 rounded-full font-bold py-2 px-5 tracking-wide leading-4 border border-red-700 text-red-700 transition-all hover:brightness-110';
+  'bg-white dark:bg-gray-800 text-sm rounded-full font-bold py-2 px-5 tracking-wide leading-4 border border-red-700 text-red-700 transition-all hover:brightness-110';
 const textButtonClass =
   'font-bold tracking-wide text-sm underline text-black dark:text-white';
 const iconButtonClass =

@@ -142,10 +142,11 @@ describe('Alert', () => {
       );
 
       const alertElement = container.querySelector('.Alert');
-      expect(alertElement).toHaveClass(
-        'bg-danger',
-        'text-white',
-        'dark:bg-danger',
+      expect(alertElement).toHaveClass('bg-danger', 'text-white');
+      // Conflicting background/text utilities would override bg-danger
+      expect(alertElement).not.toHaveClass(
+        'bg-grid-background-alt',
+        'text-black',
       );
     });
 
@@ -157,7 +158,9 @@ describe('Alert', () => {
       const alertElement = container.querySelector('.Alert');
       expect(alertElement).toHaveClass(
         'bg-grid-background-alt',
+        'text-black',
         'dark:bg-gray-700',
+        'dark:text-gray-100',
       );
       expect(alertElement).not.toHaveClass('bg-danger');
     });
@@ -173,8 +176,6 @@ describe('Alert', () => {
         'flex',
         'w-full',
         'justify-between',
-        'text-black',
-        'dark:text-gray-100',
         'p-4',
         'rounded-md',
         'overflow-hidden',
