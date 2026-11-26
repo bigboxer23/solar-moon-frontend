@@ -29,7 +29,7 @@
     "react-router": "^8.5.1",
     "react-select": "^5.10.2",
     "react-timezone-select": "^3.3.3",
-    "react-toastify": "^11.1.0",
+    "react-toastify": "^11.2.0",
     "sass": "^1.108.2",
     "usehooks-ts": "^3.1.1",
     "uuid": "^14.0.3",
